@@ -1,0 +1,73 @@
+image: maven:3-openjdk-17
+
+variables:
+  GIT_STRATEGY: "clone"
+
+stages:
+  - test
+  - build
+  - deploy
+
+test-backend:
+  stage: test
+  script:
+    - cd backend
+    - mvn -B clean install
+
+test-frontend:
+  stage: test
+  image: node:lts
+  script:
+    - cd frontend
+    - npm install
+    - npm run lint
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/dist
+    expire_in: 1 hour
+
+e2e-test:
+  stage: test
+  image: registry.reset.inso-w.at/pub/docker/cypress:latest
+  script:
+    - cd frontend
+    - npm install
+    - npm run start &
+    - cd ../backend
+    - mvn -B clean install -DskipTests
+    - java -jar target/*.jar &
+    - sleep 30
+    - cd ../e2e
+    - npm install
+    - npx cypress run
+  artifacts:
+    when: always
+    expire_in: 1 hour
+    reports:
+      junit:
+        - '**/cypress/results/*.xml'
+    paths:
+      - '**/cypress/videos/*.mp4'
+      - '**/cypress/screenshots/*.png'
+      - '**/cypress/reports/html/**'
+
+build-image:
+  stage: build
+  script:
+    - mkdir -p backend/src/main/resources/static/
+    - cp -rv frontend/dist/sepm-group-phase/* backend/src/main/resources/static/
+    - cd backend
+    - mvn -B clean install -DskipTests
+    - mvn -B jib:build -Djib.to.image=registry.reset.inso-w.at/$CI_PROJECT_PATH -Djib.to.tags=$CI_PIPELINE_ID -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  environment:
+    name: development
+  script: |
+    curl -H 'X-DeployToken: '$DEPLOY_TOKEN -H 'Content-type: application/json' -vf -XPUT --data '{"image": "'$CI_PROJECT_PATH'", "tag": "'$CI_PIPELINE_ID'"}' https://reset.inso.tuwien.ac.at/api/dockerDeployment
+  only:
+    - master

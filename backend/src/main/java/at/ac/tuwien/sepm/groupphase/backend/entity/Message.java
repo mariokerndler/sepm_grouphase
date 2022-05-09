@@ -2,11 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Message {
@@ -26,6 +22,7 @@ public class Message {
 
     @Column(nullable = false, length = 10000)
     private String text;
+
 
     public Long getId() {
         return id;

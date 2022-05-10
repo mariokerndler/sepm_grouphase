@@ -1,9 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
@@ -27,4 +31,12 @@ public interface UserService extends UserDetailsService {
      * @return a application user
      */
     ApplicationUser findApplicationUserByEmail(String email);
+
+    ApplicationUser findUserById(Long id);
+
+    void updateUser(ApplicationUserDto userDto);
+
+    List<ApplicationUser> getAllUsers();
+
+
 }

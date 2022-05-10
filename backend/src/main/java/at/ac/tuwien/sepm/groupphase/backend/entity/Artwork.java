@@ -27,4 +27,9 @@ public class Artwork {
     @ManyToOne
     @JoinColumn(name="applicationUser_id",nullable = false)
     private ApplicationUser applicationUser;
+
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
+
 }

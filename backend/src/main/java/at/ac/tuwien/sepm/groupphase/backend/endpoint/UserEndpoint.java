@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.security.PermitAll;
 import javax.xml.bind.ValidationException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
@@ -33,6 +34,7 @@ public class UserEndpoint {
         this.userMapper = userMapper;
     }
 
+    @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
     @Operation(summary = "Get Detailed informations about a specific user")
@@ -49,6 +51,7 @@ public class UserEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+    @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     @Operation(summary = "Get Detailed informations about a specific user")
@@ -61,6 +64,7 @@ public class UserEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+    @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")

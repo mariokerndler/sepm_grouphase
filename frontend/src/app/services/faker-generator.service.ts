@@ -20,6 +20,16 @@ export class FakerGeneratorService {
     return Math.random() * (max - min) + min;
   }
 
+  private static getRandomFeedback(amount: number): string[] {
+    const feedback: string[] = [];
+
+    for (let i = 0; i < amount; i++) {
+      feedback.push(faker.lorem.lines(2));
+    }
+
+    return feedback;
+  }
+
   private static fakeUser(id: number): User {
     return  {
       id,
@@ -29,6 +39,16 @@ export class FakerGeneratorService {
       email: faker.internet.email(),
       password: faker.internet.password()
     };
+  }
+
+  private static fakeUsers(amount: number): User[] {
+    const users: User[] = [];
+
+    for (let i = 0; i < amount; i++) {
+      users.push(this.fakeUser(i));
+    }
+
+    return users;
   }
 
   private static fakeTag(id: number): Tag {
@@ -119,36 +139,112 @@ export class FakerGeneratorService {
     return artworks;
   }
 
-  // TODO: Finish implementing commisions
-  private static fakeCommission(id: number, artistId: number, userId: number, artworkId: number): Commission{
+  private static fakeCommission(id: number, artistId: number, userId: number): Commission {
+    const fakeArtworks: Sketch[] = this.fakeSketches(3);
+
     return {
-      artistId: 0,
+      id,
+      artistId,
+      userId,
+      sketchesShown: 3,
+      feedbackSend: 3,
       comArtworkId: 0,
-      endDate: undefined,
-      feedback: [],
-      feedbackSend: 0,
-      id: 0,
-      instructions: 'a',
-      price: 0,
-      referenceImageIds: [],
-      sketchesShown: 0,
-      startDate: undefined,
-      userId: 0
+      feedback: this.getRandomFeedback(3),
+      price: this.getRandomFromRange(15, 1500),
+      instructions: faker.lorem.paragraph(2),
+      startDate: faker.date.soon(),
+      endDate: faker.date.future(),
+      referenceImageIds: fakeArtworks.map((artwork) => artwork.id),
     };
   }
 
+  private static fakeCommissions(amount: number): Commission[] {
+    const commissions: Commission[] = [];
+
+    for (let i = 0; i < amount; i++) {
+      commissions.push(this.fakeCommission(i, 1, 1));
+    }
+
+    return commissions;
+  }
 
   generateFakeUser(id: number): Observable<User> {
     return of(FakerGeneratorService.fakeUser(id));
   }
 
   generateFakeUserByAmount(amount: number): Observable<User[]> {
-    const users: User[] = [];
-
-    for (let i = 0; i < amount; i++) {
-      users.push(FakerGeneratorService.fakeUser(i));
-    }
+    const users: User[] = FakerGeneratorService.fakeUsers(amount);
 
     return of(users);
+  }
+
+  generateFakeTag(id: number): Observable<Tag> {
+    return of(FakerGeneratorService.fakeTag(id));
+  }
+
+  generateFakeTagByAmount(amount: number): Observable<Tag[]> {
+    return of(FakerGeneratorService.fakeTags(amount));
+  }
+
+  generateFakeGallery(id: number, galleryId: number, artistId: number): Observable<Gallery> {
+    const artworks: Artwork[] = FakerGeneratorService.fakeArtworks(FakerGeneratorService.getRandomFromRange(2, 5));
+    const artworkIds = artworks.map((x) => x.id);
+    const gallery: Gallery = FakerGeneratorService.fakeGallery(galleryId, artistId, artworkIds);
+
+    return of(gallery);
+  }
+
+  generateFakeGalleryByAmount(amount: number): Observable<Gallery[]> {
+    const galleries: Gallery[] = [];
+
+    for (let i = 0; i < amount; i++) {
+      this.generateFakeGallery(i, i + 1, i + 2).subscribe({
+        next: (gallery) => galleries.push(gallery)
+      });
+    }
+
+    return of(galleries);
+  }
+
+  generateFakeArtist(id: number, galleryId: number, artworkAmount: number): Observable<Artist> {
+    const artist: Artist = FakerGeneratorService.fakeArtist(id, galleryId, artworkAmount);
+
+    return of(artist);
+  }
+
+  generateFakeArtistByAmount(amount: number): Observable<Artist[]> {
+    const artists: Artist[] = [];
+
+    for (let i = 0; i < amount; i++) {
+      this.generateFakeArtist(i, i + 1, 3).subscribe({
+        next: (artist) => artists.push(artist)
+      });
+    }
+
+    return of(artists);
+  }
+
+  generateFakeSketch(id: number): Observable<Sketch> {
+    return of(FakerGeneratorService.fakeSketch(id));
+  }
+
+  generateFakeSketchByAmount(amount: number): Observable<Sketch[]> {
+    return of(FakerGeneratorService.fakeSketches(amount));
+  }
+
+  generateFakeArtwork(id: number): Observable<Artwork> {
+    return of(FakerGeneratorService.fakeArtwork(id));
+  }
+
+  generateFakeArtworkByAmount(amount: number): Observable<Artwork[]> {
+    return of(FakerGeneratorService.fakeArtworks(amount));
+  }
+
+  generateFakeCommission(id: number, artistId: number, userId: number): Observable<Commission> {
+    return of(FakerGeneratorService.fakeCommission(id, artistId, userId));
+  }
+
+  generateFakeCommissionByAmount(amount: number): Observable<Commission[]> {
+    return of(FakerGeneratorService.fakeCommissions(amount));
   }
 }

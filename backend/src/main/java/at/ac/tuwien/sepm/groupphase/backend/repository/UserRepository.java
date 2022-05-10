@@ -8,9 +8,10 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
+
     ApplicationUser findApplicationUserByEmail(String email);
+
     ApplicationUser findApplicationUsersByEmailAndAdmin(String email, Boolean isAdmin);
+
     List<ApplicationUser> findByPasswordEquals(String password);
-
-
 }

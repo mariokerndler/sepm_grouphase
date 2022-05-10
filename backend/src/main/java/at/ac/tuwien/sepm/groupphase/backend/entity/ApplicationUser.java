@@ -1,26 +1,20 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 //TODO: replace this class with a correct ApplicationUser Entity implementation
 @Entity
 public class ApplicationUser {
 
-
-    @Column(nullable= false, length = 100)
+    @Column(nullable = false, length = 100)
     private String email;
-    @Column(nullable= false, length = 100)
+    @Column(nullable = false, length = 100)
     private String password;
-    @Column(nullable= false, length = 100)
+    @Column(nullable = false, length = 100)
     private Boolean admin;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
-
-
-
-
 
     public ApplicationUser() {
     }

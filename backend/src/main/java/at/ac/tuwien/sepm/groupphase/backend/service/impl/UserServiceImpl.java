@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -16,16 +17,17 @@ import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class CustomUserDetailService implements UserService {
+public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private final UserRepository userRepository;
+    private final UserRepository userRepo;
 
     @Autowired
-    public CustomUserDetailService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepo = userRepository;
     }
 
     @Override
@@ -51,10 +53,30 @@ public class CustomUserDetailService implements UserService {
     @Override
     public ApplicationUser findApplicationUserByEmail(String email) {
         LOGGER.debug("Find application user by email");
-        ApplicationUser applicationUser = userRepository.findApplicationUserByEmail(email);
+        ApplicationUser applicationUser = userRepo.findApplicationUserByEmail(email);
         if (applicationUser != null) {
             return applicationUser;
         }
         throw new NotFoundException(String.format("Could not find the user with the email address %s", email));
+    }
+
+    @Override
+    public ApplicationUser findUserById(Long id) {
+        Optional<ApplicationUser> user= userRepo.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new NotFoundException(String.format("Could not find User   with id %s", id));
+        }
+    }
+
+    @Override
+    public void updateUser(ApplicationUserDto userDto) {
+        //userRepo.update
+    }
+
+    @Override
+    public List<ApplicationUser> getAllUsers() {
+        return userRepo.findAll();
     }
 }

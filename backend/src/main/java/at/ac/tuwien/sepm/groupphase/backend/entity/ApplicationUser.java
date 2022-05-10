@@ -11,21 +11,21 @@ import javax.persistence.*;
 public class ApplicationUser {
 
     @Column(nullable = false, length = 25)
-    @Getter@Setter private String userName;
+    private String userName;
     @Column(nullable = false, length = 35)
-    @Getter@Setter private String name;
+    private String name;
     @Column(nullable = false, length = 35)
-    @Getter@Setter private String surname;
+    private String surname;
     @Column(nullable = false, length = 100)
-    @Getter@Setter private String email;
+    private String email;
     @Column(nullable = false, length = 100)
-    @Getter@Setter private String address;
+    private String address;
     @Column(nullable = false, length = 20)
-    @Getter@Setter private String password;
+    private String password;
     @Column(nullable = false, length = 100)
-    @Getter@Setter private Boolean admin;
+    private Boolean admin;
     @Column(nullable = false)
-    @Getter@Setter private UserRole userRole;
+    private UserRole userRole;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
@@ -48,6 +48,54 @@ public class ApplicationUser {
     public ApplicationUser(String email, String password, Boolean admin) {
         this.email = email;
         this.password = password;
+        this.admin = admin;
+    }
+
+    public String getUserName() {return userName;}
+
+    public void setUserName(String userName) {this.userName = userName;}
+
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
+
+    public String getSurname() {return surname;}
+
+    public void setSurname(String surname) {this.surname = surname;}
+
+    public String getAddress() {return address;}
+
+    public void setAddress(String address) {this.address = address;}
+
+    public UserRole getUserRole() {return userRole;}
+
+    public void setUserRole(UserRole userRole) {this.userRole = userRole;}
+
+    public long getId(){ return id;}
+
+    public void setId(long id) {this.id = id;}
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
 }

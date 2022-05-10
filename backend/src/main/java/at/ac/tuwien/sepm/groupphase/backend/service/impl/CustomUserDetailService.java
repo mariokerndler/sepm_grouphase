@@ -32,6 +32,7 @@ public class CustomUserDetailService implements UserService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         LOGGER.debug("Load all user by email");
         try {
+
             ApplicationUser applicationUser = findApplicationUserByEmail(email);
 
             List<GrantedAuthority> grantedAuthorities;

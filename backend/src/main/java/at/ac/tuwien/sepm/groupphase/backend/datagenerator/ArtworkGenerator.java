@@ -1,6 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -14,16 +19,24 @@ import java.lang.invoke.MethodHandles;
 public class ArtworkGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private  final ArtworkRepository artworkRepo;
-    private static final int NUMBER_OF_ARTWORKS_TO_GENERATE = 5;
-
-    public ArtworkGenerator(ArtworkRepository artworkRepo) {
+    private static final int NUMBER_OF_ARTWORKS_TO_GENERATE = 3;
+    private  static final String path= "data/image";
+    private  final UserRepository userRepo;
+    public ArtworkGenerator(ArtworkRepository artworkRepo, UserRepository userRepo) {
         this.artworkRepo = artworkRepo;
+        this.userRepo=userRepo;
     }
 
     @PostConstruct
     private void generateArtworks(){
         if(artworkRepo.findAll().size()> NUMBER_OF_ARTWORKS_TO_GENERATE+ 1){
-
+            LOGGER.debug("Images already generated");
+        }
+        else{
+            for (int i = 0; i < NUMBER_OF_ARTWORKS_TO_GENERATE; i++) {
+                Artwork artwork = new Artwork(String.format("artwork%s",i+1),"okay dog pls",String.format(path+"/image%s",i), FileType.PNG,userRepo.getById(1L));
+                artworkRepo.save(artwork);
+            }
         }
     }
 }

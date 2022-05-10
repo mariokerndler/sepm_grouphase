@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
-import {FakerGeneratorService} from '../../services/faker-generator.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit {
   error = false;
   errorMessage = '';
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private fakerService: FakerGeneratorService) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -30,18 +29,6 @@ export class LoginComponent implements OnInit {
    * Form validation will start after the method is called, additionally an AuthRequest will be sent
    */
   loginUser() {
-    this.fakerService.generateFakeUser(1).subscribe({
-      next: (user) => {
-        console.log(user);
-      }
-    });
-
-    this.fakerService.generateFakeUserByAmount(10).subscribe({
-      next: (user) => {
-        console.log(user);
-      }
-    });
-
     this.submitted = true;
     if (this.loginForm.valid) {
       const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);

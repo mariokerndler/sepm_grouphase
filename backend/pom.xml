@@ -192,7 +192,7 @@
                     <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
+                    <failOnViolation>false</failOnViolation>
                     <violationSeverity>warning</violationSeverity>
                 </configuration>
                 <executions>

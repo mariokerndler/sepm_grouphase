@@ -12,33 +12,26 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 
-@Profile("generateData")
+@Profile({"generateData", "default"})
 @Component
-public class UserDataGenerator {
+public class AdminDataGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
 
-    public UserDataGenerator(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AdminDataGenerator(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
     private void generateUser() {
-        // TODO: Maybe differentiate by explicitly checking whether the one entity is actually the admin ?
-        if (userRepository.findAll().size() > NUMBER_OF_USERS_TO_GENERATE + 1) {
-            LOGGER.debug("User already generated");
-        } else {
-            for (int i = 0; i < NUMBER_OF_USERS_TO_GENERATE; i++) {
-                ApplicationUser user =  new ApplicationUser("testUser","bob","test","test","test","test"
-                    ,false, UserRole.User);
-                userRepository.save(user);
 
-            }
+        if (userRepository.findApplicationUserByEmail("admin@email.com") != null) {
+            LOGGER.debug("Admin already generated");
+        } else {
+            userRepository.save(new ApplicationUser("admin", "Max", "Mustermann", "admin@email.com", "Musterstraße 1", passwordEncoder.encode("password"), true, UserRole.Admin));
         }
-        }
+    }
 
 }
-

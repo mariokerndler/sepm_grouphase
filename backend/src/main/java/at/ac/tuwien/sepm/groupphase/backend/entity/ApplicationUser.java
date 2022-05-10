@@ -22,7 +22,7 @@ public class ApplicationUser {
     private String email;
     @Column(nullable = false, length = 100)
     private String address;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String password;
     @Column(nullable = false, length = 100)
     private Boolean admin;

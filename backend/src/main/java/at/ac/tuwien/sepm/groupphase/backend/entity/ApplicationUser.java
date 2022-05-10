@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -31,6 +32,9 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
+
+    @OneToMany(mappedBy = "applicationUser")
+    private List<Artwork> artworks;
 
     public ApplicationUser() {
     }

@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserService {
     public ApplicationUser findUserById(Long id) {
         Optional<ApplicationUser> user= userRepo.findById(id);
         if (user.isPresent()) {
+            LOGGER.info(user.get().getUserName());
+
             return user.get();
         } else {
             throw new NotFoundException(String.format("Could not find User   with id %s", id));

@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +39,11 @@ public class UserEndpoint {
     public ApplicationUserDto findById(@PathVariable Long id) {
         LOGGER.debug("Get /User/{}", id);
         try {
-            return userMapper.userToUserDto(userService.findUserById(id));
+            ApplicationUser applicationUser=userService.findUserById(id);
+            LOGGER.info(applicationUser.getUserName());
+            ApplicationUserDto audto=userMapper.userToUserDto(applicationUser);
+            LOGGER.info(audto.toString());
+            return audto;
         } catch (NotFoundException n) {
             LOGGER.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());

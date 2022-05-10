@@ -8,8 +8,8 @@ import org.mapstruct.Named;
 
 import javax.persistence.ElementCollection;
 import java.util.List;
-
-@Mapper
+//this fixed the mapper return all null fields :)
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     ApplicationUserDto userToUserDto( ApplicationUser applicationUser);

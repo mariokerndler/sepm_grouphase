@@ -11,7 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Artist extends ApplicationUser {
+public class Artist  {
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @Column
     private double reviewScore;

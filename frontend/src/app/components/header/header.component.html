@@ -1,3 +1,4 @@
+<!--
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
   <a class="navbar-brand ml-lg-5" href="">SEPM Group Phase</a>
   <button class="navbar-toggler ml-5" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -17,3 +18,19 @@
     </ul>
   </div>
 </nav>
+-->
+
+<mat-toolbar class="toolbar" color="primary">
+    <button mat-icon-button class="menu-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span  routerLink="\">Project Sketchbook.</span>
+    <div class="navigation-items">
+      <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
+      <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>
+      <button mat-button class="nav-link" *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</button>
+    </div>
+</mat-toolbar>
+
+
+

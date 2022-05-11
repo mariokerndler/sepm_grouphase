@@ -11,6 +11,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name="User")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,
+    name = "Usertype")
 public class ApplicationUser {
 
     @Column(nullable = false, length = 25)
@@ -33,7 +37,7 @@ public class ApplicationUser {
     @Id
     private long id;
 
-    @OneToMany(mappedBy = "applicationUser")
+    @OneToMany(mappedBy = "artist")
     private List<Artwork> artworks;
 
     public ApplicationUser() {

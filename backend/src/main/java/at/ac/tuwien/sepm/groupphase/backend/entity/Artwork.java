@@ -24,20 +24,19 @@ public class Artwork {
     private FileType fileType;
     //todo sketch reference
 
-    public Artwork(String name, String description, String imageUrl, FileType fileType, ApplicationUser applicationUser) {
+    public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.fileType = fileType;
-        this.applicationUser = applicationUser;
+        this.artist = artist;
     }
-    public  Artwork() {}
-    @ManyToOne
-    @JoinColumn(name="applicationUser_id",nullable = false)
-    private ApplicationUser applicationUser;
+    public  Artwork() {
+        this.id=-1;
+    }
 
     @ManyToOne
-    @JoinColumn(name = "artist_id")
+    @JoinColumn(name = "artist_id",nullable = false)
     private Artist artist;
 
 }

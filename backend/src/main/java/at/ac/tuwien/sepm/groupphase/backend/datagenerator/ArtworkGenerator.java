@@ -1,7 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
@@ -21,10 +23,10 @@ public class ArtworkGenerator {
     private  final ArtworkRepository artworkRepo;
     private static final int NUMBER_OF_ARTWORKS_TO_GENERATE = 3;
     private  static final String path= "data/image";
-    private  final UserRepository userRepo;
-    public ArtworkGenerator(ArtworkRepository artworkRepo, UserRepository userRepo) {
+    private  final ArtistRepository artistRepo;
+    public ArtworkGenerator(ArtworkRepository artworkRepo, ArtistRepository artistRepo) {
         this.artworkRepo = artworkRepo;
-        this.userRepo=userRepo;
+        this.artistRepo=artistRepo;
     }
 
     @PostConstruct
@@ -34,7 +36,7 @@ public class ArtworkGenerator {
         }
         else{
             for (int i = 0; i < NUMBER_OF_ARTWORKS_TO_GENERATE; i++) {
-                Artwork artwork = new Artwork(String.format("artwork%s",i+1),"okay dog pls",String.format(path+"/image%s",i), FileType.PNG,userRepo.getById(1L));
+                Artwork artwork = new Artwork(String.format("artwork%s",i+1),"okay dog pls",String.format(path+"/image%s",i), FileType.PNG,new Artist());
                 artworkRepo.save(artwork);
             }
         }

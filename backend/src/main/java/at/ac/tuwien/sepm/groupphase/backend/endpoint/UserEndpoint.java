@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.security.PermitAll;
 import javax.xml.bind.ValidationException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
@@ -32,18 +34,24 @@ public class UserEndpoint {
         this.userMapper = userMapper;
     }
 
+    @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
     @Operation(summary = "Get Detailed informations about a specific user")
     public ApplicationUserDto findById(@PathVariable Long id) {
         LOGGER.debug("Get /User/{}", id);
         try {
-            return userMapper.userToUserDto(userService.findUserById(id));
+            ApplicationUser applicationUser=userService.findUserById(id);
+            LOGGER.info(applicationUser.getUserName());
+            ApplicationUserDto audto=userMapper.userToUserDto(applicationUser);
+            LOGGER.info(audto.toString());
+            return audto;
         } catch (NotFoundException n) {
             LOGGER.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+    @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     @Operation(summary = "Get Detailed informations about a specific user")
@@ -56,6 +64,7 @@ public class UserEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+    @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")

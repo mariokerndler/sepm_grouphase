@@ -32,7 +32,7 @@ public class UserDataGenerator {
             LOGGER.debug("User already generated");
         } else {
             for (int i = 0; i < NUMBER_OF_USERS_TO_GENERATE; i++) {
-                ApplicationUser user =  new ApplicationUser("testUser","bob","test","test","test","test"
+                ApplicationUser user =  new ApplicationUser(String.format("testUser%s",i),"bob","test","test","test","test"
                     ,false, UserRole.User);
                 userRepository.save(user);
 

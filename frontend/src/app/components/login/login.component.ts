@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
 import {FakerGeneratorService} from '../../services/faker-generator.service';
+import {Artwork} from '../../dtos/artwork';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,9 @@ export class LoginComponent implements OnInit {
   // Error flag
   error = false;
   errorMessage = '';
+
+  // For Faker testing
+  artwork: Artwork;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,6 +82,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.testFakerFunctions();
   }
 
   testFakerFunctions() {
@@ -131,9 +136,19 @@ export class LoginComponent implements OnInit {
       next: (x) => console.log(x)
     });
 
+    // Fake Review
+    this.fakerService.generateFakeReview(1, 1).subscribe({
+      next: (x) => console.log(x)
+    });
+
+    // Fake Reviews
+    this.fakerService.generateFakeReviewsByAmount(3).subscribe({
+      next: (x) => console.log(x)
+    });
+
     // Fake Artwork
     this.fakerService.generateFakeArtwork(1).subscribe({
-      next: (x) => console.log(x)
+      next: (x) => (console.log(x), this.artwork = x)
     });
 
     // Fake Artworks

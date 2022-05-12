@@ -20,17 +20,33 @@
 </nav>
 -->
 
-<mat-toolbar class="toolbar" color="primary">
-    <button mat-icon-button class="menu-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span  routerLink="\">Project Sketchbook.</span>
-    <div class="navigation-items">
+
+  <mat-toolbar class="toolbar" color="primary">
+    <div fxFlex fxLayout>
+      <button  mat-icon-button class="menu-icon">
+        <mat-icon (click)="sidenav.toggle()" >menu</mat-icon>
+      </button>
+    </div>
+    <span fxFlex fxLayout fxLayoutAlign="center" >Project Sketchbook.</span>
+    <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
       <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
       <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>
-      <button mat-button class="nav-link" *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</button>
+      <button mat-button *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</button>
     </div>
-</mat-toolbar>
+  </mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav  #sidenav mode="side" opened [fixedInViewport]="true">
+    <button mat-icon-button class="close-menu-icon" >
+      <mat-icon (click)="sidenav.toggle()" >close</mat-icon>
+    </button>
+    <mat-selection-list [multiple]="false" class="sidenav">
+      <mat-list-option  *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</mat-list-option>
+      <mat-list-option  *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</mat-list-option>
+    </mat-selection-list>
 
 
+  </mat-sidenav>
+
+</mat-sidenav-container>
 

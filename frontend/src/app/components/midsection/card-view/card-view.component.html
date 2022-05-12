@@ -1,5 +1,5 @@
 <mat-card class="card-view">
-  <img mat-card-image [src]="artwork.image" [alt]="artwork.name">
+  <img *ngIf="artwork" mat-card-image [src]="artwork.image" [alt]="artwork.name">
   <mat-card-content>
     <p>
       {{artwork.name}}

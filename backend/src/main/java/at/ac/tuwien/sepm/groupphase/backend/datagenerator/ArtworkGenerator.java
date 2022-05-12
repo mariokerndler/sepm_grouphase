@@ -40,6 +40,7 @@ public class ArtworkGenerator {
 
     @PostConstruct
     private void generateArtworks(){
+
         createFolderIfNotExists();
         fetchSampleImageData();
         if(artworkRepo.findAll().size()> NUMBER_OF_ARTWORKS_TO_GENERATE+ 1){
@@ -47,7 +48,7 @@ public class ArtworkGenerator {
         }
         else{
             for (int i = 0; i < NUMBER_OF_ARTWORKS_TO_GENERATE; i++) {
-                Artwork artwork = new Artwork(String.format("artwork%s",i+1),"okay dog pls",String.format(path+"/image%s",i), FileType.PNG,new Artist());
+                Artwork artwork = new Artwork(String.format("artwork%s",i+1),"okay dog pls",String.format(path+"/image%s",i), FileType.PNG,artistRepo.findAll().get(0));
                 artworkRepo.save(artwork);
             }
         }

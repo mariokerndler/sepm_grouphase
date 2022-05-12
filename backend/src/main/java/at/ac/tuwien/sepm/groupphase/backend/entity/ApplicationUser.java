@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name="User")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,
     name = "Usertype")
 public class ApplicationUser {

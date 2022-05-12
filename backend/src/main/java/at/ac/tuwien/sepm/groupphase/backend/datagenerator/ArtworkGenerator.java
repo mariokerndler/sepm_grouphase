@@ -29,7 +29,7 @@ import java.util.LinkedList;
 public class ArtworkGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private  final ArtworkRepository artworkRepo;
-    private static final int NUMBER_OF_ARTWORKS_TO_GENERATE = 3;
+    private static final int NUMBER_OF_ARTWORKS_TO_GENERATE = 6;
     private  static final String path= "data/image";
     private  static final String dir="./data";
     private  final ArtistRepository artistRepo;

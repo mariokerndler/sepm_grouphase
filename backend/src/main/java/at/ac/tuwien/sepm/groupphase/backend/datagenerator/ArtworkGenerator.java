@@ -43,13 +43,16 @@ public class ArtworkGenerator {
 
         createFolderIfNotExists();
         fetchSampleImageData();
-        if(artworkRepo.findAll().size()> NUMBER_OF_ARTWORKS_TO_GENERATE+ 1){
+        if(artworkRepo.findAll().size()>= NUMBER_OF_ARTWORKS_TO_GENERATE){
             LOGGER.debug("Images already generated");
         }
         else{
             for (int i = 0; i < NUMBER_OF_ARTWORKS_TO_GENERATE; i++) {
-                Artwork artwork = new Artwork(String.format("artwork%s",i+1),"okay dog pls",String.format(path+"/image%s",i), FileType.PNG,artistRepo.findAll().get(0));
-                artworkRepo.save(artwork);
+
+
+                    Artwork artwork = new Artwork(String.format("artwork%s", i + 1), "okay dog pls", String.format(path + "/image%s", i), FileType.PNG, artistRepo.findAll().get(0));
+                    artworkRepo.save(artwork);
+
             }
         }
     }

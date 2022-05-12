@@ -10,11 +10,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Artist  {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+@DiscriminatorValue("Artist")
+public class Artist extends ApplicationUser  {
+
 
     @Column
     private double reviewScore;

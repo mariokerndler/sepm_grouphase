@@ -32,7 +32,6 @@ public class Artwork {
         this.artist = artist;
     }
     public  Artwork() {
-        this.id=-1;
     }
 
     @ManyToOne

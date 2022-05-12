@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
+public interface UserRepository<U extends ApplicationUser> extends JpaRepository<U, Long> {
 
-    ApplicationUser findApplicationUserByEmail(String email);
+    U findApplicationUserByEmail(String email);
 
-    ApplicationUser findApplicationUsersByEmailAndAdmin(String email, Boolean isAdmin);
+    U findApplicationUsersByEmailAndAdmin(String email, Boolean isAdmin);
 
-    List<ApplicationUser> findByPasswordEquals(String password);
+    List<U> findByPasswordEquals(String password);
 }

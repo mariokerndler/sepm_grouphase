@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class ArtistDto {
 
+    // TODO: Add aditional artist attributes to dto
 
     private String userName;
 

@@ -42,13 +42,14 @@ public class UserDataGenerator {
 
             }
 
+            Artist artist = new Artist(String.format("testUser%s", -1), "bob", "test", "test", "test", passwordEncoder.encode("test")
+                , false, UserRole.Artist, 1.0, -1, null, null, null);
+
+            artistRepository.save(artist);
 
         }
 
-        Artist artist = new Artist(String.format("testUser%s", -1), "bob", "test", "test", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, 1.0, -1, null, null, null);
 
-        artistRepository.save(artist);
     }
 
 }

@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface ArtworkService {
     List<Artwork> findArtworksByArtist(Long id);
+    void saveArtwork(Artwork a);
 }

@@ -32,7 +32,7 @@ public class ArtworkEndpoint {
     }
 
 
-
+    @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
@@ -49,5 +49,20 @@ public class ArtworkEndpoint {
             LOGGER.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
+    }
+
+    @PermitAll
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get Detailed informations about a specific user")
+    public void updateUser(@RequestBody ArtworkDto artworkDto) {
+        LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
+        try {
+            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+        } catch (Exception v) {
+            LOGGER.error(v.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        }
+
     }
 }

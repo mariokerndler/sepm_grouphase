@@ -10,4 +10,5 @@ import java.util.List;
 public interface ArtworkRepository extends JpaRepository<Artwork, Long> {
     List<Artwork> findArtworkByArtistId(Long id);
 
+
 }

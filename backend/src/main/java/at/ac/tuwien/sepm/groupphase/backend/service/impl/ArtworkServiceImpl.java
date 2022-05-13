@@ -25,4 +25,9 @@ public class ArtworkServiceImpl implements ArtworkService {
     public List<Artwork> findArtworksByArtist(Long id) {
         return artworkRepo.findArtworkByArtistId(id);
     }
+
+    @Override
+    public void saveArtwork(Artwork a) {
+        this.artworkRepo.save(a);
+    }
 }

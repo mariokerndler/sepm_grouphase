@@ -1,0 +1,49 @@
+package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
+
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+public class ArtworkDto {
+
+
+    private long id;
+    private String name;
+    private String description;
+    private String  imageUrl;
+    private FileType fileType;
+    private  long artistId;
+
+    //todo sketch reference
+
+    @Override
+    public String toString() {
+        return "ArtworkDto{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", fileType=" + fileType +
+            ", artistId=" + artistId +
+
+            '}';
+    }
+
+    public ArtworkDto(String name, String description, String imageUrl, FileType fileType, Artist artist) {
+        this.name = name;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.fileType = fileType;
+        this.artistId=   artist.getId();
+    }
+    public  ArtworkDto() {
+    }
+
+
+
+}

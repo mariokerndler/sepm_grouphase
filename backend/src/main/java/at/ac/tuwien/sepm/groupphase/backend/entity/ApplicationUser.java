@@ -36,7 +36,7 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
-
+    //TODO: why does user have artworks?
     @OneToMany(mappedBy = "artist")
     private List<Artwork> artworks;
 

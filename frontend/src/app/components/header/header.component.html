@@ -27,16 +27,16 @@
         <mat-icon (click)="sidenav.toggle()" >menu</mat-icon>
       </button>
     </div>
-    <span fxFlex fxLayout fxLayoutAlign="center" >Project Sketchbook.</span>
+    <span>Project Sketchbook.</span>
     <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
-      <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
-      <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>
+      <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
+      <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>
       <button mat-button *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</button>
     </div>
   </mat-toolbar>
 
 <mat-sidenav-container>
-  <mat-sidenav  #sidenav mode="side" opened [fixedInViewport]="true">
+  <mat-sidenav  #sidenav mode="side"  [fixedInViewport]="true">
     <button mat-icon-button class="close-menu-icon" >
       <mat-icon (click)="sidenav.toggle()" >close</mat-icon>
     </button>

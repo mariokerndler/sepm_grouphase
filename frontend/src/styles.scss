@@ -1,9 +1,12 @@
-@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+@import "new-theme";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+$background: #434F6A;
 
 /* You can add global styles to this file, and also import other style files */
 body {
-  background-color: whitesmoke;
+  background-color: $background;
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Poppins, sans-serif; }

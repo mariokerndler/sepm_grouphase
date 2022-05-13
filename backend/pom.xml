@@ -24,7 +24,7 @@
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle.version>10.1</checkstyle.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-        <org.projectlombok.version>1.18.24</org.projectlombok.version>
+        <org.projectlombok.version> 1.18.24</org.projectlombok.version>
         <org.projectlombok-mapstruct-binding.version>0.2.0</org.projectlombok-mapstruct-binding.version>
     </properties>
 
@@ -41,11 +41,22 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${org.projectlombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-mapstruct-binding</artifactId>
+            <version>${org.projectlombok-mapstruct-binding.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

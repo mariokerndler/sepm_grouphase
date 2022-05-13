@@ -18,26 +18,24 @@ public class Artwork {
     private String name;
     @Column(nullable = false, length = 50)
     private String description;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100,unique = true)
     private String  imageUrl;
     @Column(nullable = false)
     private FileType fileType;
     //todo sketch reference
 
-    public Artwork(String name, String description, String imageUrl, FileType fileType, ApplicationUser applicationUser) {
+    public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.fileType = fileType;
-        this.applicationUser = applicationUser;
+        this.artist = artist;
     }
-    public  Artwork() {}
-    @ManyToOne
-    @JoinColumn(name="applicationUser_id",nullable = false)
-    private ApplicationUser applicationUser;
+    public  Artwork() {
+    }
 
     @ManyToOne
-    @JoinColumn(name = "artist_id")
+    @JoinColumn(name = "artist_id",nullable = false)
     private Artist artist;
 
 }

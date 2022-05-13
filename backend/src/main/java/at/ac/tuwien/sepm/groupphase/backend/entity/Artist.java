@@ -10,11 +10,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Artist  {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+@DiscriminatorValue("Artist")
+public class Artist extends ApplicationUser  {
+
 
     @Column
     private double reviewScore;
@@ -31,8 +29,12 @@ public class Artist  {
 
     }
 
-    public Artist(double reviewScore, long galleryId, List<Artwork> artworks,
+    public Artist(String userName, String name, String surname, String email, String address,
+                  String password, Boolean admin, UserRole userRole,
+                  double reviewScore, long galleryId, List<Artwork> artworks,
                   List<String> commissions, List<String> reviews) {
+
+        super(userName, name, surname, email, address, password, admin, userRole);
         this.reviewScore = reviewScore;
         this.galleryId = galleryId;
         this.artworks = artworks;

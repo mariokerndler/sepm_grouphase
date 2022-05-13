@@ -27,7 +27,7 @@
         <mat-icon (click)="sidenav.toggle()" >menu</mat-icon>
       </button>
     </div>
-    <span>Project Sketchbook.</span>
+    <span class="title" routerLink="/">Project Sketchbook.</span>
     <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
       <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
       <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>

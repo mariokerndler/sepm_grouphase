@@ -9,4 +9,5 @@ import java.util.List;
 public interface ArtworkService {
     List<Artwork> findArtworksByArtist(Long id);
     void saveArtwork(Artwork a);
+    void deleteArtwork(Long id);
 }

@@ -52,10 +52,26 @@ public class ArtworkEndpoint {
     }
 
     @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    @Operation(summary = "getAllArtworksByArtist")
+    public void deleteArtwork(@PathVariable Long id ){
+        LOGGER.info("Get /Artist");
+        try {
+
+            LOGGER.info("Delete Artwork/"+id);
+            artworkService.deleteArtwork(id);
+
+        } catch (Exception n) {
+            LOGGER.error(n.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        }
+    }
+    @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")
-    public void updateUser(@RequestBody ArtworkDto artworkDto) {
+    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
         try {
             artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));

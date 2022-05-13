@@ -30,4 +30,9 @@ public class ArtworkServiceImpl implements ArtworkService {
     public void saveArtwork(Artwork a) {
         this.artworkRepo.save(a);
     }
+
+    @Override
+    public void deleteArtwork(Long id) {
+        this.artworkRepo.deleteById(id);
+    }
 }

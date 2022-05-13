@@ -26,6 +26,7 @@
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <org.projectlombok.version> 1.18.24</org.projectlombok.version>
         <org.projectlombok-mapstruct-binding.version>0.2.0</org.projectlombok-mapstruct-binding.version>
+        <h2.version>2.1.210</h2.version>
     </properties>
 
     <dependencyManagement>
@@ -81,6 +82,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -97,11 +99,6 @@
             <artifactId>spring-boot-properties-migrator</artifactId>
         </dependency>
         <!-- security -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>${jjwt.version}</version>
-        </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>

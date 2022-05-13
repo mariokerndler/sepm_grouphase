@@ -41,7 +41,9 @@ import { CardViewComponent } from './components/midsection/card-view/card-view.c
     AngularMaterialModule,
     FlexLayoutModule
   ],
-  providers: [httpInterceptorProviders],
+  providers: [
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

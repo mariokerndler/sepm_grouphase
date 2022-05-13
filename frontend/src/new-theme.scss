@@ -1,0 +1,71 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$light-pink-palette:(
+  50: #ffecf1,
+  100: #ffd0d8,
+  200: #fb9fa4,
+  300: #f57980,
+  400: #ff595f,
+  500: #ff4745,
+  600: #fa3f45,
+  700: #e8343f,
+  800: #da2d37,
+  900: #cb212b,
+  contrast: (
+  50: #2f3a51,
+  100: #434f6a,
+  200: #434F6A,
+  300: #536281,
+  400: #657699,
+  500: #7484ab,
+  600: #8897ba,
+  700: #9daacb,
+  800: #cfdbf4,
+  900: #ecefff
+  )
+);
+
+$dark-blue-palette:(
+  50: #ecefff,
+  100: #cfdbf4,
+  200: #b7c3df,
+  300: #9daacb,
+  400: #8897ba,
+  500: #7484ab,
+  600: #657699,
+  700: #536281,
+  800: #434f6a,
+  900: #2f3a51,
+  contrast: (
+    50: #cb212b,
+    100: #da2d37,
+    200: #e8343f,
+    300: #fa3f45,
+    400: #ff4745,
+    500: #ff595f,
+    600: #f57980,
+    700: #fb9fa4,
+    800: #fb9fa4,
+    900: #ffd0d8
+  )
+);
+
+
+$new-theme-typography: mat.define-typography-config(
+  $font-family: 'Poppins'
+);
+
+$new-theme-primary: mat.define-palette($dark-blue-palette, 800);
+$new-theme-accent: mat.define-palette($light-pink-palette, 200);
+
+$new-theme: mat.define-light-theme((
+    color: (
+      primary: $new-theme-primary,
+      accent: $new-theme-accent,
+    ),
+  typography: $new-theme-typography
+));
+
+@include mat.all-component-themes($new-theme);

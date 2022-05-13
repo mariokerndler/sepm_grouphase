@@ -15,6 +15,9 @@ import {httpInterceptorProviders} from './interceptors';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AngularMaterialModule} from './angular-material/angular-material.module';
+import { FlexLayoutModule} from '@angular/flex-layout';
+import { MidsectionComponent } from './components/midsection/midsection/midsection.component';
+import { CardViewComponent } from './components/midsection/card-view/card-view.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,8 @@ import { AngularMaterialModule} from './angular-material/angular-material.module
     HomeComponent,
     LoginComponent,
     MessageComponent,
+    MidsectionComponent,
+    CardViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +38,8 @@ import { AngularMaterialModule} from './angular-material/angular-material.module
     NgbModule,
     FormsModule,
     BrowserAnimationsModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    FlexLayoutModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

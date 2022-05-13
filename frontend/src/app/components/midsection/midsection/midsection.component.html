@@ -1,0 +1,7 @@
+<div class="content">
+  <div fxLayout="row wrap" fxLayoutGap="16px grid">
+    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutAlign="center" *ngFor="let artwork of artworks">
+      <app-card-view [artwork]="artwork"></app-card-view>
+    </div>
+  </div>
+</div>

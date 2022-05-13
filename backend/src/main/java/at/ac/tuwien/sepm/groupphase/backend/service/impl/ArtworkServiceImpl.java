@@ -23,6 +23,6 @@ public class ArtworkServiceImpl implements ArtworkService {
 
     @Override
     public List<Artwork> findArtworksByArtist(Long id) {
-        return artworkRepo.findAll();
+        return artworkRepo.findArtworkByArtistId(id);
     }
 }

@@ -11,13 +11,16 @@ import java.util.List;
 @Getter
 @Setter
 @DiscriminatorValue("Artist")
-public class Artist extends ApplicationUser  {
+public class Artist extends ApplicationUser {
 
 
     @Column
     private double reviewScore;
-    @Column
-    private long galleryId;
+
+    @OneToOne
+    @JoinColumn(name = "gallery_id")
+    private Gallery gallery;
+
     @OneToMany(mappedBy = "artist")
     private List<Artwork> artworks;
     @ElementCollection
@@ -31,12 +34,12 @@ public class Artist extends ApplicationUser  {
 
     public Artist(String userName, String name, String surname, String email, String address,
                   String password, Boolean admin, UserRole userRole,
-                  double reviewScore, long galleryId, List<Artwork> artworks,
+                  double reviewScore, Gallery gallery, List<Artwork> artworks,
                   List<String> commissions, List<String> reviews) {
 
         super(userName, name, surname, email, address, password, admin, userRole);
         this.reviewScore = reviewScore;
-        this.galleryId = galleryId;
+        this.gallery = gallery;
         this.artworks = artworks;
         this.commissions = commissions;
         this.reviews = reviews;

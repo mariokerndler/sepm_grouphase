@@ -56,7 +56,7 @@ public class UserDataGenerator {
             }
         }
         Artist artist = new Artist(String.format("testUser%s", -1), "bob", "test", "test", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, 1.0, -1, null, null, null);
+            , false, UserRole.Artist, 1.0, null, null, null, null);
 
         artistRepository.save(artist);
 

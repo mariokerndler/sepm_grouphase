@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
+import {LoginComponent} from '../login/login.component';
+import {MatDialog} from '@angular/material/dialog';
+
 
 
 @Component({
@@ -9,9 +12,12 @@ import {AuthService} from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, public dialog: MatDialog){}
 
   ngOnInit() {
   }
 
+  openDialog() {
+    this.dialog.open(LoginComponent);
+  }
 }

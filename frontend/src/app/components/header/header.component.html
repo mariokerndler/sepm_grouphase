@@ -29,7 +29,7 @@
     </div>
     <span class="title" routerLink="/">Project Sketchbook.</span>
     <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
-      <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
+      <button  mat-button *ngIf="!authService.isLoggedIn()" (click)="openDialog()"> Login</button>
       <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>
       <button mat-button *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</button>
     </div>

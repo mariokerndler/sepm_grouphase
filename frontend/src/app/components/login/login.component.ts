@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
 import {Artwork} from '../../dtos/artwork';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
   artwork: Artwork;
 
   constructor(
+    public dialogRef: MatDialogRef<LoginComponent>,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router) {
@@ -55,6 +57,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(authRequest).subscribe({
       next: () => {
         console.log('Successfully logged in user: ' + authRequest.email);
+        this.onNoClick();
         this.router.navigate(['/message']);
       },
       error: error => {
@@ -75,6 +78,15 @@ export class LoginComponent implements OnInit {
    */
   vanishError() {
     this.error = false;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  openDialog() {
+    this.onNoClick();
+
   }
 
   ngOnInit() {}

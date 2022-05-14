@@ -14,16 +14,12 @@ import {LoginComponent} from '../login/login.component';
 })
 export class RegistrationComponent implements OnInit {
 
-  loginForm: FormGroup;
+  registerForm: FormGroup;
   // After first submission attempt, form validation will start
   submitted = false;
   // Error flag
   error = false;
   errorMessage = '';
-
-  // For Faker testing
-  artwork: Artwork;
-
   hidePassword = true;
   hideConfirmPassword = true;
 
@@ -34,7 +30,7 @@ export class RegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router) {
-    this.loginForm = this.formBuilder.group({
+    this.registerForm = this.formBuilder.group({
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -47,10 +43,12 @@ export class RegistrationComponent implements OnInit {
   /**
    * Form validation will start after the method is called, additionally an AuthRequest will be sent
    */
-  loginUser() {
+  createNewUser() {
     this.submitted = true;
-    if (this.loginForm.valid) {
-      const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+    if (this.registerForm.valid) {
+      // registrationRequest
+      const authRequest: AuthRequest = new AuthRequest(this.registerForm.controls.username.value,
+        this.registerForm.controls.password.value);
       this.authenticateUser(authRequest);
     } else {
       console.log('Invalid input');

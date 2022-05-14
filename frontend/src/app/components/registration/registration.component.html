@@ -13,7 +13,7 @@
 </div>
 
 
-<div mat-dialog-content [formGroup]="loginForm" (ngSubmit)="loginUser()" fxLayout="column">
+<div mat-dialog-content [formGroup]="registerForm" (ngSubmit)="createNewUser()" fxLayout="column">
   <p *ngIf="!error">Welcome to Project Sketchbook!</p>
 
   <div class="name">
@@ -21,8 +21,8 @@
       <mat-label>First Name</mat-label>
       <input matInput name="firstname" formControlName="firstname" class="form-control" id="inputFirstname"
              aria-describedby="firstnameHelp" >
-      <div *ngIf="submitted && loginForm.controls.firstname.errors" class="error">
-        <small class="warning" *ngIf="loginForm.controls.firstname.errors.required">Your first name is required! </small>
+      <div *ngIf="submitted && registerForm.controls.firstname.errors" class="error">
+        <small class="warning" *ngIf="registerForm.controls.firstname.errors.required">Your first name is required! </small>
       </div>
     </mat-form-field>
 
@@ -30,8 +30,8 @@
       <mat-label>Last Name</mat-label>
       <input matInput name="lastname" formControlName="lastname" class="form-control" id="inputLastname"
              aria-describedby="lastnameHelp" >
-      <div *ngIf="submitted && loginForm.controls.lastname.errors" class="error">
-        <small class="warning" *ngIf="loginForm.controls.lastname.errors.required">Your last name is required! </small>
+      <div *ngIf="submitted && registerForm.controls.lastname.errors" class="error">
+        <small class="warning" *ngIf="registerForm.controls.lastname.errors.required">Your last name is required! </small>
       </div>
     </mat-form-field>
   </div>
@@ -40,9 +40,9 @@
     <mat-label>Email</mat-label>
     <input matInput name="email" formControlName="email" class="form-control" id="inputEmail"
            aria-describedby="emailHelp" >
-    <div *ngIf="submitted && loginForm.controls.email.errors" class="error">
-      <small class="warning" *ngIf="loginForm.controls.email.errors.required">Your email is required! </small>
-      <small class="warning" *ngIf="loginForm.controls.email.errors.email">The email you entered is invalid! </small>
+    <div *ngIf="submitted && registerForm.controls.email.errors" class="error">
+      <small class="warning" *ngIf="registerForm.controls.email.errors.required">Your email is required! </small>
+      <small class="warning" *ngIf="registerForm.controls.email.errors.email">The email you entered is invalid! </small>
     </div>
   </mat-form-field>
 
@@ -51,8 +51,8 @@
     <mat-label>Username</mat-label>
     <input matInput name="username" formControlName="username" class="form-control" id="inputUsername"
            aria-describedby="usernameHelp" >
-    <div *ngIf="submitted && loginForm.controls.username.errors" class="error">
-      <small class="warning" *ngIf="loginForm.controls.username.errors.required">Your username is required! </small>
+    <div *ngIf="submitted && registerForm.controls.username.errors" class="error">
+      <small class="warning" *ngIf="registerForm.controls.username.errors.required">Your username is required! </small>
     </div>
   </mat-form-field>
 
@@ -62,9 +62,9 @@
     <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
       <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
-    <div *ngIf="submitted && loginForm.controls.password.errors" class="error">
-      <small class="warning" *ngIf="loginForm.controls.password.errors.required">Your password is required!</small>
-      <small class="warning" *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
+    <div *ngIf="submitted && registerForm.controls.password.errors" class="error">
+      <small class="warning" *ngIf="registerForm.controls.password.errors.required">Your password is required!</small>
+      <small class="warning" *ngIf="registerForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
     </div>
   </mat-form-field>
 
@@ -75,17 +75,17 @@
     <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
       <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
-    <div *ngIf="submitted && loginForm.controls.confirm.errors" class="error">
-      <small class="warning" *ngIf="loginForm.controls.confirm.errors.required">Your password is required!</small>
-      <small class="warning" *ngIf="loginForm.controls.confirm.errors.minlength">Your password must be at least 8 characters long!</small>
-      <small class="warning" *ngIf="loginForm.controls.confirm.errors.pattern">The passwords do not match</small>
+    <div *ngIf="submitted && registerForm.controls.confirm.errors" class="error">
+      <small class="warning" *ngIf="registerForm.controls.confirm.errors.required">Your password is required!</small>
+      <small class="warning" *ngIf="registerForm.controls.confirm.errors.minlength">Your password must be at least 8 characters long!</small>
+      <small class="warning" *ngIf="registerForm.controls.confirm.errors.pattern">The passwords do not match</small>
     </div>
   </mat-form-field>
 
 
 
 
-  <button mat-flat-button color="primary" class="submit-button" cdkFocusInitial (click)="loginUser()">Register</button>
+  <button mat-flat-button color="primary" class="submit-button" cdkFocusInitial (click)="createNewUser()">Register</button>
   <br>
   <div fxLayout="column">
     <span style="text-align: center" >Already Registered?</span>

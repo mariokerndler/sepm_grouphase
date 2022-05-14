@@ -7,4 +7,5 @@ import java.util.List;
 public interface ArtistService {
 
     List<Artist> getAllArtists();
+    Artist findArtistById(Long id);
 }

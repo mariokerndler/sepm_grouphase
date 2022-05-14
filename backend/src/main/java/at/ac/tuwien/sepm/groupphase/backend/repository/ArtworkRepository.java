@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ArtworkRepository extends JpaRepository<Artwork, Long> {
+    List<Artwork> findArtworkByArtistId(Long id);
+
 
 }

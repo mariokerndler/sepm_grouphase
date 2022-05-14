@@ -27,8 +27,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/new-theme.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/new-theme.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js"

@@ -1,4 +1,8 @@
-@use '@angular/material' as mat;
+@use 'node_modules/@angular/material' as mat;
+@import 'styles';
+
+
+
 
 @include mat.core();
 
@@ -52,7 +56,6 @@ $dark-blue-palette:(
   )
 );
 
-
 $new-theme-typography: mat.define-typography-config(
   $font-family: 'Poppins'
 );
@@ -67,5 +70,11 @@ $new-theme: mat.define-light-theme((
     ),
   typography: $new-theme-typography
 ));
+
+@include theme-color-grabber($new-theme);
+@include angular-material-theme($new-theme);
+
+
+
 
 @include mat.all-component-themes($new-theme);

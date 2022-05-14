@@ -11,6 +11,7 @@ import {Artwork} from '../../../dtos/artwork';
 export class MidsectionComponent implements OnInit {
 
   @Input() artistId: number;
+  @Input() columnCount = 5;
   artworks: Artwork[];
 
   constructor(

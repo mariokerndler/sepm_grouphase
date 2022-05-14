@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
-import {FakerGeneratorService} from '../../services/faker-generator.service';
 import {Artwork} from '../../dtos/artwork';
 
 @Component({
@@ -26,8 +25,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private fakerService: FakerGeneratorService) {
+    private router: Router) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -38,8 +36,6 @@ export class LoginComponent implements OnInit {
    * Form validation will start after the method is called, additionally an AuthRequest will be sent
    */
   loginUser() {
-    this.testFakerFunctions();
-
     this.submitted = true;
     if (this.loginForm.valid) {
       const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
@@ -81,90 +77,5 @@ export class LoginComponent implements OnInit {
     this.error = false;
   }
 
-  ngOnInit() {
-    this.testFakerFunctions();
-  }
-
-  testFakerFunctions() {
-    // Fake User
-    this.fakerService.generateFakeUser(1).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Users
-    this.fakerService.generateFakeUserByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Tag
-    this.fakerService.generateFakeTag(1).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Tags
-    this.fakerService.generateFakeTagByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Gallery
-    this.fakerService.generateFakeGallery(1, 1, 1).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Galleries
-    this.fakerService.generateFakeGalleryByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Artist
-    this.fakerService.generateFakeArtist(1, 1, 3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Artists
-    this.fakerService.generateFakeArtistByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Sketch
-    this.fakerService.generateFakeSketch(1).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Sketches
-    this.fakerService.generateFakeSketchByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Review
-    this.fakerService.generateFakeReview(1, 1).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Reviews
-    this.fakerService.generateFakeReviewsByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Artwork
-    this.fakerService.generateFakeArtwork(1).subscribe({
-      next: (x) => (console.log(x), this.artwork = x)
-    });
-
-    // Fake Artworks
-    this.fakerService.generateFakeArtworkByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Commission
-    this.fakerService.generateFakeCommission(1, 1, 1).subscribe({
-      next: (x) => console.log(x)
-    });
-
-    // Fake Commissions
-    this.fakerService.generateFakeCommissionByAmount(3).subscribe({
-      next: (x) => console.log(x)
-    });
-  }
-
+  ngOnInit() {}
 }

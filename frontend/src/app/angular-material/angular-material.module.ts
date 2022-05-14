@@ -67,8 +67,6 @@ const materialModules = [
   MatTooltipModule
 ];
 
-
-
 @NgModule({
   declarations: [],
   imports: [

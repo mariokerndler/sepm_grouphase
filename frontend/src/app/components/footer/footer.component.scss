@@ -1,0 +1,47 @@
+footer {
+  margin-bottom: 1rem;
+}
+
+.footer-container {
+  width: 40%;
+  margin: auto;
+}
+
+@media screen and (max-width: 959px) {
+  .footer-container {
+    width: 100%;
+  }
+
+  .footer-item {
+    width: 100%;
+  }
+}
+
+.footer-item {
+  text-align: center;
+}
+
+.footer-container > div > a {
+  text-decoration: none;
+}
+
+.un {
+  display: inline-block;
+}
+
+.un::after {
+  content: '';
+  width: 0;
+  height: 1px;
+  display: block;
+  background: #fb9fa4;
+  transition: 200ms;
+}
+
+.un:hover::after {
+  width: 100%;
+}
+
+.footer-link {
+  font-size: 1rem;
+}

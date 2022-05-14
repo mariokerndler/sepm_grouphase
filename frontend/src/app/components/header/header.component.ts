@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {LoginComponent} from '../login/login.component';
 import {MatDialog} from '@angular/material/dialog';
+import {RegistrationComponent} from '../registration/registration.component';
 
 
 
@@ -17,7 +18,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog() {
-    this.dialog.open(LoginComponent);
+  openDialog(isLogin: boolean) {
+    if(isLogin) {
+      this.dialog.open(LoginComponent);
+    } else {
+      this.dialog.open(RegistrationComponent);
+    }
   }
 }

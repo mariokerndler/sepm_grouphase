@@ -22,6 +22,7 @@ import {LoginComponent} from './components/login/login.component';
 import {MessageComponent} from './components/message/message.component';
 import { MidsectionComponent } from './components/midsection/midsection/midsection.component';
 import { CardViewComponent } from './components/midsection/card-view/card-view.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CardViewComponent } from './components/midsection/card-view/card-view.c
     MessageComponent,
     MidsectionComponent,
     CardViewComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,3 @@
-
-
 <button mat-icon-button class="close-button" mat-dialog-close>
   <mat-icon>close</mat-icon>
 </button>
@@ -28,7 +26,10 @@
 
   <mat-form-field appearance="fill" class="form-group">
     <mat-label>Password</mat-label>
-    <input matInput type="password" name="password" formControlName="password" class="form-control" id="password" >
+    <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" formControlName="password" class="form-control" id="password">
+    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
     <div *ngIf="submitted && loginForm.controls.password.errors" class="error">
       <small class="warning" *ngIf="loginForm.controls.password.errors.required">Your password is required!</small>
       <small class="warning" *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
@@ -46,21 +47,3 @@
 
 
 
-<!--
-<h1 mat-dialog-title>Login</h1>
-<div mat-dialog-content fxLayout="column" >
-  <p>Welcome Back!</p>
-  <mat-form-field appearance="fill" class="form-group" >
-    <mat-label>Username</mat-label>
-    <input matInput name="username" formControlName="username" class="form-control" id="inputUsername">
-  </mat-form-field>
-  <mat-form-field appearance="fill" class="form-group">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" formControlName="password" class="form-control" id="password">
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button (click)="loginUser()">Log In</button>
-</div>
--->

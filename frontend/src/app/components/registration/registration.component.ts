@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {AuthRequest} from '../../dtos/auth-request';
+import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, PatternValidator, Validators} from '@angular/forms';
 import {Artwork} from '../../dtos/artwork';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {RegistrationComponent} from '../registration/registration.component';
+import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
+import {AuthRequest} from '../../dtos/auth-request';
+import {LoginComponent} from '../login/login.component';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class RegistrationComponent implements OnInit {
 
   loginForm: FormGroup;
   // After first submission attempt, form validation will start
@@ -23,17 +23,24 @@ export class LoginComponent implements OnInit {
 
   // For Faker testing
   artwork: Artwork;
+
   hidePassword = true;
+  hideConfirmPassword = true;
+
 
   constructor(
-    public dialogRef: MatDialogRef<LoginComponent>,
+    public dialogRef: MatDialogRef<RegistrationComponent>,
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router) {
     this.loginForm = this.formBuilder.group({
+      firstname: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirm: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
@@ -89,8 +96,10 @@ export class LoginComponent implements OnInit {
 
   openDialog() {
     this.onNoClick();
-    this.dialog.open(RegistrationComponent);
+    this.dialog.open(LoginComponent);
   }
 
   ngOnInit() {}
+
+
 }

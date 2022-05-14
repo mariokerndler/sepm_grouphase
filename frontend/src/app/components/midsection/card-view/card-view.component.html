@@ -7,7 +7,7 @@
   </mat-card-content>
 </mat-card>
 -->
-<a [routerLink]="'/' + artwork.id" routerLinkActive="active">
+<a [routerLink]="'/artwork/' + artwork.id" routerLinkActive="active">
   <div class="card-container">
     <div class="card-img-wrap">
       <img class="card-img" *ngIf="artwork" [src]="artwork.image" [alt]="artwork.name">

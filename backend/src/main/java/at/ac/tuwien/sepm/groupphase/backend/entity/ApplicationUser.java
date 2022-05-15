@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name="User")
+@Table(name = "ApplicationUser")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,
     name = "Usertype")
@@ -36,9 +36,9 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
-
-    @OneToMany(mappedBy = "artist")
-    private List<Artwork> artworks;
+    //TODO: why does user have artworks?
+    /*@OneToMany(mappedBy = "artist", fetch = FetchType.EAGER)
+    private List<Artwork> artworks;*/
 
     public ApplicationUser() {
     }

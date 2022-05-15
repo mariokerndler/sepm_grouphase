@@ -3,6 +3,8 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,19 +13,27 @@ import java.util.List;
 @Getter
 @Setter
 @DiscriminatorValue("Artist")
-public class Artist extends ApplicationUser  {
+public class Artist extends ApplicationUser {
 
 
     @Column
     private double reviewScore;
-    @Column
-    private long galleryId;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "gallery_id")
+    private Gallery gallery;
+
     @OneToMany(mappedBy = "artist")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Artwork> artworks;
-    @ElementCollection
-    private List<String> commissions;
-    @ElementCollection
-    private List<String> reviews;
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Commission> commissions;
+    @OneToMany()
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Review> reviews;
+    @Column
+    private String artistSettings;
 
     public Artist() {
 
@@ -31,15 +41,16 @@ public class Artist extends ApplicationUser  {
 
     public Artist(String userName, String name, String surname, String email, String address,
                   String password, Boolean admin, UserRole userRole,
-                  double reviewScore, long galleryId, List<Artwork> artworks,
-                  List<String> commissions, List<String> reviews) {
+                  double reviewScore, Gallery gallery, List<Artwork> artworks,
+                  List<Commission> commissions, List<Review> reviews, String artistSettings) {
 
         super(userName, name, surname, email, address, password, admin, userRole);
         this.reviewScore = reviewScore;
-        this.galleryId = galleryId;
+        this.gallery = gallery;
         this.artworks = artworks;
         this.commissions = commissions;
         this.reviews = reviews;
+        this.artistSettings = artistSettings;
     }
 
 }

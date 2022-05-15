@@ -14,7 +14,7 @@ describe('LoginComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule],
       declarations: [ LoginComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

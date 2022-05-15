@@ -21,19 +21,19 @@
 -->
 
 
-  <mat-toolbar class="toolbar" color="primary">
-    <div fxFlex fxLayout>
-      <button  mat-icon-button class="menu-icon">
-        <mat-icon (click)="sidenav.toggle()" >menu</mat-icon>
-      </button>
-    </div>
-    <span class="title" routerLink="/">Project Sketchbook.</span>
-    <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
-      <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
-      <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>
-      <button mat-button *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</button>
-    </div>
-  </mat-toolbar>
+<mat-toolbar class="toolbar" color="primary">
+  <div fxFlex fxLayout>
+    <button  mat-icon-button class="menu-icon">
+      <mat-icon (click)="sidenav.toggle()" >menu</mat-icon>
+    </button>
+  </div>
+  <span class="title" routerLink="/">Project Sketchbook.</span>
+  <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
+    <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</button>
+    <button  mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</button>
+    <button mat-button *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</button>
+  </div>
+</mat-toolbar>
 
 <mat-sidenav-container>
   <mat-sidenav  #sidenav mode="side"  [fixedInViewport]="true">

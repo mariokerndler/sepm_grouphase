@@ -36,7 +36,7 @@ export class FakerGeneratorService {
       id,
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
-      userName: faker.internet.userName(),
+      username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password()
     };
@@ -93,7 +93,7 @@ export class FakerGeneratorService {
       id,
       firstName: user.firstName,
       lastName: user.lastName,
-      userName: user.userName,
+      username: user.username,
       email: user.email,
       password: user.password,
       artworkIds,

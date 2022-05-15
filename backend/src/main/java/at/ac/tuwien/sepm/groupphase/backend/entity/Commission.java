@@ -1,21 +1,22 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Commission {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
-
     @ManyToOne
     @JoinColumn(nullable = false)
     private Artist artist;
@@ -63,9 +64,6 @@ public class Commission {
 
     @OneToOne
     private Artwork artwork;
-
-    public Commission() {
-    }
 
     public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Receipt> receipts, Review review, Artwork artwork) {
         this.artist = artist;

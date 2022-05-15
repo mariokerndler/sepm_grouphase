@@ -1,14 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@NoArgsConstructor
 public class Gallery {
 
     @Id
@@ -27,9 +29,6 @@ public class Gallery {
     @OneToMany
     @JoinColumn(name = "gallery_id", referencedColumnName = "id")
     private List<Artwork> artworks;
-
-    public Gallery() {
-    }
 
     public Gallery(Long id, Artist artist, String gallerySettings, List<Artwork> artworks) {
         this.id = id;

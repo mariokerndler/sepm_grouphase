@@ -2,15 +2,17 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @DiscriminatorValue("Artist")
+@Entity
 public class Artist extends ApplicationUser {
 
 
@@ -27,10 +29,6 @@ public class Artist extends ApplicationUser {
     private List<String> commissions;
     @ElementCollection
     private List<String> reviews;
-
-    public Artist() {
-
-    }
 
     public Artist(String userName, String name, String surname, String email, String address,
                   String password, Boolean admin, UserRole userRole,

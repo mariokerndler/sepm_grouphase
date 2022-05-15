@@ -2,14 +2,16 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class ChatMessage {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +27,6 @@ public class ChatMessage {
     @ManyToOne
     @JoinColumn(name="chat")
     private Chat chat;
-
-    public ChatMessage() {
-    }
 
     public ChatMessage(String text, LocalDateTime sentDate) {
         this.text = text;

@@ -3,13 +3,16 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Sketch {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +28,6 @@ public class Sketch {
     @ManyToOne
     @JoinColumn(name="artwork")
     private Artwork artwork;
-
-    public Sketch() {
-    }
 
     public Sketch(String description, String imageUrl, FileType fileType, Artwork artwork) {
         this.description = description;

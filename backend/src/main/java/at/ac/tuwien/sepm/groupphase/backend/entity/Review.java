@@ -1,13 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Review {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +33,6 @@ public class Review {
 
     @Column(nullable = false, name = "star_rating")
     private int starRating;
-
-    public Review() {
-    }
 
     public Review(Artist artist, ApplicationUser customer, String text, Commission commission, int starRating) {
         this.artist = artist;

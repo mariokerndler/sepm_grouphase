@@ -2,14 +2,16 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Receipt {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +35,6 @@ public class Receipt {
     @ManyToOne
     @JoinColumn(nullable = false)
     private ApplicationUser applicationUser;
-
-
-    public Receipt() {
-    }
 
     public Receipt(double price, LocalDateTime issueDate, double taxRate, String[] companyInfo, Commission commission, ApplicationUser applicationUser) {
         this.price = price;

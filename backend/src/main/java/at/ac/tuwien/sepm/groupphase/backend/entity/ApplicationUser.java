@@ -2,19 +2,20 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "ApplicationUser")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,
-    name = "Usertype")
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "Usertype")
+@Entity
 public class ApplicationUser {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +40,6 @@ public class ApplicationUser {
     //TODO: why does user have artworks?
     @OneToMany(mappedBy = "artist")
     private List<Artwork> artworks;
-
-    public ApplicationUser() {
-    }
 
     public ApplicationUser(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {

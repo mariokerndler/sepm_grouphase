@@ -2,14 +2,16 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Artwork {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +30,6 @@ public class Artwork {
     private Artist artist;
     @OneToMany(mappedBy = "artwork")
     private List<Sketch> sketches;
-
-
-    public Artwork() {
-    }
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist) {
         this.name = name;

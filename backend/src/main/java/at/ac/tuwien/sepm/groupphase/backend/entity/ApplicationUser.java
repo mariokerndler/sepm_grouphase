@@ -17,6 +17,9 @@ import java.util.List;
     name = "Usertype")
 public class ApplicationUser {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long id;
     @Column(nullable = false, length = 25)
     private String userName;
     @Column(nullable = false, length = 35)
@@ -33,9 +36,6 @@ public class ApplicationUser {
     private Boolean admin;
     @Column(nullable = false)
     private UserRole userRole;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private long id;
     //TODO: why does user have artworks?
     @OneToMany(mappedBy = "artist")
     private List<Artwork> artworks;

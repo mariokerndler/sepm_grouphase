@@ -13,7 +13,7 @@ public class Chat {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false)

@@ -14,7 +14,7 @@ public class Sketch {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    private Long id;
     @Column(nullable = false, length = 50)
     //TODO: do we need a name here, like in artwork? probably not because artwork references sketch, but asking for confirmation
     private String description;

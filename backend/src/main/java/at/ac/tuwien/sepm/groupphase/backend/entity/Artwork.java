@@ -14,7 +14,7 @@ public class Artwork {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    private Long id;
     @Column(nullable = false, length = 50)
     private String name;
     @Column(nullable = false, length = 50)

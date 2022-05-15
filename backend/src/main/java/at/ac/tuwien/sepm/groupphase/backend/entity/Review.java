@@ -12,7 +12,7 @@ public class Review {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false)

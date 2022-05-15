@@ -14,7 +14,7 @@ public class Receipt {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private double price;
     @Column(nullable = false, name = "issue_date")

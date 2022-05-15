@@ -26,7 +26,7 @@ public class ArtistDto {
 
     private UserRole userRole;
 
-    private long id;
+    private Long id;
 
     public ArtistDto() {
     }

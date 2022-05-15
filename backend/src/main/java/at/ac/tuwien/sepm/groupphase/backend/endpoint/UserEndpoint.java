@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -66,12 +67,13 @@ public class UserEndpoint {
     }
     @PermitAll
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get Detailed informations about a specific user")
-    public void updateUser(@RequestBody ApplicationUserDto userDto) {
-        LOGGER.debug("Post /User/{}", userDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Register user")
+    public void registerUser(@RequestBody ApplicationUserDto userDto) {
+        LOGGER.debug("Post /User/{}", userDto.getUserName());
         try {
-            userService.updateUser(userDto);
+            LOGGER.debug("Post /User/{}",   userMapper.userDtoToUser(userDto).toString());
+            userService.registerUser(userMapper.userDtoToUser(userDto));
         } catch (Exception v) {
             LOGGER.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());

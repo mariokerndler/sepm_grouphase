@@ -39,4 +39,5 @@ public interface UserService extends UserDetailsService {
     List<ApplicationUser> getAllUsers();
 
 
+    void registerUser(ApplicationUser userDtoToUser);
 }

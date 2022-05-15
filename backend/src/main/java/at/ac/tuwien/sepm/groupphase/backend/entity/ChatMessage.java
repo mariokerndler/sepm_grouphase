@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Chatmessage {
+public class ChatMessage {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -23,16 +23,13 @@ public class Chatmessage {
     private LocalDateTime sentDate;
 
     @ManyToOne
-    @JoinColumn(name="chat", nullable=false)
+    @JoinColumn(name="chat")
     private Chat chat;
 
-
-    //TODO: do we have to save which chat this belongs to? or just reference in chat?
-
-    public Chatmessage() {
+    public ChatMessage() {
     }
 
-    public Chatmessage(String text, LocalDateTime sentDate) {
+    public ChatMessage(String text, LocalDateTime sentDate) {
         this.text = text;
         this.sentDate = sentDate;
     }

@@ -24,5 +24,5 @@ public class Chat {
     private ApplicationUser customer;
 
     @OneToMany(mappedBy = "chat")
-    private List<Chatmessage> messages;
+    private List<ChatMessage> messages;
 }

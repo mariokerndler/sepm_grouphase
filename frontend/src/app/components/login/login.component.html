@@ -19,9 +19,9 @@
     <mat-label>Username</mat-label>
     <input matInput name="username" formControlName="username" class="form-control" id="inputUsername"
                      aria-describedby="usernameHelp" >
-    <div *ngIf="submitted && loginForm.controls.username.errors" class="error">
-      <small class="warning" *ngIf="loginForm.controls.username.errors.required">Your username is required! </small>
-    </div>
+    <mat-error *ngIf="loginForm.controls.username.errors">
+      <small  *ngIf="loginForm.controls.username.errors.required">Your username is required! </small>
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="form-group">
@@ -30,10 +30,10 @@
     <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
       <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
-    <div *ngIf="submitted && loginForm.controls.password.errors" class="error">
-      <small class="warning" *ngIf="loginForm.controls.password.errors.required">Your password is required!</small>
-      <small class="warning" *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
-    </div>
+    <mat-error *ngIf="loginForm.controls.password.errors">
+      <small *ngIf="loginForm.controls.password.errors.required">Your password is required!</small>
+      <small *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
+    </mat-error>
   </mat-form-field>
 
 

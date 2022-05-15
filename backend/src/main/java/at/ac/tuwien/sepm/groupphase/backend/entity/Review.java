@@ -31,4 +31,14 @@ public class Review {
     @Column(nullable = false, name = "star_rating")
     private int starRating;
 
+    public Review() {
+    }
+
+    public Review(Artist artist, ApplicationUser customer, String text, Commission commission, int starRating) {
+        this.artist = artist;
+        this.customer = customer;
+        this.text = text;
+        this.commission = commission;
+        this.starRating = starRating;
+    }
 }

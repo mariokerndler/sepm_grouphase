@@ -33,4 +33,17 @@ public class Receipt {
     @ManyToOne
     @JoinColumn(nullable = false)
     private ApplicationUser applicationUser;
+
+
+    public Receipt() {
+    }
+
+    public Receipt(double price, LocalDateTime issueDate, double taxRate, String[] companyInfo, Commission commission, ApplicationUser applicationUser) {
+        this.price = price;
+        this.issueDate = issueDate;
+        this.taxRate = taxRate;
+        this.companyInfo = companyInfo;
+        this.commission = commission;
+        this.applicationUser = applicationUser;
+    }
 }

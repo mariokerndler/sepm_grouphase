@@ -64,6 +64,20 @@ public class Commission {
     @OneToOne
     private Artwork artwork;
 
+    public Commission() {
+    }
 
-
+    public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Receipt> receipts, Review review, Artwork artwork) {
+        this.artist = artist;
+        this.customer = customer;
+        this.sketchesShown = sketchesShown;
+        this.feedbackSent = feedbackSent;
+        this.price = price;
+        this.issueDate = issueDate;
+        this.deadlineDate = deadlineDate;
+        this.instructions = instructions;
+        this.receipts = receipts;
+        this.review = review;
+        this.artwork = artwork;
+    }
 }

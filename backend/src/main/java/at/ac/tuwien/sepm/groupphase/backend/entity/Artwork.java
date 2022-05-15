@@ -27,15 +27,16 @@ public class Artwork {
     private Artist artist;
     //todo sketch reference
 
+
+    public Artwork() {
+    }
+
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.fileType = fileType;
         this.artist = artist;
-    }
-
-    public Artwork() {
     }
 
 }

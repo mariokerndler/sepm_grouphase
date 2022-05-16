@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,18 +24,13 @@ public class Receipt {
     private LocalDateTime issueDate;
     @Column(nullable = false, name = "tax_rate")
     private double taxRate;
-    //TODO: where is company info stored?? hardcoded? or maybe changeable by admin?
-    @Transient
-    @Column(nullable = false, name = "company_info")
-    private String[] companyInfo;
+
+    @ElementCollection
+    private List<String> companyInfo;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Commission commission;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private ApplicationUser applicationUser;
 
     public Receipt(double price, LocalDateTime issueDate, double taxRate, List<String> companyInfo, Commission commission) {
         this.price = price;
@@ -42,6 +38,5 @@ public class Receipt {
         this.taxRate = taxRate;
         this.companyInfo = companyInfo;
         this.commission = commission;
-        this.applicationUser = applicationUser;
     }
 }

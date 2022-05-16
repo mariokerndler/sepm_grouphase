@@ -3,6 +3,8 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -44,7 +46,8 @@ public class Commission {
     @Column(nullable = false)
     private String instructions;
 
-    //TODO: do we need a repo for reference pics?
+    //TODO: Add reference pictures functionality
+    //TODO: Make image and reference their own entity and implement parent child relationships when extra meta data is needed
     /*
     @OneToMany(mappedBy = "reference")
     private List<Reference> reference;
@@ -56,14 +59,7 @@ public class Commission {
     @OneToOne(mappedBy = "commission")
     private Review review;
 
-    /*
-    @OneToMany(mappedBy = "sketch")
-    private List<Sketch> sketches;
-     */
-
-
-
-    @OneToOne
+    @OneToOne(mappedBy = "commission")
     private Artwork artwork;
 
     public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Receipt> receipts, Review review, Artwork artwork) {

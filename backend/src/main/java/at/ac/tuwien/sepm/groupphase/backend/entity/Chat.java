@@ -28,5 +28,6 @@ public class Chat {
     private ApplicationUser customer;
 
     @OneToMany(mappedBy = "chat")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ChatMessage> messages;
 }

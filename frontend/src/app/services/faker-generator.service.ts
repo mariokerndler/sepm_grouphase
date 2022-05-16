@@ -232,8 +232,13 @@ export class FakerGeneratorService {
     return of(galleries);
   }
 
-  generateFakeArtist(id: number, galleryId: number, artworkAmount: number): Observable<Artist> {
+  generateFakeArtist(id: number, galleryId: number, artworkAmount: number, preErrorNotificationAction?: () => void): Observable<Artist> {
     const artist: Artist = FakerGeneratorService.fakeArtist(id, galleryId, artworkAmount);
+
+    /*
+    if(preErrorNotificationAction != null) {
+      preErrorNotificationAction();
+    }*/
 
     return of(artist);
   }

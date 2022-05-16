@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -49,6 +50,8 @@ public class ArtistEndpoint {
         }
     }*/
 
+    // TODO: ArtistDto includes infinite loop because of circular dependency between Entities (e.g. Artwork and Artist).
+    //  Configure Mapper to avoid this or remove entities that are responsible
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -68,6 +71,7 @@ public class ArtistEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
     @Operation(summary = "Post new artist")
+    @Transactional
     public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));

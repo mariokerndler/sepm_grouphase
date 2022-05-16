@@ -15,13 +15,16 @@ import java.util.List;
 @Entity
 public class Receipt {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private double price;
+
     @Column(nullable = false, name = "issue_date")
     private LocalDateTime issueDate;
+
     @Column(nullable = false, name = "tax_rate")
     private double taxRate;
 

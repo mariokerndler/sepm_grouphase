@@ -38,6 +38,7 @@ public class ApplicationUser {
 
     @Column(nullable = false, length = 100)
     private String password;
+
     @Column(nullable = false, length = 100)
     private Boolean admin;
 

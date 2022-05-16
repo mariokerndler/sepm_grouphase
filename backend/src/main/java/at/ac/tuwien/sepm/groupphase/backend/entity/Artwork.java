@@ -25,15 +25,20 @@ public class Artwork {
 
     @Column(nullable = false, length = 50)
     private String description;
+
     @Column(nullable = false, length = 100, unique = true)
     private String imageUrl;
+
     @Column(nullable = false)
     private FileType fileType;
+
     @ManyToOne
     @JoinColumn(name = "artist_id", nullable = false)
     private Artist artist;
+
     @OneToMany(mappedBy = "artwork")
     private List<Sketch> sketches;
+
     @OneToOne
     private Commission commission;
 
@@ -45,6 +50,37 @@ public class Artwork {
         this.artist = artist;
         this.sketches = sketches;
         this.commission = commission;
+    }
+
+    @Override
+    public String toString() {
+        return "Artwork{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", fileType=" + fileType +
+            ", artist=" + artist.getId() +
+            ", sketches=" + sketches.stream().map(Sketch::getId).toList() +
+            ", commission=" + commission.getId() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 7;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Artwork other = (Artwork) obj;
+        return id != null && id.equals(other.getId());
     }
 
 }

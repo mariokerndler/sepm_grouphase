@@ -15,15 +15,19 @@ import javax.persistence.*;
 @Entity
 public class Sketch {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, length = 50)
     private String description;
+
     @Column(nullable = false, length = 150, unique = true)
     private String imageUrl;
+
     @Column(nullable = false)
     private FileType fileType;
+
     @ManyToOne
     @JoinColumn(name="artwork")
     private Artwork artwork;
@@ -34,4 +38,33 @@ public class Sketch {
         this.fileType = fileType;
         this.artwork = artwork;
     }
+
+    @Override
+    public String toString() {
+        return "Sketch{" +
+            "id=" + id +
+            ", description='" + description + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", fileType=" + fileType +
+            ", artwork=" + artwork.getId() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Sketch other = (Sketch) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

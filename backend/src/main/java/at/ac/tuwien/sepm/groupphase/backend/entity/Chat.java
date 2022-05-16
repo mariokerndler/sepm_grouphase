@@ -30,4 +30,31 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ChatMessage> messages;
+
+    @Override
+    public String toString() {
+        return "Chat{" +
+            "id=" + id +
+            ", artist=" + artist.getId() +
+            ", customer=" + customer.getId() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 11;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Chat other = (Chat) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

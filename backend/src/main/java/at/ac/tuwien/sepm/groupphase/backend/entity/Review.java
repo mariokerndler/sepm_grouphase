@@ -41,4 +41,34 @@ public class Review {
         this.commission = commission;
         this.starRating = starRating;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+            "id=" + id +
+            ", artist=" + artist.getId() +
+            ", customer=" + customer.getId() +
+            ", text='" + text + '\'' +
+            ", commission=" + commission.getId() +
+            ", starRating=" + starRating +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 29;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Review other = (Review) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

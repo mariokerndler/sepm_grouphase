@@ -16,11 +16,13 @@ import java.util.List;
 @Entity
 public class Artwork {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, length = 50)
     private String name;
+
     @Column(nullable = false, length = 50)
     private String description;
     @Column(nullable = false, length = 100, unique = true)

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @Getter
@@ -18,23 +17,30 @@ import java.util.List;
 @Entity
 public class ApplicationUser {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, length = 25)
     private String userName;
+
     @Column(nullable = false, length = 35)
     private String name;
+
     @Column(nullable = false, length = 35)
     private String surname;
+
     @Column(nullable = false, length = 100)
     private String email;
+
     @Column(nullable = false, length = 100)
     private String address;
+
     @Column(nullable = false, length = 100)
     private String password;
     @Column(nullable = false, length = 100)
     private Boolean admin;
+
     @Column(nullable = false)
     private UserRole userRole;
 
@@ -54,6 +60,37 @@ public class ApplicationUser {
         this.email = email;
         this.password = password;
         this.admin = admin;
+    }
+
+    @Override
+    public String toString() {
+        return "ApplicationUser{" +
+            "id=" + id +
+            ", userName='" + userName + '\'' +
+            ", name='" + name + '\'' +
+            ", surname='" + surname + '\'' +
+            ", email='" + email + '\'' +
+            ", address='" + address + '\'' +
+            ", admin=" + admin +
+            ", userRole=" + userRole +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 3;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ApplicationUser other = (ApplicationUser) obj;
+        return id != null && id.equals(other.getId());
     }
 
 }

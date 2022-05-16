@@ -75,4 +75,40 @@ public class Commission {
         this.review = review;
         this.artwork = artwork;
     }
+
+    @Override
+    public String toString() {
+        return "Commission{" +
+            "id=" + id +
+            ", artist=" + artist.getId() +
+            ", customer=" + customer.getId() +
+            ", sketchesShown=" + sketchesShown +
+            ", feedbackSent=" + feedbackSent +
+            ", price=" + price +
+            ", issueDate=" + issueDate +
+            ", deadlineDate=" + deadlineDate +
+            ", instructions='" + instructions + '\'' +
+            ", receipts=" + receipts.stream().map(Receipt::getId).toList() +
+            ", review=" + review.getId() +
+            ", artwork=" + artwork.getId() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 17;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Commission other = (Commission) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

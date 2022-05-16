@@ -32,4 +32,32 @@ public class ChatMessage {
         this.text = text;
         this.sentDate = sentDate;
     }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+            "id=" + id +
+            ", text='" + text + '\'' +
+            ", sentDate=" + sentDate +
+            ", chat=" + chat.getId() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 13;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ChatMessage other = (ChatMessage) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

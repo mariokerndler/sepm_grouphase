@@ -1,0 +1,130 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 1,
+    "pending": 0,
+    "failures": 1,
+    "start": "2022-05-10T17:38:01.238Z",
+    "end": "2022-05-10T17:38:12.939Z",
+    "duration": 11701,
+    "testsRegistered": 2,
+    "passPercent": 50,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "00a2462f-547c-451e-bfd0-17083f7ebddd",
+      "title": "",
+      "fullFile": "cypress/integration/addMessage.js",
+      "file": "cypress/integration/addMessage.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "82dddd88-7e9e-4a11-a094-f88b66693c65",
+          "title": "add message",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "login",
+              "fullTitle": "add message login",
+              "timedOut": null,
+              "duration": 7059,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAdmin();",
+              "err": {},
+              "uuid": "54e96eca-3c3e-43e3-8ab6-83937e601943",
+              "parentUUID": "82dddd88-7e9e-4a11-a094-f88b66693c65",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "create message",
+              "fullTitle": "add message create message",
+              "timedOut": null,
+              "duration": 4522,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.createMessage(msgText);",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'Message' within the selector: 'a' but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'Message' within the selector: 'a' but never did.\n    at Context.eval (http://localhost:4200/__cypress/tests?p=cypress\\support\\index.js:110:8)",
+                "diff": null
+              },
+              "uuid": "7e9a9b00-7b4e-4862-a5a3-c0c34deab4a2",
+              "parentUUID": "82dddd88-7e9e-4a11-a094-f88b66693c65",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "54e96eca-3c3e-43e3-8ab6-83937e601943"
+          ],
+          "failures": [
+            "7e9a9b00-7b4e-4862-a5a3-c0c34deab4a2"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 11581,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "overwrite": false,
+        "html": false,
+        "json": true,
+        "reportDir": "cypress\\reports\\html\\.jsons"
+      },
+      "version": "6.2.0"
+    }
+  }
+}

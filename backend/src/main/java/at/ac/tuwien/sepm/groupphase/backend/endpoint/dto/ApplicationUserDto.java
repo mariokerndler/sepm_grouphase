@@ -30,7 +30,7 @@ public class ApplicationUserDto {
 
     private UserRole userRole;
 
-    private long id;
+    private Long id;
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {

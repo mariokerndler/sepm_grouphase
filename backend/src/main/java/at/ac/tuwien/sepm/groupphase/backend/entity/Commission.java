@@ -1,20 +1,22 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Commission {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -42,7 +44,8 @@ public class Commission {
     @Column(nullable = false)
     private String instructions;
 
-    //TODO: do we need a repo for reference pics?
+    //TODO: Add reference pictures functionality
+    //TODO: Make image and reference their own entity and implement parent child relationships when extra meta data is needed
     /*
     @OneToMany(mappedBy = "reference")
     private List<Reference> reference;
@@ -54,18 +57,8 @@ public class Commission {
     @OneToOne(mappedBy = "commission")
     private Review review;
 
-    /*
-    @OneToMany(mappedBy = "sketch")
-    private List<Sketch> sketches;
-     */
-
-
-
-    @OneToOne
+    @OneToOne(mappedBy = "commission")
     private Artwork artwork;
-
-    public Commission() {
-    }
 
     public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Receipt> receipts, Review review, Artwork artwork) {
         this.artist = artist;
@@ -80,4 +73,40 @@ public class Commission {
         this.review = review;
         this.artwork = artwork;
     }
+
+    @Override
+    public String toString() {
+        return "Commission{" +
+            "id=" + id +
+            ", artist=" + artist.getId() +
+            ", customer=" + customer.getId() +
+            ", sketchesShown=" + sketchesShown +
+            ", feedbackSent=" + feedbackSent +
+            ", price=" + price +
+            ", issueDate=" + issueDate +
+            ", deadlineDate=" + deadlineDate +
+            ", instructions='" + instructions + '\'' +
+            ", receipts=" + receipts.stream().map(Receipt::getId).toList() +
+            ", review=" + review.getId() +
+            ", artwork=" + artwork.getId() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 17;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Commission other = (Commission) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

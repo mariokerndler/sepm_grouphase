@@ -13,6 +13,8 @@ import java.util.List;
 @Setter
 public class ArtistDto {
 
+    private Long id;
+
     private String userName;
 
     private String name;
@@ -28,8 +30,6 @@ public class ArtistDto {
     private Boolean admin;
 
     private UserRole userRole;
-
-    private long id;
 
     private double reviewScore;
 

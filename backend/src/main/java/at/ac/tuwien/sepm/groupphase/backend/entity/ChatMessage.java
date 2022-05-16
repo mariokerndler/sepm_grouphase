@@ -1,43 +1,51 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class Tag {
+public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 35)
-    private String name;
+    @Column(nullable = false, length = 500)
+    private String text;
+
+    @Column(nullable = false, name = "sent_date")
+    private LocalDateTime sentDate;
 
     @ManyToOne
-    @JoinColumn(name = "artist_id")
-    private Artist artist;
+    @JoinColumn(name="chat")
+    private Chat chat;
 
-    public Tag(String name) {
-        this.name = name;
+    public ChatMessage(String text, LocalDateTime sentDate) {
+        this.text = text;
+        this.sentDate = sentDate;
     }
 
     @Override
     public String toString() {
-        return "Tag{" +
+        return "ChatMessage{" +
             "id=" + id +
-            ", name='" + name + '\'' +
+            ", text='" + text + '\'' +
+            ", sentDate=" + sentDate +
+            ", chat=" + chat.getId() +
             '}';
     }
 
     @Override
     public int hashCode() {
-        return 37;
+        return 13;
     }
 
     @Override
@@ -48,7 +56,7 @@ public class Tag {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Tag other = (Tag) obj;
+        ChatMessage other = (ChatMessage) obj;
         return id != null && id.equals(other.getId());
     }
 

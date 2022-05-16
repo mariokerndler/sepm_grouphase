@@ -1,14 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@NoArgsConstructor
 public class Gallery {
 
     @Id
@@ -20,21 +22,40 @@ public class Gallery {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
-    // TODO: Can not use list of strings, what is good way of storing gallery settings ?
-    @Column(nullable = false)
-    private String GallerySettings;
-
     @OneToMany
     @JoinColumn(name = "gallery_id", referencedColumnName = "id")
     private List<Artwork> artworks;
 
-    public Gallery() {
-    }
-
-    public Gallery(Long id, Artist artist, String gallerySettings, List<Artwork> artworks) {
+    public Gallery(Long id, Artist artist, List<Artwork> artworks) {
         this.id = id;
         this.artist = artist;
-        GallerySettings = gallerySettings;
         this.artworks = artworks;
     }
+
+    @Override
+    public String toString() {
+        return "Gallery{" +
+            "id=" + id +
+            ", artist=" + artist.getId() +
+            ", artworks=" + artworks.stream().map(Artwork::getId).toList() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 19;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Gallery other = (Gallery) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

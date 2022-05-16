@@ -1,18 +1,21 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Review {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -31,9 +34,6 @@ public class Review {
     @Column(nullable = false, name = "star_rating")
     private int starRating;
 
-    public Review() {
-    }
-
     public Review(Artist artist, ApplicationUser customer, String text, Commission commission, int starRating) {
         this.artist = artist;
         this.customer = customer;
@@ -41,4 +41,34 @@ public class Review {
         this.commission = commission;
         this.starRating = starRating;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+            "id=" + id +
+            ", artist=" + artist.getId() +
+            ", customer=" + customer.getId() +
+            ", text='" + text + '\'' +
+            ", commission=" + commission.getId() +
+            ", starRating=" + starRating +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 29;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Review other = (Review) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

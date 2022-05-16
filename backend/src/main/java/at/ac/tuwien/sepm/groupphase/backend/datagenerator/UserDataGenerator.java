@@ -53,11 +53,10 @@ public class UserDataGenerator {
                 ApplicationUser user = new ApplicationUser(String.format("testUser%s", i), "bob", "test", "test", "test", passwordEncoder.encode("test")
                     , false, UserRole.User);
                 userRepository.save(user);
-
             }
         }
         Artist artist = new Artist(String.format("testUser%s", -1), "bob", "test", "test", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, 1.0, null, null, null, null, null);
+            , false, UserRole.Artist, null, null, 1.0, null, null, null, null, null);
 
         artistRepository.save(artist);
 
@@ -70,7 +69,7 @@ public class UserDataGenerator {
         else{
             for (int i = 0; i < NUMBER_OF_ARTWORKS_TO_GENERATE; i++) {
 
-                Artwork artwork = new Artwork(String.format("artwork%s", i + 1), "okay dog pls", String.format(dir + "/image%s", i), FileType.PNG, artistRepo.findAll().get(0));
+                Artwork artwork = new Artwork(String.format("artwork%s", i + 1), "okay dog pls", String.format(dir + "/image%s", i), FileType.PNG, artistRepo.findAll().get(0), null, null);
                 artworkRepo.save(artwork);
 
             }

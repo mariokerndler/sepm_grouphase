@@ -2,48 +2,74 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
 public class Receipt {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(nullable = false)
     private double price;
+
     @Column(nullable = false, name = "issue_date")
     private LocalDateTime issueDate;
+
     @Column(nullable = false, name = "tax_rate")
     private double taxRate;
-    //TODO: where is company info stored?? hardcoded? or maybe changeable by admin?
-    @Transient
-    @Column(nullable = false, name = "company_info")
-    private String[] companyInfo;
+
+    @ElementCollection
+    private List<String> companyInfo;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Commission commission;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private ApplicationUser applicationUser;
-
-
-    public Receipt() {
-    }
-
-    public Receipt(double price, LocalDateTime issueDate, double taxRate, String[] companyInfo, Commission commission, ApplicationUser applicationUser) {
+    public Receipt(double price, LocalDateTime issueDate, double taxRate, List<String> companyInfo, Commission commission) {
         this.price = price;
         this.issueDate = issueDate;
         this.taxRate = taxRate;
         this.companyInfo = companyInfo;
         this.commission = commission;
-        this.applicationUser = applicationUser;
     }
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+            "id=" + id +
+            ", price=" + price +
+            ", issueDate=" + issueDate +
+            ", taxRate=" + taxRate +
+            ", companyInfo=" + companyInfo +
+            ", commission=" + commission.getId() +
+            '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return 23;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Receipt other = (Receipt) obj;
+        return id != null && id.equals(other.getId());
+    }
+
 }

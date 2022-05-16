@@ -35,6 +35,11 @@ body {
   background-color: $background;
 }
 
+// TODO: Idk if that is a good idea
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
 html, body {
   height: 100%;
   box-sizing: border-box;

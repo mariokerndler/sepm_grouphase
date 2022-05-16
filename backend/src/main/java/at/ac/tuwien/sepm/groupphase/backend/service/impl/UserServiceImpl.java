@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,10 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.ValidationException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +27,13 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final UserRepository userRepo;
-
+    private final UserValidator userValidator;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepository;
+        this.userValidator = userValidator;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -74,7 +80,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(ApplicationUserDto userDto) {
-        //userRepo.update
+
+    }
+
+    @Override
+    public void registerUser(ApplicationUser user)    {
+        LOGGER.debug("Service: Register User ",user.toString());
+
+        userValidator.validateUser(user);
+        userRepo.save(user);
+
+
     }
 
     @Override

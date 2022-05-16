@@ -1,9 +1,42 @@
-@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@import '~@angular/material/theming';
+
+$background: #434F6A;
+
+@mixin theme-color-grabber($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+
+  .primary-background {
+    background-color: mat-color($primary);
+  }
+  .accent-background {
+    background-color: mat-color($accent);
+  }
+  .primary-color {
+    color: mat-color($primary);
+  }
+  .accent-color {
+    color: mat-color($accent);
+  }
+  .primary {
+    background-color: mat-color($primary);
+    color: mat-color($accent);
+  }
+  .accent {
+    background-color: mat-color($accent);
+    color: mat-color($primary);
+  }
+
+}
 
 /* You can add global styles to this file, and also import other style files */
 body {
-  background-color: whitesmoke;
+  background-color: $background;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+}

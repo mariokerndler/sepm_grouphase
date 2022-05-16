@@ -2,15 +2,17 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class ApplicationUserDto {
-
 
     private String userName;
 
@@ -29,8 +31,6 @@ public class ApplicationUserDto {
     private UserRole userRole;
 
     private Long id;
-    public ApplicationUserDto() {
-    }
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {

@@ -42,7 +42,6 @@ public class Artist extends ApplicationUser {
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "artist")
-    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Tag> tags;
 
     public Artist(String userName, String name, String surname, String email, String address, String password,

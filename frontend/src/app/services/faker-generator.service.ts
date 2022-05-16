@@ -36,7 +36,7 @@ export class FakerGeneratorService {
       id,
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
-      userName: faker.internet.userName(),
+      username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password()
     };
@@ -83,8 +83,8 @@ export class FakerGeneratorService {
     const artworks: Artwork[] = this.fakeArtworks(artworkAmount);
     const artworkIds = artworks.map((x) => x.id);
     const fakeGallery: Gallery = this.fakeGallery(galleryId, id, artworkIds);
-    const fakeComissions: Commission[] = this.fakeCommissions(3);
-    const fakeComissionIds= fakeComissions.map((x) => x.id);
+    const fakeCommissions: Commission[] = this.fakeCommissions(3);
+    const fakeCommissionIds= fakeCommissions.map((x) => x.id);
     const fakeReviews: Review[] = this.fakeReviews(3, id);
     const fakeReviewIds = fakeReviews.map((x) => x.id);
 
@@ -93,14 +93,14 @@ export class FakerGeneratorService {
       id,
       firstName: user.firstName,
       lastName: user.lastName,
-      userName: user.userName,
+      username: user.username,
       email: user.email,
       password: user.password,
       artworkIds,
       description: faker.lorem.paragraph(3),
       reviewScore: this.getRandomFromRange(0,5),
       galleryId: fakeGallery.id,
-      commissionIds: fakeComissionIds,
+      commissionIds: fakeCommissionIds,
       reviewIds: fakeReviewIds
     };
   }
@@ -150,7 +150,7 @@ export class FakerGeneratorService {
       name: faker.animal.cat(),
       description: faker.lorem.paragraph(3),
       tagIds: fakeTags.map((tag) => tag.id),
-      image: faker.image.food(),
+      image: faker.image.cats(Math.round(this.getRandomFromRange(400, 600)), Math.round(this.getRandomFromRange(400, 600)), true),
       sketchIds: sketches.map((sketch) => sketch.id)
     };
   }

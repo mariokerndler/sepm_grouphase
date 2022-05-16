@@ -12,7 +12,7 @@ describe('HeaderComponent', () => {
       imports: [HttpClientTestingModule],
       declarations: [ HeaderComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Sketch;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -23,7 +22,6 @@ import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 @Profile("generateData")
 @Component

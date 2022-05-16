@@ -19,9 +19,8 @@ public class Sketch {
     @Id
     private Long id;
     @Column(nullable = false, length = 50)
-    //TODO: do we need a name here, like in artwork? probably not because artwork references sketch, but asking for confirmation
     private String description;
-    @Column(nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 150, unique = true)
     private String imageUrl;
     @Column(nullable = false)
     private FileType fileType;

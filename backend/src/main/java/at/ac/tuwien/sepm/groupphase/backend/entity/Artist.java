@@ -16,6 +16,12 @@ import java.util.List;
 public class Artist extends ApplicationUser {
 
 
+    @Column(length = 200)
+    private String description;
+
+    @Column
+    private String profileSettings;
+
     @Column
     private double reviewScore;
 
@@ -25,10 +31,13 @@ public class Artist extends ApplicationUser {
 
     @OneToMany(mappedBy = "artist")
     private List<Artwork> artworks;
-    @ElementCollection
-    private List<String> commissions;
-    @ElementCollection
-    private List<String> reviews;
+    @OneToMany(mappedBy = "artist")
+    private List<Commission> commissions;
+    @OneToMany(mappedBy = "artist")
+    private List<Review> reviews;
+    @OneToMany(mappedBy = "artist")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Tag> tags;
 
     public Artist(String userName, String name, String surname, String email, String address,
                   String password, Boolean admin, UserRole userRole,

@@ -37,9 +37,6 @@ public class ApplicationUser {
     private Boolean admin;
     @Column(nullable = false)
     private UserRole userRole;
-    //TODO: why does user have artworks?
-    @OneToMany(mappedBy = "artist")
-    private List<Artwork> artworks;
 
     public ApplicationUser(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {

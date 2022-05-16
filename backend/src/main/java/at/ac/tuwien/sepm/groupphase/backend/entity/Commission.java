@@ -17,6 +17,7 @@ public class Commission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Artist artist;

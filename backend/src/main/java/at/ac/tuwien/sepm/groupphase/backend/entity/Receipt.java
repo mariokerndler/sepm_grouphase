@@ -36,7 +36,7 @@ public class Receipt {
     @JoinColumn(nullable = false)
     private ApplicationUser applicationUser;
 
-    public Receipt(double price, LocalDateTime issueDate, double taxRate, String[] companyInfo, Commission commission, ApplicationUser applicationUser) {
+    public Receipt(double price, LocalDateTime issueDate, double taxRate, List<String> companyInfo, Commission commission) {
         this.price = price;
         this.issueDate = issueDate;
         this.taxRate = taxRate;

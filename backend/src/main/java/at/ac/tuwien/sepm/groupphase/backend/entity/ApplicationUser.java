@@ -27,7 +27,7 @@ public class ApplicationUser {
     private String email;
     @Column(nullable = false, length = 100)
     private String address;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String password;
     @Column(nullable = false, length = 100)
     private Boolean admin;
@@ -53,6 +53,22 @@ public class ApplicationUser {
         this.password = password;
         this.admin = admin;
         this.userRole = userRole;
+    }
+
+    @Override
+    public String toString() {
+        return "ApplicationUser{" +
+            "userName='" + userName + '\'' +
+            ", name='" + name + '\'' +
+            ", surname='" + surname + '\'' +
+            ", email='" + email + '\'' +
+            ", address='" + address + '\'' +
+            ", password='" + password + '\'' +
+            ", admin=" + admin +
+            ", userRole=" + userRole +
+            ", id=" + id +
+            ", artworks=" + artworks +
+            '}';
     }
 
     public ApplicationUser(String email, String password, Boolean admin) {

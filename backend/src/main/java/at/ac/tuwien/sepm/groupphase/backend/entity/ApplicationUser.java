@@ -67,7 +67,6 @@ public class ApplicationUser {
             ", admin=" + admin +
             ", userRole=" + userRole +
             ", id=" + id +
-            ", artworks=" + artworks +
             '}';
     }
 

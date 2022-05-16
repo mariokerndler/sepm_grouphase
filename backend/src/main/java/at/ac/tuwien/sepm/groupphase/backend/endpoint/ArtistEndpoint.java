@@ -52,7 +52,8 @@ public class ArtistEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    @Operation(summary = "Get Detailed informations about a specific artist")
+    @Operation(summary = "Get all artists")
+    @Transactional
     public List<ArtistDto> getAllArtists() {
         LOGGER.debug("Get /Artist");
         try {

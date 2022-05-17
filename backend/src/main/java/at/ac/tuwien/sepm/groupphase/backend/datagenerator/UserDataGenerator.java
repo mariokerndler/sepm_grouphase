@@ -86,7 +86,7 @@ public class UserDataGenerator {
             result.subList(0,numberOfProfiles).forEach(
 
                 folder -> {
-                    if(numberOfProfiles>0){
+
                     LOGGER.info(folder.toString());
                     Artist a = generateArtistProfile();
                     artistRepository.save(a);
@@ -121,7 +121,7 @@ public class UserDataGenerator {
                         LOGGER.info("Error saving  artwork: ");
                     }
 
-                }});
+                });
         }
 
         catch(IOException e){

@@ -3,8 +3,10 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
@@ -27,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,19 +40,23 @@ public class UserDataGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 20;
-    private static final String dir = "./data/ap";
+    private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
+    private static final String artistProfileDir = "./data/ap";
+    private static final String tagDir = "./data/tags/tags.txt";
     private final UserRepository userRepository;
     private final ArtistRepository artistRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
+    private final TagRepository tagRepository;
 
     private final ArtistRepository artistRepo;
 
-    public UserDataGenerator(UserRepository userRepository, ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, ArtistRepository artistRepo) {
+    public UserDataGenerator(UserRepository userRepository, ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
+        this.tagRepository = tagRepository;
         this.artistRepo = artistRepo;
     }
 
@@ -70,16 +78,26 @@ public class UserDataGenerator {
         artistRepository.save(artist);
 
 
-
+        loadTags(NUMBER_OF_TAGS_TO_GENERATE);
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
+
+    }
+    private void loadTags(int numberOftags) throws FileNotFoundException {
+        File text = new File(tagDir);
+        Scanner scanner= new Scanner(text);
+        while (scanner.hasNext() && numberOftags>0){
+            numberOftags--;
+            Tag t = new Tag(scanner.nextLine());
+            tagRepository.save(t);
+        }
 
     }
 
     //make sure db is empty before running to avoid Unique key constraint issues
     private void loadProfiles(int numberOfProfiles)   {
+        List<Tag> tags = tagRepository.findAll();
 
-
-        try (Stream<Path> walk = Files.walk(Paths.get(dir), 1)) {
+        try (Stream<Path> walk = Files.walk(Paths.get(artistProfileDir), 1)) {
 
             List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
 
@@ -91,13 +109,14 @@ public class UserDataGenerator {
                     Artist a = generateArtistProfile();
                     artistRepository.save(a);
                     LOGGER.info("Saved artist: "+a.getUserName());
-                    File dir = new File(folder);
-                    File[] directoryListing = dir.listFiles();
-                    if (directoryListing != null) {
-                        for (File artworkFile : directoryListing) {
+                    File artistProfileDir = new File(folder);
+                    File[] artistProfileDirectoryListing = artistProfileDir.listFiles();
+                    if (artistProfileDirectoryListing != null) {
+                        for (File artworkFile : artistProfileDirectoryListing) {
                             if (artworkFile.isFile()) {
+                                Faker f = new Faker();
                                 Artwork artwork = new Artwork();
-                                String description=new Faker().gameOfThrones().quote();
+                                String description=new Faker().rickAndMorty().quote();
                                 if (description.length() > 50) {
                                     description=description.substring(0,50);
                                 }
@@ -105,7 +124,9 @@ public class UserDataGenerator {
                                 if (name.length() > 50) {
                                     name=name.substring(0,50);
                                 }
-
+                                for(int j=0;j<f.random().nextInt(0,10);j++){
+                                    artwork.addTag(tags.get(f.random().nextInt(0,tags.size()-1)));
+                                }
                                 artwork.setDescription(description);
                                 artwork.setArtist(a);
                                 artwork.setFileType(FileType.JPG);
@@ -164,10 +185,10 @@ public class UserDataGenerator {
             con.setRequestProperty("User-Agent", "psb");
             con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
             //      con.setConnectTimeout(10000);
-            con.setInstanceFollowRedirects(false);
+
             con.connect();
             try (InputStream in = con.getInputStream()) {
-                String filename = dir + String.format("/artwork%s.png", counter);
+                String filename = artistProfileDir + String.format("/artwork%s.png", counter);
                 File file = new File(filename);
                 if (!file.exists()) {
                     Files.copy(in, Paths.get(filename));
@@ -184,19 +205,6 @@ public class UserDataGenerator {
 
         }
 
-    }
-
-
-
-
-
-    private void createFolderIfNotExists () {
-        File file = new File(dir);
-        if (!file.exists()) {
-            file.mkdir();
-            LOGGER.info("Created Folder: " + file.getAbsolutePath());
-        }
-        LOGGER.info("Folder already exists:" + file.getAbsolutePath());
     }
 
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -40,6 +41,14 @@ public class Artwork {
     @OneToOne
     private Commission commission;
 
+    @OneToMany( orphanRemoval = false)
+    @JoinTable(
+        name="artwork_tag",
+        joinColumns = @JoinColumn( name="artwork_id"),
+        inverseJoinColumns = @JoinColumn( name="tag_id")
+    )
+   private List<Tag> tags= new LinkedList<Tag>();
+
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {
         this.name = name;
         this.description = description;
@@ -68,7 +77,11 @@ public class Artwork {
     public int hashCode() {
         return 7;
     }
-
+    public  void addTag(Tag t){
+        if(!tags.contains(t)) {
+            this.tags.add(t);
+        }
+    }
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -3,7 +3,6 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Artist} from '../../../dtos/artist';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {NotificationService} from '../../../common/service/notification.service';
 
 @Component({
   selector: 'app-artist-page',
@@ -18,23 +17,17 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fakerService: FakerGeneratorService,
-    private notificationService: NotificationService
+    private fakerService: FakerGeneratorService
   ) { }
 
   ngOnInit(): void {
     this.routeSubscription = this.route.params
       .subscribe(params => this.fakerService
-        .generateFakeArtist(params.id, params.id + 1, 5, () => this.navigateToHomePage())
+        .generateFakeArtist(params.id, params.id + 1, 5)
         .subscribe(artist => this.artist = artist));
   }
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
-  }
-
-  private navigateToHomePage() {
-    this.router.navigate(['/'])
-      .catch(reason => this.notificationService.displaySimpleDialog('Error', reason.toString()));
   }
 }

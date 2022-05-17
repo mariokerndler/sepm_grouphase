@@ -42,7 +42,24 @@
 
 .artist-about-description {
   padding-top: 10px;
-  font-weight: lighter;
   text-align: justify;
   max-width: 50%;
+}
+
+@media screen and (max-width: 959px) {
+  .artist-about-description {
+    padding-top: 10px;
+    text-align: justify;
+    max-width: 80%;
+  }
+
+  .artist-full-name {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .artist-about-header {
+    font-weight: bold;
+    font-size: 1rem;
+  }
 }

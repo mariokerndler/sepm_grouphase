@@ -24,7 +24,7 @@ public class Artwork {
     @Column(nullable = false, length = 50)
     private String description;
 
-    @Column(nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 250, unique = true)
     private String imageUrl;
 
     @Column(nullable = false)

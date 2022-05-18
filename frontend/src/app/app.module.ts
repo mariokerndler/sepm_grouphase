@@ -25,6 +25,7 @@ import { CardViewComponent } from './components/midsection/card-view/card-view.c
 import { ArtistPageComponent } from './components/artist-page/artist-page/artist-page.component';
 import { ArtistInformationComponent } from './components/artist-page/artist-information/artist-information.component';
 import {SimpleDialogComponent} from './common/service/notification.service';
+import {RegistrationComponent} from './components/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {SimpleDialogComponent} from './common/service/notification.service';
     CardViewComponent,
     ArtistPageComponent,
     ArtistInformationComponent,
-    SimpleDialogComponent
+    SimpleDialogComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

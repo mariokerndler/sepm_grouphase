@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
         console.log('Successfully logged in user: ' + authRequest.email);
         this.onNoClick();
         this.router.navigate(['/message']);
-      },
+      }/*,
       error: error => {
         console.log('Could not log in due to:');
         console.log(error);
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.errorMessage = error.error;
         }
-      }
+      } */
     });
   }
 

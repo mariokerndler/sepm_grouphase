@@ -1,0 +1,11 @@
+drop table IF EXISTS APPLICATION_USER;
+drop table IF EXISTS ARTIST;
+drop table IF EXISTS ARTIST_COMMISSIONS;
+drop table IF EXISTS ARTIST_REVIEWS;
+drop table IF EXISTS ARTWORK;
+drop table IF EXISTS COMMISSION;
+drop table IF EXISTS GALLERY;
+drop table IF EXISTS MESSAGE;
+drop table IF EXISTS RECEIPT;
+drop table IF EXISTS REVIEW;
+drop table IF EXISTS TAG;

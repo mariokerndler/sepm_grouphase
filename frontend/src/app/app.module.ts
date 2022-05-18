@@ -22,7 +22,9 @@ import {LoginComponent} from './components/login/login.component';
 import {MessageComponent} from './components/message/message.component';
 import { MidsectionComponent } from './components/midsection/midsection/midsection.component';
 import { CardViewComponent } from './components/midsection/card-view/card-view.component';
-import { RegistrationComponent } from './components/registration/registration.component';
+import { ArtistPageComponent } from './components/artist-page/artist-page/artist-page.component';
+import { ArtistInformationComponent } from './components/artist-page/artist-information/artist-information.component';
+import {SimpleDialogComponent} from './common/service/notification.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { RegistrationComponent } from './components/registration/registration.co
     MessageComponent,
     MidsectionComponent,
     CardViewComponent,
-    RegistrationComponent,
+    ArtistPageComponent,
+    ArtistInformationComponent,
+    SimpleDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,10 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
@@ -51,17 +50,34 @@ public class ArtistEndpoint {
         }
     }*/
 
+    // TODO: ArtistDto includes infinite loop because of circular dependency between Entities (e.g. Artwork and Artist).
+    //  Configure Mapper to avoid this or remove entities that are responsible
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    @Operation(summary = "Get Detailed informations about a specific artist")
+    @Operation(summary = "Get all artists")
+    @Transactional
     public List<ArtistDto> getAllArtists() {
         LOGGER.debug("Get /Artist");
         try {
-            return artistService.getAllArtists().stream().map(a -> artistMapper.artistToArtistDto(a)).collect(Collectors.toList());
+            return artistService.getAllArtists().stream().map(u->artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
         } catch (NotFoundException n) {
             LOGGER.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping
+    @Operation(summary = "Post new artist")
+    @Transactional
+    public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
+        try {
+            return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage() + artistDto.toString());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
 

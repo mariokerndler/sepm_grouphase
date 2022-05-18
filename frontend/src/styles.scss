@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 @import '~@angular/material/theming';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap');
 
 $background: #434F6A;
 
@@ -30,8 +31,18 @@ $background: #434F6A;
 
 }
 
-
 /* You can add global styles to this file, and also import other style files */
 body {
   background-color: $background;
+}
+
+// TODO: Idk if that is a good idea
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
 }

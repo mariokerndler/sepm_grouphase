@@ -1,6 +1,6 @@
 <div class="content">
-  <div fxLayout="row wrap" fxLayoutGap="16px grid">
-    <div [fxFlex]="(100/columnCount) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutAlign="center" *ngFor="let artwork of artworks">
+  <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="center start">
+    <div *ngFor="let artwork of artworks">
       <app-card-view [artwork]="artwork"></app-card-view>
     </div>
   </div>

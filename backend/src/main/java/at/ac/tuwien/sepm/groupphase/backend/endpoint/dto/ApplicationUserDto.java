@@ -2,19 +2,17 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Objects;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class ApplicationUserDto {
-
 
     private String userName;
 
@@ -32,9 +30,7 @@ public class ApplicationUserDto {
 
     private UserRole userRole;
 
-    private long id;
-    public ApplicationUserDto() {
-    }
+    private Long id;
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {

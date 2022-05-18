@@ -71,7 +71,6 @@ public class UserServiceImpl implements UserService {
         Optional<ApplicationUser> user= userRepo.findById(id);
         if (user.isPresent()) {
             LOGGER.info(user.get().getUserName());
-
             return user.get();
         } else {
             throw new NotFoundException(String.format("Could not find User   with id %s", id));
@@ -79,14 +78,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(ApplicationUserDto userDto) {
+    public void updateUser(ApplicationUser user) {
+        LOGGER.debug("Service: Update User ",user.toString());
+        userValidator.validateUser(user);
+        userRepo.save(user);
 
     }
 
     @Override
     public void registerUser(ApplicationUser user)    {
         LOGGER.debug("Service: Register User ",user.toString());
-
         userValidator.validateUser(user);
         userRepo.save(user);
 

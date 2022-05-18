@@ -2,14 +2,14 @@ package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedMessageDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.MessageInquiryDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.MessageMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.MessageRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
@@ -58,7 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @EnableWebMvc
-public class ApplicationUserEndpointTest {
+public class ArtistEndpointTest {
 
     @Autowired
     private WebApplicationContext webAppContext;
@@ -67,13 +67,12 @@ public class ApplicationUserEndpointTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
-
+    private ArtistRepository artistRepository;
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private ArtistMapper artistMapper;
 
     @Autowired
     private JwtTokenizer jwtTokenizer;
@@ -84,92 +83,86 @@ public class ApplicationUserEndpointTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private ApplicationUser applicationUser;
+    private Artist artist;
 
-    public ApplicationUser getTestUser1() {
-        return applicationUser = new ApplicationUser(String.format("testUser"), "bob", "atest",
-            "test@atest.com", "testStraße 3", passwordEncoder.encode("atest"), false, UserRole.User);
+    public Artist getTestArtist1() {
+        return artist = new Artist("testArtist", "bob", "test", "test", "test", passwordEncoder.encode("test")
+            , false, UserRole.Artist, null, null, 1.0, null, null, null, null, null);
     }
 
-    public ApplicationUser getTestUser2() {
-        return applicationUser = new ApplicationUser(String.format("testUser2"), "bobby", "aSecondTest",
-            "test2@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
+    public Artist getTestArtist2() {
+        return artist = new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
+            , false, UserRole.Artist, "description", null, 2.0, null, null, null, null, null);
     }
 
     @BeforeEach
     public void beforeEach() {
-        userRepository.deleteAll();
+        artistRepository.deleteAll();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
 
     @Test
     @WithMockUser
     public void isDataBaseEmptyBeforeTests() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/user")).andDo(print()).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/artist")).andDo(print()).andReturn();
         MockHttpServletResponse response = mvcResult.getResponse();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON_VALUE, response.getContentType());
 
-        List<SimpleMessageDto> simpleUserDtos = Arrays.asList(objectMapper.readValue(response.getContentAsString(),
+        List<SimpleMessageDto> simpleArtistDtos = Arrays.asList(objectMapper.readValue(response.getContentAsString(),
             SimpleMessageDto[].class));
 
-        assertEquals(0, simpleUserDtos.size());
+        assertEquals(0, simpleArtistDtos.size());
     }
 
     @Test
     @WithMockUser()
-    public void addUsers() throws Exception {
-        ApplicationUser anObject = getTestUser1();
+    public void addArtists() throws Exception {
+        ApplicationUser anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(anObject );
+        String requestJson = ow.writeValueAsString(anObject );
 
-        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/artist").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
-            .andExpect(status().isCreated()).andReturn();
+            .andExpect(status().isOk()).andReturn();
 
-        List<ApplicationUserDto> users = allUsers();
-        assertEquals(1, users.size());
+        List<ArtistDto> artists = allArtists();
+        assertEquals(1, artists.size());
 
-        ApplicationUser anotherObject = getTestUser2();
+        ApplicationUser anotherObject = getTestArtist2();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson2 = ow2.writeValueAsString(anotherObject);
 
-        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/artist").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
-            .andExpect(status().isCreated()).andReturn();
+            .andExpect(status().isOk()).andReturn();
 
-        List<ApplicationUserDto> users2 = allUsers();
-        System.out.println(users2);
-        assertEquals(2, users2.size());
+        List<ArtistDto> artists2 = allArtists();
+        System.out.println(artists2);
+        assertEquals(2, artists2.size());
 
-        assertThat(users2.contains("bob"));
-        assertThat(users2.contains("bobby"));
-        assertThat(users2.contains("test@atest.com"));
-        assertThat(users2.contains("testStraße 2"));
+        assertThat(artists2.contains("bob"));
+        assertThat(artists2.contains("bobby"));
+        assertThat(artists2.contains("test2@test.com"));
+        assertThat(artists2.contains("testStraße 2"));
+        assertThat(artists2.contains("testArtist2"));
+        assertThat(artists2.contains("description"));
+        assertThat(artists2.contains(2.0));
 
-        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(String.format("testUser2"), "bobbyName", "aSecondTest",
-            "testmodify@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson3 = ow3.writeValueAsString(modifiedObject);
-
-        /*mockMvc.perform(put("/user/2").contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson3))
-            .andExpect(status().isOk()).andReturn();*/
 
     }
 
-    public List<ApplicationUserDto> allUsers() throws Exception {
+    public List<ArtistDto> allArtists() throws Exception {
         byte[] body = mockMvc
             .perform(MockMvcRequestBuilders
-                .get("/user/")
+                .get("/artist/")
                 .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andReturn().getResponse().getContentAsByteArray();
-        List<ApplicationUserDto> userResult = objectMapper.readerFor(ApplicationUserDto.class).<ApplicationUserDto>readValues(body).readAll();
-        return userResult;
+        List<ArtistDto> artistResult = objectMapper.readerFor(ApplicationUserDto.class).<ArtistDto>readValues(body).readAll();
+        return artistResult;
     }
 }

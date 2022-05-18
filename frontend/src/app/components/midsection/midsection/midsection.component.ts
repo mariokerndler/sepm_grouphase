@@ -28,7 +28,7 @@ export class MidsectionComponent implements OnInit {
     if(!artistId) {
       return null;
     } else {
-      this.fakerService.generateFakeArtist(artistId, 1, 3).subscribe({
+      this.fakerService.generateFakeArtist(artistId, 1, 1).subscribe({
         next: (artist) => artist
       });
     }
@@ -38,7 +38,7 @@ export class MidsectionComponent implements OnInit {
     let artworks: Artwork[] = [];
 
     if(!artworkIds) {
-      this.fakerService.generateFakeArtworkByAmount(10).subscribe({
+      this.fakerService.generateFakeArtworkByAmount(12).subscribe({
         next: (fakeArtworks) => {
           artworks = fakeArtworks;
         }

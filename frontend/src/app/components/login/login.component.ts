@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
 import {Artwork} from '../../dtos/artwork';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {RegistrationComponent} from '../registration/registration.component';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +23,11 @@ export class LoginComponent implements OnInit {
 
   // For Faker testing
   artwork: Artwork;
+  hidePassword = true;
 
   constructor(
+    public dialogRef: MatDialogRef<LoginComponent>,
+    public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router) {
@@ -55,8 +60,9 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(authRequest).subscribe({
       next: () => {
         console.log('Successfully logged in user: ' + authRequest.email);
+        this.onNoClick();
         this.router.navigate(['/message']);
-      },
+      }/*,
       error: error => {
         console.log('Could not log in due to:');
         console.log(error);
@@ -66,7 +72,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.errorMessage = error.error;
         }
-      }
+      } */
     });
   }
 
@@ -75,6 +81,15 @@ export class LoginComponent implements OnInit {
    */
   vanishError() {
     this.error = false;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  openDialog() {
+    this.onNoClick();
+    this.dialog.open(RegistrationComponent);
   }
 
   ngOnInit() {}

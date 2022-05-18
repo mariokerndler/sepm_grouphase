@@ -5,4 +5,12 @@ export class User {
   username: string;
   email: string;
   password: string;
+  admin: boolean;
+  userRole: UserRole;
+}
+
+export enum UserRole{
+  user = 'User',
+  admin = 'Admin',
+  artist = 'Artist',
 }

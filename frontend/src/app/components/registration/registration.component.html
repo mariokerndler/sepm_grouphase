@@ -48,6 +48,15 @@
     </mat-error>
   </mat-form-field>
 
+  <mat-form-field appearance="fill" class="form-group">
+    <mat-label>Address</mat-label>
+    <input matInput name="address" formControlName="address" class="form-control" id="inputAddress"
+           aria-describedby="address-help" >
+    <mat-error *ngIf="registerForm.controls.address.errors">
+      <small *ngIf="registerForm.controls.address.errors.required">Your address is required! </small>
+    </mat-error>
+  </mat-form-field>
+
 
   <mat-form-field appearance="fill" class="form-group">
     <mat-label>Username</mat-label>

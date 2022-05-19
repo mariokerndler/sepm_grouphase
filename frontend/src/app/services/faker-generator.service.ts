@@ -34,10 +34,11 @@ export class FakerGeneratorService {
   private static fakeUser(id: number): User {
     return  {
       id,
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      username: faker.internet.userName(),
+      name: faker.name.firstName(),
+      surname: faker.name.lastName(),
+      userName: faker.internet.userName(),
       email: faker.internet.email(),
+      address: faker.address.streetAddress(),
       password: faker.internet.password(),
       admin: false,
       userRole: UserRole.user
@@ -93,10 +94,11 @@ export class FakerGeneratorService {
     return {
 
       id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
+      name: user.name,
+      surname: user.surname,
+      userName: user.userName,
       email: user.email,
+      address: faker.address.streetAddress(),
       password: user.password,
       admin: false,
       userRole: UserRole.user,

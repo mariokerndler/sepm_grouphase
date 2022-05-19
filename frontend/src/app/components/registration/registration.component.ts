@@ -44,6 +44,7 @@ export class RegistrationComponent implements OnInit {
       firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
       lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
       email: ['', [Validators.required, Validators.email]],
+      address: ['', [Validators.required]],
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirm: ['', [Validators.required, Validators.minLength(8)]],
@@ -64,6 +65,7 @@ export class RegistrationComponent implements OnInit {
       const lastname = this.registerForm.controls.lastname.value;
       const username = this.registerForm.controls.username.value;
       const email = this.registerForm.controls.email.value;
+      const address = this.registerForm.controls.address.value;
       const password = this.registerForm.controls.password.value;
 
       this.userService.createUser(firstname, lastname, username, email, password).subscribe();

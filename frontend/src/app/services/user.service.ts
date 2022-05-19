@@ -17,7 +17,7 @@ export class UserService {
 
   createUser(firstName: string, lastName: string, username: string, email: string, password: string): Observable<User> {
       const userRole = UserRole.user;
-      const user = {firstName, lastName, username, email, password, admin: false, userRole} as User;
+      const user = {name: firstName, surname: lastName, userName: username, email, password, admin: false, userRole} as User;
       console.log(user);
       return this.http.post<User>(baseUri, user);
   }

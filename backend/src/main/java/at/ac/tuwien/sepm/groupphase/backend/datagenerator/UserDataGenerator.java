@@ -120,31 +120,30 @@ public class UserDataGenerator {
                             if (artworkFile.isFile()) {
                                 Faker f = new Faker();
                                 Artwork artwork = new Artwork();
-                                String description=new Faker().rickAndMorty().quote();
+                                String description = new Faker().rickAndMorty().quote();
                                 if (description.length() > 50) {
-                                    description=description.substring(0,50);
+                                    description = description.substring(0, 50);
                                 }
-                                String name=artworkFile.getName();
+                                String name = artworkFile.getName();
                                 if (name.length() > 50) {
-                                    name=name.substring(0,50);
+                                    name = name.substring(0, 50);
                                 }
                                 List<Tag> selectedTags = new LinkedList<Tag>();
 
-                            //    artwork.setTags(selectedTags);
+                                for (int j = 0; j < f.random().nextInt(0, 10); j++) {
+
+                                    selectedTags.add(tags.get(f.random().nextInt(0, tags.size() - 1)));
+                                }
+
+                                artwork.setTags(selectedTags);
                                 artwork.setDescription(description);
                                 artwork.setArtist(a);
                                 artwork.setFileType(FileType.JPG);
                                 artwork.setImageUrl(artworkFile.toString());
                                 artwork.setName(name);
                                 artworkRepo.save(artwork);
-                                for(int j=0;j<f.random().nextInt(0,10);j++){
 
-                                    tags.get(f.random().nextInt(0,tags.size()-1)).setArtwork(artwork);
-                                }
-                                for(Tag t : tags){
-                                    tagRepository.save(t);
-                                }
-                                LOGGER.info("Saved artwork: "+artwork.getImageUrl());
+                                LOGGER.info("Saved artwork: " + artwork.getImageUrl());
                             }
                         }
                     }

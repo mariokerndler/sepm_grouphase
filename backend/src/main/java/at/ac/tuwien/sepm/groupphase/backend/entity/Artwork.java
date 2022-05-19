@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -41,14 +40,11 @@ public class Artwork {
     @OneToOne
     private Commission commission;
 
-    /*@OneToMany( orphanRemoval = false)
+    @ManyToMany
     @JoinTable(
-        name="artwork_tag",
-        joinColumns = @JoinColumn( name="tag_id"),
-        inverseJoinColumns = @JoinColumn( name="artwork_id")
-    )*/
-
-    @ManyToMany(mappedBy = "artwork")
+        name = "artwork_tag",
+        joinColumns = @JoinColumn(name = "artwork_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id"))
    private List<Tag> tags;
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {

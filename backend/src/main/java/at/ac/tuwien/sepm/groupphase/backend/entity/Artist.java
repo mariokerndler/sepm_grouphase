@@ -38,7 +38,11 @@ public class Artist extends ApplicationUser {
     @OneToMany(mappedBy = "artist")
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "artist")
+    @ManyToMany
+    @JoinTable(
+        name = "artist_tag",
+        joinColumns = @JoinColumn(name = "artist_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
 
     public Artist(String userName, String name, String surname, String email, String address, String password,

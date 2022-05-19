@@ -17,19 +17,17 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 35,unique = true)
+    @Column(nullable = false, length = 35, unique = true)
     private String name;
 
     @ManyToOne
     private Artist artist;
 
+    @ManyToMany(mappedBy = "tags")
+    private List<Artwork> artworks;
 
-
-    @ManyToMany
-    @JoinColumn(name ="artwork_id")
-    private List<Artwork> artwork;
-
-
+    @ManyToMany(mappedBy = "tags")
+    private List<Artist> artists;
 
     public Tag(String name) {
         this.name = name;

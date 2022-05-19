@@ -1,0 +1,12 @@
+.artist-page {
+  width: 60%;
+  margin: auto;
+}
+
+@media screen and (max-width: 959px) {
+  .artist-page {
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}

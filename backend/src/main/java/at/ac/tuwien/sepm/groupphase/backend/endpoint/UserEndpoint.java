@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,19 @@ public class UserEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
-
+    @PermitAll
+    @PutMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Update user")
+    public void updateUser(@RequestBody ApplicationUserDto userDto) {
+        log.debug("Post /User/{}", userDto.getUserName());
+        try {
+            userService.updateUser(userMapper.userDtoToUser(userDto));
+        } catch (ValidationException v) {
+            log.error(v.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        }
+    }
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -65,9 +78,8 @@ public class UserEndpoint {
     public void registerUser(@RequestBody ApplicationUserDto userDto) {
         log.debug("Post /User/{}", userDto.getUserName());
         try {
-            log.debug("Post /User/{}", userMapper.userDtoToUser(userDto).toString());
             userService.registerUser(userMapper.userDtoToUser(userDto));
-        } catch (Exception v) {
+        } catch (ValidationException v) {
             log.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
         }

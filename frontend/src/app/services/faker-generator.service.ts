@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import faker from '@faker-js/faker';
-import {User} from '../dtos/user';
+import {User, UserRole} from '../dtos/user';
 import {Observable, of} from 'rxjs';
 import {Tag} from '../dtos/tag';
 import {Artwork} from '../dtos/artwork';
@@ -38,7 +38,9 @@ export class FakerGeneratorService {
       lastName: faker.name.lastName(),
       username: faker.internet.userName(),
       email: faker.internet.email(),
-      password: faker.internet.password()
+      password: faker.internet.password(),
+      admin: false,
+      userRole: UserRole.user
     };
   }
 
@@ -96,6 +98,8 @@ export class FakerGeneratorService {
       username: user.username,
       email: user.email,
       password: user.password,
+      admin: false,
+      userRole: UserRole.user,
       artworkIds,
       description: faker.lorem.paragraph(3),
       reviewScore: this.getRandomFromRange(0,5),

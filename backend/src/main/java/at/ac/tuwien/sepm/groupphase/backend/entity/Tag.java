@@ -20,9 +20,6 @@ public class Tag {
     @Column(nullable = false, length = 35, unique = true)
     private String name;
 
-    @ManyToOne
-    private Artist artist;
-
     @ManyToMany(mappedBy = "tags")
     private List<Artwork> artworks;
 

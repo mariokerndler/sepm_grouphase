@@ -36,9 +36,16 @@ public class Artwork {
 
     @OneToMany(mappedBy = "artwork")
     private List<Sketch> sketches;
-
     @OneToOne
     private Commission commission;
+
+    @ManyToMany
+    @JoinTable(
+        name = "artwork_tag",
+        joinColumns = @JoinColumn(name = "artwork_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags;
+
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {
         this.name = name;

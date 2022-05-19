@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import {User, UserRole} from '../dtos/user';
-import {Observable} from 'rxjs';
+import {catchError, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {NotificationService} from '../common/service/notification.service';
+import {tap} from 'rxjs/operators';
 
 const backendUrl = 'http://localhost:8080';
 const baseUri = backendUrl + '/user';
@@ -13,12 +15,29 @@ export class UserService {
 
 
 
-  constructor( private http: HttpClient,) {}
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService) {}
 
-  createUser(firstName: string, lastName: string, username: string, email: string, password: string): Observable<User> {
+  createUser(firstName: string, lastName: string, username: string, email: string, password: string
+             , errorAction?: () => void
+             , successAction?: () => void): Observable<User> {
       const userRole = UserRole.user;
       const user = {name: firstName, surname: lastName, userName: username, email, password, admin: false, userRole} as User;
       console.log(user);
-      return this.http.post<User>(baseUri, user);
+      return this.http.post<User>(baseUri, user)
+        .pipe(
+          catchError((err) => {
+            if(errorAction != null) {
+              errorAction();
+            }
+
+            return this.notificationService.notifyUserAboutFailedOperation<User>('Creating User')(err);
+          }),
+          tap(_ => {
+            if(successAction != null) {
+              successAction();
+            }
+          }));
   }
 }

@@ -66,7 +66,7 @@ export class RegistrationComponent implements OnInit {
       const email = this.registerForm.controls.email.value;
       const password = this.registerForm.controls.password.value;
 
-      this.userService.createUser(firstname, lastname, username, email, password);
+      this.userService.createUser(firstname, lastname, username, email, password).subscribe();
       this.onNoClick();
 
 

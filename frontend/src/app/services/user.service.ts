@@ -3,7 +3,7 @@ import {User, UserRole} from '../dtos/user';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 
-const backendUrl = 'http://localhost:4200';
+const backendUrl = 'http://localhost:8080';
 const baseUri = backendUrl + '/user';
 
 @Injectable({
@@ -21,5 +21,4 @@ export class UserService {
       console.log(user);
       return this.http.post<User>(baseUri, user);
   }
-  //Todo get Users by email and username to check if they already exist
 }

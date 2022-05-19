@@ -29,6 +29,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -84,13 +85,16 @@ public class UserDataGenerator {
     }
     private void loadTags(int numberOftags) throws FileNotFoundException {
         File text = new File(tagDir);
+        List<String> tags= new LinkedList<>();
         Scanner scanner= new Scanner(text);
         while (scanner.hasNext() && numberOftags>0){
             numberOftags--;
             Tag t = new Tag(scanner.nextLine());
-            tagRepository.save(t);
+            if(!tags.contains(t.getName())) {
+                tags.add(t.getName());
+                tagRepository.save(t);
+            }
         }
-
     }
 
     //make sure db is empty before running to avoid Unique key constraint issues
@@ -124,15 +128,22 @@ public class UserDataGenerator {
                                 if (name.length() > 50) {
                                     name=name.substring(0,50);
                                 }
-                                for(int j=0;j<f.random().nextInt(0,10);j++){
-                                    artwork.addTag(tags.get(f.random().nextInt(0,tags.size()-1)));
-                                }
+                                List<Tag> selectedTags = new LinkedList<Tag>();
+
+                            //    artwork.setTags(selectedTags);
                                 artwork.setDescription(description);
                                 artwork.setArtist(a);
                                 artwork.setFileType(FileType.JPG);
                                 artwork.setImageUrl(artworkFile.toString());
                                 artwork.setName(name);
                                 artworkRepo.save(artwork);
+                                for(int j=0;j<f.random().nextInt(0,10);j++){
+
+                                    tags.get(f.random().nextInt(0,tags.size()-1)).setArtwork(artwork);
+                                }
+                                for(Tag t : tags){
+                                    tagRepository.save(t);
+                                }
                                 LOGGER.info("Saved artwork: "+artwork.getImageUrl());
                             }
                         }

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,11 +17,17 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 35)
+    @Column(nullable = false, length = 35,unique = true)
     private String name;
 
+    @ManyToOne
+    private Artist artist;
 
 
+
+    @ManyToMany
+    @JoinColumn(name ="artwork_id")
+    private List<Artwork> artwork;
 
 
 

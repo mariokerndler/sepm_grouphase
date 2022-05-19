@@ -41,13 +41,15 @@ public class Artwork {
     @OneToOne
     private Commission commission;
 
-    @OneToMany( orphanRemoval = false)
+    /*@OneToMany( orphanRemoval = false)
     @JoinTable(
         name="artwork_tag",
-        joinColumns = @JoinColumn( name="artwork_id"),
-        inverseJoinColumns = @JoinColumn( name="tag_id")
-    )
-   private List<Tag> tags= new LinkedList<Tag>();
+        joinColumns = @JoinColumn( name="tag_id"),
+        inverseJoinColumns = @JoinColumn( name="artwork_id")
+    )*/
+
+    @ManyToMany(mappedBy = "artwork")
+   private List<Tag> tags;
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {
         this.name = name;

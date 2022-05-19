@@ -14,8 +14,6 @@ public abstract class   ArtworkMapper {
     @Autowired
     protected ArtistService artistService;
 
-
-
     public abstract ArtworkDto artworkToArtworkDto(Artwork a);
     public abstract Artwork artworkDtoToArtwork(ArtworkDto aDto);
     @AfterMapping

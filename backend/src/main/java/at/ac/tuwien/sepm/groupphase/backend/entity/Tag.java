@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,9 +20,12 @@ public class Tag {
     @Column(nullable = false, length = 35)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "artist_id")
-    private Artist artist;
+    @ManyToMany(mappedBy = "tags")
+    private List<Artwork> artworks;
+
+    @ManyToMany(mappedBy = "tags")
+    private List<Artist> artists;
+
 
     public Tag(String name) {
         this.name = name;

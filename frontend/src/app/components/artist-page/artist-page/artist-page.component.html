@@ -1,3 +1,12 @@
 <div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="artist-page">
-    <app-artist-information *ngIf="artist" [artist]="artist"></app-artist-information>
+  <app-artist-information *ngIf="artist" [artist]="artist"></app-artist-information>
+
+  <!--<app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>-->
+</div>
+
+<div class="save-edit-button">
+  <button mat-button color="accent" (click)="openEditDialog()">
+    <mat-icon color="accent">edit</mat-icon>
+    <span class="save-edit-text">Edit your page</span>
+  </button>
 </div>

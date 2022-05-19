@@ -3,6 +3,8 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Artist} from '../../../dtos/artist';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ArtistPageEditComponent} from '../artist-page-edit/artist-page-edit.component';
 
 @Component({
   selector: 'app-artist-page',
@@ -17,7 +19,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fakerService: FakerGeneratorService
+    private fakerService: FakerGeneratorService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -29,5 +32,21 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
+  }
+
+  openEditDialog(): void {
+    const dialogRef = this.dialog.open(ArtistPageEditComponent, {
+      data: {
+        description: this.artist.description
+      }
+    });
+
+    dialogRef.afterClosed()
+      .subscribe(
+        (result) => {
+          if(result) {
+            this.artist.description = result.description;
+          }
+        });
   }
 }

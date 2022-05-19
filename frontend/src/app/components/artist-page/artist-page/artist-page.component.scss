@@ -10,3 +10,15 @@
     padding-right: 0.5rem;
   }
 }
+
+.save-edit-button {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  text-align: right;
+  padding: 32px;
+}
+
+.save-edit-text {
+  margin-left: 10px;
+}

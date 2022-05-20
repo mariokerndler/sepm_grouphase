@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {User, UserRole} from '../dtos/user';
 import {catchError, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NotificationService} from '../common/service/notification.service';
 import {tap} from 'rxjs/operators';
 
@@ -12,7 +12,10 @@ const baseUri = backendUrl + '/user';
   providedIn: 'root'
 })
 export class UserService {
-
+  headers = new HttpHeaders({
+  'Content-Type': 'application/json',
+  'Auth': 'Registration' });
+  options = { headers: this.headers};
 
 
   constructor(
@@ -25,7 +28,7 @@ export class UserService {
       const userRole = UserRole.user;
       const user = {name: firstName, surname: lastName, userName: username, address, email, password, admin: false, userRole} as User;
       console.log(user);
-      return this.http.post<User>(baseUri, user)
+      return this.http.post<User>(baseUri, user, this.options)
         .pipe(
           catchError((err) => {
             if(errorAction != null) {

@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,16 @@ public class ArtworkServiceImpl implements ArtworkService {
     @Override
     public void saveArtwork(Artwork a) {
         this.artworkRepo.save(a);
+        ImageFileManager imf= new ImageFileManager();
+        imf.writeArtistImage(a);
+
+
     }
 
     @Override
-    public void deleteArtwork(Long id) {
-        this.artworkRepo.deleteById(id);
+    public void deleteArtwork(Artwork a) {
+        this.artworkRepo.deleteById(a.getId());
+        ImageFileManager imf= new ImageFileManager();
+        imf.deleteArtistImage(a);
     }
 }

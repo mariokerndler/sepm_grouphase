@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,12 +56,12 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@PathVariable Long id ){
+    public void deleteArtwork(@RequestBody ArtworkDto artworkDto){
         LOGGER.info("Get /Artist");
         try {
 
-            LOGGER.info("Delete Artwork/"+id);
-            artworkService.deleteArtwork(id);
+            LOGGER.info("Delete Artwork/"+artworkDto.getName());
+            artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
 
         } catch (Exception n) {
             LOGGER.error(n.getMessage());

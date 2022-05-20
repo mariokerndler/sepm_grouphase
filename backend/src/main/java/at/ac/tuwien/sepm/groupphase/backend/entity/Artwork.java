@@ -17,6 +17,8 @@ public class Artwork {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Transient
+    private byte[] imageData;
 
     @Column(nullable = false, length = 50)
     private String name;

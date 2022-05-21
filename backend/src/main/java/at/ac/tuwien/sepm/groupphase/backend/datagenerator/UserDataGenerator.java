@@ -64,11 +64,12 @@ public class UserDataGenerator {
     @PostConstruct
     private void generateUser() throws IOException {
         // TODO: Maybe differentiate by explicitly checking whether the one entity is actually the admin ?
+        /**
         if (userRepository.findAll().size() > NUMBER_OF_USERS_TO_GENERATE + 1) {
             LOGGER.debug("User already generated");
         } else {
             for (int i = 0; i < NUMBER_OF_USERS_TO_GENERATE; i++) {
-                ApplicationUser user = new ApplicationUser(String.format("testUser%s", i), "bob", "test", "test", "test", passwordEncoder.encode("test")
+                ApplicationUser user = new ApplicationUser(String.format("testUser%s", i), "bob", "test", "test"+i, "test", passwordEncoder.encode("test")
                     , false, UserRole.User);
                 userRepository.save(user);
             }
@@ -77,7 +78,7 @@ public class UserDataGenerator {
             , false, UserRole.Artist, null, null, 1.0, null, null, null, null, null);
 
         artistRepository.save(artist);
-
+**/
 
         loadTags(NUMBER_OF_TAGS_TO_GENERATE);
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);

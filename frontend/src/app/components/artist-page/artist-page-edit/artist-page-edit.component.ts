@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
 import {NotificationService} from '../../../common/service/notification.service';
@@ -13,14 +13,18 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
+  @ViewChild('fileInput') pfpInput: ElementRef;
+
   artist: Artist;
   isArtist: boolean;
 
   editForm: FormGroup;
   submitted = false;
-  hidePassword = true;
-  hideConfirmPassword = true;
 
+  passwordForm: FormGroup;
+  showPassword = false;
+
+  artistProfilePicture;
   private routeSubscription: Subscription;
 
   constructor(
@@ -35,11 +39,15 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
       username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
       email: ['', [Validators.required, Validators.email]],
-      //password: ['', [Validators.required, Validators.minLength(8)]],
-      //confirm: ['', [Validators.required, Validators.minLength(8)]],
       description: ['', Validators.maxLength(512)]
+    });
+
+    this.passwordForm = this.formBuilder.group({
+      oldPassword: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirm: ['', [Validators.required, Validators.minLength(8)]]
     }, {
-      //validator: this.mustMatch('password', 'confirm')
+      validator: this.mustMatch('password', 'confirm')
     });
   }
 
@@ -49,11 +57,12 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.routeSubscription = this.route.params
-      .subscribe(params => this.fakerService
+      .subscribe(_ => this.fakerService
         .generateFakeArtist(1, 2, 5)
         .subscribe(artist => this.artist = artist));
 
     this.isArtist = ArtistPageEditComponent.checkIfArtist(this.artist);
+    this.artistProfilePicture = this.artist.profilePicture;
 
     this.setFormValues();
   }
@@ -74,11 +83,14 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       const username = this.editForm.controls.username.value;
       const email = this.editForm.controls.email.value;
       const description = this.editForm.controls.description.value;
-      //const password = this.editForm.controls.password.value;
 
       // TODO: Save User
       console.log(firstname + ' ' + lastname + ' ' + username + ' ' + email + ' ' + description);
     }
+  }
+
+  changePassword() {
+    // TODO: Change password
   }
 
   mustMatch(controlName: string, matchingControlName: string) {
@@ -108,6 +120,19 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
     if(this.isArtist) {
       this.editForm.controls['description'].setValue(this.artist.description);
     }
-    //this.editForm.controls['password'].setValue(this.artist.password);
+  }
+
+  onFileChanged(file: any) {
+    if (file.target.files && file.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = (_) => {
+          this.artistProfilePicture = e.target.result;
+        };
+      };
+      reader.readAsDataURL(file.target.files[0]);
+    }
   }
 }

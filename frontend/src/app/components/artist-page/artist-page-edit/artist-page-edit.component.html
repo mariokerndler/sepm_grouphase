@@ -1,8 +1,8 @@
 <div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
-  <mat-tab-group backgroundColor="primary">
+  <mat-tab-group dynamicHeight backgroundColor="primary">
     <mat-tab label="Public profile">
       <h2 class="primary">Edit your profile</h2>
-      <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
+      <div class="edit-page-pf-wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="0.8rem">
          <form class="edit-page-pf-form" [formGroup]="editForm" (ngSubmit)="saveUser()">
            <div fxLayout="row" fxLayoutGap="0.5rem">
              <mat-form-field class="full-width primary" appearance="fill">
@@ -42,38 +42,6 @@
              </mat-error>
            </mat-form-field>
 
-           <!-- TODO: PASSWORD CHANGE -->
-           <!--
-           <div fxLayout="row" fxLayoutGap="0.5rem">
-             <mat-form-field class="full-width" appearance="fill">
-               <mat-label>Password</mat-label>
-               <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" name="password" formControlName="password">
-               <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-                 <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-               </button>
-               <mat-error *ngIf="editForm.controls.password.errors" >
-                 <small *ngIf="editForm.controls.password.errors.required">Your password is required!</small>
-                 <small *ngIf="editForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
-               </mat-error>
-             </mat-form-field>
-
-             <mat-form-field class="full-width" appearance="fill">
-               <mat-label>Confirm Password</mat-label>
-               <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" name="confirm" formControlName="confirm" id="confirm">
-               <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
-                 <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-               </button>
-
-               <mat-error *ngIf="editForm.controls.confirm.errors">
-                 <small  *ngIf="editForm.controls.confirm.errors.required">Your password is required!</small>
-                 <small  *ngIf="editForm.controls.confirm.errors.minlength">Your password must be at least 8 characters long!</small>
-                 <small *ngIf="editForm.controls.confirm.errors.mustMatch">Password and Confirm Password must be match.</small>
-               </mat-error>
-
-             </mat-form-field>
-           </div>
-           -->
-
            <mat-form-field class="full-width primary" appearance="fill" *ngIf="isArtist">
              <mat-label class="primary">Description</mat-label>
              <textarea #description matInput rows="6" maxlength="512" name="description" formControlName="description" aria-describedby="descriptionHelp"></textarea>
@@ -81,8 +49,65 @@
              <mat-hint align="end">{{description.value.length}} / 512</mat-hint>
            </mat-form-field>
          </form>
+
+        <div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+          <h3 class="primary">Profile picture</h3>
+          <img [src]="artistProfilePicture" class="edit-page-pfp" alt="">
+          <input accept="image/png, image/jpeg"
+                 style="display: none;"
+                 type="file" (change)="onFileChanged($event)"
+                 #fileInput>
+            <button mat-button color="accent" (click)="fileInput.click()">
+              <mat-icon color="accent">upload</mat-icon>
+              <span>Upload new profile picture</span>
+            </button>
+        </div>
       </div>
     </mat-tab>
+
+    <mat-tab label="Password">
+      <h2 class="primary">Change your password</h2>
+      <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
+        <form class="edit-page-pf-form" [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+          <mat-form-field class="full-width primary" appearance="fill">
+            <mat-label class="primary">Old password</mat-label>
+            <input matInput [type]="!showPassword ? 'password' : 'text'" name="oldPassword" formControlName="oldPassword">
+            <mat-error *ngIf="passwordForm.controls.password.errors" >
+              <small *ngIf="passwordForm.controls.password.errors.required">Your old password is required!</small>
+              <small *ngIf="passwordForm.controls.password.errors.minlength">Your old password must be at least 8 characters long!</small>
+            </mat-error>
+          </mat-form-field>
+
+          <div fxLayout="row" fxLayoutGap="0.5rem">
+            <mat-form-field class="full-width primary" appearance="fill">
+              <mat-label class="primary">New password</mat-label>
+              <input matInput [type]="!showPassword ? 'password' : 'text'" name="password" formControlName="password">
+              <mat-error *ngIf="passwordForm.controls.password.errors" >
+                <small *ngIf="passwordForm.controls.password.errors.required">Your new password is required!</small>
+                <small *ngIf="passwordForm.controls.password.errors.minlength">Your new password must be at least 8 characters long!</small>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="full-width primary" appearance="fill">
+              <mat-label class="primary">Confirm new Password</mat-label>
+              <input matInput [type]="!showPassword ? 'password' : 'text'" name="confirm" formControlName="confirm" id="confirm">
+              <mat-error *ngIf="passwordForm.controls.confirm.errors">
+                <small  *ngIf="passwordForm.controls.confirm.errors.required">Your new password is required!</small>
+                <small  *ngIf="passwordForm.controls.confirm.errors.minlength">Your new password must be at least 8 characters long!</small>
+                <small *ngIf="passwordForm.controls.confirm.errors.mustMatch">New password and new confirm Password must be match.</small>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+
+        <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+          <button mat-flat-button color="accent" (click)="changePassword()">Update password</button>
+          <mat-checkbox [(ngModel)]="showPassword">Show Password</mat-checkbox>
+        </div>
+
+      </div>
+    </mat-tab>
+
     <mat-tab label="Appearance">
 
     </mat-tab>

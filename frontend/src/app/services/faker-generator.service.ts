@@ -33,6 +33,7 @@ export class FakerGeneratorService {
 
   private static fakeUser(id: number): User {
     return  {
+      profilePicture: faker.image.cats(200,200),
       id,
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -92,6 +93,7 @@ export class FakerGeneratorService {
       id,
       firstName: user.firstName,
       lastName: user.lastName,
+      profilePicture: faker.image.cats(200,200),
       username: user.username,
       email: user.email,
       password: user.password,

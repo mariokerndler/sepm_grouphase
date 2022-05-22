@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Review;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -8,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class ArtistDto {
 
     private long galleryId;
 
-    private List<Artwork> artworks;
+    private List<@Valid ArtworkDto> artworks;
 
     private List<Commission> commissions;
 
@@ -62,7 +62,7 @@ public class ArtistDto {
 
     public ArtistDto(String userName, String name, String surname, String email, String address,
                      String password, Boolean admin, UserRole userRole, double reviewScore, long galleryId,
-                     List<Artwork> artworks, List<Commission> commissions, List<Review> reviews, String artistSettings) {
+                     List<ArtworkDto> artworks, List<Commission> commissions, List<Review> reviews, String artistSettings) {
         this.userName = userName;
         this.name = name;
         this.surname = surname;

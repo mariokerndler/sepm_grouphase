@@ -16,7 +16,7 @@ import java.util.List;
 public class Artist extends ApplicationUser {
 
     @OneToOne(mappedBy = "artist")
-    private ProfilePicture profilePicture;
+    private Image profilePicture;
 
     @Column(length = 200)
     private String description;

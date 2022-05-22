@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue("Sketch")
 @Entity
 public class Sketch extends Image{
 

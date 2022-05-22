@@ -12,7 +12,6 @@ import javax.persistence.OneToOne;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue("ProfilePicture")
 @Entity
 public class ProfilePicture extends Image{
 

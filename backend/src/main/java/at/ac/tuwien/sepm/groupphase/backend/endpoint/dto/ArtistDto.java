@@ -17,23 +17,23 @@ public class ArtistDto {
     private Long id;
 
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*")
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Username may only contain numbers or digits")
     private String userName;
 
     // TODO: Should we allow more than one first name?
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*")
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "First name may only contain numbers or digits")
     private String name;
 
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*")
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Last name may only contain numbers or digits")
     private String surname;
 
     @NotNull
     @Email
     private String email;
 
-    @NotNull
+    @NotBlank
     private String address;
 
     @NotBlank

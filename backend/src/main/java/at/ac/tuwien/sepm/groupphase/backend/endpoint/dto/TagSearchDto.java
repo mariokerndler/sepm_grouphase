@@ -13,9 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 
 public class TagSearchDto {
-   private List<String> tagIds;
+    private List<String> tagIds;
     private String searchOperations;
-    private  int pageNr=0;
+
+    private int pageNr = 0;
 
     @Override
     public String toString() {

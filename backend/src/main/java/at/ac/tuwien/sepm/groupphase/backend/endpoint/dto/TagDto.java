@@ -4,11 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class TagDto {
 
-    private  String name;
     private long id;
+
+    @NotBlank
+    @Max(35)
+    private String name;
 }

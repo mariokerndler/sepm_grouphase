@@ -5,20 +5,38 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
 public class ArtworkDto {
 
-
     private long id;
+
+    @NotBlank
+    @Max(50)
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Name may only contain numbers or digits")
     private String name;
+
+    @NotBlank
+    @Max(50)
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Description may only contain numbers or digits")
     private String description;
+
+    @NotNull
     private byte[] imageData;
-    private String  imageUrl;
+
+    @NotBlank
+    private String imageUrl;
+
+    @NotNull
     private FileType fileType;
-    private  long artistId;
+
+    @NotNull
+    private long artistId;
 
     //todo sketch reference
 

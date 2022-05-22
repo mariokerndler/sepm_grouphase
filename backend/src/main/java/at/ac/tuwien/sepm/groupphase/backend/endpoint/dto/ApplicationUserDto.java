@@ -2,11 +2,14 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -14,23 +17,34 @@ import java.util.Objects;
 @Setter
 public class ApplicationUserDto {
 
+    private Long id;
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Username may only contain numbers or digits")
     private String userName;
 
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "First name may only contain numbers or digits")
     private String name;
 
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Last name may only contain numbers or digits")
     private String surname;
 
+    @NotNull
+    @Email
     private String email;
 
+    @NotBlank
     private String address;
 
+    @NotBlank
     private String password;
 
+    @NotNull
     private Boolean admin;
 
+    @NotNull
     private UserRole userRole;
-
-    private Long id;
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {

@@ -10,7 +10,7 @@ import java.util.List;
 public interface ArtworkService {
     List<Artwork> findArtworksByArtist(Long id);
     void saveArtwork(Artwork a);
-    void deleteArtwork(Long id);
+     void deleteArtwork(Artwork a);
 
     List<Artwork> searchArtworks(Specification<Artwork> spec);
 }

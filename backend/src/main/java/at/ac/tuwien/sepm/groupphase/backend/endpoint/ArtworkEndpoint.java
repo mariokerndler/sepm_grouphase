@@ -110,12 +110,11 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@PathVariable Long id ){
-        LOGGER.info("Get /Artist");
+    public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
+        LOGGER.info("Delete Artwork"+artworkDto.getName());
         try {
 
-            LOGGER.info("Delete Artwork/"+id);
-            artworkService.deleteArtwork(id);
+            artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
 
         } catch (Exception n) {
             LOGGER.error(n.getMessage());

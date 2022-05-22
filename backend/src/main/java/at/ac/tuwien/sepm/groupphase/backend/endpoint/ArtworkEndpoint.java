@@ -1,12 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TagSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
+import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.type.StringNVarcharType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +20,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -36,27 +45,44 @@ public class ArtworkEndpoint {
         this.artworkMapper = artworkMapper;
     }
 
+    //see https://www.baeldung.com/rest-api-query-search-language-more-operations
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     @ResponseBody
     @Transactional
-    @Operation(summary = "searchArtworks like this:http://localhost:8080/artwork?search=id>1")
-    public List<ArtworkDto> search(@RequestParam(value = "search") String search) {
+    @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
+    public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto ) {
+        String search= tagSearchDto.getSearchOperations();
+
+
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
-        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
+        Pattern pattern = Pattern.compile(
+            "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
         Matcher matcher = pattern.matcher(search + ",");
-        log.info(search);
         while (matcher.find()) {
-            log.info(matcher.group(1));
-            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+            builder.with(
+                matcher.group(1),
+                matcher.group(2),
+                matcher.group(4),
+                matcher.group(3),
+                matcher.group(5));
         }
 
         Specification<Artwork> spec = builder.build();
 
-        List<Artwork> artworks =artworkService.searchArtworks(spec);
+        if(!tagSearchDto.getTagIds().isEmpty()) {
+            if (spec == null) {
+                spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+            }
+            for (String tag : tagSearchDto.getTagIds()) {
+                spec.and(TagSpecification.filterByTags(tag));
+            }
+            log.info(tagSearchDto.getSearchOperations());
+        }
 
-        List<ArtworkDto> artworksDto= artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        List<ArtworkDto> artworksDto=artworkService.searchArtworks(spec).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
         return artworksDto;
     }
 

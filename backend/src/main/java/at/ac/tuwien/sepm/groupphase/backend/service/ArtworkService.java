@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public interface ArtworkService {
     List<Artwork> findArtworksByArtist(Long id);
     void saveArtwork(Artwork a);
     void deleteArtwork(Long id);
+
+    List<Artwork> searchArtworks(Specification<Artwork> spec);
 }

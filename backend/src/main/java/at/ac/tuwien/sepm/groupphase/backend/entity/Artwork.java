@@ -24,7 +24,7 @@ public class Artwork {
     @Column(nullable = false, length = 50)
     private String description;
 
-    @Column(nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 250, unique = true)
     private String imageUrl;
 
     @Column(nullable = false)
@@ -36,6 +36,7 @@ public class Artwork {
 
     @OneToMany(mappedBy = "artwork")
     private List<Sketch> sketches;
+
     @OneToOne
     private Commission commission;
 
@@ -44,8 +45,7 @@ public class Artwork {
         name = "artwork_tag",
         joinColumns = @JoinColumn(name = "artwork_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
-
+   private List<Tag> tags;
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {
         this.name = name;
@@ -75,7 +75,11 @@ public class Artwork {
     public int hashCode() {
         return 7;
     }
-
+    public  void addTag(Tag t){
+        if(!tags.contains(t)) {
+            this.tags.add(t);
+        }
+    }
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

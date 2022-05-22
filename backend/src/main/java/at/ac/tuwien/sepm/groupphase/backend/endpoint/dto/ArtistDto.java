@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Review;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,17 +17,14 @@ public class ArtistDto {
 
     private Long id;
 
-    @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Username may only contain numbers or digits")
+    @ValidAlphaNumeric
     private String userName;
 
     // TODO: Should we allow more than one first name?
-    @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "First name may only contain numbers or digits")
+    @ValidAlphaNumeric
     private String name;
 
-    @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Last name may only contain numbers or digits")
+    @ValidAlphaNumeric
     private String surname;
 
     @NotNull

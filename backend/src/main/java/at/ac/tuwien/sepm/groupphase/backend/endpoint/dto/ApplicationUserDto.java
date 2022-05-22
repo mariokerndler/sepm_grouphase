@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +10,6 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -18,16 +18,14 @@ import java.util.Objects;
 public class ApplicationUserDto {
 
     private Long id;
-    @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Username may only contain numbers or digits")
+
+    @ValidAlphaNumeric
     private String userName;
 
-    @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "First name may only contain numbers or digits")
+    @ValidAlphaNumeric
     private String name;
 
-    @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Last name may only contain numbers or digits")
+    @ValidAlphaNumeric
     private String surname;
 
     @NotNull

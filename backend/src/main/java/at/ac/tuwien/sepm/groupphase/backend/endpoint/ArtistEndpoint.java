@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,7 +72,7 @@ public class ArtistEndpoint {
     @PostMapping
     @Operation(summary = "Post new artist")
     @Transactional
-    public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
+    public ArtistDto saveArtist(@Valid @RequestBody ArtistDto artistDto) {
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {

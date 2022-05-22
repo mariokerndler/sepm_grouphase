@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Getter
@@ -15,22 +16,37 @@ public class ArtistDto {
 
     private Long id;
 
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9]*")
     private String userName;
 
+    // TODO: Should we allow more than one first name?
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9]*")
     private String name;
 
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9]*")
     private String surname;
 
+    @NotNull
+    @Email
     private String email;
 
+    @NotNull
     private String address;
 
+    @NotBlank
     private String password;
 
+    @NotNull
     private Boolean admin;
 
+    @NotNull
     private UserRole userRole;
 
+    @Min(0)
+    @Max(5)
     private double reviewScore;
 
     private long galleryId;

@@ -1,6 +1,35 @@
-.artist-page-edit-container {
-  width: 700px;
+.edit-page {
+  width: 60%;
+  margin: auto;
 }
-.artist-page-edit-description {
+
+@media screen and (max-width: 959px) {
+  .edit-page {
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+.save-button {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  text-align: right;
+  padding: 32px;
+}
+
+.save-text {
+  margin-left: 10px;
+}
+
+.edit-page-pf-form {
+  min-width: 150px;
+  max-width: 700px;
   width: 100%;
+
+  .full-width {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }

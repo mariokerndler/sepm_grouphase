@@ -3,8 +3,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Artist} from '../../../dtos/artist';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {MatDialog} from '@angular/material/dialog';
-import {ArtistPageEditComponent} from '../artist-page-edit/artist-page-edit.component';
+import {NotificationService} from '../../../common/service/notification.service';
 
 @Component({
   selector: 'app-artist-page',
@@ -20,13 +19,14 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private fakerService: FakerGeneratorService,
-    private dialog: MatDialog
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
+    // TODO: Fetch real data
     this.routeSubscription = this.route.params
       .subscribe(params => this.fakerService
-        .generateFakeArtist(params.id, params.id + 1, 5)
+        .generateFakeArtist(1, 2, 5)
         .subscribe(artist => this.artist = artist));
   }
 
@@ -34,19 +34,12 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
-  openEditDialog(): void {
-    const dialogRef = this.dialog.open(ArtistPageEditComponent, {
-      data: {
-        description: this.artist.description
-      }
-    });
-
-    dialogRef.afterClosed()
-      .subscribe(
-        (result) => {
-          if(result) {
-            this.artist.description = result.description;
-          }
-        });
+  navigateToEdit() {
+    this.router.navigate(['/artist', this.artist.id, 'edit'])
+      .catch(
+        (error) => {
+          this.notificationService.displayErrorSnackbar(error.toString());
+        }
+      );
   }
 }

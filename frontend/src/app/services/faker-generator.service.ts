@@ -89,7 +89,6 @@ export class FakerGeneratorService {
     const fakeReviewIds = fakeReviews.map((x) => x.id);
 
     return {
-
       id,
       firstName: user.firstName,
       lastName: user.lastName,

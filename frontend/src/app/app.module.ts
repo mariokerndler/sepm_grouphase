@@ -6,7 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
 
 // Plugins
-import { AngularMaterialModule} from './angular-material/angular-material.module';
+import { AngularMaterialModule} from './components/angular-material/angular-material.module';
 import { FlexLayoutModule} from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -24,7 +24,11 @@ import { MidsectionComponent } from './components/midsection/midsection/midsecti
 import { CardViewComponent } from './components/midsection/card-view/card-view.component';
 import { ArtistPageComponent } from './components/artist-page/artist-page/artist-page.component';
 import { ArtistInformationComponent } from './components/artist-page/artist-information/artist-information.component';
-import {SimpleDialogComponent} from './common/service/notification.service';
+import {
+  ErrorSnackbarComponent,
+  SimpleDialogComponent,
+  SuccessSnackbarComponent
+} from './common/service/notification.service';
 import { ArtistPageEditComponent } from './components/artist-page/artist-page-edit/artist-page-edit.component';
 
 @NgModule({
@@ -40,7 +44,9 @@ import { ArtistPageEditComponent } from './components/artist-page/artist-page-ed
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,
-    ArtistPageEditComponent
+    ArtistPageEditComponent,
+    ErrorSnackbarComponent,
+    SuccessSnackbarComponent
   ],
   imports: [
     BrowserModule,

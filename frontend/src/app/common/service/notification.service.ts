@@ -2,6 +2,7 @@ import {Component, Inject, Injectable} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {EMPTY, Observable} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
+import {MAT_SNACK_BAR_DATA, MatSnackBar} from '@angular/material/snack-bar';
 
 export interface DialogData {
   title: string;
@@ -12,8 +13,9 @@ export interface DialogData {
   providedIn: 'root'
 })
 export class NotificationService {
-
-  constructor(public dialog: MatDialog) { }
+  constructor(
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) { }
 
   /**
    * Displays a given message and title.
@@ -21,8 +23,22 @@ export class NotificationService {
    * @param message - The message to display.
    * @param title   - The title of the message to display.
    */
-  public displaySimpleDialog(title: string, message: string, ) {
+  public displaySimpleDialog(title: string, message: string) {
     this.openDialog(title, message);
+  }
+
+  public displayErrorSnackbar(message: string) {
+    this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+      data: message,
+      duration: 500
+    });
+  }
+
+  public displaySuccessSnackbar(message: string) {
+    this.snackBar.openFromComponent(SuccessSnackbarComponent, {
+      data: message,
+      duration: 500,
+    });
   }
 
   /**
@@ -57,4 +73,34 @@ export class NotificationService {
 })
 export class SimpleDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+}
+
+@Component({
+  selector: 'app-error-snackbar',
+  templateUrl: 'notification-templates/snackbar-notification-template.html',
+  styles: [
+    `
+      .notification {
+        color: #cb212b;
+      }
+    `
+  ]
+})
+export class ErrorSnackbarComponent {
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {}
+}
+
+@Component({
+  selector: 'app-success-snackbar',
+  templateUrl: 'notification-templates/snackbar-notification-template.html',
+  styles: [
+    `
+      .notification {
+        color: white;
+      }
+    `
+  ]
+})
+export class SuccessSnackbarComponent {
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {}
 }

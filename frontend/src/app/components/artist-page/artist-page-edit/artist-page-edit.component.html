@@ -1,15 +1,100 @@
-<div class="artist-page-edit-container">
-  <h1>Edit profile</h1>
-  <div mat-dialog-content>
-    <mat-form-field appearance="fill" class="artist-page-edit-description">
-      <mat-label>Description</mat-label>
-      <textarea #description matInput [(ngModel)]="data.description" rows="5" maxlength="512"></textarea>
-      <mat-hint align="end">{{description.value.length}} / 512</mat-hint>
-    </mat-form-field>
-  </div>
-  <div mat-dialog-actions align="end">
-    <button mat-button (click)="onNoClick()">Close</button>
-    <button mat-button [mat-dialog-close]="data">Save</button>
-  </div>
+<div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
+  <mat-tab-group backgroundColor="primary">
+    <mat-tab label="Public profile">
+      <h2 class="primary">Edit your profile</h2>
+      <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
+         <form class="edit-page-pf-form" [formGroup]="editForm" (ngSubmit)="saveUser()">
+           <div fxLayout="row" fxLayoutGap="0.5rem">
+             <mat-form-field class="full-width primary" appearance="fill">
+               <mat-label class="primary">First name</mat-label>
+               <input aria-describedby="firstnameHelp" formControlName="firstname" matInput name="firstname">
+               <mat-error *ngIf="editForm.controls.firstname.errors">
+                 <mat-error *ngIf="editForm.controls.firstname.errors.required">Your first name is required! </mat-error>
+                 <mat-error *ngIf="editForm.controls.firstname.errors.pattern">Your first name contains invalid symbols! </mat-error>
+               </mat-error>
+             </mat-form-field>
+
+             <mat-form-field class="full-width primary" appearance="fill">
+               <mat-label class="primary">Last name</mat-label>
+               <input aria-describedby="lastnameHelp" formControlName="lastname" matInput name="lastname">
+               <mat-error *ngIf="editForm.controls.firstname.errors">
+                 <mat-error *ngIf="editForm.controls.firstname.errors.required">Your last name is required! </mat-error>
+                 <mat-error *ngIf="editForm.controls.firstname.errors.pattern">Your last name contains invalid symbols! </mat-error>
+               </mat-error>
+             </mat-form-field>
+           </div>
+
+           <mat-form-field class="full-width primary" appearance="fill">
+             <mat-label class="primary">Username</mat-label>
+             <input aria-describedby="usernameHelp" formControlName="username" matInput name="username">
+             <mat-error *ngIf="editForm.controls.username.errors" >
+               <small *ngIf="editForm.controls.username.errors.required">Your username is required! </small>
+               <small  *ngIf="editForm.controls.username.errors.pattern">Your username contains invalid symbols! </small>
+             </mat-error>
+           </mat-form-field>
+
+           <mat-form-field class="full-width primary" appearance="fill">
+             <mat-label class="primary">E-Mail</mat-label>
+             <input matInput type="email" name="email" formControlName="email" aria-describedby="emailHelp">
+             <mat-error *ngIf="editForm.controls.email.errors">
+               <small *ngIf="editForm.controls.email.errors.required">Your email is required! </small>
+               <small *ngIf="editForm.controls.email.errors.email">The email you entered is invalid! </small>
+             </mat-error>
+           </mat-form-field>
+
+           <!-- TODO: PASSWORD CHANGE -->
+           <!--
+           <div fxLayout="row" fxLayoutGap="0.5rem">
+             <mat-form-field class="full-width" appearance="fill">
+               <mat-label>Password</mat-label>
+               <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" name="password" formControlName="password">
+               <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                 <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+               </button>
+               <mat-error *ngIf="editForm.controls.password.errors" >
+                 <small *ngIf="editForm.controls.password.errors.required">Your password is required!</small>
+                 <small *ngIf="editForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
+               </mat-error>
+             </mat-form-field>
+
+             <mat-form-field class="full-width" appearance="fill">
+               <mat-label>Confirm Password</mat-label>
+               <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" name="confirm" formControlName="confirm" id="confirm">
+               <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                 <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+               </button>
+
+               <mat-error *ngIf="editForm.controls.confirm.errors">
+                 <small  *ngIf="editForm.controls.confirm.errors.required">Your password is required!</small>
+                 <small  *ngIf="editForm.controls.confirm.errors.minlength">Your password must be at least 8 characters long!</small>
+                 <small *ngIf="editForm.controls.confirm.errors.mustMatch">Password and Confirm Password must be match.</small>
+               </mat-error>
+
+             </mat-form-field>
+           </div>
+           -->
+
+           <mat-form-field class="full-width primary" appearance="fill" *ngIf="isArtist">
+             <mat-label class="primary">Description</mat-label>
+             <textarea #description matInput rows="6" maxlength="512" name="description" formControlName="description" aria-describedby="descriptionHelp"></textarea>
+             <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint>
+             <mat-hint align="end">{{description.value.length}} / 512</mat-hint>
+           </mat-form-field>
+         </form>
+      </div>
+    </mat-tab>
+    <mat-tab label="Appearance">
+
+    </mat-tab>
+    <mat-tab label="Profile Elements">
+
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
+<div class="save-button">
+  <button mat-button color="accent" (click)="saveUser()">
+    <mat-icon color="accent">save</mat-icon>
+    <span class="save-text">Save your page</span>
+  </button>
+</div>

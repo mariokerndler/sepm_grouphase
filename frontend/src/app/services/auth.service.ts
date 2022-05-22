@@ -14,7 +14,25 @@ export class AuthService {
 
   private authBaseUri: string = this.globals.backendUri + '/authentication';
 
-  constructor(private httpClient: HttpClient, private globals: Globals) {
+  constructor(
+    private httpClient: HttpClient,
+    private globals: Globals) {
+  }
+
+  private static setToken(authResponse: string) {
+    localStorage.setItem('authToken', authResponse);
+  }
+
+  private static getTokenExpirationDate(token: string): Date {
+
+    const decoded: any = jwt_decode(token);
+    if (decoded.exp === undefined) {
+      return null;
+    }
+
+    const date = new Date(0);
+    date.setUTCSeconds(decoded.exp);
+    return date;
   }
 
   /**
@@ -25,16 +43,15 @@ export class AuthService {
   loginUser(authRequest: AuthRequest): Observable<string> {
     return this.httpClient.post(this.authBaseUri, authRequest, {responseType: 'text'})
       .pipe(
-        tap((authResponse: string) => this.setToken(authResponse))
+        tap((authResponse: string) => AuthService.setToken(authResponse))
       );
   }
-
 
   /**
    * Check if a valid JWT token is saved in the localStorage
    */
   isLoggedIn() {
-    return !!this.getToken() && (this.getTokenExpirationDate(this.getToken()).valueOf() > new Date().valueOf());
+    return !!this.getToken() && (AuthService.getTokenExpirationDate(this.getToken()).valueOf() > new Date().valueOf());
   }
 
   logoutUser() {
@@ -61,21 +78,4 @@ export class AuthService {
     }
     return 'UNDEFINED';
   }
-
-  private setToken(authResponse: string) {
-    localStorage.setItem('authToken', authResponse);
-  }
-
-  private getTokenExpirationDate(token: string): Date {
-
-    const decoded: any = jwt_decode(token);
-    if (decoded.exp === undefined) {
-      return null;
-    }
-
-    const date = new Date(0);
-    date.setUTCSeconds(decoded.exp);
-    return date;
-  }
-
 }

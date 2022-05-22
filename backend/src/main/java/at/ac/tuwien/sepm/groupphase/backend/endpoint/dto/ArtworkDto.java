@@ -15,6 +15,7 @@ public class ArtworkDto {
     private long id;
     private String name;
     private String description;
+    private byte[] imageData;
     private String  imageUrl;
     private FileType fileType;
     private  long artistId;

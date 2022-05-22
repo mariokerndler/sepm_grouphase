@@ -44,12 +44,8 @@ public class Commission {
     @Column(nullable = false)
     private String instructions;
 
-    //TODO: Add reference pictures functionality
-    //TODO: Make image and reference their own entity and implement parent child relationships when extra meta data is needed
-    /*
-    @OneToMany(mappedBy = "reference")
-    private List<Reference> reference;
-     */
+    @OneToMany(mappedBy = "commission")
+    private List<Reference> references;
 
     @OneToMany(mappedBy = "commission")
     private List<Receipt> receipts;
@@ -60,7 +56,7 @@ public class Commission {
     @OneToOne(mappedBy = "commission")
     private Artwork artwork;
 
-    public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Receipt> receipts, Review review, Artwork artwork) {
+    public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Reference> references, List<Receipt> receipts, Review review, Artwork artwork) {
         this.artist = artist;
         this.customer = customer;
         this.sketchesShown = sketchesShown;
@@ -69,6 +65,7 @@ public class Commission {
         this.issueDate = issueDate;
         this.deadlineDate = deadlineDate;
         this.instructions = instructions;
+        this.references = references;
         this.receipts = receipts;
         this.review = review;
         this.artwork = artwork;

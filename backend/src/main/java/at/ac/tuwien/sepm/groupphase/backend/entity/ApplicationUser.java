@@ -57,12 +57,6 @@ public class ApplicationUser {
         this.userRole = userRole;
     }
 
-    public ApplicationUser(String email, String password, Boolean admin) {
-        this.email = email;
-        this.password = password;
-        this.admin = admin;
-    }
-
     @Override
     public String toString() {
         return "ApplicationUser{" +

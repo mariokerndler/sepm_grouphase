@@ -31,6 +31,9 @@ public class Image {
         this.fileType = fileType;
     }
 
+    @Transient
+    byte[] imageData;
+
     @Override
     public String toString() {
         return "Image{" +

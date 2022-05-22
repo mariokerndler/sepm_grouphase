@@ -57,10 +57,33 @@ public class ImageFileManager {
         imageFile.delete();
     }
 
-    public void writeArtistProfileImage(  ){
+    public void writeAndReplaceArtistProfileImage(  Artist a) throws IOException {
+
+        File f = new File(ImageDataPaths.artistProfilePictureLocation+"/"+a.getUserName());
+        if(!f.isDirectory() || ! f.exists()){
+            Files.createDirectories(f.toPath());
+        }
+        File profilePicture   = new File(ImageDataPaths.artistProfilePictureLocation+"/"+a.getUserName()+"/"
+            +ImageDataPaths.artistProfilePictureIdentifier);
+        try (FileOutputStream outputStream = new FileOutputStream(profilePicture)) {
+            outputStream.write(a.getProfilePicture().getImageData());
+        } catch (IOException e) {
+            log.info(e.getMessage());
+            e.printStackTrace();
+        }
 
     }
-
+    public  byte[] readArtistProfileImageData(Artist a){
+                    try {
+                        byte[] imageData= Files.readAllBytes(Path.of(ImageDataPaths.artistProfilePictureLocation+"/"+a.getUserName()+"/"
+                            +ImageDataPaths.artistProfilePictureIdentifier));
+                        return imageData;
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+    }
     public void renameArtistFolder(Artist artist,String oldUserName) throws IOException {
         File oldImageFile = new File( ImageDataPaths.artistProfileLocation+oldUserName);
         Files.move(oldImageFile.toPath(),oldImageFile.toPath().resolveSibling( ImageDataPaths.artistProfileLocation+ artist.getUserName() ));

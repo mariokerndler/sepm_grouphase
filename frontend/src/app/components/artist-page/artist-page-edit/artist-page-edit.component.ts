@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {NotificationService} from '../../../common/service/notification.service';
+import {NotificationService} from '../../../services/notification/notification.service';
 import {Artist} from '../../../dtos/artist';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -19,10 +19,11 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   isArtist: boolean;
 
   editForm: FormGroup;
-  submitted = false;
 
   passwordForm: FormGroup;
   showPassword = false;
+
+  appearanceForm: FormGroup;
 
   artistProfilePicture;
   private routeSubscription: Subscription;
@@ -48,6 +49,14 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       confirm: ['', [Validators.required, Validators.minLength(8)]]
     }, {
       validator: this.mustMatch('password', 'confirm')
+    });
+
+    // TODO: Figure out why this is reversed?
+    this.appearanceForm = this.formBuilder.group({
+      backgroundColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]],
+      primaryColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]],
+      secondaryColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]],
+      headerColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]]
     });
   }
 
@@ -75,8 +84,13 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
   }
 
-  saveUser() {
-    this.submitted = true;
+  saveSettings() {
+    this.updateUser();
+    this.updatePassword();
+    this.updateAppearance();
+  }
+
+  updateUser() {
     if (this.editForm.valid) {
       const firstname = this.editForm.controls.firstname.value;
       const lastname = this.editForm.controls.lastname.value;
@@ -84,13 +98,32 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       const email = this.editForm.controls.email.value;
       const description = this.editForm.controls.description.value;
 
-      // TODO: Save User
+      // TODO: Update User
       console.log(firstname + ' ' + lastname + ' ' + username + ' ' + email + ' ' + description);
     }
   }
 
-  changePassword() {
-    // TODO: Change password
+  updatePassword() {
+    if(this.passwordForm.valid) {
+      const oldPassword = this.passwordForm.controls.oldPassword.value;
+      const newPassword = this.passwordForm.controls.password.value;
+      const confirmPassword = this.passwordForm.controls.confirm.value;
+
+      // TODO: Update password
+      console.log(oldPassword + ' ' + newPassword + ' ' + confirmPassword);
+    }
+  }
+
+  updateAppearance() {
+    if(this.appearanceForm.valid) {
+      const bgColor = this.appearanceForm.controls.backgroundColor.value;
+      const primaryColor = this.appearanceForm.controls.primaryColor.value;
+      const secondaryColor = this.appearanceForm.controls.secondaryColor.value;
+      const headerColor = this.appearanceForm.controls.headerColor.value;
+
+      // TODO: Update appearance
+      console.log(bgColor + ' ' + primaryColor + ' ' + secondaryColor + ' ' + headerColor);
+    }
   }
 
   mustMatch(controlName: string, matchingControlName: string) {

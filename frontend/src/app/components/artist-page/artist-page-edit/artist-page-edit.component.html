@@ -3,7 +3,7 @@
     <mat-tab label="Public profile">
       <h2 class="primary">Edit your profile</h2>
       <div class="edit-page-pf-wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="0.8rem">
-         <form class="edit-page-pf-form" [formGroup]="editForm" (ngSubmit)="saveUser()">
+         <form class="edit-page-pf-form" [formGroup]="editForm">
            <div fxLayout="row" fxLayoutGap="0.5rem">
              <mat-form-field class="full-width primary" appearance="fill">
                <mat-label class="primary">First name</mat-label>
@@ -63,12 +63,13 @@
             </button>
         </div>
       </div>
+      <button mat-flat-button color="accent" (click)="updateUser()">Update user</button>
     </mat-tab>
 
     <mat-tab label="Password">
       <h2 class="primary">Change your password</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
-        <form class="edit-page-pf-form" [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+        <form class="edit-page-pf-form" [formGroup]="passwordForm">
           <mat-form-field class="full-width primary" appearance="fill">
             <mat-label class="primary">Old password</mat-label>
             <input matInput [type]="!showPassword ? 'password' : 'text'" name="oldPassword" formControlName="oldPassword">
@@ -101,7 +102,7 @@
         </form>
 
         <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
-          <button mat-flat-button color="accent" (click)="changePassword()">Update password</button>
+          <button mat-flat-button color="accent" (click)="updatePassword()">Update password</button>
           <mat-checkbox [(ngModel)]="showPassword">Show Password</mat-checkbox>
         </div>
 
@@ -109,8 +110,54 @@
     </mat-tab>
 
     <mat-tab label="Appearance">
+      <h2 class="primary">Update the profile appearance</h2>
+      <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
+        <form class="edit-page-pf-form" [formGroup]="appearanceForm">
+          <mat-form-field appearance="fill" class="full-width primary">
+            <mat-label class="primary">Background</mat-label>
+            <input matInput [ngxMatColorPicker]="bgPicker" formControlName="backgroundColor" class="primary">
+            <ngx-mat-color-toggle matSuffix [for]="bgPicker" class="primary"></ngx-mat-color-toggle>
+            <ngx-mat-color-picker #bgPicker></ngx-mat-color-picker>
+            <mat-error *ngIf="appearanceForm.controls.backgroundColor.errors">
+              <small *ngIf="appearanceForm.controls.backgroundColor.errors.pattern">The background color must be in hex format!</small>
+            </mat-error>
+          </mat-form-field>
 
+          <mat-form-field appearance="fill" class="full-width primary">
+            <mat-label class="primary">Primary</mat-label>
+            <input matInput [ngxMatColorPicker]="primaryPicker" formControlName="primaryColor" class="primary">
+            <ngx-mat-color-toggle matSuffix [for]="primaryPicker" class="primary"></ngx-mat-color-toggle>
+            <ngx-mat-color-picker #primaryPicker></ngx-mat-color-picker>
+            <mat-error *ngIf="appearanceForm.controls.primaryColor.errors">
+              <small *ngIf="appearanceForm.controls.primaryColor.errors.pattern">The primary color must be in hex format!</small>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width primary">
+            <mat-label class="primary">Secondary</mat-label>
+            <input matInput [ngxMatColorPicker]="secondaryPicker" formControlName="secondaryColor" class="primary">
+            <ngx-mat-color-toggle matSuffix [for]="secondaryPicker" class="primary"></ngx-mat-color-toggle>
+            <ngx-mat-color-picker #secondaryPicker></ngx-mat-color-picker>
+            <mat-error *ngIf="appearanceForm.controls.secondaryColor.errors">
+              <small *ngIf="appearanceForm.controls.secondaryColor.errors.pattern">The secondary color must be in hex format!</small>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width primary">
+            <mat-label class="primary">Header</mat-label>
+            <input matInput [ngxMatColorPicker]="headerPicker" formControlName="headerColor" class="primary">
+            <ngx-mat-color-toggle matSuffix [for]="headerPicker" class="primary"></ngx-mat-color-toggle>
+            <ngx-mat-color-picker #headerPicker></ngx-mat-color-picker>
+            <mat-error *ngIf="appearanceForm.controls.headerColor.errors">
+              <small *ngIf="appearanceForm.controls.headerColor.errors.pattern">The header color must be in hex format!</small>
+            </mat-error>
+          </mat-form-field>
+        </form>
+
+        <button mat-flat-button color="accent" (click)="updateAppearance()">Update appearance</button>
+      </div>
     </mat-tab>
+
     <mat-tab label="Profile Elements">
 
     </mat-tab>
@@ -118,7 +165,7 @@
 </div>
 
 <div class="save-button">
-  <button mat-button color="accent" (click)="saveUser()">
+  <button mat-button color="accent" (click)="saveSettings()">
     <mat-icon color="accent">save</mat-icon>
     <span class="save-text">Save your page</span>
   </button>

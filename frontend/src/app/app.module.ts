@@ -9,6 +9,7 @@ import {httpInterceptorProviders} from './interceptors';
 import { AngularMaterialModule} from './components/angular-material/angular-material.module';
 import { FlexLayoutModule} from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS} from '@angular-material-components/color-picker';
 
 // Routing
 import {AppRoutingModule} from './app-routing.module';
@@ -28,7 +29,7 @@ import {
   ErrorSnackbarComponent,
   SimpleDialogComponent,
   SuccessSnackbarComponent
-} from './common/service/notification.service';
+} from './services/notification/notification.service';
 import { ArtistPageEditComponent } from './components/artist-page/artist-page-edit/artist-page-edit.component';
 
 @NgModule({
@@ -57,10 +58,15 @@ import { ArtistPageEditComponent } from './components/artist-page/artist-page-ed
     FormsModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    NgxMatColorPickerModule
   ],
   providers: [
     httpInterceptorProviders,
+    {
+      provide: MAT_COLOR_FORMATS,
+      useValue: NGX_MAT_COLOR_FORMATS
+    }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

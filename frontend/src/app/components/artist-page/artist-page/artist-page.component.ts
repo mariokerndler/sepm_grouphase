@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Artist} from '../../../dtos/artist';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {NotificationService} from '../../../common/service/notification.service';
+import {NotificationService} from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-artist-page',
@@ -25,7 +25,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // TODO: Fetch real data
     this.routeSubscription = this.route.params
-      .subscribe(params => this.fakerService
+      .subscribe(_ => this.fakerService
         .generateFakeArtist(1, 2, 5)
         .subscribe(artist => this.artist = artist));
   }

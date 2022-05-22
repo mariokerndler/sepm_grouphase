@@ -1,26 +1,31 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.transaction.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/artwork")
+@Slf4j
 public class ArtworkEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final ArtworkService artworkService;
@@ -29,6 +34,30 @@ public class ArtworkEndpoint {
     public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper) {
         this.artworkService = artworkService;
         this.artworkMapper = artworkMapper;
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    @ResponseBody
+    @Transactional
+    @Operation(summary = "searchArtworks like this:http://localhost:8080/artwork?search=id>1")
+    public List<ArtworkDto> search(@RequestParam(value = "search") String search) {
+        GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(search + ",");
+        log.info(search);
+        while (matcher.find()) {
+            log.info(matcher.group(1));
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+
+        Specification<Artwork> spec = builder.build();
+
+        List<Artwork> artworks =artworkService.searchArtworks(spec);
+
+        List<ArtworkDto> artworksDto= artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        return artworksDto;
     }
 
 
@@ -40,10 +69,10 @@ public class ArtworkEndpoint {
         LOGGER.info("Get /Artist");
         try {
             List<Artwork> artworks=artworkService.findArtworksByArtist(id);
-            LOGGER.info(artworks.get(0).getImageUrl());
+
             List<ArtworkDto> artworksDto= artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
-            LOGGER.info(artworksDto.get(0).toString());
+
             return artworksDto;
         } catch (Exception n) {
             LOGGER.error(n.getMessage());

@@ -64,6 +64,7 @@
            aria-describedby="usernameHelp" >
     <mat-error *ngIf="registerForm.controls.username.errors" >
       <small *ngIf="registerForm.controls.username.errors.required">Your username is required! </small>
+      <small  *ngIf="registerForm.controls.username.errors.pattern">Your username contains invalid symbols! </small>
     </mat-error>
   </mat-form-field>
 

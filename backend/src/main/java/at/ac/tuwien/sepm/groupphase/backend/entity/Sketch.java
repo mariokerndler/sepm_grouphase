@@ -12,42 +12,29 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@DiscriminatorValue("Sketch")
 @Entity
-public class Sketch {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Sketch extends Image{
 
     @Column(nullable = false, length = 50)
     private String description;
-
-    @Column(nullable = false, length = 150, unique = true)
-    private String imageUrl;
-
-    @Column(nullable = false)
-    private FileType fileType;
 
     @ManyToOne
     @JoinColumn(name="artwork")
     private Artwork artwork;
 
     public Sketch(String description, String imageUrl, FileType fileType, Artwork artwork) {
+        super(imageUrl, fileType);
         this.description = description;
-        this.imageUrl = imageUrl;
-        this.fileType = fileType;
         this.artwork = artwork;
     }
 
     @Override
     public String toString() {
         return "Sketch{" +
-            "id=" + id +
-            ", description='" + description + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", fileType=" + fileType +
+            "description='" + description + '\'' +
             ", artwork=" + artwork.getId() +
-            '}';
+            '}' + super.toString();
     }
 
     @Override
@@ -64,7 +51,7 @@ public class Sketch {
         if (getClass() != obj.getClass())
             return false;
         Sketch other = (Sketch) obj;
-        return id != null && id.equals(other.getId());
+        return this.getId() != null && this.getId().equals(other.getId());
     }
 
 }

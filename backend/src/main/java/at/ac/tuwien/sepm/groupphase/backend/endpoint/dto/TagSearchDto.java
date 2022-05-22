@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class TagSearchDto {
     private List<String> tagIds;
     private String searchOperations;

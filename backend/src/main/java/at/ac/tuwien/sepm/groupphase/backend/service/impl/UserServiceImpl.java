@@ -89,6 +89,7 @@ public class UserServiceImpl implements UserService {
     public void registerUser(ApplicationUser user)    {
         LOGGER.debug("Service: Register User ",user.toString());
         userValidator.validateUser(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
 
 

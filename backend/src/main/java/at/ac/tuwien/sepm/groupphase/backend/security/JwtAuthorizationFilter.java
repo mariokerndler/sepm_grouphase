@@ -36,11 +36,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws IOException, ServletException {
 
-        // if a registration is completed, the post-request contains the header Auth : Registration
+        // if a registration is completed, the post-request contains the header auth : Registration
         // and this filter is disabled.
         // Todo Maybe there is a better solution than this
-        if(Objects.equals(request.getHeader("Auth"), "Registration")){
-            return;
+        if(Objects.equals(request.getHeader("auth"), "Registration")){
+           chain.doFilter(request, response);
+           return;
         }
 
         try {
@@ -59,6 +60,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthToken(HttpServletRequest request)
         throws JwtException, IllegalArgumentException {
+
         String token = request.getHeader(securityProperties.getAuthHeader());
         if (token == null || token.isEmpty()) {
             return null;

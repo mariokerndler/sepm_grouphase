@@ -15,6 +15,7 @@ import java.util.List;
 public class TagSearchDto {
    private List<String> tagIds;
     private String searchOperations;
+    private  int pageNr=0;
 
     @Override
     public String toString() {

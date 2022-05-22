@@ -14,7 +14,11 @@ import org.hibernate.type.StringNVarcharType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -52,10 +56,10 @@ public class ArtworkEndpoint {
     @ResponseBody
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
-    public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto ) {
+    public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto  ) {
         String search= tagSearchDto.getSearchOperations();
 
-
+        Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
         String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(
@@ -72,7 +76,7 @@ public class ArtworkEndpoint {
 
         Specification<Artwork> spec = builder.build();
 
-        if(!tagSearchDto.getTagIds().isEmpty()) {
+        if(tagSearchDto.getTagIds()!=null) {
             if (spec == null) {
                 spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
             }
@@ -81,9 +85,8 @@ public class ArtworkEndpoint {
             }
             log.info(tagSearchDto.getSearchOperations());
         }
+        return artworkService.searchArtworks(spec,page).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
-        List<ArtworkDto> artworksDto=artworkService.searchArtworks(spec).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
-        return artworksDto;
     }
 
 

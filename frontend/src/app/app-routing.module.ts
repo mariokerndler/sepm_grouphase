@@ -5,12 +5,14 @@ import {LoginComponent} from './components/login/login.component';
 import {AuthGuard} from './guards/auth.guard';
 import {MessageComponent} from './components/message/message.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
+import {ArtistGalleryComponent} from './components/artist-page/artist-gallery/artist-gallery.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
-  {path: 'artist/:id', component: ArtistPageComponent}
+  {path: 'artist/:id', component: ArtistPageComponent},
+  {path: 'artist/:id/gallery', component: ArtistPageComponent}
 ];
 
 @NgModule({

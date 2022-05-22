@@ -9,6 +9,7 @@ import {Artwork} from '../../../dtos/artwork';
 export class CardViewComponent implements OnInit {
 
   @Input() artwork: Artwork;
+  @Input() classifiedArtist: boolean;
 
   constructor() { }
 

@@ -20,7 +20,7 @@
     <div class="artist-middle-menu">
       <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-evenly center" class="artist-middle-menu-container">
         <button mat-button routerLink="/artist/{{artist.id}}" color="accent">Home</button>
-        <button mat-button routerLink="/artist/{{artist.id}}/{{artist.galleryId}}" color="accent">Gallery</button>
+        <button mat-button routerLink="/artist/{{artist.id}}/gallery" color="accent">Gallery</button>
         <button mat-button routerLink="/artist/{{artist.id}}/reviews" color="accent">Reviews</button>
         <button mat-button routerLink="/artist/{{artist.id}}/contact" color="accent">Contact</button>
       </div>
@@ -30,6 +30,12 @@
       <p class="primary artist-about-description">
         {{artist.description}}
       </p>
+      <div>
+        <span class="primary artist-about-header">Gallery</span>
+        <a fxFlex fxLayoutAlign="end" class="primary see-more-link" routerLink="/artist/{{artist.id}}/gallery">See More</a>
+      </div>
+      <app-midsection [artistId]="artist.id" [columnCount]="4" [imageAmount]="8"></app-midsection>
+
     </div>
   </div>
 </div>

@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue("Artwork")
 @Entity
 public class Artwork extends Image{
 

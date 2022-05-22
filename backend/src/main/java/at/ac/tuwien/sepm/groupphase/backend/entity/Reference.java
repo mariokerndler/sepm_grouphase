@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue("Reference")
 @Entity
 public class Reference extends Image{
 

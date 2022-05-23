@@ -26,6 +26,7 @@ import { ArtistPageComponent } from './components/artist-page/artist-page/artist
 import { ArtistInformationComponent } from './components/artist-page/artist-information/artist-information.component';
 import {SimpleDialogComponent} from './common/service/notification.service';
 import {RegistrationComponent} from './components/registration/registration.component';
+import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {RegistrationComponent} from './components/registration/registration.comp
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    ArtistGalleryComponent
   ],
   imports: [
     BrowserModule,

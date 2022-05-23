@@ -12,7 +12,9 @@ export class MidsectionComponent implements OnInit {
 
   @Input() artistId: number;
   @Input() columnCount = 5;
+  @Input() imageAmount = 12;
   artworks: Artwork[];
+  classifiedArtist: boolean;
 
   constructor(
     private fakerService: FakerGeneratorService
@@ -22,6 +24,7 @@ export class MidsectionComponent implements OnInit {
     const artist: Artist = this.fetchArtist(this.artistId);
 
     this.artworks = this.fetchArtworks(artist ? artist.artworkIds : null);
+    this.classifiedArtist = (this.artistId != null);
   }
 
   private fetchArtist(artistId?: number): Artist {
@@ -38,7 +41,7 @@ export class MidsectionComponent implements OnInit {
     let artworks: Artwork[] = [];
 
     if(!artworkIds) {
-      this.fakerService.generateFakeArtworkByAmount(12).subscribe({
+      this.fakerService.generateFakeArtworkByAmount(this.imageAmount).subscribe({
         next: (fakeArtworks) => {
           artworks = fakeArtworks;
         }

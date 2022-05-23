@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 public class UserDataGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
-    private static final int NUMBER_OF_PROFILES_TO_GENERATE = 20;
+    private static final int NUMBER_OF_PROFILES_TO_GENERATE = 0;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
     private static final String artistProfileDir = "./data/ap";
     private static final String tagDir = "./data/tags/tags.txt";

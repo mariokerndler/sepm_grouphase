@@ -11,10 +11,10 @@
         </div>
       </div>
       <div fxFlex="auto" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
-          <button mat-button color="accent" fxLayout="center center">
-            <mat-icon color="accent">edit</mat-icon>
-            <span fxHide.lt-md="true">Edit Your Page</span>
-          </button>
+        <button mat-button color="accent" fxLayout="center center">
+          <mat-icon color="accent">edit</mat-icon>
+          <span fxHide.lt-md="true">Edit Your Page</span>
+        </button>
       </div>
     </div>
     <div class="artist-middle-menu">
@@ -26,17 +26,21 @@
       </div>
     </div>
     <div>
-      <span class="primary artist-about-header">About</span>
-      <p class="primary artist-about-description">
-        {{artist.description}}
-      </p>
-      <div>
-        <span class="primary artist-about-header">Gallery</span>
-        <a fxFlex fxLayoutAlign="end" class="primary see-more-link" routerLink="/artist/{{artist.id}}/gallery">See More</a>
-      </div>
-      <app-midsection [artistId]="artist.id" [columnCount]="4" [imageAmount]="8"></app-midsection>
-
+      <span class="primary artist-gallery-header">Gallery</span>
+      <app-midsection [artistId]="artist.id" [columnCount]="4"></app-midsection>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
 

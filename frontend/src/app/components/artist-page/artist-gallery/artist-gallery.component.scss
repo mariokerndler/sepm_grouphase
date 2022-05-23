@@ -35,7 +35,7 @@
   text-decoration: none;
 }
 
-.artist-about-header {
+.artist-gallery-header {
   font-weight: bold;
   font-size: 1.3rem;
 }
@@ -46,14 +46,7 @@
   max-width: 50%;
 }
 
-.see-more-link{
-  text-decoration: none;
-}
 
-
-.see-more-link:hover{
-  text-decoration: underline;
-}
 
 @media screen and (max-width: 959px) {
   .artist-about-description {

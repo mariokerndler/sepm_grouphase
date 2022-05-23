@@ -30,4 +30,20 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
   }
+
+  returnCurrentSection(){
+    switch(this.router.url) {
+      case '/artist/' + this.artist.id + '/gallery': {
+        return 'gallery';
+      }
+      case '/artist/' + this.artist.id + '/reviews': {
+        return 'reviews';
+      }
+      default: {
+        return 'home';
+      }
+    }
+  }
+
+
 }

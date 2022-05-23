@@ -218,10 +218,10 @@ export class FakerGeneratorService {
     return of(FakerGeneratorService.fakeTags(amount));
   }
 
-  generateFakeGallery(id: number, galleryId: number, artistId: number): Observable<Gallery> {
+  generateFakeGallery(id: number, artistId: number): Observable<Gallery> {
     const artworks: Artwork[] = FakerGeneratorService.fakeArtworks(FakerGeneratorService.getRandomFromRange(2, 5));
     const artworkIds = artworks.map((x) => x.id);
-    const gallery: Gallery = FakerGeneratorService.fakeGallery(galleryId, artistId, artworkIds);
+    const gallery: Gallery = FakerGeneratorService.fakeGallery(id, artistId, artworkIds);
 
     return of(gallery);
   }
@@ -230,7 +230,7 @@ export class FakerGeneratorService {
     const galleries: Gallery[] = [];
 
     for (let i = 0; i < amount; i++) {
-      this.generateFakeGallery(i, i + 1, i + 2).subscribe({
+      this.generateFakeGallery(i, i + 1).subscribe({
         next: (gallery) => galleries.push(gallery)
       });
     }

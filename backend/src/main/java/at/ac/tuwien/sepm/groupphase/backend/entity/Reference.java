@@ -1,44 +1,41 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class Sketch extends Image{
+public class Reference extends Image{
 
-    @Column(nullable = false, length = 50)
-    private String description;
 
     @ManyToOne
-    @JoinColumn(name="artwork")
-    private Artwork artwork;
+    @JoinColumn(nullable = false)
+    private Commission commission;
 
-    public Sketch(String description, String imageUrl, FileType fileType, Artwork artwork) {
+    public Reference(String imageUrl, FileType fileType, Commission commission) {
         super(imageUrl, fileType);
-        this.description = description;
-        this.artwork = artwork;
+        this.commission = commission;
     }
 
     @Override
     public String toString() {
-        return "Sketch{" +
-            "description='" + description + '\'' +
-            ", artwork=" + artwork.getId() +
+        return "Reference{" +
+            "commission=" + commission +
             '}' + super.toString();
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return 43;
     }
 
     @Override
@@ -49,8 +46,7 @@ public class Sketch extends Image{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Sketch other = (Sketch) obj;
+        Reference other = (Reference) obj;
         return this.getId() != null && this.getId().equals(other.getId());
     }
-
 }

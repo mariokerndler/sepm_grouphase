@@ -115,42 +115,30 @@
         <form class="edit-page-pf-form" [formGroup]="appearanceForm">
           <mat-form-field appearance="fill" class="full-width primary">
             <mat-label class="primary">Background</mat-label>
-            <input matInput [ngxMatColorPicker]="bgPicker" formControlName="backgroundColor" class="primary">
+            <input matInput [ngxMatColorPicker]="bgPicker" formControlName="backgroundColor" class="primary" readonly>
             <ngx-mat-color-toggle matSuffix [for]="bgPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #bgPicker></ngx-mat-color-picker>
-            <mat-error *ngIf="appearanceForm.controls.backgroundColor.errors">
-              <small *ngIf="appearanceForm.controls.backgroundColor.errors.pattern">The background color must be in hex format!</small>
-            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="full-width primary">
             <mat-label class="primary">Primary</mat-label>
-            <input matInput [ngxMatColorPicker]="primaryPicker" formControlName="primaryColor" class="primary">
+            <input matInput [ngxMatColorPicker]="primaryPicker" formControlName="primaryColor" class="primary" readonly>
             <ngx-mat-color-toggle matSuffix [for]="primaryPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #primaryPicker></ngx-mat-color-picker>
-            <mat-error *ngIf="appearanceForm.controls.primaryColor.errors">
-              <small *ngIf="appearanceForm.controls.primaryColor.errors.pattern">The primary color must be in hex format!</small>
-            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="full-width primary">
             <mat-label class="primary">Secondary</mat-label>
-            <input matInput [ngxMatColorPicker]="secondaryPicker" formControlName="secondaryColor" class="primary">
+            <input matInput [ngxMatColorPicker]="secondaryPicker" formControlName="secondaryColor" class="primary" readonly>
             <ngx-mat-color-toggle matSuffix [for]="secondaryPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #secondaryPicker></ngx-mat-color-picker>
-            <mat-error *ngIf="appearanceForm.controls.secondaryColor.errors">
-              <small *ngIf="appearanceForm.controls.secondaryColor.errors.pattern">The secondary color must be in hex format!</small>
-            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="full-width primary">
             <mat-label class="primary">Header</mat-label>
-            <input matInput [ngxMatColorPicker]="headerPicker" formControlName="headerColor" class="primary">
+            <input matInput [ngxMatColorPicker]="headerPicker" formControlName="headerColor" class="primary" readonly>
             <ngx-mat-color-toggle matSuffix [for]="headerPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #headerPicker></ngx-mat-color-picker>
-            <mat-error *ngIf="appearanceForm.controls.headerColor.errors">
-              <small *ngIf="appearanceForm.controls.headerColor.errors.pattern">The header color must be in hex format!</small>
-            </mat-error>
           </mat-form-field>
         </form>
 

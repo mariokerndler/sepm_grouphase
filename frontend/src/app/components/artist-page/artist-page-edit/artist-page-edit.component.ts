@@ -53,10 +53,10 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
     // TODO: Figure out why this is reversed?
     this.appearanceForm = this.formBuilder.group({
-      backgroundColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]],
-      primaryColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]],
-      secondaryColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]],
-      headerColor: ['', [Validators.pattern('/^#([0-9a-f]{6}|[0-9a-f]{3})$/i')]]
+      backgroundColor: ['', []],
+      primaryColor: ['', []],
+      secondaryColor: ['', []],
+      headerColor: ['', []]
     });
   }
 
@@ -115,6 +115,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   }
 
   updateAppearance() {
+    console.log(this.appearanceForm);
     if(this.appearanceForm.valid) {
       const bgColor = this.appearanceForm.controls.backgroundColor.value;
       const primaryColor = this.appearanceForm.controls.primaryColor.value;

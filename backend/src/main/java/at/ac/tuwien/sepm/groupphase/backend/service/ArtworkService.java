@@ -15,7 +15,7 @@ import java.util.List;
 public interface ArtworkService {
     List<Artwork> findArtworksByArtist(Long id);
     void saveArtwork(Artwork a);
-     void deleteArtwork(Artwork a);
+    void deleteArtwork(Artwork a);
 
     List<Artwork> searchArtworks(Specification<Artwork> spec);
     List<Artwork> searchArtworks(Specification<Artwork> spec, Pageable pageable);

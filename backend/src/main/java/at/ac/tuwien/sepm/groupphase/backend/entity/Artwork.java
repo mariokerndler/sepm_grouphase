@@ -51,9 +51,9 @@ public class Artwork extends Image{
         return "Artwork{" +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", artist=" + artist.getId() +
-            ", sketches=" + sketches.stream().map(Sketch::getId).toList() +
-            ", commission=" + commission.getId() +
+            (artist != null ? ", artist=" + artist.getId() : "") +
+            (sketches != null ? ", sketches=" + sketches.stream().map(Sketch::getId).toList() : "") +
+            (commission != null ? ", commission=" + commission.getId() : "") +
             '}' + super.toString();
     }
 

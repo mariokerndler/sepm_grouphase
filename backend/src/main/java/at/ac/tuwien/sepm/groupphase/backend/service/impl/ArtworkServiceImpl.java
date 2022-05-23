@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @Slf4j
@@ -36,6 +37,7 @@ public class ArtworkServiceImpl implements ArtworkService {
 
     @Override
     public void saveArtwork(Artwork a) {
+        System.out.println("saveArtwork: ServiceImpl: "+a.toString());
         this.artworkRepo.save(a);
         this.ifm.writeArtistImage(a);
 

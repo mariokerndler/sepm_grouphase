@@ -23,8 +23,13 @@ public class ImageFileManager {
 
 
     public void writeArtistImage(Artwork a){
-        File outputImage = new File( ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+a.getName());
-        try (FileOutputStream outputStream = new FileOutputStream(outputImage)) {
+        File outputImage = new File( ImageDataPaths.artistProfileLocation+a.getArtist().getUserName() +a.getName() + "." + a.getFileType());
+        //
+        // File directory = new File(ImageDataPaths.artistProfileLocation+a.getArtist().getUserName());
+        if (!outputImage.getParentFile().exists()) {
+            outputImage.getParentFile().mkdirs();
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(outputImage, true)) {
             outputStream.write(a.getImageData());
         } catch (IOException e) {
             log.info(e.getMessage());

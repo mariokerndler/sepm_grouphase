@@ -12,6 +12,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.MessageRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
@@ -72,6 +73,10 @@ public class ArtworkEndpointTest {
 
     @Autowired
     private ArtistRepository artistRepository;
+
+    @Autowired
+    private ArtworkRepository artworkRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -112,6 +117,7 @@ public class ArtworkEndpointTest {
     @BeforeEach
     public void beforeEach() {
         artistRepository.deleteAll();
+        artworkRepository.deleteAll();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
 
@@ -173,6 +179,8 @@ public class ArtworkEndpointTest {
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(aDto);
         System.out.println(aDto);
+
+        // TODO needs an artwork as ByteArray for post
 
         /*mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))

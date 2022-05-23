@@ -129,7 +129,7 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Post new Artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
-        LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
+        LOGGER.info("Post /Artwork/{}" , artworkDto.toString());
         try {
             artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
         } catch (Exception v) {

@@ -2,13 +2,13 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -16,20 +16,19 @@ public class ArtworkDto {
 
     private long id;
 
-    @NotBlank
-    @Max(50)
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Name may only contain numbers or digits")
+    @Size(max = 50)
+    @ValidAlphaNumeric
     private String name;
 
-    @NotBlank
-    @Max(50)
-    @Pattern(regexp = "[a-zA-Z0-9]*", message = "Description may only contain numbers or digits")
+    @Size(max = 255)
+    @ValidAlphaNumeric
     private String description;
 
     @NotNull
     private byte[] imageData;
 
     @NotBlank
+    @Size(max = 255)
     private String imageUrl;
 
     @NotNull

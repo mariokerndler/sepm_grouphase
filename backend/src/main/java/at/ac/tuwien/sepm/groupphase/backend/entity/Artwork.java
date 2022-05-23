@@ -17,7 +17,7 @@ public class Artwork extends Image{
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne

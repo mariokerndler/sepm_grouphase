@@ -25,7 +25,7 @@ public class Review {
     @JoinColumn(nullable = false)
     private ApplicationUser customer;
 
-    @Column(nullable = false, length = 250)
+    @Column(nullable = false)
     private String text;
 
     @OneToOne

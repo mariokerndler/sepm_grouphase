@@ -18,7 +18,7 @@ public class Artist extends ApplicationUser {
     @OneToOne(mappedBy = "artist")
     private ProfilePicture profilePicture;
 
-    @Column(length = 200)
+    @Column
     private String description;
 
     @Column

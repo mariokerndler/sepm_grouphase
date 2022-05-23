@@ -18,23 +18,29 @@ public class ArtistDto {
     private Long id;
 
     @ValidAlphaNumeric
+    @Size(max = 50)
     private String userName;
 
     // TODO: Should we allow more than one first name?
     @ValidAlphaNumeric
+    @Size(max = 50)
     private String name;
 
     @ValidAlphaNumeric
+    @Size(max = 50)
     private String surname;
 
     @NotNull
     @Email
+    @Size(max = 50)
     private String email;
 
     @NotBlank
+    @Size(max = 100)
     private String address;
 
     @NotBlank
+    @Size(max = 100)
     private String password;
 
     @NotNull
@@ -55,6 +61,7 @@ public class ArtistDto {
 
     private List<Review> reviews;
 
+    @Size(max = 255)
     private String artistSettings;
 
     public ArtistDto() {

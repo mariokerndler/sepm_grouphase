@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 
 @Getter
@@ -15,7 +18,7 @@ import javax.persistence.*;
 @Entity
 public class Sketch extends Image{
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne

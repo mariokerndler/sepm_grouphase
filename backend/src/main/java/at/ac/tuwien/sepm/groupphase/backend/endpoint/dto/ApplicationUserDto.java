@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -20,22 +21,28 @@ public class ApplicationUserDto {
     private Long id;
 
     @ValidAlphaNumeric
+    @Size(max = 50)
     private String userName;
 
     @ValidAlphaNumeric
+    @Size(max = 50)
     private String name;
 
     @ValidAlphaNumeric
+    @Size(max = 50)
     private String surname;
 
     @NotNull
     @Email
+    @Size(max = 50)
     private String email;
 
     @NotBlank
+    @Size(max = 100)
     private String address;
 
     @NotBlank
+    @Size(max = 100)
     private String password;
 
     @NotNull

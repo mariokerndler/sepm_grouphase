@@ -13,14 +13,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -45,10 +55,10 @@ public class ArtworkEndpoint {
     @ResponseBody
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
-    public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto ) {
+    public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto  ) {
         String search= tagSearchDto.getSearchOperations();
 
-
+        Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
         String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(
@@ -65,7 +75,7 @@ public class ArtworkEndpoint {
 
         Specification<Artwork> spec = builder.build();
 
-        if(!tagSearchDto.getTagIds().isEmpty()) {
+        if(tagSearchDto.getTagIds()!=null) {
             if (spec == null) {
                 spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
             }
@@ -74,9 +84,8 @@ public class ArtworkEndpoint {
             }
             log.info(tagSearchDto.getSearchOperations());
         }
+        return artworkService.searchArtworks(spec,page).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
-        List<ArtworkDto> artworksDto=artworkService.searchArtworks(spec).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
-        return artworksDto;
     }
 
 
@@ -97,9 +106,10 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@PathVariable Long id ) {
-        LOGGER.info("Delete Artwork/" + id);
-        artworkService.deleteArtwork(id);
+    public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
+        LOGGER.info("Delete Artwork"+artworkDto.getName());
+
+        artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
     }
     @PermitAll
     @PostMapping

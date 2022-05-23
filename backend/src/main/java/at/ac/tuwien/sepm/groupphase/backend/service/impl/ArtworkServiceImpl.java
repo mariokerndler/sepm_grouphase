@@ -2,13 +2,22 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+
 
 import java.util.List;
 
@@ -16,10 +25,11 @@ import java.util.List;
 @Slf4j
 public class ArtworkServiceImpl implements ArtworkService {
     private final ArtworkRepository artworkRepo;
-
+    private  final ImageFileManager ifm;
     @Autowired
-    public ArtworkServiceImpl(ArtworkRepository artworkRepo) {
+    public ArtworkServiceImpl(ArtworkRepository artworkRepo, ImageFileManager ifm) {
         this.artworkRepo = artworkRepo;
+        this.ifm = ifm;
     }
 
     @Override
@@ -30,20 +40,30 @@ public class ArtworkServiceImpl implements ArtworkService {
     @Override
     public void saveArtwork(Artwork a) {
         this.artworkRepo.save(a);
+        this.ifm.writeArtistImage(a);
+
     }
 
     @Override
-    public void deleteArtwork(Long id) {
+    public void deleteArtwork(Artwork a) {
         try {
-            this.artworkRepo.deleteById(id);
+            this.artworkRepo.deleteById(a.getId());
+            this.ifm.deleteArtistImage(a);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException(String.format("Could not find artwork with id %s", id));
         }
-
     }
-
+    //todo fileSystem Implementation
     @Override
     public List<Artwork> searchArtworks(Specification<Artwork> spec) {
         return artworkRepo.findAll(spec);
+    }
+
+    @Override
+    public List<Artwork> searchArtworks(Specification<Artwork> spec,  Pageable pageable) {
+        if(spec==null){
+            return  this.artworkRepo.findAll(pageable).getContent();
+        }
+        return  this.artworkRepo.findAll(spec, pageable).getContent();
     }
 }

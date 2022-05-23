@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @NoArgsConstructor
+@Component
 public class ImageFileManager {
 
 

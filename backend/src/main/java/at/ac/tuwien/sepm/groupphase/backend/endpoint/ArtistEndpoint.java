@@ -81,6 +81,21 @@ public class ArtistEndpoint {
         }
     }
 
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping
+    @Operation(summary = "Update artist")
+    @Transactional
+    public void updateArtist(@RequestBody ArtistDto artistDto) {
+        try {
+            artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage() + artistDto.toString());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        }
+    }
+
     //TODO: if uncommented, swap user for artist
     /*@PermitAll
     @PostMapping

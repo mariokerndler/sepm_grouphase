@@ -3,14 +3,12 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
-import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
@@ -56,12 +54,8 @@ public class UserEndpoint {
     @Operation(summary = "Update user")
     public void updateUser(@RequestBody ApplicationUserDto userDto) {
         log.debug("Post /User/{}", userDto.getUserName());
-        try {
-            userService.updateUser(userMapper.userDtoToUser(userDto));
-        } catch (ValidationException v) {
-            log.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
+
+        userService.updateUser(userMapper.userDtoToUser(userDto));
     }
     @PermitAll
     @PostMapping
@@ -69,11 +63,7 @@ public class UserEndpoint {
     @Operation(summary = "Register user")
     public void registerUser(@RequestBody ApplicationUserDto userDto) {
         log.debug("Post /User/{}", userDto.getUserName());
-        try {
-            userService.registerUser(userMapper.userDtoToUser(userDto));
-        } catch (ValidationException v) {
-            log.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
+
+        userService.registerUser(userMapper.userDtoToUser(userDto));
     }
 }

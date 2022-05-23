@@ -10,24 +10,17 @@ import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.type.StringNVarcharType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -93,34 +86,20 @@ public class ArtworkEndpoint {
     @Operation(summary = "getAllArtworksByArtist")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id ){
         LOGGER.info("Get /Artist");
-        try {
-            List<Artwork> artworks=artworkService.findArtworksByArtist(id);
+        List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
-            List<ArtworkDto> artworksDto= artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        List<ArtworkDto> artworksDto = artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
-
-            return artworksDto;
-        } catch (Exception n) {
-            LOGGER.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        return artworksDto;
     }
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@PathVariable Long id ){
-        LOGGER.info("Get /Artist");
-        try {
-
-            LOGGER.info("Delete Artwork/"+id);
-            artworkService.deleteArtwork(id);
-
-        } catch (Exception n) {
-            LOGGER.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+    public void deleteArtwork(@PathVariable Long id ) {
+        LOGGER.info("Delete Artwork/" + id);
+        artworkService.deleteArtwork(id);
     }
     @PermitAll
     @PostMapping
@@ -128,12 +107,8 @@ public class ArtworkEndpoint {
     @Operation(summary = "Get Detailed informations about a specific user")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
-        try {
-            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-        } catch (Exception v) {
-            LOGGER.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
+
+        artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
 
     }
 }

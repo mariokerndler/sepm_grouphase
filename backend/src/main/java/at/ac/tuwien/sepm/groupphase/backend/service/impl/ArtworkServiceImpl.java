@@ -1,16 +1,15 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 @Service
@@ -35,7 +34,12 @@ public class ArtworkServiceImpl implements ArtworkService {
 
     @Override
     public void deleteArtwork(Long id) {
-        this.artworkRepo.deleteById(id);
+        try {
+            this.artworkRepo.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException(String.format("Could not find artwork with id %s", id));
+        }
+
     }
 
     @Override

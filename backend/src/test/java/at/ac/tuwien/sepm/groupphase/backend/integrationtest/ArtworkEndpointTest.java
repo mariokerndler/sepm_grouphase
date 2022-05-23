@@ -4,16 +4,19 @@ import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.MessageMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.MessageRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -40,6 +43,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -58,7 +62,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @EnableWebMvc
-public class ArtistEndpointTest {
+public class ArtworkEndpointTest {
 
     @Autowired
     private WebApplicationContext webAppContext;
@@ -72,7 +76,7 @@ public class ArtistEndpointTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private ArtistMapper artistMapper;
+    private ArtworkMapper artworkMapper;
 
     @Autowired
     private JwtTokenizer jwtTokenizer;
@@ -85,6 +89,8 @@ public class ArtistEndpointTest {
 
     private Artist artist;
 
+    private Artwork artwork;
+
     public Artist getTestArtist1() {
         return artist = new Artist("testArtist", "bob", "test", "test", "test", passwordEncoder.encode("test")
             , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
@@ -93,6 +99,14 @@ public class ArtistEndpointTest {
     public Artist getTestArtist2() {
         return artist = new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
             , false, UserRole.Artist, null, "TestDescription",null, 2.0, null, null, null, null, null);
+    }
+
+    public Artwork getArtwork() {
+        return artwork = new Artwork("artwork1", "okay dog pls", "./data/image0", FileType.PNG, getArtistById(), null, null);
+    }
+
+    public Artist getArtistById() {
+        return artistRepository.getById(2L);
     }
 
     @BeforeEach
@@ -117,8 +131,9 @@ public class ArtistEndpointTest {
     }
 
     @Test
-    @WithMockUser()
-    public void addArtists() throws Exception {
+    @Transactional
+    @WithMockUser
+    public void addArtistAndAddArtworks() throws Exception {
         ApplicationUser anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
@@ -152,6 +167,16 @@ public class ArtistEndpointTest {
         assertThat(artists2.contains("description"));
         assertThat(artists2.contains(2.0));
 
+        Artwork anArtwork = getArtwork();
+        ArtworkDto aDto = artworkMapper.artworkToArtworkDto(anArtwork);
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson3 = ow3.writeValueAsString(aDto);
+        System.out.println(aDto);
+
+        /*mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson3))
+            .andExpect(status().isOk()).andReturn();*/
 
     }
 

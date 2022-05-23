@@ -127,7 +127,7 @@ public class ArtworkEndpoint {
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get Detailed informations about a specific user")
+    @Operation(summary = "Post new Artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
         try {

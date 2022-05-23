@@ -34,7 +34,7 @@ public interface UserService extends UserDetailsService {
 
     ApplicationUser findUserById(Long id);
 
-    void updateUser(ApplicationUser  user);
+    void updateUser(ApplicationUser user);
 
     List<ApplicationUser> getAllUsers();
 

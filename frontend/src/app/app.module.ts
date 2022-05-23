@@ -31,6 +31,7 @@ import {
   SuccessSnackbarComponent
 } from './services/notification/notification.service';
 import { ArtistPageEditComponent } from './components/artist-page/artist-page-edit/artist-page-edit.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { ArtistPageEditComponent } from './components/artist-page/artist-page-ed
     BrowserAnimationsModule,
     AngularMaterialModule,
     FlexLayoutModule,
-    NgxMatColorPickerModule
+    NgxMatColorPickerModule,
+    DragDropModule
   ],
   providers: [
     httpInterceptorProviders,

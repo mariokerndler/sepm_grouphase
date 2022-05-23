@@ -4,7 +4,13 @@ import {FakerGeneratorService} from '../../../services/faker-generator.service';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {Artist} from '../../../dtos/artist';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {LayoutComponent} from './layoutComponent';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Tag} from '../../../dtos/tag';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {ArtistProfileSettings} from './artistProfileSettings';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -14,6 +20,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
   @ViewChild('fileInput') pfpInput: ElementRef;
+  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
   artist: Artist;
   isArtist: boolean;
@@ -26,6 +33,21 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   appearanceForm: FormGroup;
 
   artistProfilePicture;
+
+  availableComponents: LayoutComponent[] = [
+    { componentName: 'Gallery', disabled: false, tags: []},
+    { componentName: 'Reviews', disabled: false, tags: []}
+  ];
+
+  chosenComponents: LayoutComponent[] = [
+    { componentName: 'Profile information', disabled: true, tags: [] }
+  ];
+
+  selectedComponent: LayoutComponent;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  tagForm = new FormControl();
+  allTags: Tag[] = [];
+
   private routeSubscription: Subscription;
 
   constructor(
@@ -51,7 +73,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       validator: this.mustMatch('password', 'confirm')
     });
 
-    // TODO: Figure out why this is reversed?
     this.appearanceForm = this.formBuilder.group({
       backgroundColor: ['', []],
       primaryColor: ['', []],
@@ -70,6 +91,11 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
         .generateFakeArtist(1, 2, 5)
         .subscribe(artist => this.artist = artist));
 
+    this.fakerService.generateFakeTagByAmount(10)
+      .subscribe({
+        next: (tags) => this.allTags = tags
+      });
+
     this.isArtist = ArtistPageEditComponent.checkIfArtist(this.artist);
     this.artistProfilePicture = this.artist.profilePicture;
 
@@ -85,9 +111,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   }
 
   saveSettings() {
-    this.updateUser();
-    this.updatePassword();
-    this.updateAppearance();
+    console.log(this.chosenComponents);
   }
 
   updateUser() {
@@ -122,8 +146,31 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       const secondaryColor = this.appearanceForm.controls.secondaryColor.value;
       const headerColor = this.appearanceForm.controls.headerColor.value;
 
-      // TODO: Update appearance
-      console.log(bgColor + ' ' + primaryColor + ' ' + secondaryColor + ' ' + headerColor);
+      const artistProfileSetting: ArtistProfileSettings = {
+        backgroundColor: bgColor,
+        primaryColor,
+        secondaryColor,
+        headerColor,
+        layout: this.chosenComponents
+      };
+
+      console.log(artistProfileSetting);
+    }
+  }
+
+  drop(event: CdkDragDrop<({ disabled: boolean; componentName: string })[], any>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      const item = this.availableComponents[event.previousIndex];
+      const newItem = {
+        componentName:  item.componentName,
+        disabled: item.disabled,
+        tags: [...item.tags]
+      };
+
+      newItem.componentName += this.chosenComponents.length;
+      this.chosenComponents.splice(event.currentIndex, 0, newItem);
     }
   }
 
@@ -168,5 +215,28 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       };
       reader.readAsDataURL(file.target.files[0]);
     }
+  }
+
+  componentClick(component: LayoutComponent) {
+    if (component.componentName !== 'Profile information') {
+      this.selectedComponent = component;
+    } else {
+      return;
+    }
+  }
+
+  removeTag(tag: Tag): void {
+    const index = this.selectedComponent.tags.indexOf(tag);
+
+    if(index >= 0) {
+      this.selectedComponent.tags.splice(index, 1);
+    }
+  }
+
+  selectedTag(event: MatAutocompleteSelectedEvent): void {
+    const value: Tag = event.option.value;
+    this.selectedComponent.tags.push(value);
+    this.tagInput.nativeElement.value = '';
+    this.tagForm.setValue(null);
   }
 }

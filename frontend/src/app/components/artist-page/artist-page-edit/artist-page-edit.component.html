@@ -1,5 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
   <mat-tab-group dynamicHeight backgroundColor="primary">
+
     <mat-tab label="Public profile">
       <h2 class="primary">Edit your profile</h2>
       <div class="edit-page-pf-wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="0.8rem">
@@ -113,48 +114,154 @@
       <h2 class="primary">Update the profile appearance</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
         <form class="edit-page-pf-form" [formGroup]="appearanceForm">
-          <mat-form-field appearance="fill" class="full-width primary">
+          <mat-form-field appearance="fill" class="primary">
             <mat-label class="primary">Background</mat-label>
-            <input matInput [ngxMatColorPicker]="bgPicker" formControlName="backgroundColor" class="primary" readonly>
+            <input matInput [ngxMatColorPicker]="bgPicker" formControlName="backgroundColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="bgPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #bgPicker></ngx-mat-color-picker>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width primary">
+          <mat-form-field appearance="fill" class="primary">
             <mat-label class="primary">Primary</mat-label>
-            <input matInput [ngxMatColorPicker]="primaryPicker" formControlName="primaryColor" class="primary" readonly>
+            <input matInput [ngxMatColorPicker]="primaryPicker" formControlName="primaryColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="primaryPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #primaryPicker></ngx-mat-color-picker>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width primary">
+          <mat-form-field appearance="fill" class="primary">
             <mat-label class="primary">Secondary</mat-label>
-            <input matInput [ngxMatColorPicker]="secondaryPicker" formControlName="secondaryColor" class="primary" readonly>
+            <input matInput [ngxMatColorPicker]="secondaryPicker" formControlName="secondaryColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="secondaryPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #secondaryPicker></ngx-mat-color-picker>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width primary">
+          <mat-form-field appearance="fill" class="primary">
             <mat-label class="primary">Header</mat-label>
-            <input matInput [ngxMatColorPicker]="headerPicker" formControlName="headerColor" class="primary" readonly>
+            <input matInput [ngxMatColorPicker]="headerPicker" formControlName="headerColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="headerPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #headerPicker></ngx-mat-color-picker>
           </mat-form-field>
         </form>
-
-        <button mat-flat-button color="accent" (click)="updateAppearance()">Update appearance</button>
       </div>
+
+      <h2 class="primary">Update the profile elements</h2>
+
+      <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="space-between start" class="artist-profile-elements-wrapper" cdkDropListGroup>
+        <div fxFlex="33%" class="element-container">
+          <h3 class="primary">Layout elements</h3>
+
+          <div
+            cdkDropList
+            [cdkDropListData]="availableComponents"
+            cdkDropListSortingDisabled
+            class="element-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="element-box" *ngFor="let item of availableComponents" cdkDrag [cdkDragDisabled]="item.disabled">{{item.componentName}}</div>
+          </div>
+        </div>
+        <div fxFlex="33%" class="element-container">
+          <h3 class="primary">Layout arrangement</h3>
+
+          <div
+            cdkDropList
+            [cdkDropListData]="chosenComponents"
+            class="element-list"
+            (cdkDropListDropped)="drop($event)">
+            <div (click)="componentClick(item)" *ngFor="let item of chosenComponents" [cdkDragDisabled]="item.disabled" cdkDrag
+                 class="element-box">{{item.componentName}}</div>
+          </div>
+        </div>
+        <div fxFlex="33%" class="">
+          <div *ngIf="selectedComponent then settingComponent else defaultComponent"></div>
+        </div>
+      </div>
+
+      <button mat-flat-button color="accent" class="artist-profile-elements-button" (click)="updateAppearance()">Update appearance</button>
     </mat-tab>
 
+    <!--
     <mat-tab label="Profile Elements">
+      <h2 class="primary">Update the profile elements</h2>
 
+      <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="space-between start" class="artist-profile-elements-wrapper" cdkDropListGroup>
+        <div fxFlex="33%" class="element-container">
+          <h3 class="primary">Layout elements</h3>
+
+          <div
+            cdkDropList
+            [cdkDropListData]="availableComponents"
+            cdkDropListSortingDisabled
+            class="element-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="element-box" *ngFor="let item of availableComponents" cdkDrag [cdkDragDisabled]="item.disabled">{{item.componentName}}</div>
+          </div>
+        </div>
+        <div fxFlex="33%" class="element-container">
+          <h3 class="primary">Layout arrangement</h3>
+
+          <div
+            cdkDropList
+            [cdkDropListData]="chosenComponents"
+            class="element-list"
+            (cdkDropListDropped)="drop($event)">
+            <div (click)="componentClick(item)" *ngFor="let item of chosenComponents" [cdkDragDisabled]="item.disabled" cdkDrag
+                 class="element-box">{{item.componentName}}</div>
+          </div>
+        </div>
+        <div fxFlex="33%" class="">
+          <div *ngIf="selectedComponent then settingComponent else defaultComponent"></div>
+        </div>
+      </div>
+
+      <button mat-flat-button color="accent" class="artist-profile-elements-button" (click)="updateProfileElements()">Update Profile elements</button>
     </mat-tab>
+    -->
   </mat-tab-group>
 </div>
 
+<!--
 <div class="save-button">
   <button mat-button color="accent" (click)="saveSettings()">
     <mat-icon color="accent">save</mat-icon>
     <span class="save-text">Save your page</span>
   </button>
 </div>
+-->
+
+<ng-template #defaultComponent>
+  <h3 class="primary">Element settings</h3>
+</ng-template>
+
+<ng-template #settingComponent>
+  <div *ngIf="selectedComponent.componentName.includes('Gallery') then gallery"></div>
+</ng-template>
+
+<ng-template #gallery>
+  <h3 class="primary">{{selectedComponent.componentName}} settings</h3>
+  <div class="gallery-settings">
+    <mat-form-field class="gallery-settings-tags" appearance="fill">
+      <mat-label class="primary">Tags</mat-label>
+      <input
+        #tagInput
+      [formControl]="tagForm"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="tagList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+        <mat-option *ngFor="let tag of allTags" [value]="tag">
+          {{tag.name}}
+        </mat-option>
+      </mat-autocomplete>
+
+      <mat-chip-list #tagList class="mat-chip-list-stacked" aria-label="Tag selection">
+        <mat-chip *ngFor="let tag of selectedComponent.tags" (removed)="removeTag(tag)">
+          {{tag.name}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+      </mat-chip-list>
+    </mat-form-field>
+
+  </div>
+</ng-template>

@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
@@ -82,7 +81,7 @@ public class ArtistEndpoint {
     @PutMapping
     @Operation(summary = "Update artist")
     @Transactional
-    public void updateArtist(@RequestBody ArtistDto artistDto) {
+    public void updateArtist(@Valid @RequestBody ArtistDto artistDto) {
         try {
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {

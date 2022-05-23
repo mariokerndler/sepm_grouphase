@@ -42,4 +42,40 @@ export class UserService {
             }
           }));
   }
+
+  getAll(): Observable<User[]> {
+    return this.http.get<User[]>(baseUri, this.options);
+  }
+  getUserById(id: number, errorAction?: () => void): Observable<User> {
+    return this.http.get<User>(`${baseUri}/${id}`, this.options)
+      .pipe(
+        catchError((err) => {
+          if(errorAction != null){
+            errorAction();
+          }
+          return this.notificationService.notifyUserAboutFailedOperation<User>('Finding user by id')(err);
+        })
+      );
+  }
+
+  updateUser(user: User, errorAction?: () => void, successAction?: () => void): Observable<User> {
+    return this.http.put<User>(
+      `${baseUri}`,
+      user,
+      this.options
+    ).pipe(
+      catchError((err) => {
+        if(errorAction != null) {
+          errorAction();
+        }
+        return this.notificationService.notifyUserAboutFailedOperation<User>('Editing User')(err);
+      }),
+      tap(_ => {
+        if(successAction != null) {
+          successAction();
+        }
+      }));
+  }
+
+
 }

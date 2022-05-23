@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.lang.invoke.MethodHandles;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -40,18 +38,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity handle(ConstraintViolationException constraintViolationException) {
-        Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
-        String errorMessage = "";
-        if (!violations.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            violations.forEach(violation -> builder.append(" " + violation.getMessage()));
-            errorMessage = builder.toString();
-        } else {
-            errorMessage = "ConstraintViolationException occured.";
-        }
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    protected ResponseEntity handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        //Get all errors
+        List<String> errors = ex.getConstraintViolations()
+            .stream()
+            .map(err -> err.getPropertyPath() + " " + err.getMessage())
+            .collect(Collectors.toList());
+
+        body.put("Validation errors", errors);
+
+        return new ResponseEntity<>(body.toString(), new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     /**

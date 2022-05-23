@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
@@ -40,18 +39,14 @@ public class ArtistServiceImpl implements ArtistService {
     public Artist findArtistById(Long id) {
         Optional<Artist> artist= artistRepo.findById(id);
         if(artist.isPresent()){
-            return   artist.get();
+            return artist.get();
         }
-        throw new NotFoundException(String.format("Could not find Artist   with id %s", id));
+        throw new NotFoundException(String.format("Could not find Artist with id %s", id));
     }
 
     @Override
     public Artist saveArtist(Artist artist) {
-        try {
-                return artistRepo.save(artist);
-        } catch (PersistenceException e) {
-            throw new ServiceException(e.getMessage());
-        }
+        return artistRepo.save(artist);
     }
 
     @Override

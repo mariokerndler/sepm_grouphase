@@ -59,12 +59,7 @@ public class ArtistEndpoint {
     @Transactional
     public List<ArtistDto> getAllArtists() {
         LOGGER.debug("Get /Artist");
-        try {
-            return artistService.getAllArtists().stream().map(u->artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
-        } catch (NotFoundException n) {
-            LOGGER.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        return artistService.getAllArtists().stream().map(u -> artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
     }
 
     @PermitAll

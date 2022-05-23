@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.ValidationException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +71,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.info(user.get().getUserName());
             return user.get();
         } else {
-            throw new NotFoundException(String.format("Could not find User   with id %s", id));
+            throw new NotFoundException(String.format("Could not find User with id %s", id));
         }
     }
 
@@ -91,8 +89,6 @@ public class UserServiceImpl implements UserService {
         userValidator.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
-
-
     }
 
     @Override

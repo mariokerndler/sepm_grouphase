@@ -1,0 +1,46 @@
+<div class="information-container">
+  <div fxLayout="column" fxFill>
+    <div fxLayout="row">
+      <div fxFlex="70" fxLayoutGap="5px" fxLayout="row">
+        <div fxLayoutAlign="center center">
+          <img [src]="artistProfilePicture" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
+        </div>
+        <div class="artist-full-name-container" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="5px">
+          <span class="primary artist-full-name">{{artist.name}} {{artist.surname}}</span>
+          <span class="primary artist-role">Artist</span>
+        </div>
+      </div>
+      <div fxFlex="auto" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+        <button mat-button color="accent" fxLayout="center center">
+          <mat-icon color="accent">edit</mat-icon>
+          <span fxHide.lt-md="true">Edit Your Page</span>
+        </button>
+      </div>
+    </div>
+    <div class="artist-middle-menu">
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-evenly center" class="artist-middle-menu-container">
+        <button mat-button routerLink="/artist/{{artist.id}}" color="accent">Home</button>
+        <button mat-button routerLink="/artist/{{artist.id}}/gallery" color="accent">Gallery</button>
+        <button mat-button routerLink="/artist/{{artist.id}}/reviews" color="accent">Reviews</button>
+        <button mat-button routerLink="/artist/{{artist.id}}/contact" color="accent">Contact</button>
+      </div>
+    </div>
+    <div>
+      <span class="primary artist-gallery-header">Gallery</span>
+      <app-midsection [artistId]="artist.id" [columnCount]="4"></app-midsection>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -15,6 +15,8 @@ import java.util.List;
 @Entity
 public class Artist extends ApplicationUser {
 
+    @OneToOne(mappedBy = "artist")
+    private ProfilePicture profilePicture;
 
     @Column(length = 200)
     private String description;
@@ -38,13 +40,19 @@ public class Artist extends ApplicationUser {
     @OneToMany(mappedBy = "artist")
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "artist")
+    @ManyToMany
+    @JoinTable(
+        name = "artist_tag",
+        joinColumns = @JoinColumn(name = "artist_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
 
+
     public Artist(String userName, String name, String surname, String email, String address, String password,
-                  Boolean admin, UserRole userRole, String description, String profileSettings, double reviewScore,
+                  Boolean admin, UserRole userRole, ProfilePicture profilePicture, String description, String profileSettings, double reviewScore,
                   Gallery gallery, List<Artwork> artworks, List<Commission> commissions, List<Review> reviews, List<Tag> tags) {
         super(userName, name, surname, email, address, password, admin, userRole);
+        this.profilePicture = profilePicture;
         this.description = description;
         this.profileSettings = profileSettings;
         this.reviewScore = reviewScore;
@@ -58,7 +66,8 @@ public class Artist extends ApplicationUser {
     @Override
     public String toString() {
         return "Artist{" +
-            "description='" + description + '\'' +
+            "profilePicture='" + profilePicture.getId() + '\'' +
+            ", description='" + description + '\'' +
             ", profileSettings='" + profileSettings + '\'' +
             ", reviewScore=" + reviewScore +
             ", gallery=" + gallery.getId() +

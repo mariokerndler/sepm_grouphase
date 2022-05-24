@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import faker from '@faker-js/faker';
-import {User} from '../dtos/user';
+import {User, UserRole} from '../dtos/user';
 import {Observable, of} from 'rxjs';
 import {Tag} from '../dtos/tag';
 import {Artwork} from '../dtos/artwork';
@@ -35,11 +35,14 @@ export class FakerGeneratorService {
     return  {
       profilePicture: faker.image.cats(200,200),
       id,
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      username: faker.internet.userName(),
+      name: faker.name.firstName(),
+      surname: faker.name.lastName(),
+      userName: faker.internet.userName(),
       email: faker.internet.email(),
-      password: faker.internet.password()
+      address: faker.address.streetAddress(),
+      password: faker.internet.password(),
+      admin: false,
+      userRole: UserRole.user
     };
   }
 
@@ -90,19 +93,23 @@ export class FakerGeneratorService {
     const fakeReviewIds = fakeReviews.map((x) => x.id);
 
     return {
+
       id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      profilePicture: faker.image.cats(200,200),
-      username: user.username,
+      name: user.name,
+      surname: user.surname,
+      userName: user.userName,
       email: user.email,
+      address: faker.address.streetAddress(),
       password: user.password,
+      admin: false,
+      userRole: UserRole.user,
       artworkIds,
       description: faker.lorem.paragraph(3),
       reviewScore: this.getRandomFromRange(0,5),
       galleryId: fakeGallery.id,
       commissionIds: fakeCommissionIds,
-      reviewIds: fakeReviewIds
+      reviewIds: fakeReviewIds,
+      profilePicture: faker.image.cats(200,200),
     };
   }
 

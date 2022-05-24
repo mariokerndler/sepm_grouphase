@@ -1,46 +1,48 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class Tag {
+@MappedSuperclass
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 35, unique = true)
-    private String name;
+    @Column(nullable = false, length = 150, unique = true)
+    private String imageUrl;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Artwork> artworks;
+    @Column(nullable = false)
+    private FileType fileType;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Artist> artists;
-
-    public Tag(String name) {
-        this.name = name;
+    public Image(String imageUrl, FileType fileType) {
+        this.imageUrl = imageUrl;
+        this.fileType = fileType;
     }
+
+    @Transient
+    byte[] imageData;
 
     @Override
     public String toString() {
-        return "Tag{" +
+        return "Image{" +
             "id=" + id +
-            ", name='" + name + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", fileType=" + fileType +
             '}';
     }
 
     @Override
     public int hashCode() {
-        return 37;
+        return 41;
     }
 
     @Override
@@ -51,8 +53,7 @@ public class Tag {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Tag other = (Tag) obj;
+        Image other = (Image) obj;
         return id != null && id.equals(other.getId());
     }
-
 }

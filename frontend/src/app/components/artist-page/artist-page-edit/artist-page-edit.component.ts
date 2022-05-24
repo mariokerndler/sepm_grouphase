@@ -193,9 +193,9 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   }
 
   setFormValues() {
-    this.editForm.controls['firstname'].setValue(this.artist.firstName);
-    this.editForm.controls['lastname'].setValue(this.artist.lastName);
-    this.editForm.controls['username'].setValue(this.artist.username);
+    this.editForm.controls['firstname'].setValue(this.artist.name);
+    this.editForm.controls['lastname'].setValue(this.artist.surname);
+    this.editForm.controls['username'].setValue(this.artist.userName);
     this.editForm.controls['email'].setValue(this.artist.email);
 
     if(this.isArtist) {

@@ -3,12 +3,18 @@
     <div fxLayout="row">
       <div fxFlex="70" fxLayoutGap="5px" fxLayout="row">
         <div fxLayoutAlign="center center">
-          <img [src]="artistUrl" alt="{{artist.username}} profile picture" class="artist-profile-picture">
+          <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
         </div>
         <div class="artist-full-name-container" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="5px">
-          <span class="primary artist-full-name">{{artist.firstName}} {{artist.lastName}}</span>
+          <span class="primary artist-full-name">{{artist.name}} {{artist.surname}}</span>
           <span class="primary artist-role">Artist</span>
         </div>
+      </div>
+      <div fxFlex="auto" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+          <button mat-button color="accent" fxLayout="center center">
+            <mat-icon color="accent">edit</mat-icon>
+            <span fxHide.lt-md="true">Edit Your Page</span>
+          </button>
       </div>
     </div>
     <div class="artist-middle-menu">
@@ -27,3 +33,4 @@
     </div>
   </div>
 </div>
+

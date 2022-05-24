@@ -114,28 +114,28 @@
       <h2 class="primary">Update the profile appearance</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
         <form class="edit-page-pf-form" [formGroup]="appearanceForm">
-          <mat-form-field appearance="fill" class="primary">
+          <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Background</mat-label>
             <input matInput [ngxMatColorPicker]="bgPicker" formControlName="backgroundColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="bgPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #bgPicker></ngx-mat-color-picker>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="primary">
+          <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Primary</mat-label>
             <input matInput [ngxMatColorPicker]="primaryPicker" formControlName="primaryColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="primaryPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #primaryPicker></ngx-mat-color-picker>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="primary">
+          <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Secondary</mat-label>
             <input matInput [ngxMatColorPicker]="secondaryPicker" formControlName="secondaryColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="secondaryPicker" class="primary"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #secondaryPicker></ngx-mat-color-picker>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="primary">
+          <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Header</mat-label>
             <input matInput [ngxMatColorPicker]="headerPicker" formControlName="headerColor" class="primary">
             <ngx-mat-color-toggle matSuffix [for]="headerPicker" class="primary"></ngx-mat-color-toggle>

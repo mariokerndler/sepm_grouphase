@@ -32,6 +32,7 @@ import {
 } from './services/notification/notification.service';
 import { ArtistPageEditComponent } from './components/artist-page/artist-page-edit/artist-page-edit.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {RegistrationComponent} from './components/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     SimpleDialogComponent,
     ArtistPageEditComponent,
     ErrorSnackbarComponent,
-    SuccessSnackbarComponent
+    SuccessSnackbarComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

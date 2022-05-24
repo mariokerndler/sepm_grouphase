@@ -12,23 +12,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Artwork {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Artwork extends Image{
 
     @Column(nullable = false, length = 50)
     private String name;
 
     @Column(nullable = false, length = 50)
     private String description;
-
-    @Column(nullable = false, length = 100, unique = true)
-    private String imageUrl;
-
-    @Column(nullable = false)
-    private FileType fileType;
 
     @ManyToOne
     @JoinColumn(name = "artist_id", nullable = false)
@@ -40,11 +30,17 @@ public class Artwork {
     @OneToOne
     private Commission commission;
 
+    @ManyToMany
+    @JoinTable(
+        name = "artwork_tag",
+        joinColumns = @JoinColumn(name = "artwork_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+   private List<Tag> tags;
+
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {
+        super(imageUrl, fileType);
         this.name = name;
         this.description = description;
-        this.imageUrl = imageUrl;
-        this.fileType = fileType;
         this.artist = artist;
         this.sketches = sketches;
         this.commission = commission;
@@ -53,15 +49,12 @@ public class Artwork {
     @Override
     public String toString() {
         return "Artwork{" +
-            "id=" + id +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", fileType=" + fileType +
             ", artist=" + artist.getId() +
             ", sketches=" + sketches.stream().map(Sketch::getId).toList() +
             ", commission=" + commission.getId() +
-            '}';
+            '}' + super.toString();
     }
 
     @Override
@@ -69,6 +62,11 @@ public class Artwork {
         return 7;
     }
 
+    public  void addTag(Tag t){
+        if(!tags.contains(t)) {
+            this.tags.add(t);
+        }
+    }
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -78,7 +76,7 @@ public class Artwork {
         if (getClass() != obj.getClass())
             return false;
         Artwork other = (Artwork) obj;
-        return id != null && id.equals(other.getId());
+        return this.getId() != null && this.getId().equals(other.getId());
     }
 
 }

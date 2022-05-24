@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {AuthRequest} from '../dtos/auth-request';
-import {Observable} from 'rxjs';
+import {catchError, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 // @ts-ignore
 import jwt_decode from 'jwt-decode';
 import {Globals} from '../global/globals';
+import {NotificationService} from './notification/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,9 @@ export class AuthService {
 
   private authBaseUri: string = this.globals.backendUri + '/authentication';
 
-  constructor(
-    private httpClient: HttpClient,
-    private globals: Globals) {
-  }
+  constructor(private httpClient: HttpClient,
+              private globals: Globals,
+              private notificationService: NotificationService) { }
 
   private static setToken(authResponse: string) {
     localStorage.setItem('authToken', authResponse);
@@ -43,9 +43,11 @@ export class AuthService {
   loginUser(authRequest: AuthRequest): Observable<string> {
     return this.httpClient.post(this.authBaseUri, authRequest, {responseType: 'text'})
       .pipe(
+        catchError(this.notificationService.notifyUserAboutFailedOperation('Login')),
         tap((authResponse: string) => AuthService.setToken(authResponse))
       );
   }
+
 
   /**
    * Check if a valid JWT token is saved in the localStorage

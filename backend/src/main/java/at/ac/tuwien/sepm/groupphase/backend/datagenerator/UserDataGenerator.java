@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.github.javafaker.Faker;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 20;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
     private static final String artistProfileDir = "./data/ap";
-    private static final String tagDir = "./data/tags/tags.txt";
+
     private final UserRepository userRepository;
     private final ArtistRepository artistRepository;
     private final PasswordEncoder passwordEncoder;
@@ -85,7 +86,7 @@ public class UserDataGenerator {
 
     }
     private void loadTags(int numberOftags) throws FileNotFoundException {
-        File text = new File(tagDir);
+        File text = new File(ImageDataPaths.tagLocation);
         List<String> tags= new LinkedList<>();
         Scanner scanner= new Scanner(text);
         while (scanner.hasNext() && numberOftags>0){

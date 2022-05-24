@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import faker from '@faker-js/faker';
 import {User, UserRole} from '../dtos/user';
 import {Observable, of} from 'rxjs';
@@ -33,6 +33,7 @@ export class FakerGeneratorService {
 
   private static fakeUser(id: number): User {
     return  {
+      profilePicture: faker.image.cats(200,200),
       id,
       name: faker.name.firstName(),
       surname: faker.name.lastName(),
@@ -107,7 +108,8 @@ export class FakerGeneratorService {
       reviewScore: this.getRandomFromRange(0,5),
       galleryId: fakeGallery.id,
       commissionIds: fakeCommissionIds,
-      reviewIds: fakeReviewIds
+      reviewIds: fakeReviewIds,
+      profilePicture: faker.image.cats(200,200),
     };
   }
 

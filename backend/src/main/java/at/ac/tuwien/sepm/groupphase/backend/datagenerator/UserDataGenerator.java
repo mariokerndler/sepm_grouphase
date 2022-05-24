@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.github.javafaker.Faker;
 import org.slf4j.Logger;
@@ -42,9 +43,9 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 20;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
-    private static final String artistProfileDir = "./data/ap";
-    private static final String tagDir = "./data/tags/tags.txt";
-    private final UserRepository userRepository;
+
+
+
     private final ArtistRepository artistRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
@@ -52,8 +53,8 @@ public class UserDataGenerator {
 
     private final ArtistRepository artistRepo;
 
-    public UserDataGenerator(UserRepository userRepository, ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
-        this.userRepository = userRepository;
+    public UserDataGenerator( ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
+
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
@@ -63,29 +64,13 @@ public class UserDataGenerator {
 
     @PostConstruct
     private void generateUser() throws IOException {
-        // TODO: Maybe differentiate by explicitly checking whether the one entity is actually the admin ?
-        /**
-        if (userRepository.findAll().size() > NUMBER_OF_USERS_TO_GENERATE + 1) {
-            LOGGER.debug("User already generated");
-        } else {
-            for (int i = 0; i < NUMBER_OF_USERS_TO_GENERATE; i++) {
-                ApplicationUser user = new ApplicationUser(String.format("testUser%s", i), "bob", "test", "test"+i, "test", passwordEncoder.encode("test")
-                    , false, UserRole.User);
-                userRepository.save(user);
-            }
-        }
-        Artist artist = new Artist(String.format("testUser%s", -1), "bob", "test", "test", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, null, 1.0, null, null, null, null, null);
-
-        artistRepository.save(artist);
-**/
 
         loadTags(NUMBER_OF_TAGS_TO_GENERATE);
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
 
     }
     private void loadTags(int numberOftags) throws FileNotFoundException {
-        File text = new File(tagDir);
+        File text = new File(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.tagLocation);
         List<String> tags= new LinkedList<>();
         Scanner scanner= new Scanner(text);
         while (scanner.hasNext() && numberOftags>0){
@@ -102,7 +87,7 @@ public class UserDataGenerator {
     private void loadProfiles(int numberOfProfiles)   {
         List<Tag> tags = tagRepository.findAll();
 
-        try (Stream<Path> walk = Files.walk(Paths.get(artistProfileDir), 1)) {
+        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation), 1)) {
 
             List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
 
@@ -112,6 +97,9 @@ public class UserDataGenerator {
 
                     LOGGER.info(folder.toString());
                     Artist a = generateArtistProfile();
+                    File fldr= new File(folder);
+
+                    a.setUserName(fldr.getName());
                     artistRepository.save(a);
                     LOGGER.info("Saved artist: "+a.getUserName());
                     File artistProfileDir = new File(folder);
@@ -140,7 +128,7 @@ public class UserDataGenerator {
                                 artwork.setDescription(description);
                                 artwork.setArtist(a);
                                 artwork.setFileType(FileType.JPG);
-                                artwork.setImageUrl(artworkFile.toString());
+                                artwork.setImageUrl(artworkFile.toString().replace(ImageDataPaths.assetAbsoluteLocation,""));
                                 artwork.setName(name);
                                 artworkRepo.save(artwork);
 
@@ -199,7 +187,7 @@ public class UserDataGenerator {
 
             con.connect();
             try (InputStream in = con.getInputStream()) {
-                String filename = artistProfileDir + String.format("/artwork%s.png", counter);
+                String filename = ImageDataPaths.artistProfileLocation + String.format("/artwork%s.png", counter);
                 File file = new File(filename);
                 if (!file.exists()) {
                     Files.copy(in, Paths.get(filename));

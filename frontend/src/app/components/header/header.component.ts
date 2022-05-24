@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {LoginComponent} from '../login/login.component';
+import {Globals} from '../../global/globals';
 import {MatDialog} from '@angular/material/dialog';
+import {LoginComponent} from '../login/login.component';
 import {RegistrationComponent} from '../registration/registration.component';
-
 
 
 @Component({
@@ -13,7 +13,10 @@ import {RegistrationComponent} from '../registration/registration.component';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public authService: AuthService, public dialog: MatDialog){}
+  constructor(
+    public authService: AuthService,
+    public globals: Globals,
+    public dialog: MatDialog) {}
 
   ngOnInit() {
   }

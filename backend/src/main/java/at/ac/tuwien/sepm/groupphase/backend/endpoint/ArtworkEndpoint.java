@@ -14,6 +14,7 @@ import org.hibernate.type.StringNVarcharType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -111,7 +112,7 @@ public class ArtworkEndpoint {
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{id}")
+    @DeleteMapping()
     @Operation(summary = "getAllArtworksByArtist")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
         LOGGER.info("Delete Artwork"+artworkDto.getName());
@@ -128,7 +129,7 @@ public class ArtworkEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void postArtwork(@RequestBody ArtworkDto artworkDto ) {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
         try {
             artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));

@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import org.mapstruct.AfterMapping;
+import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public abstract class   ArtworkMapper {
 
     public abstract ArtworkDto artworkToArtworkDto(Artwork a);
     public abstract Artwork artworkDtoToArtwork(ArtworkDto aDto);
+    @BeforeMapping
+    protected void urlDefault(ArtworkDto artworkTdo, @MappingTarget Artwork a){
+        a.setImageUrl("default");
+    }
     @AfterMapping
    protected void addArtistIdToArtworkDto(Artwork a, @MappingTarget ArtworkDto artworkDto){
             artworkDto.setArtistId (a.getArtist().getId());

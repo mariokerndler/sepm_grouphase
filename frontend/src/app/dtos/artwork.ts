@@ -2,7 +2,15 @@ export class Artwork {
   id: number;
   name: string;
   description: string;
-  tagIds: number[];
-  image: string;
-  sketchIds: number[];
+  imageData: Uint8Array;
+  imageUrl: string;
+  fileType: FileType;
+  artistId: number;
+
+}
+
+export enum FileType {
+  png = 'PNG',
+  gif = 'GIG',
+  jpg = 'JPG',
 }

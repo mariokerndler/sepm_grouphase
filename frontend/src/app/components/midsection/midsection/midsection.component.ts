@@ -3,6 +3,7 @@ import {FakerGeneratorService} from '../../../services/faker-generator.service';
 import {Artist} from '../../../dtos/artist';
 import {Artwork} from '../../../dtos/artwork';
 import {ArtworkService} from '../../../services/artwork.service';
+import {TagSearch} from '../../../dtos/tag-search';
 
 @Component({
   selector: 'app-midsection',
@@ -27,6 +28,7 @@ export class MidsectionComponent implements OnInit {
 
     //this.artworks = this.fetchArtworks(artist ? artist.artworkIds : null);
     this.fetchArtworks(this.artistId);
+    //this.searchFetchTest();
     this.classifiedArtist = (this.artistId != null);
   }
 
@@ -62,7 +64,16 @@ export class MidsectionComponent implements OnInit {
     return artworks;
   }
 */
-
+/*
+  private searchFetchTest(){
+    const search = {tagIds: [], searchOperations: '', pageNr: 1} as TagSearch;
+    this.artworkService.search(search).subscribe({
+      next: (loadedArtworks) => {
+        this.artworks = loadedArtworks;
+      }
+    });
+  }
+*/
   private fetchArtworks(artistId: number){
       this.artworkService.getArtworksByArtist(artistId).subscribe({
         next: (loadedArtworks) => {

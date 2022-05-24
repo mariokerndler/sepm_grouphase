@@ -12,7 +12,6 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
   {path: 'artist/:username', component: ArtistPageComponent},
-  {path: 'artist/:id/gallery', component: ArtistPageComponent},
   {path: 'artist/:username/edit', component: ArtistPageEditComponent},
 
 ];

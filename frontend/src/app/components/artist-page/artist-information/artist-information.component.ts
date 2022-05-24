@@ -10,10 +10,13 @@ export class ArtistInformationComponent implements OnInit {
 
   @Input() artist: Artist;
   artistUrl = 'https://picsum.photos/150/150';
+  tabIndex = 0;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
+  switchTab(index: number) {
+    this.tabIndex = index;
   }
 }

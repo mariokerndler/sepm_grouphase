@@ -85,7 +85,7 @@ export class FakerGeneratorService {
     const user: User = this.fakeUser(id);
 
     const artworks: Artwork[] = null; //this.fakeArtworks(artworkAmount);
-    const artworkIds = artworks.map((x) => x.id);
+    const artworkIds = [1,2,3,4,5,6];//artworks.map((x) => x.id);
     const fakeGallery: Gallery = this.fakeGallery(galleryId, id, artworkIds);
     const fakeCommissions: Commission[] = this.fakeCommissions(3);
     const fakeCommissionIds= fakeCommissions.map((x) => x.id);

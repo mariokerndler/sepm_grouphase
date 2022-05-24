@@ -5,6 +5,7 @@ import {Artist} from '../../../dtos/artist';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
 import {NotificationService} from '../../../services/notification/notification.service';
 
+
 @Component({
   selector: 'app-artist-page',
   templateUrl: './artist-page.component.html',
@@ -26,7 +27,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     // TODO: Fetch real data
     this.routeSubscription = this.route.params
       .subscribe(_ => this.fakerService
-        .generateFakeArtist(1, 2, 5)
+        .generateFakeArtist(5, 2, 5)
         .subscribe(artist => this.artist = artist));
   }
 

@@ -22,20 +22,15 @@ import java.util.stream.Stream;
 public class ImageFileManager {
 
 
-    public void writeArtistImage(Artwork a){
-        File outputImage = new File( ImageDataPaths.artistProfileLocation+a.getArtist().getUserName() + "/" + a.getName() + "." + a.getFileType());
-        //
-        // File directory = new File(ImageDataPaths.artistProfileLocation+a.getArtist().getUserName());
-        if (!outputImage.getParentFile().exists()) {
-            outputImage.getParentFile().mkdirs();
-        }
-        try (FileOutputStream outputStream = new FileOutputStream(outputImage, true)) {
+    public String writeArtistImage(Artwork a) throws IOException {
+
+        try (FileOutputStream outputStream = new FileOutputStream("./"+ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName())) {
             outputStream.write(a.getImageData());
-           //return  ImageDataPaths.artistProfileLocation+ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
+           return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();
-            //return "";
+            return "";
         }
     }
 
@@ -62,32 +57,32 @@ public class ImageFileManager {
         return  images;
     }
     public void deleteArtistImage(Artwork a){
-        File imageFile = new File( ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+a.getName());
+        File imageFile = new File( ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName());
         imageFile.delete();
     }
 
-    public void writeAndReplaceArtistProfileImage(  Artist a) throws IOException {
+    public String writeAndReplaceArtistProfileImage(  Artist a) throws IOException {
 
-        File f = new File(ImageDataPaths.artistProfilePictureLocation+"/"+a.getUserName());
+        File f = new File(ImageDataPaths.artistProfilePictureLocation +a.getUserName());
         if(!f.isDirectory() || ! f.exists()){
             Files.createDirectories(f.toPath());
         }
-        File profilePicture   = new File(ImageDataPaths.artistProfilePictureLocation+"/"+a.getUserName()+"/"
+        File profilePicture   = new File(ImageDataPaths.artistProfilePictureLocation+a.getUserName()+"/"
             +ImageDataPaths.artistProfilePictureIdentifier);
         try (FileOutputStream outputStream = new FileOutputStream(profilePicture)) {
             outputStream.write(a.getProfilePicture().getImageData());
-            /*return ImageDataPaths.artistProfilePictureLocation+a.getUserName()+"/"
-                +ImageDataPaths.artistProfilePictureIdentifier;*/
+            return ImageDataPaths.artistProfilePictureLocation+a.getUserName()+"/"
+                +ImageDataPaths.artistProfilePictureIdentifier;
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();
-            //return "";
+            return "";
         }
 
     }
     public  byte[] readArtistProfileImageData(Artist a){
                     try {
-                        byte[] imageData= Files.readAllBytes(Path.of(ImageDataPaths.artistProfilePictureLocation+"/"+a.getUserName()+"/"
+                        byte[] imageData= Files.readAllBytes(Path.of(ImageDataPaths.artistProfilePictureLocation+a.getUserName()+"/"
                             +ImageDataPaths.artistProfilePictureIdentifier));
                         return imageData;
                     }

@@ -35,11 +35,11 @@ public class ArtworkServiceImpl implements ArtworkService {
     }
 
     @Override
-    public void saveArtwork(Artwork a) {
-        System.out.println("saveArtwork: ServiceImpl: "+a.toString());
-        this.artworkRepo.save(a);
-        this.ifm.writeArtistImage(a);
+    public void saveArtwork(Artwork a) throws IOException {
 
+        a.setImageUrl( this.ifm.writeArtistImage(a));
+        log.info(a.toString());
+        this.artworkRepo.save(a);
     }
 
     @Override

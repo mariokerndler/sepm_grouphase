@@ -112,6 +112,7 @@ public class UserDataGenerator {
 
                     LOGGER.info(folder.toString());
                     Artist a = generateArtistProfile();
+                    a.setUserName(folder.replace(".\\data\\ap",""));
                     artistRepository.save(a);
                     LOGGER.info("Saved artist: "+a.getUserName());
                     File artistProfileDir = new File(folder);

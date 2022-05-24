@@ -34,7 +34,8 @@ export class ArtistGalleryComponent implements OnInit {
         image.onload = (_) => {
           const imageData = new Uint8Array([0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xf3, 0xc0, 0xff, 0xc0, 0xff, 0xc0,
             0xf7, 0xc0, 0xff, 0xc0]);
-          const artwork = {name: 'test',description: 'test', imageData, imageUrl: '/data/ap/aaronjoshuaaa/test.jpg', fileType: FileType.jpg, artistId: this.artist.id} as Artwork;
+          const artwork = {name: 'test',description: 'test', imageData, imageUrl: '/data/ap/aaronjoshuaaa/test.jpg',
+            fileType: FileType.jpg, artistId: this.artist.id} as Artwork;
           this.artworkService.createArtwork(artwork).subscribe();
         };
       };

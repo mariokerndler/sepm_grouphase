@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {NotificationService} from '../common/service/notification.service';
 import {catchError, Observable} from 'rxjs';
 import {Artwork} from '../dtos/artwork';
 import {tap} from 'rxjs/operators';
 import {TagSearch} from '../dtos/tag-search';
+import {NotificationService} from './notification/notification.service';
 
 const backendUrl = 'http://localhost:8080';
 const baseUri = backendUrl + '/artwork';

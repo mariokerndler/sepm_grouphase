@@ -6,9 +6,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
 
 // Plugins
-import { AngularMaterialModule} from './angular-material/angular-material.module';
+import { AngularMaterialModule} from './components/angular-material/angular-material.module';
 import { FlexLayoutModule} from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS} from '@angular-material-components/color-picker';
 
 // Routing
 import {AppRoutingModule} from './app-routing.module';
@@ -24,7 +25,13 @@ import { MidsectionComponent } from './components/midsection/midsection/midsecti
 import { CardViewComponent } from './components/midsection/card-view/card-view.component';
 import { ArtistPageComponent } from './components/artist-page/artist-page/artist-page.component';
 import { ArtistInformationComponent } from './components/artist-page/artist-information/artist-information.component';
-import {SimpleDialogComponent} from './common/service/notification.service';
+import {
+  ErrorSnackbarComponent,
+  SimpleDialogComponent,
+  SuccessSnackbarComponent
+} from './services/notification/notification.service';
+import { ArtistPageEditComponent } from './components/artist-page/artist-page-edit/artist-page-edit.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 
 @NgModule({
@@ -40,6 +47,9 @@ import {RegistrationComponent} from './components/registration/registration.comp
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,
+    ArtistPageEditComponent,
+    ErrorSnackbarComponent,
+    SuccessSnackbarComponent,
     RegistrationComponent
   ],
   imports: [
@@ -51,10 +61,16 @@ import {RegistrationComponent} from './components/registration/registration.comp
     FormsModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    NgxMatColorPickerModule,
+    DragDropModule
   ],
   providers: [
     httpInterceptorProviders,
+    {
+      provide: MAT_COLOR_FORMATS,
+      useValue: NGX_MAT_COLOR_FORMATS
+    }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -1,18 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
-  PatternValidator,
-  ValidationErrors,
-  ValidatorFn,
   Validators
 } from '@angular/forms';
-import {Artwork} from '../../dtos/artwork';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
-import {AuthRequest} from '../../dtos/auth-request';
 import {LoginComponent} from '../login/login.component';
 import {UserService} from '../../services/user.service';
 

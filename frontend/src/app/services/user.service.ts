@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {User, UserRole} from '../dtos/user';
 import {catchError, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {NotificationService} from '../common/service/notification.service';
 import {tap} from 'rxjs/operators';
+import {NotificationService} from './notification/notification.service';
 
 const backendUrl = 'http://localhost:8080';
 const baseUri = backendUrl + '/user';
@@ -13,7 +13,7 @@ const baseUri = backendUrl + '/user';
 })
 export class UserService {
   headers = new HttpHeaders({
-  auth: 'Registration' });
+    auth: 'Registration' });
   options = { headers: this.headers};
 
 

@@ -4,10 +4,11 @@ export class User {
   name: string;
   surname: string;
   email: string;
-  address: string;
   password: string;
   admin: boolean;
   userRole: UserRole;
+  profilePicture: string;
+  address: string;
 }
 
 export enum UserRole{

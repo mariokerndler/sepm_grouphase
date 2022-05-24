@@ -1,12 +1,3 @@
-<!--<mat-card class="card-view">
-  <img *ngIf="artwork" mat-card-image [src]="artwork.image" [alt]="artwork.name" class="card-image">
-  <mat-card-content align="center">
-      <p class="card-content">
-        {{artwork.name}}
-      </p>
-  </mat-card-content>
-</mat-card>
--->
 <a [routerLink]="'/artwork/' + artwork.id" routerLinkActive="active">
   <div class="card-container">
     <div class="card-img-wrap">

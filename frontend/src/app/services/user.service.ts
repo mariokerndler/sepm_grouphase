@@ -13,7 +13,7 @@ const baseUri = backendUrl + '/user';
 })
 export class UserService {
   headers = new HttpHeaders({
-  auth: 'Registration' });
+  auth: 'frontend' });
   options = { headers: this.headers};
 
 

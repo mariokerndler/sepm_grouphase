@@ -9,6 +9,20 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
+
+  .update-user-button {
+    //margin: auto;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .element-container,
+  .gallery-settings,
+  .gallery-settings-tags
+  {
+    width: 100%;
+  }
 }
 
 .save-button {

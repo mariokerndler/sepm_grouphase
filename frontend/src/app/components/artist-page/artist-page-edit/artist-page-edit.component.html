@@ -1,9 +1,8 @@
 <div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
   <mat-tab-group dynamicHeight backgroundColor="primary">
-
     <mat-tab label="Public profile">
       <h2 class="primary">Edit your profile</h2>
-      <div class="edit-page-pf-wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="0.8rem">
+      <div class="edit-page-pf-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign="start" fxLayoutGap="0.8rem">
          <form class="edit-page-pf-form" [formGroup]="editForm">
            <div fxLayout="row" fxLayoutGap="0.5rem">
              <mat-form-field class="full-width primary" appearance="fill">
@@ -64,7 +63,8 @@
             </button>
         </div>
       </div>
-      <button mat-flat-button color="accent" (click)="updateUser()">Update user</button>
+
+      <button mat-flat-button color="accent" class="update-user-button" (click)="updateUser()">Update user</button>
     </mat-tab>
 
     <mat-tab label="Password">
@@ -80,7 +80,7 @@
             </mat-error>
           </mat-form-field>
 
-          <div fxLayout="row" fxLayoutGap="0.5rem">
+          <div fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutGap="0.5rem">
             <mat-form-field class="full-width primary" appearance="fill">
               <mat-label class="primary">New password</mat-label>
               <input matInput [type]="!showPassword ? 'password' : 'text'" name="password" formControlName="password">
@@ -146,7 +146,7 @@
 
       <h2 class="primary">Update the profile elements</h2>
 
-      <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="space-between start" class="artist-profile-elements-wrapper" cdkDropListGroup>
+      <div fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutGap="0.5rem" fxLayoutAlign="space-between start" class="artist-profile-elements-wrapper" cdkDropListGroup>
         <div fxFlex="33%" class="element-container">
           <h3 class="primary">Layout elements</h3>
 
@@ -171,62 +171,15 @@
                  class="element-box">{{item.componentName}}</div>
           </div>
         </div>
-        <div fxFlex="33%" class="">
+        <div fxFlex="33%" class="gallery-settings">
           <div *ngIf="selectedComponent then settingComponent else defaultComponent"></div>
         </div>
       </div>
 
-      <button mat-flat-button color="accent" class="artist-profile-elements-button" (click)="updateAppearance()">Update appearance</button>
+      <button mat-flat-button color="accent" class="artist-profile-elements-button update-user-button" (click)="updateAppearance()">Update appearance</button>
     </mat-tab>
-
-    <!--
-    <mat-tab label="Profile Elements">
-      <h2 class="primary">Update the profile elements</h2>
-
-      <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="space-between start" class="artist-profile-elements-wrapper" cdkDropListGroup>
-        <div fxFlex="33%" class="element-container">
-          <h3 class="primary">Layout elements</h3>
-
-          <div
-            cdkDropList
-            [cdkDropListData]="availableComponents"
-            cdkDropListSortingDisabled
-            class="element-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="element-box" *ngFor="let item of availableComponents" cdkDrag [cdkDragDisabled]="item.disabled">{{item.componentName}}</div>
-          </div>
-        </div>
-        <div fxFlex="33%" class="element-container">
-          <h3 class="primary">Layout arrangement</h3>
-
-          <div
-            cdkDropList
-            [cdkDropListData]="chosenComponents"
-            class="element-list"
-            (cdkDropListDropped)="drop($event)">
-            <div (click)="componentClick(item)" *ngFor="let item of chosenComponents" [cdkDragDisabled]="item.disabled" cdkDrag
-                 class="element-box">{{item.componentName}}</div>
-          </div>
-        </div>
-        <div fxFlex="33%" class="">
-          <div *ngIf="selectedComponent then settingComponent else defaultComponent"></div>
-        </div>
-      </div>
-
-      <button mat-flat-button color="accent" class="artist-profile-elements-button" (click)="updateProfileElements()">Update Profile elements</button>
-    </mat-tab>
-    -->
   </mat-tab-group>
 </div>
-
-<!--
-<div class="save-button">
-  <button mat-button color="accent" (click)="saveSettings()">
-    <mat-icon color="accent">save</mat-icon>
-    <span class="save-text">Save your page</span>
-  </button>
-</div>
--->
 
 <ng-template #defaultComponent>
   <h3 class="primary">Element settings</h3>

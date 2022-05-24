@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // if a registration is completed, the post-request contains the header auth : Registration
         // and this filter is disabled.
         // Todo Maybe there is a better solution than this
-        if(Objects.equals(request.getHeader("auth"), "Registration")){
+        if(Objects.equals(request.getHeader("auth"), "frontend")){
            chain.doFilter(request, response);
            return;
         }

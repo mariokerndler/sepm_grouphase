@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Artist} from '../../../dtos/artist';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
+import {NotificationService} from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-artist-page',
@@ -17,13 +18,15 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fakerService: FakerGeneratorService
+    private fakerService: FakerGeneratorService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
+    // TODO: Fetch real data
     this.routeSubscription = this.route.params
-      .subscribe(params => this.fakerService
-        .generateFakeArtist(params.id, params.id + 1, 5)
+      .subscribe(_ => this.fakerService
+        .generateFakeArtist(1, 2, 5)
         .subscribe(artist => this.artist = artist));
   }
 
@@ -46,4 +49,13 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   }
 
 
+
+  navigateToEdit() {
+    this.router.navigate(['/artist', this.artist.id, 'edit'])
+      .catch(
+        (error) => {
+          this.notificationService.displayErrorSnackbar(error.toString());
+        }
+      );
+  }
 }

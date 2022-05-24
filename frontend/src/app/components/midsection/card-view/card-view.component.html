@@ -1,16 +1,7 @@
-<!--<mat-card class="card-view">
-  <img *ngIf="artwork" mat-card-image [src]="artwork.image" [alt]="artwork.name" class="card-image">
-  <mat-card-content align="center">
-      <p class="card-content">
-        {{artwork.name}}
-      </p>
-  </mat-card-content>
-</mat-card>
--->
 <a [routerLink]="'/artwork/' + artwork.id" routerLinkActive="active">
   <div class="card-container">
     <div class="card-img-wrap" [ngStyle]="{'maxHeight': classifiedArtist  ? '200px' : '400px', 'maxWidth': classifiedArtist  ? '200px' : '400px' }">
-      <img class="card-img" *ngIf="artwork" [src]="artwork.image" [alt]="artwork.name">
+      <img class="card-img" *ngIf="artwork" [src]='url + artwork.imageUrl' [alt]="artwork.name">
       <div class="card-img-description-layer">
         <p class="card-img-description">
           {{artwork.name}}

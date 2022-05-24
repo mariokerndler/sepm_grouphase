@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FakerGeneratorService} from '../../../services/faker-generator.service';
 import {Artist} from '../../../dtos/artist';
 import {Artwork} from '../../../dtos/artwork';
+import {ArtworkService} from '../../../services/artwork.service';
 
 @Component({
   selector: 'app-midsection',
@@ -17,13 +18,15 @@ export class MidsectionComponent implements OnInit {
   classifiedArtist: boolean;
 
   constructor(
-    private fakerService: FakerGeneratorService
+    private fakerService: FakerGeneratorService,
+    private artworkService: ArtworkService
   ) { }
 
   ngOnInit(): void {
-    const artist: Artist = this.fetchArtist(this.artistId);
+    //const artist: Artist = this.fetchArtist(this.artistId);
 
-    this.artworks = this.fetchArtworks(artist ? artist.artworkIds : null);
+    //this.artworks = this.fetchArtworks(artist ? artist.artworkIds : null);
+    this.fetchArtworks(this.artistId);
     this.classifiedArtist = (this.artistId != null);
   }
 
@@ -36,8 +39,8 @@ export class MidsectionComponent implements OnInit {
       });
     }
   }
-
-  private fetchArtworks(artworkIds?: number[]): Artwork[] {
+/*
+  private oldFetchArtworks(artworkIds?: number[]): Artwork[] {
     let artworks: Artwork[] = [];
 
     if(!artworkIds) {
@@ -57,5 +60,14 @@ export class MidsectionComponent implements OnInit {
     }
 
     return artworks;
+  }
+*/
+
+  private fetchArtworks(artistId: number){
+      this.artworkService.getArtworksByArtist(artistId).subscribe({
+        next: (loadedArtworks) => {
+          this.artworks = loadedArtworks;
+        }
+      });
   }
 }

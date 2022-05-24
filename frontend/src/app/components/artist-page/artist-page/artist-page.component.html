@@ -1,4 +1,13 @@
-<div  *ngIf="artist" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="artist-page">
-    <app-artist-information *ngIf="returnCurrentSection() === 'home'" [artist]="artist"></app-artist-information>
-    <app-artist-gallery *ngIf="returnCurrentSection() === 'gallery'" [artist]="artist"></app-artist-gallery>
+<div *ngIf="artist" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="artist-page">
+  <app-artist-information *ngIf="returnCurrentSection() === 'home'" [artist]="artist"></app-artist-information>
+  <app-artist-gallery *ngIf="returnCurrentSection() === 'gallery'" [artist]="artist"></app-artist-gallery>
+
+  <!--<app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>-->
+</div>
+
+<div class="edit-button">
+  <button mat-button color="accent" (click)="navigateToEdit()">
+    <mat-icon color="accent">edit</mat-icon>
+    <span class="edit-text">Edit your page</span>
+  </button>
 </div>

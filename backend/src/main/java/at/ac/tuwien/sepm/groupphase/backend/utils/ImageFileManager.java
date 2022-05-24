@@ -23,12 +23,10 @@ public class ImageFileManager {
 
 
     public String writeArtistImage(Artwork a) throws IOException {
-        File outputImage = new File( ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName());
-        outputImage.createNewFile();
-        log.info(outputImage.getAbsolutePath());
-        try (FileOutputStream outputStream = new FileOutputStream(outputImage)) {
+
+        try (FileOutputStream outputStream = new FileOutputStream("./"+ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName())) {
             outputStream.write(a.getImageData());
-           return  ImageDataPaths.artistProfileLocation+ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
+           return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();

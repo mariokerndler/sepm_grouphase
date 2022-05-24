@@ -66,15 +66,6 @@ public class Artist extends ApplicationUser {
     @Override
     public String toString() {
         return "Artist{" +
-            "profilePicture='" + profilePicture.getId() + '\'' +
-            ", description='" + description + '\'' +
-            ", profileSettings='" + profileSettings + '\'' +
-            ", reviewScore=" + reviewScore +
-            ", gallery=" + gallery.getId() +
-            ", artworks=" + artworks.stream().map(Artwork::getId).toList() +
-            ", commissions=" + commissions.stream().map(Commission::getId).toList() +
-            ", reviews=" + reviews.stream().map(Review::getId).toList() +
-            ", tags=" + tags.stream().map(Tag::getName).toList() +
             "} " + super.toString();
     }
 

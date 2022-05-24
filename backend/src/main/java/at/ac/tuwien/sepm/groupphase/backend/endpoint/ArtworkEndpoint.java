@@ -112,7 +112,7 @@ public class ArtworkEndpoint {
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{id}")
+    @DeleteMapping()
     @Operation(summary = "getAllArtworksByArtist")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
         LOGGER.info("Delete Artwork"+artworkDto.getName());

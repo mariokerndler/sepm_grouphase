@@ -35,7 +35,7 @@ public class ArtistDto {
 
     private long galleryId;
 
-    private List<Artwork> artworks;
+    private List<Long> artworksIds;
 
     private List<Commission> commissions;
 
@@ -48,7 +48,7 @@ public class ArtistDto {
 
     public ArtistDto(String userName, String name, String surname, String email, String address,
                      String password, Boolean admin, UserRole userRole, double reviewScore, long galleryId,
-                     List<Artwork> artworks, List<Commission> commissions, List<Review> reviews, String artistSettings) {
+                     List<Long> artworksIds, List<Commission> commissions, List<Review> reviews, String artistSettings) {
         this.userName = userName;
         this.name = name;
         this.surname = surname;
@@ -59,11 +59,16 @@ public class ArtistDto {
         this.userRole = userRole;
         this.reviewScore = reviewScore;
         this.galleryId = galleryId;
-        this.artworks = artworks;
+        this.artworksIds = artworksIds;
         this.commissions = commissions;
         this.reviews = reviews;
         this.artistSettings = artistSettings;
 
     }
-
+    public  void addArtworkId(Long i){
+        if(artworksIds==null){
+            return;
+        }
+        this.artworksIds.add(i);
+    }
 }

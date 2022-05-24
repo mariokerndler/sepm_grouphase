@@ -48,6 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -106,12 +108,16 @@ public class ArtworkEndpointTest {
             , false, UserRole.Artist, null, "TestDescription",null, 2.0, null, null, null, null, null);
     }
 
-    public Artwork getArtwork() {
-        return artwork = new Artwork("artwork1", "okay dog pls", "./data/image0", FileType.PNG, getArtistById(), null, null);
+    public Artwork getArtwork(Long id, byte[] content) {
+        return artwork = new Artwork("artwork1", "okay dog pls", "./data/image0", FileType.PNG, getArtistById(id), null, null, content);
     }
 
-    public Artist getArtistById() {
-        return artistRepository.getById(2L);
+    public Artwork getArtwork1(Long id, byte[] content) {
+        return artwork = new Artwork("artwork2", "okay no nature", "./data/image1", FileType.PNG, getArtistById(id), null, null, content);
+    }
+
+    public Artist getArtistById(Long id) {
+        return artistRepository.getById(id);
     }
 
     @BeforeEach
@@ -140,6 +146,12 @@ public class ArtworkEndpointTest {
     @Transactional
     @WithMockUser
     public void addArtistAndAddArtworks() throws Exception {
+        File file = new File("./data/image0.png");
+        byte[] image = Files.readAllBytes(file.toPath());
+
+        File file1 = new File("./data/image1.png");
+        byte[] image1 = Files.readAllBytes(file1.toPath());
+
         ApplicationUser anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
@@ -151,6 +163,9 @@ public class ArtworkEndpointTest {
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
+        //assertEquals(UserRole.Artist, artists.get(0).getUserRole());
+        //Long id = artists.get(0).getId();
+
 
         ApplicationUser anotherObject = getTestArtist2();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -164,6 +179,7 @@ public class ArtworkEndpointTest {
         List<ArtistDto> artists2 = allArtists();
         System.out.println(artists2);
         assertEquals(2, artists2.size());
+        //Long id1 = artists.get(0).getId();
 
         assertThat(artists2.contains("bob"));
         assertThat(artists2.contains("bobby"));
@@ -173,18 +189,29 @@ public class ArtworkEndpointTest {
         assertThat(artists2.contains("description"));
         assertThat(artists2.contains(2.0));
 
-        Artwork anArtwork = getArtwork();
+        Artwork anArtwork = getArtwork(1L, image);
         ArtworkDto aDto = artworkMapper.artworkToArtworkDto(anArtwork);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(aDto);
         System.out.println(aDto);
 
-        // TODO needs an artwork as ByteArray for post
 
-        /*mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))
-            .andExpect(status().isOk()).andReturn();*/
+            .andExpect(status().isOk()).andReturn();
+
+        Artwork anotherArtwork = getArtwork1(2L, image1);
+        ArtworkDto anotherDto = artworkMapper.artworkToArtworkDto(anotherArtwork);
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow4 = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson4 = ow4.writeValueAsString(anotherDto);
+        System.out.println(anotherDto);
+
+
+        mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson4))
+            .andExpect(status().isOk()).andReturn();
 
     }
 

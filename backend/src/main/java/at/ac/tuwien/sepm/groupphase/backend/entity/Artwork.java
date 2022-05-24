@@ -46,6 +46,16 @@ public class Artwork extends Image{
         this.commission = commission;
     }
 
+    public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission, byte[] content) {
+        super(imageUrl, fileType);
+        this.name = name;
+        this.description = description;
+        this.artist = artist;
+        this.sketches = sketches;
+        this.commission = commission;
+        this.imageData = content;
+    }
+
     @Override
     public String toString() {
         return "Artwork{" +

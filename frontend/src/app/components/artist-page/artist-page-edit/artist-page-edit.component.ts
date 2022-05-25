@@ -1,16 +1,18 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FakerGeneratorService} from '../../../services/faker-generator.service';
 import {NotificationService} from '../../../services/notification/notification.service';
-import {Artist} from '../../../dtos/artist';
+import {ArtistDto} from '../../../dtos/artistDto';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {LayoutComponent} from './layoutComponent';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Tag} from '../../../dtos/tag';
+import {TagDto} from '../../../dtos/tagDto';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {ArtistProfileSettings} from './artistProfileSettings';
+import {ArtistService} from '../../../services/artist.service';
+import {TagService} from '../../../services/tag.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -22,7 +24,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   @ViewChild('fileInput') pfpInput: ElementRef;
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
-  artist: Artist;
+  artist: ArtistDto;
   isArtist: boolean;
 
   editForm: FormGroup;
@@ -46,60 +48,51 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   selectedComponent: LayoutComponent;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagForm = new FormControl();
-  allTags: Tag[] = [];
+  allTags: TagDto[] = [];
 
   private routeSubscription: Subscription;
+  private tempArtistUrl = 'https://picsum.photos/150/150';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fakerService: FakerGeneratorService,
+    private location: Location,
+    private artistService: ArtistService,
+    private tagService: TagService,
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
   ) {
-    this.editForm = this.formBuilder.group({
-      firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
-      lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
-      username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
-      email: ['', [Validators.required, Validators.email]],
-      description: ['', Validators.maxLength(512)]
-    });
-
-    this.passwordForm = this.formBuilder.group({
-      oldPassword: ['', [Validators.required, Validators.minLength(8)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirm: ['', [Validators.required, Validators.minLength(8)]]
-    }, {
-      validator: this.mustMatch('password', 'confirm')
-    });
-
-    this.appearanceForm = this.formBuilder.group({
-      backgroundColor: ['', []],
-      primaryColor: ['', []],
-      secondaryColor: ['', []],
-      headerColor: ['', []]
-    });
+    this.fillFormValidators();
   }
 
-  private static checkIfArtist(artist: Artist): boolean {
+  private static checkIfArtist(artist: ArtistDto): boolean {
+    if(!artist?.artworkIds) {
+      return false;
+    }
+
     return artist.artworkIds.length > 0;
   }
 
   ngOnInit() {
-    this.routeSubscription = this.route.params
-      .subscribe(_ => this.fakerService
-        .generateFakeArtist(1, 2, 5)
-        .subscribe(artist => this.artist = artist));
+    this.routeSubscription = this.route.params.subscribe(
+      (params) => this.artistService.getArtistById(params.id, () => this.navigateToArtistList())
+        .subscribe((artist) => {
+          this.artist = artist;
 
-    this.fakerService.generateFakeTagByAmount(10)
-      .subscribe({
-        next: (tags) => this.allTags = tags
-      });
+          this.isArtist = ArtistPageEditComponent.checkIfArtist(this.artist);
+          // this.artistProfilePicture = this.artist.profilePicture;
+          this.setFormValues();
+        })
+    );
 
-    this.isArtist = ArtistPageEditComponent.checkIfArtist(this.artist);
-    this.artistProfilePicture = this.artist.profilePicture;
+    this.tagService.getAllTags().subscribe(
+      (tags) => {
+        this.allTags = tags;
+      }
+    );
 
-    this.setFormValues();
+    // TODO: Fetch real pfp
+    this.artistProfilePicture = this.tempArtistUrl;
   }
 
   ngOnDestroy() {
@@ -108,6 +101,10 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
   navigateToSave() {
 
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   saveSettings() {
@@ -120,10 +117,37 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       const lastname = this.editForm.controls.lastname.value;
       const username = this.editForm.controls.username.value;
       const email = this.editForm.controls.email.value;
-      const description = this.editForm.controls.description.value;
+      //const description = this.editForm.controls.description.value;
 
-      // TODO: Update User
-      console.log(firstname + ' ' + lastname + ' ' + username + ' ' + email + ' ' + description);
+      // TODO: Update profile picture
+      const updateArtist: ArtistDto = {
+        id: this.artist.id,
+        userName: username,
+        name: firstname,
+        surname: lastname,
+        email,
+        address: this.artist.address,
+        password: this.artist.password,
+        admin: this.artist.admin,
+        userRole: this.artist.userRole,
+        reviewScore: this.artist.reviewScore,
+        galleryId: this.artist.galleryId,
+        artworkIds: this.artist.artworkIds,
+        commissions: this.artist.commissions,
+        reviews: this.artist.reviews,
+        artistSettings: null
+        //profilePicture: this.artistProfilePicture,
+      };
+
+      console.log(updateArtist);
+      console.log(JSON.stringify(updateArtist));
+
+      this.artistService.updateArtist(updateArtist).subscribe(
+        (_) => {
+          console.log('UPDATED USER');
+          this.goBack();
+        }
+      );
     }
   }
 
@@ -225,7 +249,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
     }
   }
 
-  removeTag(tag: Tag): void {
+  removeTag(tag: TagDto): void {
     const index = this.selectedComponent.tags.indexOf(tag);
 
     if(index >= 0) {
@@ -234,9 +258,38 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
-    const value: Tag = event.option.value;
+    const value: TagDto = event.option.value;
     this.selectedComponent.tags.push(value);
     this.tagInput.nativeElement.value = '';
     this.tagForm.setValue(null);
+  }
+
+  private navigateToArtistList() {
+    // TODO: Implement
+  }
+
+  private fillFormValidators() {
+    this.editForm = this.formBuilder.group({
+      firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
+      lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
+      username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
+      email: ['', [Validators.required, Validators.email]],
+      description: ['', Validators.maxLength(512)]
+    });
+
+    this.passwordForm = this.formBuilder.group({
+      oldPassword: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirm: ['', [Validators.required, Validators.minLength(8)]]
+    }, {
+      validator: this.mustMatch('password', 'confirm')
+    });
+
+    this.appearanceForm = this.formBuilder.group({
+      backgroundColor: ['', []],
+      primaryColor: ['', []],
+      secondaryColor: ['', []],
+      headerColor: ['', []]
+    });
   }
 }

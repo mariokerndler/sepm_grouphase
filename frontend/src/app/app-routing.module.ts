@@ -11,8 +11,8 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
-  {path: 'artist/:username', component: ArtistPageComponent},
-  {path: 'artist/:username/edit', component: ArtistPageEditComponent}
+  {path: 'artist/:id', component: ArtistPageComponent},
+  {path: 'artist/:id/edit', component: ArtistPageEditComponent}
 ];
 
 @NgModule({

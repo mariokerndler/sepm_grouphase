@@ -1,4 +1,4 @@
-export class Sketch {
+export class SketchDto {
   id: number;
   image: string;
 }

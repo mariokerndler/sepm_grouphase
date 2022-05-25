@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
-import {Artwork} from '../../dtos/artwork';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {RegistrationComponent} from '../registration/registration.component';
 
@@ -20,9 +19,6 @@ export class LoginComponent implements OnInit {
   // Error flag
   error = false;
   errorMessage = '';
-
-  // For Faker testing
-  artwork: Artwork;
   hidePassword = true;
 
   constructor(

@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Artist} from '../../../dtos/artist';
-import {FakerGeneratorService} from '../../../services/faker-generator.service';
+import {ArtistDto} from '../../../dtos/artistDto';
 import {NotificationService} from '../../../services/notification/notification.service';
+import {ArtistService} from '../../../services/artist.service';
 
 @Component({
   selector: 'app-artist-page',
@@ -12,22 +12,27 @@ import {NotificationService} from '../../../services/notification/notification.s
 })
 export class ArtistPageComponent implements OnInit, OnDestroy {
 
-  artist: Artist;
+  artist: ArtistDto;
   private routeSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fakerService: FakerGeneratorService,
+    private artistService: ArtistService,
     private notificationService: NotificationService
   ) { }
 
+  private static navigateToArtistList() {
+    console.log('FAILED');
+  }
+
   ngOnInit(): void {
-    // TODO: Fetch real data
-    this.routeSubscription = this.route.params
-      .subscribe(_ => this.fakerService
-        .generateFakeArtist(1, 2, 5)
-        .subscribe(artist => this.artist = artist));
+    this.routeSubscription = this.route.params.subscribe(
+      (params) => this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
+        .subscribe((artist) => {
+          this.artist = artist;
+        })
+    );
   }
 
   ngOnDestroy() {

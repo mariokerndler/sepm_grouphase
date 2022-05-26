@@ -9,7 +9,7 @@ export class ArtistDto extends ApplicationUserDto{
   commissions: CommissionDto[];
   reviews: ReviewDto[];
   description?: string;
-  artistSettings?: string;
+  profileSettings?: string;
   //profilePicture: string;
 }
 

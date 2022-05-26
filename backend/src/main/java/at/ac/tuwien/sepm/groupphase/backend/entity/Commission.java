@@ -75,7 +75,7 @@ public class Commission {
     public String toString() {
         return "Commission{" +
             "id=" + id +
-            ", artist=" + artist.getId() +
+            (artist == null ? "" : ", artist=" + artist.getId()) +
             ", customer=" + customer.getId() +
             ", sketchesShown=" + sketchesShown +
             ", feedbackSent=" + feedbackSent +
@@ -83,9 +83,9 @@ public class Commission {
             ", issueDate=" + issueDate +
             ", deadlineDate=" + deadlineDate +
             ", instructions='" + instructions + '\'' +
-            ", receipts=" + receipts.stream().map(Receipt::getId).toList() +
-            ", review=" + review.getId() +
-            ", artwork=" + artwork.getId() +
+            (receipts == null ? "" : ", receipts=" + receipts.stream().map(Receipt::getId).toList()) +
+            (review == null ? "" : ", review=" + review.getId()) +
+            (artwork == null ? "" : ", artwork=" + artwork.getId()) +
             '}';
     }
 

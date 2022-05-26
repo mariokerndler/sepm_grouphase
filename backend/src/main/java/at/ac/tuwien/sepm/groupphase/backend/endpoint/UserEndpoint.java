@@ -30,9 +30,9 @@ public class UserEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    @Operation(summary = "Get Detailed information's about a specific user")
+    @Operation(summary = "Get a user by id")
     public ApplicationUserDto findById(@PathVariable Long id) {
-        log.debug("Get /User/{}", id);
+        log.debug("Get user with id " + id);
         try {
             ApplicationUser applicationUser = userService.findUserById(id);
             log.info(applicationUser.getUserName());
@@ -48,7 +48,7 @@ public class UserEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    @Operation(summary = "Get Detailed information's about a specific user")
+    @Operation(summary = "Get all users")
     public List<ApplicationUserDto> getAllUsers() {
         log.debug("Get /User");
         try {

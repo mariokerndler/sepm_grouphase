@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import {Artwork} from '../dtos/artwork';
+import {ArtworkDto} from '../dtos/artworkDto';
 import {tap} from 'rxjs/operators';
 import {TagSearch} from '../dtos/tag-search';
 import {NotificationService} from './notification/notification.service';
@@ -25,47 +25,44 @@ export class ArtworkService {
               private notificationService: NotificationService) {
   }
 
-  search(tagSearch: TagSearch, errorAction?: () => void): Observable<Artwork[]> {
-    return this.http.get<Artwork[]>(`${baseUri}`, this.options)
+  search(tagSearch: TagSearch, errorAction?: () => void): Observable<ArtworkDto[]> {
+    return this.http.get<ArtworkDto[]>(`${baseUri}`, this.options)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
             errorAction();
           }
-          return this.notificationService.notifyUserAboutFailedOperation<Artwork[]>('Searching artworks by tag')(err);
+          return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto[]>('Searching artworks by tag')(err);
         })
       );
   }
 
-
-  getArtworksByArtist(id: number, errorAction?: () => void): Observable<Artwork[]> {
-    return this.http.get<Artwork[]>(`${baseUri}/${id}`, this.options)
+  getArtworksByArtist(id: number, errorAction?: () => void): Observable<ArtworkDto[]> {
+    return this.http.get<ArtworkDto[]>(`${baseUri}/${id}`, this.options)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
             errorAction();
           }
-          return this.notificationService.notifyUserAboutFailedOperation<Artwork[]>('Finding artworks by artist')(err);
+          return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto[]>('Finding artworks by artist')(err);
         })
       );
   }
 
-
-  deleteArtist(id: number, artwork: Artwork): Observable<void> {
+  deleteArtist(id: number, artwork: ArtworkDto): Observable<void> {
     const deleteOptions = {headers: this.headers, body: artwork};
     return this.http.delete<void>(`${baseUri}/${id}`, deleteOptions);
   }
 
-
-  createArtwork(artwork: Artwork,errorAction?: () => void,successAction?: () => void): Observable<Artwork> {
-    return this.http.post<Artwork>(baseUri, artwork, this.options)
+  createArtwork(artwork: ArtworkDto,errorAction?: () => void,successAction?: () => void): Observable<ArtworkDto> {
+    return this.http.post<ArtworkDto>(baseUri, artwork, this.options)
       .pipe(
         catchError((err) => {
           if(errorAction != null) {
             errorAction();
           }
 
-          return this.notificationService.notifyUserAboutFailedOperation<Artwork>('Creating Artwork')(err);
+          return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto>('Creating Artwork')(err);
         }),
         tap(_ => {
           if(successAction != null) {

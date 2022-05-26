@@ -1,7 +1,7 @@
-import {Tag} from '../../../dtos/tag';
+import {TagDto} from '../../../dtos/tagDto';
 
 export class LayoutComponent {
   componentName: string;
   disabled: boolean;
-  tags: Tag[];
+  tags: TagDto[];
 }

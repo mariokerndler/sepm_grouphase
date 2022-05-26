@@ -57,7 +57,8 @@ export class LoginComponent implements OnInit {
       next: () => {
         console.log('Successfully logged in user: ' + authRequest.email);
         this.onNoClick();
-        this.router.navigate(['/message']);
+        this.router.navigate(['/message'])
+          .catch((err) => console.log(err));
       }/*,
       error: error => {
         console.log('Could not log in due to:');

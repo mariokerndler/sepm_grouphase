@@ -30,6 +30,7 @@ public class CommissionEndpoint {
     }
 
     //TODO: get all commissions or search commissions like in artworkEndpoint, getAll by not entering criteria
+    // TODO: Get detailed commission with id ?
 
     @PermitAll
     @PostMapping

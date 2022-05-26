@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Review;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -24,7 +23,6 @@ public class ArtistDto {
     private String password;
     private Boolean admin;
     private UserRole userRole;
-
     private double reviewScore;
     private Long galleryId;
     private List<Long> artworksIds;

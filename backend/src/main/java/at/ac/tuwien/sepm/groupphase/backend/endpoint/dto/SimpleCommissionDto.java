@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,12 +22,8 @@ public class SimpleCommissionDto {
     private LocalDateTime deadlineDate;
     private String instructions;
     //TODO: can we map this to show just the url?
-    private List<Reference> references;
-    //TODO: what about this?
-    private List<Receipt> receipts;
-    //TODO: and this?
-    private Review review;
-    private ArtworkDto artworkDto;
+    private List<Long> referenceIds;
+    private List<Long> receiptIds;
 
     //TODO: generate constructor after deciding on references, receipts and reviews
 

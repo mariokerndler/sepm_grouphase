@@ -34,7 +34,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
       (params) => this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
         .subscribe((artist) => {
           this.artist = artist;
-          this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
+          if(this.artist.profileSettings) {
+            this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
+          }
           this.isReady = true;
         })
     );

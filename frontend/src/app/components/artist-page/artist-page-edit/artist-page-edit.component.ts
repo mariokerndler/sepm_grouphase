@@ -14,6 +14,7 @@ import {ArtistService} from '../../../services/artist.service';
 import {TagService} from '../../../services/tag.service';
 import {Location} from '@angular/common';
 import {Color} from '@angular-material-components/color-picker';
+import {GlobalFunctions} from '../../../global/globalFunctions';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -36,6 +37,8 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   appearanceForm: FormGroup;
 
   artistProfilePicture;
+
+  isReady = false;
 
   availableComponents: LayoutComponent[] = [
     { componentName: 'Gallery', disabled: false, tags: []},
@@ -62,6 +65,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
     private tagService: TagService,
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
+    private globalFunctions: GlobalFunctions
   ) {
     this.fillFormValidators();
   }
@@ -119,9 +123,14 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
           this.artist = artist;
 
           this.isArtist = ArtistPageEditComponent.checkIfArtist(this.artist);
-          this.artist.profileSettings = this.artist.profileSettings.replace(/'/g, '\"');
+          if(this.artist.profileSettings) {
+            this.artist.profileSettings = this.artist.profileSettings.replace(/'/g, '\"');
+          }
+
           // this.artistProfilePicture = this.artist.profilePicture;
           this.setFormValues();
+
+          this.isReady = true;
         })
     );
 
@@ -183,30 +192,32 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
   updateAppearance() {
     if(this.appearanceForm.valid) {
-      const backgroundColor = this.appearanceForm.controls.backgroundColor.value;
-      const primaryColor = this.appearanceForm.controls.primaryColor.value;
-      const secondaryColor = this.appearanceForm.controls.secondaryColor.value;
-      const headerColor = this.appearanceForm.controls.headerColor.value;
+      const backgroundColor = this.appearanceForm.controls.backgroundColor.value as Color;
+      const primaryColor = this.appearanceForm.controls.primaryColor.value as Color;
+      const secondaryColor = this.appearanceForm.controls.secondaryColor.value as Color;
+      const headerColor = this.appearanceForm.controls.headerColor.value as Color;
 
       const artistProfileSetting: ArtistProfileSettings = {
         layout: this.chosenComponents
       };
 
-      if (backgroundColor !== '') {
+      if (backgroundColor) {
         artistProfileSetting.backgroundColor = backgroundColor;
       }
 
-      if (primaryColor !== '') {
+      if (primaryColor) {
         artistProfileSetting.primaryColor = primaryColor;
       }
 
-      if (secondaryColor !== '') {
+      if (secondaryColor) {
         artistProfileSetting.secondaryColor = secondaryColor;
       }
 
-      if (headerColor !== '') {
+      if (headerColor) {
         artistProfileSetting.headerColor = headerColor;
       }
+
+      console.log(artistProfileSetting);
 
       this.artistService.updateArtist(ArtistPageEditComponent.updateArtist(
         this.artist,
@@ -234,56 +245,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       this.chosenComponents.splice(event.currentIndex, 0, newItem);
     }
   }
-
-  mustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-
-      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
-        return;
-      }
-
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ mustMatch: true });
-      } else {
-        matchingControl.setErrors(null);
-      }
-      return null;
-    };
-  }
-
-  setFormValues() {
-    this.editForm.controls['firstname'].setValue(this.artist.name);
-    this.editForm.controls['lastname'].setValue(this.artist.surname);
-    this.editForm.controls['username'].setValue(this.artist.userName);
-    this.editForm.controls['email'].setValue(this.artist.email);
-    this.editForm.controls['address'].setValue(this.artist.address);
-
-    if(this.isArtist) {
-      this.editForm.controls['description'].setValue(this.artist.description);
-    }
-
-    const profileSettings: ArtistProfileSettings = JSON.parse(this.artist.profileSettings);
-    if(profileSettings.backgroundColor) {
-      this.appearanceForm.controls['backgroundColor'].setValue('#' + profileSettings.backgroundColor.hex);
-    }
-
-    if(profileSettings.primaryColor) {
-      this.appearanceForm.controls['primaryColor'].setValue('#' + profileSettings.primaryColor.hex);
-    }
-
-    if(profileSettings.secondaryColor) {
-      this.appearanceForm.controls['secondaryColor'].setValue('#' + profileSettings.secondaryColor.hex);
-    }
-
-    if(profileSettings.headerColor) {
-      this.appearanceForm.controls['headerColor'].setValue('#' + profileSettings.headerColor.hex);
-    }
-
-    this.chosenComponents = profileSettings.layout;
-  }
-
   onFileChanged(file: any) {
     if (file.target.files && file.target.files[0]) {
       const reader = new FileReader();
@@ -340,7 +301,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirm: ['', [Validators.required, Validators.minLength(8)]]
     }, {
-      validator: this.mustMatch('password', 'confirm')
+      validator: this.globalFunctions.mustMatch('password', 'confirm')
     });
 
     this.appearanceForm = this.formBuilder.group({
@@ -349,5 +310,41 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
       secondaryColor: ['', []],
       headerColor: ['', []]
     });
+  }
+
+  private setFormValues() {
+    this.editForm.controls['firstname'].setValue(this.artist.name);
+    this.editForm.controls['lastname'].setValue(this.artist.surname);
+    this.editForm.controls['username'].setValue(this.artist.userName);
+    this.editForm.controls['email'].setValue(this.artist.email);
+    this.editForm.controls['address'].setValue(this.artist.address);
+
+    if(this.isArtist) {
+      this.editForm.controls['description'].setValue(this.artist.description);
+    }
+
+    const profileSettings: ArtistProfileSettings = JSON.parse(this.artist.profileSettings);
+
+    if(!profileSettings) {
+      return;
+    }
+
+    if(profileSettings.backgroundColor) {
+      this.appearanceForm.controls['backgroundColor'].setValue('#' + profileSettings.backgroundColor.hex);
+    }
+
+    if(profileSettings.primaryColor) {
+      this.appearanceForm.controls['primaryColor'].setValue('#' + profileSettings.primaryColor.hex);
+    }
+
+    if(profileSettings.secondaryColor) {
+      this.appearanceForm.controls['secondaryColor'].setValue('#' + profileSettings.secondaryColor.hex);
+    }
+
+    if(profileSettings.headerColor) {
+      this.appearanceForm.controls['headerColor'].setValue('#' + profileSettings.headerColor.hex);
+    }
+
+    this.chosenComponents = profileSettings.layout;
   }
 }

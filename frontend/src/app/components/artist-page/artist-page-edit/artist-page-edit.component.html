@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
+<div *ngIf="isReady" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
   <mat-tab-group dynamicHeight backgroundColor="primary">
     <mat-tab label="Public profile">
       <h2 class="primary">Edit your profile</h2>

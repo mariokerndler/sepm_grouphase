@@ -14,6 +14,8 @@ import java.util.Objects;
 @Setter
 public class ApplicationUserDto {
 
+    private Long id;
+
     private String userName;
 
     private String name;
@@ -29,8 +31,6 @@ public class ApplicationUserDto {
     private Boolean admin;
 
     private UserRole userRole;
-
-    private Long id;
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {
@@ -60,7 +60,8 @@ public class ApplicationUserDto {
     @Override
     public String toString() {
         return "ApplicationUserDto{" +
-            "userName='" + userName + '\'' +
+            "id=" + id +
+            ", userName='" + userName + '\'' +
             ", name='" + name + '\'' +
             ", surname='" + surname + '\'' +
             ", email='" + email + '\'' +
@@ -68,7 +69,6 @@ public class ApplicationUserDto {
             ", password='" + password + '\'' +
             ", admin=" + admin +
             ", userRole=" + userRole +
-            ", id=" + id +
             '}';
     }
 }

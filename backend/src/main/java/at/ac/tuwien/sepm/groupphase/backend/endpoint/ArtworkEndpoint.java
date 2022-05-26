@@ -58,6 +58,7 @@ public class ArtworkEndpoint {
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
     public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto  ) {
+        LOGGER.info("Search artworks by criteria " + tagSearchDto.toString());
         String search= tagSearchDto.getSearchOperations();
 
         Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
@@ -96,7 +97,7 @@ public class ArtworkEndpoint {
     @GetMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id ){
-        LOGGER.info("Get /Artist");
+        LOGGER.info("Get artworks by artist with id " + id);
         try {
             List<Artwork> artworks=artworkService.findArtworksByArtist(id);
 
@@ -113,9 +114,9 @@ public class ArtworkEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
-    @Operation(summary = "getAllArtworksByArtist")
+    @Operation(summary = "Delete artwork")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
-        LOGGER.info("Delete Artwork"+artworkDto.getName());
+        LOGGER.info("Delete artwork " + artworkDto.getName());
         try {
 
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
@@ -125,12 +126,13 @@ public class ArtworkEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get Detailed informations about a specific user")
+    @Operation(summary = "Post artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto ) {
-        LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
+        LOGGER.info("Post artwork " + artworkDto.getName());
         try {
             artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
         } catch (Exception v) {

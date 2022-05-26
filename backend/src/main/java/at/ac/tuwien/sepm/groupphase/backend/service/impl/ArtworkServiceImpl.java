@@ -21,8 +21,10 @@ import java.util.List;
 @Service
 @Slf4j
 public class ArtworkServiceImpl implements ArtworkService {
+
     private final ArtworkRepository artworkRepo;
     private  final ImageFileManager ifm;
+
     @Autowired
     public ArtworkServiceImpl(ArtworkRepository artworkRepo, ImageFileManager ifm) {
         this.artworkRepo = artworkRepo;

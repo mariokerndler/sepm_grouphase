@@ -1,8 +1,10 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public abstract class CommissionMapper {

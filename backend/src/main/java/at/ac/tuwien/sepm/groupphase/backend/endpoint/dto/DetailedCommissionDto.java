@@ -56,10 +56,10 @@ public class DetailedCommissionDto {
             ", issueDate=" + issueDate +
             ", deadlineDate=" + deadlineDate +
             ", instructions='" + instructions + '\'' +
-            ", references=" + references.stream().map(ReferenceDto::getId).toList() +
-            ", receipts=" + receipts.stream().map(ReceiptDto::getId).toList() +
+            (references == null ? "" : ", references=" + references.stream().map(ReferenceDto::getId).toList()) +
+            (references == null ? "" : ", receipts=" + receipts.stream().map(ReceiptDto::getId).toList()) +
             ", review=" + review +
-            ", artworkDto=" + artworkDto.getId() +
+            (artworkDto == null ? "" : ", artworkDto=" + artworkDto.getId()) +
             '}';
     }
 }

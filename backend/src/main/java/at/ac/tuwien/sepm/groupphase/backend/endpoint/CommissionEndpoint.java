@@ -52,9 +52,9 @@ public class CommissionEndpoint {
     @PutMapping
     @Operation(summary = "Update commission")
     @Transactional
-    public void updateArtist(@RequestBody SimpleCommissionDto commissionDto) {
+    public void updateCommission(@RequestBody DetailedCommissionDto commissionDto) {
         try {
-            commissionService.updateCommission(commissionMapper.commissionDtoToCommission(commissionDto));
+            commissionService.updateCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception e) {
             LOGGER.error(e.getMessage() + commissionDto.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
@@ -66,10 +66,10 @@ public class CommissionEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
     @Operation(summary = "Delete commission")
-    public void deleteCommission(@RequestBody SimpleCommissionDto commissionDto){
+    public void deleteCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Delete commission " + commissionDto.toString());
         try {
-            commissionService.deleteCommission(commissionMapper.commissionDtoToCommission(commissionDto));
+            commissionService.deleteCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception n) {
             LOGGER.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());

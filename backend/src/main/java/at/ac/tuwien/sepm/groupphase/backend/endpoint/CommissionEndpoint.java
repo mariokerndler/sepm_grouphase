@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
@@ -14,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/commission")
@@ -30,16 +33,33 @@ public class CommissionEndpoint {
     }
 
     //TODO: get all commissions or search commissions like in artworkEndpoint, getAll by not entering criteria
-    // TODO: Get detailed commission with id ?
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    @Operation(summary = "Get all artists")
+    @Transactional
+    public List<SimpleCommissionDto> getAllCommissions() {
+        LOGGER.debug("Get /Artist");
+        return commissionService.getAllCommissions().stream().map(u -> commissionMapper.commissionToSimpleCommissionDto(u)).collect(Collectors.toList());
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{id}")
+    @Operation(summary = "Get detailed information about a specific commission")
+    public DetailedCommissionDto findById(@PathVariable Long id) {
+        LOGGER.debug("Get /commission/{}", id);
+        return commissionMapper.commissionToDetailedCommissionDto(commissionService.findById(id));
+    }
 
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Post commission")
-    public void postCommission(@RequestBody SimpleCommissionDto commissionDto) {
+    public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Post commission " + commissionDto.toString());
         try {
-            commissionService.saveCommission(commissionMapper.commissionDtoToCommission(commissionDto));
+            commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception v) {
             LOGGER.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
@@ -64,7 +84,7 @@ public class CommissionEndpoint {
     //TODO: permit only admin
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping()
+    @DeleteMapping
     @Operation(summary = "Delete commission")
     public void deleteCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Delete commission " + commissionDto.toString());

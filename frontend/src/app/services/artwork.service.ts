@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ArtworkDto} from '../dtos/artworkDto';
 import {tap} from 'rxjs/operators';
@@ -21,6 +21,7 @@ export class ArtworkService {
   options = {headers: this.headers};
 
 
+
   constructor(private http: HttpClient,
               private notificationService: NotificationService) {
   }
@@ -33,7 +34,14 @@ export class ArtworkService {
    * @return Observable containing the fetched List of {@link ArtworkDto}.
    */
   search(tagSearch: TagSearch, errorAction?: () => void): Observable<ArtworkDto[]> {
-    return this.http.get<ArtworkDto[]>(`${baseUri}`, this.options)
+    // Todo: Set TagIds Param
+    const params = new HttpParams().set('tagIds', null).set('searchOperations', tagSearch.searchOperations).set('pageNr', tagSearch.pageNr);
+
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+    return this.http.get<ArtworkDto[]>(baseUri, searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {

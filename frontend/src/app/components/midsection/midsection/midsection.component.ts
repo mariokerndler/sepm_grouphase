@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ArtworkDto} from '../../../dtos/artworkDto';
 import {ArtworkService} from '../../../services/artwork.service';
+import {TagSearch} from '../../../dtos/tag-search';
 
 @Component({
   selector: 'app-midsection',
@@ -39,6 +40,11 @@ export class MidsectionComponent implements OnInit {
   }
 
   private fetchArtworksFromAllUsers() {
-    // TODO: Fetch artworks from different users.
+    const tagSearch = {tagIds: [], searchOperations: '', pageNr: null} as TagSearch;
+    this.artworkService.search(tagSearch).subscribe({
+      next: (loadedArtworks) => {
+        this.artworks = loadedArtworks;
+      }
+    });
   }
 }

@@ -77,6 +77,7 @@ public class ArtworkEndpoint {
 
         Specification<Artwork> spec = builder.build();
 
+
         if(tagSearchDto.getTagIds()!=null) {
             if (spec == null) {
                 spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
@@ -86,7 +87,7 @@ public class ArtworkEndpoint {
             }
             log.info(tagSearchDto.getSearchOperations());
         }
-        return artworkService.searchArtworks(spec,page).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
     }
 
@@ -112,7 +113,7 @@ public class ArtworkEndpoint {
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping()
+    @DeleteMapping( )
     @Operation(summary = "getAllArtworksByArtist")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
         LOGGER.info("Delete Artwork"+artworkDto.getName());

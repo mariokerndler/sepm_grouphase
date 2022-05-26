@@ -47,17 +47,25 @@ public class ArtworkServiceImpl implements ArtworkService {
         this.artworkRepo.deleteById(a.getId());
         this.ifm.deleteArtistImage(a);
     }
-    //todo fileSystem Implementation
+
     @Override
     public List<Artwork> searchArtworks(Specification<Artwork> spec) {
         return artworkRepo.findAll(spec);
     }
 
+
+
     @Override
-    public List<Artwork> searchArtworks(Specification<Artwork> spec,  Pageable pageable) {
-        if(spec==null){
-            return  this.artworkRepo.findAll(pageable).getContent();
+    public List<Artwork> searchArtworks(Specification<Artwork> spec, Pageable page, int randomSeed) {
+            if(spec==null){
+                if(randomSeed!=0){
+                    return  this.artworkRepo.findArtworkRandom(randomSeed,page).getContent();
+                }
+                else{
+                    this.artworkRepo.findAll(page).getContent();
+                }
+
+            }
+            return  this.artworkRepo.findAll(spec, page).getContent();
         }
-        return  this.artworkRepo.findAll(spec, pageable).getContent();
-    }
 }

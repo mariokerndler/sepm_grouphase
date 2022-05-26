@@ -22,21 +22,17 @@ export class UserService {
     private http: HttpClient,
     private notificationService: NotificationService) {}
 
-  createUser(firstName: string, lastName: string, username: string, email: string, address: string, password: string
-             , errorAction?: () => void
-             , successAction?: () => void): Observable<ApplicationUserDto> {
-      const userRole = UserRole.user;
-      const user = {
-        name: firstName,
-        surname: lastName,
-        userName: username,
-        address,
-        email,
-        password,
-        admin: false,
-        userRole} as ApplicationUserDto;
 
-      return this.http.post<ApplicationUserDto>(baseUri, user, this.options)
+  /**
+   * Create a new {@link ApplicationUserDto user} and store it in the system
+   *
+   * @param user The {@link ApplicationUserDto} containing the information used to create a new user.
+   * @param errorAction Optional, will execute if the POST request fails.
+   * @param successAction Optional, will execute if the POST request succeeds.
+   * @return observable containing the newly created {@link ApplicationUserDto}.
+   */
+  createUser(user: ApplicationUserDto, errorAction?: () => void, successAction?: () => void): Observable<ApplicationUserDto> {
+    return this.http.post<ApplicationUserDto>(baseUri, user, this.options)
         .pipe(
           catchError((err) => {
             if(errorAction != null) {
@@ -52,9 +48,23 @@ export class UserService {
           }));
   }
 
+  /**
+   * Fetches all users stored in the system
+   *
+   * @return observable list of found users.
+   */
   getAll(): Observable<ApplicationUserDto[]> {
     return this.http.get<ApplicationUserDto[]>(baseUri, this.options);
   }
+
+  /**
+   * Fetches the {@link ApplicationUserDto user} with the given {@link ApplicationUserDto#id id} from the system.
+   *
+   * @param id The {@link ApplicationUserDto#id id} of the {@link ApplicationUserDto user} that will be fetched.
+   * @param errorAction Optional, will execute if the GET request fails.
+   *
+   * @return Observable containing the fetched {@link ApplicationUserDto}.
+   */
   getUserById(id: number, errorAction?: () => void): Observable<ApplicationUserDto> {
     return this.http.get<ApplicationUserDto>(`${baseUri}/${id}`, this.options)
       .pipe(
@@ -67,6 +77,15 @@ export class UserService {
       );
   }
 
+
+  /**
+   * Update an already existing {@link ApplicationUserDto user}.
+   *
+   * @param user The {@link ApplicationUserDto} containing the information to update the specified user.
+   * @param errorAction Optional, will execute if the PUT request fails.
+   * @param successAction Optional, will execute if the PUT request succeeds.*
+   * @return observable containing the newly created {@link ApplicationUserDto};
+   */
   updateUser(user: ApplicationUserDto, errorAction?: () => void, successAction?: () => void): Observable<ApplicationUserDto> {
     return this.http.put<ApplicationUserDto>(
       `${baseUri}`,

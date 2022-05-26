@@ -1,11 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Artist} from '../../../dtos/artist';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {Gallery} from '../../../dtos/gallery';
 import {ArtworkService} from '../../../services/artwork.service';
-import {Artwork, FileType} from '../../../dtos/artwork';
+import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 
 @Component({
   selector: 'app-artist-gallery',
@@ -35,7 +32,7 @@ export class ArtistGalleryComponent implements OnInit {
           const imageData = new Uint8Array([0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xf3, 0xc0, 0xff, 0xc0, 0xff, 0xc0,
             0xf7, 0xc0, 0xff, 0xc0]);
           const artwork = {name: 'test',description: 'test', imageData, imageUrl: '/data/ap/aaronjoshuaaa/test.jpg',
-            fileType: FileType.jpg, artistId: this.artist.id} as Artwork;
+            fileType: FileType.jpg, artistId: this.artist.id} as ArtworkDto;
           this.artworkService.createArtwork(artwork).subscribe();
         };
       };

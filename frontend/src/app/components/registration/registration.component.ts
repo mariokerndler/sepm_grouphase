@@ -9,6 +9,8 @@ import {Router} from '@angular/router';
 import {LoginComponent} from '../login/login.component';
 import {UserService} from '../../services/user.service';
 import {GlobalFunctions} from '../../global/globalFunctions';
+import {UserRole} from '../../dtos/artistDto';
+import {ApplicationUserDto} from '../../dtos/applicationUserDto';
 
 
 @Component({
@@ -56,14 +58,16 @@ export class RegistrationComponent implements OnInit {
     if (this.registerForm.valid) {
 
 
-      const firstname = this.registerForm.controls.firstname.value;
-      const lastname = this.registerForm.controls.lastname.value;
-      const username = this.registerForm.controls.username.value;
+      const name = this.registerForm.controls.firstname.value;
+      const surname = this.registerForm.controls.lastname.value;
+      const userName = this.registerForm.controls.username.value;
       const email = this.registerForm.controls.email.value;
       const address = this.registerForm.controls.address.value;
       const password = this.registerForm.controls.password.value;
 
-      this.userService.createUser(firstname, lastname, username, email, address, password).subscribe();
+      const user = {name, surname,userName, email, address, password, userRole: UserRole.user, admin: false} as ApplicationUserDto;
+
+      this.userService.createUser(user).subscribe();
       this.onNoClick();
 
 

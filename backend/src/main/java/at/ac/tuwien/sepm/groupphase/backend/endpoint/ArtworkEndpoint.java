@@ -50,6 +50,7 @@ public class ArtworkEndpoint {
         this.artworkMapper = artworkMapper;
     }
 
+    //TODO: implementation arguably belongs to service class
     //see https://www.baeldung.com/rest-api-query-search-language-more-operations
     @PermitAll
     @ResponseStatus(HttpStatus.OK)

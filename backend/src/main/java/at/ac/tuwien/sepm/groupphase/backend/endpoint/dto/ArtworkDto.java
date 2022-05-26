@@ -14,23 +14,25 @@ import javax.persistence.*;
 public class ArtworkDto {
 
 
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private byte[] imageData;
     private String  imageUrl;
     private FileType fileType;
-    private long artistId;
+    private Long artistId;
 
     //todo sketch reference
+    //TODO: make simple and detailed artwork dto
 
 
-    public ArtworkDto(String name, String description, String imageUrl, FileType fileType, Artist artist) {
+    public ArtworkDto(String name, String description, byte[] imageData, String imageUrl, FileType fileType, Long artistId) {
         this.name = name;
         this.description = description;
+        this.imageData = imageData;
         this.imageUrl = imageUrl;
         this.fileType = fileType;
-        this.artistId =  artist.getId();
+        this.artistId = artistId;
     }
 
     @Override

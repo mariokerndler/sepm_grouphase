@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 public class ImageFileManager {
 
 
-    public String writeArtistImage(Artwork a) throws IOException {
+    public String writeArtistImage(Artwork a) {
 
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName())) {
             outputStream.write(a.getImageData());

@@ -15,21 +15,13 @@ import java.util.Objects;
 public class ApplicationUserDto {
 
     private Long id;
-
     private String userName;
-
     private String name;
-
     private String surname;
-
     private String email;
-
     private String address;
-
     private String password;
-
     private Boolean admin;
-
     private UserRole userRole;
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,

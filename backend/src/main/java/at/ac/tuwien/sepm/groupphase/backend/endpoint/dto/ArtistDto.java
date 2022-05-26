@@ -43,11 +43,12 @@ public class ArtistDto {
 
     private List<Review> reviews;
 
-    private String artistSettings;
+    private String profileSettings;
 
     public ArtistDto(String userName, String name, String surname, String email, String address,
                      String password, Boolean admin, UserRole userRole, double reviewScore, long galleryId,
-                     List<Long> artworksIds, List<Commission> commissions, List<Review> reviews, String artistSettings) {
+                     List<Long> artworksIds, List<Commission> commissions, List<Review> reviews,
+                     String profileSettings) {
         this.userName = userName;
         this.name = name;
         this.surname = surname;
@@ -61,13 +62,14 @@ public class ArtistDto {
         this.artworksIds = artworksIds;
         this.commissions = commissions;
         this.reviews = reviews;
-        this.artistSettings = artistSettings;
-
+        this.profileSettings = profileSettings;
     }
-    public  void addArtworkId(Long i){
-        if(artworksIds==null){
+
+    public void addArtworkId(Long i){
+        if(artworksIds == null){
             return;
         }
+
         this.artworksIds.add(i);
     }
 }

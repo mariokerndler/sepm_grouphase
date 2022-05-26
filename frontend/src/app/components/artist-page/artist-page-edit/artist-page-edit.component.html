@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
+<div *ngIf="isReady" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
   <mat-tab-group dynamicHeight backgroundColor="primary">
     <mat-tab label="Public profile">
       <h2 class="primary">Edit your profile</h2>
@@ -39,6 +39,14 @@
              <mat-error *ngIf="editForm.controls.email.errors">
                <small *ngIf="editForm.controls.email.errors.required">Your email is required! </small>
                <small *ngIf="editForm.controls.email.errors.email">The email you entered is invalid! </small>
+             </mat-error>
+           </mat-form-field>
+
+           <mat-form-field class="full-width primary" appearance="fill">
+             <mat-label class="primary">Address</mat-label>
+             <input matInput name="address" formControlName="address" aria-describedby="addressHelp">
+             <mat-error *ngIf="editForm.controls.address.errors">
+               <small *ngIf="editForm.controls.address.errors.required">Your address is required! </small>
              </mat-error>
            </mat-form-field>
 
@@ -179,6 +187,13 @@
       <button mat-flat-button color="accent" class="artist-profile-elements-button update-user-button" (click)="updateAppearance()">Update appearance</button>
     </mat-tab>
   </mat-tab-group>
+</div>
+
+<div class="home-button">
+  <button mat-button color="accent" (click)="goBack()">
+    <mat-icon color="accent">home</mat-icon>
+    <span class="home-text">Go back</span>
+  </button>
 </div>
 
 <ng-template #defaultComponent>

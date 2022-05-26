@@ -20,11 +20,9 @@ public abstract class ArtistMapper {
 
     @AfterMapping
     protected void addArtworkIds(Artist a, @MappingTarget ArtistDto aDto){
-        aDto.setArtworksIds(new LinkedList<Long>());
+        aDto.setArtworksIds(new LinkedList<>());
         for(Artwork aw: a.getArtworks()){
-            aDto.addArtworkId(  aw.getId());
-
+            aDto.addArtworkId(aw.getId());
         }
-
     }
 }

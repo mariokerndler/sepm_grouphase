@@ -21,7 +21,7 @@ public class Artist extends ApplicationUser {
     @Column(length = 200)
     private String description;
 
-    @Column
+    @Column(length = 500)
     private String profileSettings;
 
     @Column

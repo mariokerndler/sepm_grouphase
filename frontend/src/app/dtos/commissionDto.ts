@@ -1,4 +1,4 @@
-export class Commission {
+export class CommissionDto {
   id: number;
   artistId: number;
   userId: number;

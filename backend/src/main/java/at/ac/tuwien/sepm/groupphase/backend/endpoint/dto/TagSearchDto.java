@@ -7,11 +7,10 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Getter
+@Setter
 public class TagSearchDto {
    private List<String> tagIds;
     private String searchOperations;

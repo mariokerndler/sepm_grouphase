@@ -5,10 +5,12 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Review;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class ArtistDto {
@@ -42,9 +44,6 @@ public class ArtistDto {
     private List<Review> reviews;
 
     private String artistSettings;
-
-    public ArtistDto() {
-    }
 
     public ArtistDto(String userName, String name, String surname, String email, String address,
                      String password, Boolean admin, UserRole userRole, double reviewScore, long galleryId,

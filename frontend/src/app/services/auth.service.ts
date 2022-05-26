@@ -24,7 +24,6 @@ export class AuthService {
   }
 
   private static getTokenExpirationDate(token: string): Date {
-
     const decoded: any = jwt_decode(token);
     if (decoded.exp === undefined) {
       return null;
@@ -47,7 +46,6 @@ export class AuthService {
         tap((authResponse: string) => AuthService.setToken(authResponse))
       );
   }
-
 
   /**
    * Check if a valid JWT token is saved in the localStorage
@@ -79,5 +77,16 @@ export class AuthService {
       }
     }
     return 'UNDEFINED';
+  }
+
+  /**
+   * Returns the user email based on the current token
+   */
+  getUserAuthEmail() {
+    if(this.getToken() != null) {
+      const decoded: any = jwt_decode(this.getToken());
+
+      return decoded.sub;
+    }
   }
 }

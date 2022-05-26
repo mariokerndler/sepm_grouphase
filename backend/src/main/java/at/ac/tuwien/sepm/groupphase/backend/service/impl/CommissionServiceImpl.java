@@ -18,7 +18,7 @@ import java.util.Optional;
 public class CommissionServiceImpl implements CommissionService {
 
     private final CommissionRepository commissionRepo;
-    private  final ImageFileManager ifm;
+    private final ImageFileManager ifm;
 
     @Autowired
     public CommissionServiceImpl(CommissionRepository commissionRepo, ImageFileManager ifm) {

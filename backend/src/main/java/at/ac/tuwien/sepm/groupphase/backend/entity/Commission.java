@@ -38,6 +38,7 @@ public class Commission {
     @Column(nullable = false, name = "issue_date")
     private LocalDateTime issueDate;
 
+    //TODO: Should deadline always be given ? This could be null
     @Column(nullable = false, name = "deadline_date")
     private LocalDateTime deadlineDate;
 

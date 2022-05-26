@@ -15,7 +15,6 @@ public abstract class ArtistMapper {
 
     public abstract ArtistDto artistToArtistDto(Artist artist);
 
-
     public abstract Artist artistDtoToArtist(ArtistDto artistDto);
 
     @AfterMapping

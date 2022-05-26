@@ -22,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
@@ -57,7 +58,11 @@ public class ArtworkEndpoint {
     @ResponseBody
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
-    public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto  ) {
+    public List<ArtworkDto> search(@RequestParam( name="randomSeed",defaultValue = "0")int randomSeed,
+                                   @RequestParam( name="tagIds")List<String> tagIds,
+                                   @RequestParam( name="pageNr",defaultValue = "0")int pageNr,
+                                   @RequestParam( name="searchOperation",defaultValue = "")String searchOperation) {
+        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperation,pageNr,randomSeed);
         String search= tagSearchDto.getSearchOperations();
 
         Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);

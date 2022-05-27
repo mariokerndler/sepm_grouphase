@@ -33,6 +33,7 @@ export class ArtworkService {
    *
    * @return Observable containing the fetched List of {@link ArtworkDto}.
    */
+
   search(tagSearch: TagSearch, errorAction?: () => void): Observable<ArtworkDto[]> {
 
 
@@ -41,13 +42,14 @@ export class ArtworkService {
       searchOperations = '';
     }
 
+
     // Todo: Set TagIds Param
     // Todo: Set Randomizer Seed
-    const params = new HttpParams().set('tagIds', null).set('searchOperations', searchOperations).set('pageNr', tagSearch.pageNr == null? '': tagSearch.pageNr).set('randomSeed', '1');
-
+    const params = new HttpParams().set('tagIds','' ).set('searchOperations', searchOperations).set('pageNr', tagSearch.pageNr == null? '0': tagSearch.pageNr).set('randomSeed', '1');
+    console.log(params.toString());
     const searchOptions = {
-      headers: this.headers,
-      params
+    headers: this.headers,
+    params
     };
     return this.http.get<ArtworkDto[]>(baseUri, searchOptions)
       .pipe(

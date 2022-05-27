@@ -21,6 +21,7 @@
     <mat-selection-list [multiple]="false" class="sidenav">
       <mat-list-option  *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login</mat-list-option>
       <mat-list-option  *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register</mat-list-option>
+      <mat-list-option  *ngIf="!authService.isLoggedIn()" routerLink="/feed" routerLinkActive="active"> Explore</mat-list-option>
     </mat-selection-list>
 
 

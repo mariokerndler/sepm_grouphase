@@ -7,6 +7,7 @@ import {MessageComponent} from './components/message/message.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
 import {LogoutComponent} from './components/logout/logout.component';
+import {ImageFeedComponent} from './image-feed/image-feed.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path: 'logout', component: LogoutComponent},
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
   {path: 'artist/:id', component: ArtistPageComponent},
-  {path: 'artist/:id/edit', component: ArtistPageEditComponent}
+  {path: 'artist/:id/edit', component:  ArtistPageEditComponent},
+  {path:'feed',component: ImageFeedComponent}
 ];
 
 @NgModule({

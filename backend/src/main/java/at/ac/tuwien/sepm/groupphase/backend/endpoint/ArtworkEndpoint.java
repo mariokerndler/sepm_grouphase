@@ -83,16 +83,18 @@ public class ArtworkEndpoint {
         }
 
         Specification<Artwork> spec = builder.build();
-
-
+        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+ tagSearchDto.getTagIds());
         if(tagSearchDto.getTagIds()!=null) {
-            if (spec == null) {
-                spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+            if (tagSearchDto.getTagIds().size() > 0) {
+
+                if (spec == null) {
+                    spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+                }
+                for (String tag : tagSearchDto.getTagIds()) {
+                    spec.and(TagSpecification.filterByTags(tag));
+                }
+                log.info(tagSearchDto.getSearchOperations());
             }
-            for (String tag : tagSearchDto.getTagIds()) {
-                spec.and(TagSpecification.filterByTags(tag));
-            }
-            log.info(tagSearchDto.getSearchOperations());
         }
         return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 

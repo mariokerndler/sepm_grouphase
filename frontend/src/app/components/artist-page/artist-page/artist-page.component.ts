@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {ArtistService} from '../../../services/artist.service';
+import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 
 @Component({
   selector: 'app-artist-page',
@@ -13,6 +14,8 @@ import {ArtistService} from '../../../services/artist.service';
 export class ArtistPageComponent implements OnInit, OnDestroy {
 
   artist: ArtistDto;
+  profileSettings: ArtistProfileSettings;
+  isReady = false;
   private routeSubscription: Subscription;
 
   constructor(
@@ -31,6 +34,10 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
       (params) => this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
         .subscribe((artist) => {
           this.artist = artist;
+          if(this.artist.profileSettings) {
+            this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
+          }
+          this.isReady = true;
         })
     );
   }

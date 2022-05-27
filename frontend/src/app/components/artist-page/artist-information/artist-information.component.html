@@ -8,15 +8,15 @@
           <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
         </div>
         <div class="artist-full-name-container" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="5px">
-          <span class="primary artist-full-name">{{artist.name}} {{artist.surname}}</span>
-          <span class="primary artist-role">Artist</span>
+          <span class="accent-color artist-full-name" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}">{{artist.name}} {{artist.surname}}</span>
+          <span class="accent-color artist-role" [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}">Artist</span>
         </div>
       </div>
     </div>
     <div class="artist-middle-menu">
       <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-evenly center" class="artist-middle-menu-container">
         <button mat-button routerLink="/artist/{{artist.id}}" color="accent">Home</button>
-        <button mat-button routerLink="/artist/{{artist.id}}/gallery" color="accent">Gallery</button>
+        <button mat-button routerLink="/artist/{{artist.id}}/{{artist.galleryId}}" color="accent">Gallery</button>
         <button mat-button routerLink="/artist/{{artist.id}}/reviews" color="accent">Reviews</button>
         <button mat-button routerLink="/artist/{{artist.id}}/contact" color="accent">Contact</button>
       </div>
@@ -44,8 +44,8 @@
           <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
         </div>
         <div class="artist-full-name-container" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="5px">
-          <span class="primary artist-full-name">{{artist.name}} {{artist.surname}}</span>
-          <span class="primary artist-role">Artist</span>
+          <span class="accent-color artist-full-name" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}">{{artist.name}} {{artist.surname}}</span>
+          <span class="accent-color artist-role" [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}">Artist</span>
         </div>
       </div>
     </div>
@@ -53,8 +53,8 @@
       <mat-tab-group dynamicHeight backgroundColor="primary" [(selectedIndex)]="tabIndex">
         <mat-tab label="Home">
           <div>
-            <span class="primary artist-about-header">About</span>
-            <p class="primary artist-about-description">
+            <span class="accent-color artist-about-header" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}">About</span>
+            <p class="accent-color artist-about-description">
               {{artist.description}}
             </p>
             <div>

@@ -45,7 +45,6 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
 
 
-
     private final ArtistRepository artistRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
@@ -53,7 +52,7 @@ public class UserDataGenerator {
 
     private final ArtistRepository artistRepo;
 
-    public UserDataGenerator( ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
+    public UserDataGenerator(ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
 
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
@@ -69,14 +68,15 @@ public class UserDataGenerator {
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
 
     }
+
     private void loadTags(int numberOftags) throws FileNotFoundException {
-        File text = new File(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.tagLocation);
-        List<String> tags= new LinkedList<>();
-        Scanner scanner= new Scanner(text);
-        while (scanner.hasNext() && numberOftags>0){
+        File text = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.tagLocation);
+        List<String> tags = new LinkedList<>();
+        Scanner scanner = new Scanner(text);
+        while (scanner.hasNext() && numberOftags > 0) {
             numberOftags--;
             Tag t = new Tag(scanner.nextLine());
-            if(!tags.contains(t.getName())) {
+            if (!tags.contains(t.getName())) {
                 tags.add(t.getName());
                 tagRepository.save(t);
             }
@@ -84,24 +84,22 @@ public class UserDataGenerator {
     }
 
     //make sure db is empty before running to avoid Unique key constraint issues
-    private void loadProfiles(int numberOfProfiles)   {
+    private void loadProfiles(int numberOfProfiles) {
         List<Tag> tags = tagRepository.findAll();
 
-        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation), 1)) {
+        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation), 1)) {
 
-            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
+            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).toList();
 
-            result.subList(0,numberOfProfiles).forEach(
+            result.subList(0, numberOfProfiles).forEach(
 
                 folder -> {
 
                     LOGGER.info(folder.toString());
-                    Artist a = generateArtistProfile();
-                    File fldr= new File(folder);
-
-                    a.setUserName(fldr.getName());
+                    File fldr = new File(folder);
+                    Artist a = generateArtistProfile(fldr.getName());
                     artistRepository.save(a);
-                    LOGGER.info("Saved artist: "+a.getUserName());
+                    LOGGER.info("Saved artist: " + a.getUserName());
                     File artistProfileDir = new File(folder);
                     File[] artistProfileDirectoryListing = artistProfileDir.listFiles();
                     if (artistProfileDirectoryListing != null) {
@@ -117,7 +115,7 @@ public class UserDataGenerator {
                                 if (name.length() > 50) {
                                     name = name.substring(0, 50);
                                 }
-                                List<Tag> selectedTags = new LinkedList<Tag>();
+                                List<Tag> selectedTags = new LinkedList<>();
 
                                 for (int j = 0; j < f.random().nextInt(0, 10); j++) {
 
@@ -128,47 +126,47 @@ public class UserDataGenerator {
                                 artwork.setDescription(description);
                                 artwork.setArtist(a);
                                 artwork.setFileType(FileType.JPG);
-                                artwork.setImageUrl(artworkFile.toString().replace(ImageDataPaths.assetAbsoluteLocation,""));
+                                artwork.setImageUrl(artworkFile.toString().replace(ImageDataPaths.assetAbsoluteLocation, ""));
                                 artwork.setName(name);
                                 artworkRepo.save(artwork);
 
                                 LOGGER.info("Saved artwork: " + artwork.getImageUrl());
                             }
                         }
-                    }
-
-                    else{
+                    } else {
                         LOGGER.info("Error saving  artwork: ");
                     }
 
                 });
-        }
-
-        catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private Artist generateArtistProfile () {
-
+    private Artist generateArtistProfile(String username) {
         Faker faker = new Faker();
         Artist artist = new Artist();
         artist.setAdmin(false);
-        artist.setUserName(faker.name().username());
+        artist.setUserName(username);
         artist.setName(faker.name().firstName());
         artist.setSurname(faker.name().lastName());
         artist.setDescription(faker.university().name());
         artist.setReviewScore(faker.random().nextInt(0, 5));
         artist.setAddress(faker.address().fullAddress());
         artist.setEmail(faker.internet().emailAddress());
-        artist.setPassword(passwordEncoder.encode(faker.internet().password(8, 15)));
+
+        // TODO: Remove, this is just for testing purpose
+        var password = faker.internet().password(8, 15);
+        artist.setPassword(passwordEncoder.encode(password));
         artist.setUserRole(UserRole.Artist);
+
+        LOGGER.info("Username: " + username + ", Password: " + password);
         return artist;
     }
 
     //old approach not working, issues with cloudflare protection 403 error.
-    private void downloadSamplePicture ( int numberOfImages) throws IOException {
+    private void downloadSamplePicture(int numberOfImages) throws IOException {
         // only  incr. when actually saving
         int counter = 0;
 
@@ -195,16 +193,10 @@ public class UserDataGenerator {
                     counter++;
 
                 }
-            } catch (MalformedURLException e) {
-                LOGGER.info(e.getMessage());
             } catch (IOException e) {
                 LOGGER.info(e.getMessage());
             }
-
-
         }
-
     }
-
 }
 

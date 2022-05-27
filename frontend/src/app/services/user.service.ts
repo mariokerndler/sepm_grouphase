@@ -55,6 +55,7 @@ export class UserService {
   getAll(): Observable<ApplicationUserDto[]> {
     return this.http.get<ApplicationUserDto[]>(baseUri, this.options);
   }
+
   getUserById(id: number, errorAction?: () => void): Observable<ApplicationUserDto> {
     return this.http.get<ApplicationUserDto>(`${baseUri}/${id}`, this.options)
       .pipe(
@@ -80,6 +81,7 @@ export class UserService {
         return this.notificationService.notifyUserAboutFailedOperation<ApplicationUserDto>('Editing User')(err);
       }),
       tap(_ => {
+        this.notificationService.displaySuccessSnackbar(`Successfully updated "${user.userName}"!`);
         if(successAction != null) {
           successAction();
         }

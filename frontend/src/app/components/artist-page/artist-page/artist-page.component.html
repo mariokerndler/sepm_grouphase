@@ -10,7 +10,7 @@
     <!--<app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>-->
   </div>
 
-  <div class="edit-button">
+  <div *ngIf="canEdit" class="edit-button">
     <button mat-button color="accent" (click)="navigateToEdit()" >
       <mat-icon color="accent">edit</mat-icon>
       <span class="edit-text" [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}">Edit your page</span>

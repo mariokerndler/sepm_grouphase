@@ -1,4 +1,4 @@
-<button mat-button color="accent"  (click)="previousPage()">Previous</button>
+<button mat-button color="accent"  (click)="previousPage()">Previous</button>s
 <button mat-button color="accent"  (click)="nextPage()">Next</button>
 <label>Filter:</label>
 <form class="example-form">
@@ -11,18 +11,14 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-</form>
 
-<form class="example-form" >
-  <mat-form-field  class="example-full-width" appearance="fill">
-    <mat-label>Tags</mat-label>
-    <input type="text" matInput  [matAutocomplete]="auto">
-    <mat-autocomplete    #auto="matAutocomplete">
-      <mat-option (onSelectionChange)="loadFeed()"    *ngFor="let tag of tags " [value]="searchParams.tagIds">
-        {{tag.name}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+
+  <mat-selection-list   [(ngModel)]="selectedTags" color="primary" (selectionChange)="onListSelectionChange($event)">
+    <mat-list-option *ngFor="let tag of tags " [value]="tag.id" [compareWith]="compareFunction">
+      {{tag.name}}
+    </mat-list-option>
+
+  </mat-selection-list>
 </form>
 
 <div class="container">

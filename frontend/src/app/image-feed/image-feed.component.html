@@ -1,0 +1,41 @@
+<button mat-button color="accent"  (click)="previousPage()">Previous</button>
+<button mat-button color="accent"  (click)="nextPage()">Next</button>
+<label>Filter:</label>
+<form class="example-form">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Artists</mat-label>
+    <input type="text" matInput  [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option   *ngFor="let artist of artists " [value]="artist.id">
+        {{artist.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<form class="example-form" >
+  <mat-form-field  class="example-full-width" appearance="fill">
+    <mat-label>Tags</mat-label>
+    <input type="text" matInput  [matAutocomplete]="auto">
+    <mat-autocomplete    #auto="matAutocomplete">
+      <mat-option (onSelectionChange)="loadFeed()"    *ngFor="let tag of tags " [value]="searchParams.tagIds">
+        {{tag.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<div class="container">
+  <div class="feed">
+    <div *ngFor="let artwork of images; let i= index" [style.gridRow]="artwork.row"  [style.gridCol]="artwork.col"  class="image">
+      <img  [src]="url+artwork.imageUrl" alt="error" (click)="selectedArtwork=i">
+      <span></span>
+
+    </div>
+  </div>
+</div>
+
+<app-gallery-carousel *ngIf="selectedArtwork!== null"  (closeCarousel)="selectedArtwork=null"  [artworks]="images" [selectedArtworkId]="selectedArtwork">
+
+
+</app-gallery-carousel>

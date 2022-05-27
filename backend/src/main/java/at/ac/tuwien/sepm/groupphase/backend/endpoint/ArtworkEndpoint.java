@@ -65,6 +65,7 @@ public class ArtworkEndpoint {
         TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperation,pageNr,randomSeed);
         String search= tagSearchDto.getSearchOperations();
 
+
         Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
         String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
@@ -81,7 +82,7 @@ public class ArtworkEndpoint {
         }
 
         Specification<Artwork> spec = builder.build();
-
+/*
 
         if(tagSearchDto.getTagIds()!=null) {
             if (spec == null) {
@@ -91,7 +92,7 @@ public class ArtworkEndpoint {
                 spec.and(TagSpecification.filterByTags(tag));
             }
             log.info(tagSearchDto.getSearchOperations());
-        }
+        } */
         return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
     }

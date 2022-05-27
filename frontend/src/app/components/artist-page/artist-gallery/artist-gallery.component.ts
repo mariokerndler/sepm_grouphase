@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 
@@ -29,14 +27,40 @@ export class ArtistGalleryComponent implements OnInit {
         const image = new Image();
         image.src = e.target.result;
         image.onload = (_) => {
-          const imageData = new Uint8Array([0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xf3, 0xc0, 0xff, 0xc0, 0xff, 0xc0,
-            0xf7, 0xc0, 0xff, 0xc0]);
-          const artwork = {name: 'test',description: 'test', imageData, imageUrl: '/data/ap/aaronjoshuaaa/test.jpg',
-            fileType: FileType.jpg, artistId: this.artist.id} as ArtworkDto;
-          this.artworkService.createArtwork(artwork).subscribe();
+          this.artistProfilePicture = e.target.result;
         };
       };
       reader.readAsDataURL(file.target.files[0]);
+      reader.onload = () => {
+        const base64result = reader.result.toString().split(',')[1];
+        const binary = new Uint8Array(this.base64ToBinaryArray(base64result));
+        console.log(binary);
+        this.uploadNewImage(new Uint8Array(binary));
+
+      };
     }
   }
+
+  uploadNewImage(imageData: Uint8Array){
+    const artwork = {name:'test', description:'test', imageData,
+      imageUrl:'/test', fileType: FileType.png, artistId:this.artist.id} as ArtworkDto;
+    this.artworkService.createArtwork(artwork).subscribe();
+  }
+
+
+
+    base64ToBinaryArray(base64: string) {
+
+    const binary = window.atob(base64);
+    const length = binary.length;
+    const bytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+
+
+
 }

@@ -1,14 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Review;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -59,16 +56,16 @@ public class ArtistDto {
 
     private List<Long> artworksIds;
 
-    private List<Commission> commissions;
+    private List<Long> commissionsIds;
 
-    private List<Review> reviews;
+    private List<Long> reviewsIds;
 
     @Size(max = 255)
     private String profileSettings;
 
     public ArtistDto(String userName, String name, String surname, String email, String address,
                      String password, Boolean admin, UserRole userRole, double reviewScore, long galleryId,
-                     List<Long> artworksIds, List<Commission> commissions, List<Review> reviews,
+                     List<Long> artworksIds, List<Long> commissions, List<Long> reviews,
                      String profileSettings) {
         this.userName = userName;
         this.name = name;
@@ -81,8 +78,8 @@ public class ArtistDto {
         this.reviewScore = reviewScore;
         this.galleryId = galleryId;
         this.artworksIds = artworksIds;
-        this.commissions = commissions;
-        this.reviews = reviews;
+        this.commissionsIds = commissions;
+        this.reviewsIds = reviews;
         this.profileSettings = profileSettings;
     }
 

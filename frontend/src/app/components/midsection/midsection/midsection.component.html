@@ -1,7 +1,7 @@
 <div *ngIf="artworks !== []" class="content">
   <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="center start">
     <div *ngFor="let artwork of artworks">
-      <app-card-view  [artwork]="artwork" [classifiedArtist]="artistId"></app-card-view>
+      <app-card-view  [artwork]="artwork" [classifiedArtist]="artistId !== null"></app-card-view>
     </div>
   </div>
 </div>

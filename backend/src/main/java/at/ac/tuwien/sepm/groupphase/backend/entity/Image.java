@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@MappedSuperclass
 public class Image {
 
     @Id

@@ -11,4 +11,8 @@ public class TagSpecification {
         return (artwork, query, criteriaBuilder) ->
             criteriaBuilder.equal(artwork.join("tags").get("id"),tagId);
     }
+
+
+
+
 }

@@ -3,10 +3,26 @@
   margin: auto;
 }
 
+.artist-page-wrapper {
+  height: 100%;
+}
+
 @media screen and (max-width: 959px) {
   .artist-page {
     width: 100%;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
+}
+
+.edit-button {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  text-align: right;
+  padding: 32px;
+}
+
+.edit-text {
+  margin-left: 10px;
 }

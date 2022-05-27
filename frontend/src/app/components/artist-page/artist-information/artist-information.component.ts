@@ -1,12 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Artist} from '../../../dtos/artist';
-
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-}
+import {ArtistDto} from '../../../dtos/artistDto';
+import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 
 @Component({
   selector: 'app-artist-information',
@@ -15,13 +9,17 @@ export interface Tile {
 })
 export class ArtistInformationComponent implements OnInit {
 
-  @Input() artist: Artist;
+  @Input() artist: ArtistDto;
+  profileSettings: ArtistProfileSettings;
 
-  artistProfilePicture: string;
+  // TODO: Fill in the real profile picture
+  artistUrl = 'https://picsum.photos/150/150';
 
   constructor() { }
 
   ngOnInit(): void {
-    this.artistProfilePicture = 'https://picsum.photos/100/100';
+    if(this.artist.profileSettings) {
+      this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
+    }
   }
 }

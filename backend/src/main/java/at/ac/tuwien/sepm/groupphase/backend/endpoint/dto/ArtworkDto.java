@@ -4,12 +4,14 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class ArtworkDto {
@@ -59,9 +61,5 @@ public class ArtworkDto {
         this.fileType = fileType;
         this.artistId=   artist.getId();
     }
-    public  ArtworkDto() {
-    }
-
-
 
 }

@@ -7,15 +7,15 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class TagSearchDto {
     private List<String> tagIds;
     private String searchOperations;
-
-    private int pageNr = 0;
+    private  int pageNr=0;
+    private int  randomSeed=0;
 
     @Override
     public String toString() {

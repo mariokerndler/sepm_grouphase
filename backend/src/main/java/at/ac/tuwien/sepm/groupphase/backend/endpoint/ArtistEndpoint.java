@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @RestController
 @RequestMapping(value = "/artist")
 public class ArtistEndpoint {
@@ -90,19 +91,21 @@ public class ArtistEndpoint {
         }
     }
 
-    //TODO: if uncommented, swap user for artist
-    /*@PermitAll
-    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get Detailed informations about a specific user")
-    public void updateUser(@RequestBody ApplicationUserDto userDto) {
-        LOGGER.debug("Post /User/{}", userDto);
-        try {
-            userService.updateUser(userDto);
-        } catch (Exception v) {
-            LOGGER.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
 
-    }*/
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value="/{id}")
+    @Operation(summary = "Get  artist by id")
+    @Transactional
+    public ArtistDto getArtistById(@PathVariable Long id) {
+        try {
+            log.info(String.valueOf(id));
+         return artistMapper.artistToArtistDto(artistService.findArtistById(id));
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage() + id.toString());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        }
+    }
+
+
 }

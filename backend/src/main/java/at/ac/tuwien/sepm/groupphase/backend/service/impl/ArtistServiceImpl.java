@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
@@ -39,6 +41,7 @@ public class ArtistServiceImpl implements ArtistService {
     public Artist findArtistById(Long id) {
         Optional<Artist> artist= artistRepo.findById(id);
         if(artist.isPresent()){
+            log.info(artist.toString()) ;
             return artist.get();
         }
         throw new NotFoundException(String.format("Could not find Artist with id %s", id));
@@ -56,8 +59,10 @@ public class ArtistServiceImpl implements ArtistService {
             if(!oldArtist.getUserName().equals(artist.getUserName())){
                 ifm.renameArtistFolder(artist,oldArtist.getUserName());
             }
-            if(oldArtist.getProfilePicture().getId()!=artist.getProfilePicture().getId()){
-                ifm.writeAndReplaceArtistProfileImage(artist);
+            if(oldArtist.getProfilePicture()!=null && artist.getProfilePicture()!=null) {
+                if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
+                    ifm.writeAndReplaceArtistProfileImage(artist);
+                }
             }
         }
         artistRepo.save(artist);

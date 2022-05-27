@@ -21,7 +21,7 @@ public class Artist extends ApplicationUser {
     @Column(length = 200)
     private String description;
 
-    @Column
+    @Column(length = 500)
     private String profileSettings;
 
     @Column
@@ -65,15 +65,7 @@ public class Artist extends ApplicationUser {
 
     @Override
     public String toString() {
-        return "Artist{" + (profilePicture != null ? "profilePicture='" + profilePicture.getId() + '\'' : "") +
-            ", description='" + description + '\'' +
-            ", profileSettings='" + profileSettings + '\'' +
-            ", reviewScore=" + reviewScore +
-            (gallery != null ? ", gallery=" + gallery.getId() : "") +
-            (artworks != null ? ", artworks=" + artworks.stream().map(Artwork::getId).toList() : "") +
-            (commissions != null ? ", commissions=" + commissions.stream().map(Commission::getId).toList() : "" ) +
-            (reviews != null ? ", reviews=" + reviews.stream().map(Review::getId).toList() : "") +
-            (tags != null ? ", tags=" + tags.stream().map(Tag::getName).toList()  : "") +
+        return "Artist{" +
             "} " + super.toString();
     }
 

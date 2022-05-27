@@ -3,10 +3,12 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class ArtworkDto {
@@ -42,9 +44,5 @@ public class ArtworkDto {
         this.fileType = fileType;
         this.artistId=   artist.getId();
     }
-    public  ArtworkDto() {
-    }
-
-
 
 }

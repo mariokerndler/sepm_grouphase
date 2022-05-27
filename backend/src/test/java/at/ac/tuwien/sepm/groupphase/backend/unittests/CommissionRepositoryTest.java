@@ -1,9 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.unittests;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +33,47 @@ public class CommissionRepositoryTest {
 
     @Test
     public void givenNothing_whenSaveCommission_thenFindListWithOneElementAndFindCommissionById() {
+        ApplicationUser user1 = ApplicationUser.builder()
+            .userName("momo45")
+            .name("Millie")
+            .surname("Bobbington")
+            .email("mil.b@aol.de")
+            .address("Mispelstreet")
+            .password("passwordhash")
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .build();
 
+        ApplicationUser user2 = ApplicationUser.builder()
+            .userName("sunscreen98")
+            .name("Mike")
+            .surname("Regen")
+            .email("mikey98@gmail.com")
+            .address("Greatstreet")
+            .password("passwordhash2")
+            .admin(false)
+            .userRole(UserRole.User)
+            .build();
+
+        //TODO: how to build subclass thing?
+        Artist artist = Artist.builder()
+            .profilePicture()
+            .description()
+            .profileSettings()
+            .reviewScore()
+            .gallery()
+            .artworks()
+            .commissions()
+            .reviews()
+            .tags()
+            .build();
 
         Commission commission = Commission.builder()
-            .artist()
-            .customer()
-            .sketchesShown()
-            .feedbackSent()
-            .price()
+            .artist(artist)
+            .customer(user2)
+            .sketchesShown(3)
+            .feedbackSent(0)
+            .price(300)
             .issueDate()
             .deadlineDate()
             .instructions()

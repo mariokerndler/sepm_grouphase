@@ -59,13 +59,15 @@ public class ArtworkEndpoint {
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
     public List<ArtworkDto> search(@RequestParam( name="randomSeed",defaultValue = "0")int randomSeed,
-                                   @RequestParam( name="tagIds")List<String> tagIds,
+                                   @RequestParam( name="tagIds", required = false)List<String> tagIds,
                                    @RequestParam( name="pageNr",defaultValue = "0")int pageNr,
                                    @RequestParam( name="searchOperation",defaultValue = "")String searchOperation) {
+        ;
         TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperation,pageNr,randomSeed);
+        log.info(tagSearchDto.toString());
         String search= tagSearchDto.getSearchOperations();
 
-        Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
+        Pageable page= PageRequest.of(  tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
         String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(

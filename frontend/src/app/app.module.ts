@@ -33,7 +33,7 @@ import {
 import { ArtistPageEditComponent } from './components/artist-page/artist-page-edit/artist-page-edit.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
-import { LogoutComponent } from './components/logout/logout.component';
+import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import { LogoutComponent } from './components/logout/logout.component';
     ErrorSnackbarComponent,
     SuccessSnackbarComponent,
     RegistrationComponent,
-    LogoutComponent
+    ArtistGalleryComponent
   ],
   imports: [
     BrowserModule,

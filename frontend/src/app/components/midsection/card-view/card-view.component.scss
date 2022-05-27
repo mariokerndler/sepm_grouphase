@@ -12,9 +12,9 @@
 
 .card-img-wrap {
   position: relative;
-  max-height: 400px;
   max-width: 400px;
   overflow: hidden;
+
 }
 
 .card-img-description-layer {
@@ -43,8 +43,8 @@
 .card-img-description {
   transition: .2s;
   transform: translateY(1em);
-
-  font-size: 2rem;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .card-img-wrap:hover .card-img-description {
@@ -52,5 +52,6 @@
 }
 
 .card-img {
-  margin: auto;
+  width: 100%;
+  height: auto;
 }

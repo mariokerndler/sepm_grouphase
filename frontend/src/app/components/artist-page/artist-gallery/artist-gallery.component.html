@@ -1,0 +1,32 @@
+<div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+  <h3 class="primary">Profile picture</h3>
+  <img [src]="artistProfilePicture" class="edit-page-pfp" alt="">
+  <input accept="image/png, image/jpeg"
+         style="display: none;"
+         type="file" (change)="onFileChanged($event)"
+         #fileInput>
+  <button mat-button color="accent" (click)="fileInput.click()">
+    <mat-icon color="accent">upload</mat-icon>
+    <span>Upload new profile picture</span>
+  </button>
+</div>
+
+
+<div>
+  <span class="primary artist-gallery-header">Gallery</span>
+  <app-midsection [artistId]="artist.id" [columnCount]="4"></app-midsection>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

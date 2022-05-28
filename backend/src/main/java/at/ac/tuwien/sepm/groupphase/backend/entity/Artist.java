@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @DiscriminatorValue("Artist")
 @Entity
-public class Artist extends ApplicationUser {
+public class Artist extends ApplicationUser implements HasId {
 
     @OneToOne(mappedBy = "artist")
     private ProfilePicture profilePicture;
 
-    @Column(length = 200)
+    @Column
     private String description;
 
     @Column(length = 500)

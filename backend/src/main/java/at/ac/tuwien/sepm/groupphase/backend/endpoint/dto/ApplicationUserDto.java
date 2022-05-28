@@ -2,10 +2,15 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -13,23 +18,38 @@ import java.util.Objects;
 @Setter
 public class ApplicationUserDto {
 
+    private Long id;
+
+    @ValidAlphaNumeric
+    @Size(max = 50)
     private String userName;
 
+    @ValidAlphaNumeric
+    @Size(max = 50)
     private String name;
 
+    @ValidAlphaNumeric
+    @Size(max = 50)
     private String surname;
 
+    @NotNull
+    @Email
+    @Size(max = 50)
     private String email;
 
+    @NotBlank
+    @Size(max = 100)
     private String address;
 
+    @NotBlank
+    @Size(max = 100)
     private String password;
 
+    @NotNull
     private Boolean admin;
 
+    @NotNull
     private UserRole userRole;
-
-    private Long id;
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,
                               String password, Boolean admin, UserRole userRole) {

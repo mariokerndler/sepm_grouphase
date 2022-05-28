@@ -18,7 +18,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 150, unique = true)
+    @Column(nullable = false, unique = true)
     private String imageUrl;
     @Column(nullable = false)
     private FileType fileType;

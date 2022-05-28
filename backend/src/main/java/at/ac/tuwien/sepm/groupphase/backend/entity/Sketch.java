@@ -18,7 +18,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Sketch extends Image {
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne

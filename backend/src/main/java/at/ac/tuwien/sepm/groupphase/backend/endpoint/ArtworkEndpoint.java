@@ -18,10 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -94,47 +95,29 @@ public class ArtworkEndpoint {
     @Operation(summary = "getAllArtworksByArtist")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
         LOGGER.info("Get /Artist");
-        try {
-            List<Artwork> artworks = artworkService.findArtworksByArtist(id);
+        List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
-            List<ArtworkDto> artworksDto = artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
-
-
-            return artworksDto;
-        } catch (Exception n) {
-            LOGGER.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
     }
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         LOGGER.info("Delete Artwork" + artworkDto.getName());
-        try {
 
-            artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-
-        } catch (Exception n) {
-            LOGGER.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
     }
 
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) throws IOException {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
-        try {
-            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-        } catch (Exception v) {
-            LOGGER.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
+
+        artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
 
     }
 }

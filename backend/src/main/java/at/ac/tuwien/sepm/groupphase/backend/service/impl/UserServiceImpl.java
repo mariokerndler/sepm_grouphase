@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.info(user.get().getUserName());
             return user.get();
         } else {
-            throw new NotFoundException(String.format("Could not find User   with id %s", id));
+            throw new NotFoundException(String.format("Could not find User with id %s", id));
         }
     }
 
@@ -94,8 +94,6 @@ public class UserServiceImpl implements UserService {
         userValidator.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
-
-
     }
 
     @Override

@@ -4,6 +4,7 @@
     <mat-card class="image-Card">
 
       <mat-card-header>
+
         <mat-card-title style="text-align: center; font-size: x-large"> {{artworks[animArtwork].name.substring(artworks[animArtwork].name.lastIndexOf("_")+1)}} </mat-card-title>
         <mat-divider></mat-divider>
         <mat-card-subtitle style="text-align: center; font-size: x-large" (click)="routeToArtist()" > by {{artist.userName}} </mat-card-subtitle>
@@ -24,4 +25,6 @@
     <span style="font-size: large"   class="carousel-close" tabindex ="3" (click)="close()">Return</span><br>
       <mat-card-subtitle style="text-align: center; font-size: x-large"> {{artworks[animArtwork].description}}</mat-card-subtitle>
     </mat-card>
+  <br>
+  <mat-card-subtitle class="tag-view" style=" text-align: center;color:white; font-size: x-large"> {{stringiyTags()}}</mat-card-subtitle>
 </div>

@@ -4,6 +4,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ArtistService} from '../../services/artist.service';
 import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
+import {TagService} from '../../services/tag.service';
 
 @Component({
   selector: 'app-gallery-carousel',
@@ -51,10 +52,12 @@ export class GalleryCarouselComponent implements OnInit {
   public artist: ArtistDto;
   public animArtwork: number;
   url = 'assets/';
+   public imageTags=[];
   private artistService: ArtistService;
   private router: Router;
 
-  constructor(artistService: ArtistService, router: Router) {
+  constructor(artistService: ArtistService, router: Router, private tagService: TagService) {
+    this.tagService=tagService;
     this.router =router;
     this.artistService=artistService;
   }
@@ -94,7 +97,18 @@ public  animDone(): void{
       activeElem.blur();
     }
   }
+  public loadImageTags() {
+    this.tagService.getImageTags(this.selectedArtworkId).subscribe(
+      data => {
+        console.log(data);
+        this.imageTags = data;
+      }, error => {
+        console.log('no error handling exists so im just here to say hi');
+      }
+    );
+  }
   public  getImageArtistInfo(): void{
+    this.loadImageTags();
     this.artistService.getArtistById(this.artworks[this.selectedArtworkId].artistId).subscribe(
       data=>{
         this.artist=data;
@@ -105,5 +119,14 @@ public  animDone(): void{
   public routeToArtist(): void {
     this.router.navigate(['/artist/'+this.artworks[this.selectedArtworkId].artistId.toString()]);
 
+  }
+  public  stringiyTags(): string {
+    let result='';
+    this.imageTags.forEach(
+      t =>{
+        result+=t.name+' \n';
+      }
+    );
+    return result.substring(0,result.length-1);
   }
 }

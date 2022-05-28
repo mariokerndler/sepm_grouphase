@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ArtworkDto} from '../dtos/artworkDto';
 import {tap} from 'rxjs/operators';

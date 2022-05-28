@@ -1,11 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
@@ -72,6 +74,7 @@ public class ArtworkServiceImpl implements ArtworkService {
 
 
             }
+
             return  this.artworkRepo.findAll(spec, page).getContent();
         }
 }

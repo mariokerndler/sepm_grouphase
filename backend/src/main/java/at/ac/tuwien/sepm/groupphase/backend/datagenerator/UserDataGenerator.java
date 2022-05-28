@@ -12,6 +12,7 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.github.javafaker.Faker;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -51,7 +52,6 @@ public class UserDataGenerator {
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
 
-    private final ArtistRepository artistRepo;
 
 
     public UserDataGenerator( ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo,
@@ -112,7 +112,6 @@ public class UserDataGenerator {
                         for (File artworkFile : artistProfileDirectoryListing) {
                             if (artworkFile.isFile()) {
                                 Faker f = new Faker();
-                                Artwork artwork = new Artwork();
                                 String description = new Faker().rickAndMorty().quote();
                                 if (description.length() > 50) {
                                     description = description.substring(0, 50);

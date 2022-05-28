@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
   {path: 'artist/:id', component: ArtistPageComponent},
   {path: 'artist/:id/edit', component:  ArtistPageEditComponent},
-  {path:'feed',component: ImageFeedComponent}
+  {path:'feed',component: ImageFeedComponent},
   {path: 'artist/:id/edit', component: ArtistPageEditComponent},
   {path: 'user/:id', component: UserPageComponent},
   {path: 'user/:id/edit', component: UserPageEditComponent}

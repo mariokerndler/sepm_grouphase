@@ -62,10 +62,14 @@ public class ArtworkServiceImpl implements ArtworkService {
                     return  this.artworkRepo.findArtworkRandom(randomSeed,page).getContent();
                 }
                 else{
-                    this.artworkRepo.findAll(page).getContent();
+                    log.info("spec is  null");
+                  return   this.artworkRepo.findAll(page).getContent();
                 }
 
+
             }
+
+        log.info("spec is NOT null");
             return  this.artworkRepo.findAll(spec, page).getContent();
         }
 }

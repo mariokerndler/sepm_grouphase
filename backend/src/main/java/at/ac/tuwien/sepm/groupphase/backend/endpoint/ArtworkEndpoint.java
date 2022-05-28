@@ -61,9 +61,9 @@ public class ArtworkEndpoint {
     public List<ArtworkDto> search(@RequestParam( name="randomSeed",defaultValue = "0")int randomSeed,
                                    @RequestParam( name="tagIds", required = false)List<String> tagIds,
                                    @RequestParam( name="pageNr",defaultValue = "0")int pageNr,
-                                   @RequestParam( name="searchOperation",defaultValue = "")String searchOperation) {
+                                   @RequestParam( name="searchOperations",defaultValue = "")String searchOperations) {
         ;
-        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperation,pageNr,randomSeed);
+        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperations,pageNr,randomSeed);
         log.info(tagSearchDto.toString());
         String search= tagSearchDto.getSearchOperations();
 
@@ -80,10 +80,14 @@ public class ArtworkEndpoint {
                 matcher.group(4),
                 matcher.group(3),
                 matcher.group(5));
+            log.info(matcher.group(1));
+            log.info(matcher.group(2));
+            log.info(matcher.group(3));
+            log.info(matcher.group(4));
+            log.info(matcher.group(5));
         }
 
         Specification<Artwork> spec = builder.build();
-        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+ tagSearchDto.getTagIds());
         if(tagSearchDto.getTagIds()!=null) {
             if (tagSearchDto.getTagIds().size() > 0) {
 

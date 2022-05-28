@@ -63,7 +63,7 @@ public class GenericSpecificationBuilder<T> {
             result = params.get(i-1)
                 .isOrPredicate()
                 ? Specification.where(result)
-                .or(specs.get(i))
+                .and(specs.get(i))
                 : Specification.where(result)
                 .and(specs.get(i));
         }

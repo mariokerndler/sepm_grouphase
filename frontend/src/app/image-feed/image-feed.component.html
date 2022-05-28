@@ -41,12 +41,12 @@
   <div clas="header"> <br></div>
 <div  class="content" >
   <div class="card-img-wrap"   >
-    <div  class="feed" _ngcontent-c6="" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 10px;">
+    <div  class="feed" _ngcontent-c6="" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px;">
     <div   *ngFor="let artwork of images; let i= index" [style.gridRow]="artwork.row"  [style.gridCol]="artwork.col"  class="image">
       <img  [src]="url+artwork.imageUrl" alt="error" (click)="selectedArtwork=i">
       <div class="card-img-description-layer">
         <p class="card-img-description">
-          {{artwork.name.substring(artwork.name.lastIndexOf("_")+1)}}
+          {{artwork.name.substring(artwork.name.lastIndexOf("_")+1).replace(".jpg","")}}
         </p>
       </div>
       <span></span>

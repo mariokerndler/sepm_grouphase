@@ -138,7 +138,7 @@ md-divider {
 
 .card-img-description-layer {
   position: absolute;
-  top: 90%;
+  top: 91%;
   bottom: 0;
   left: 0;
   right: 0;
@@ -151,7 +151,7 @@ md-divider {
   justify-content: center;
 
   /* transition effect. not necessary */
-  transition: opacity .1s, visibility .1s;
+  transition: opacity 1.4s, visibility 1.8s;
 }
 
 .card-img-wrap:hover .card-img-description-layer {
@@ -160,7 +160,7 @@ md-divider {
 }
 
 .card-img-description {
-  transition: 1s;
+  transition: 2s;
   transform: translateY(1em);
   font-size: 1rem;
   text-align: center;

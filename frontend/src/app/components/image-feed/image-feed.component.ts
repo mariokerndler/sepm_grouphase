@@ -8,6 +8,8 @@ import {ArtistService} from '../../services/artist.service';
 import {TagService} from '../../services/tag.service';
 import {TagDto} from '../../dtos/tagDto';
 import {MatCheckboxChange} from '@angular/material/checkbox';
+import {global} from "@angular/compiler/src/util";
+import {GlobalFunctions} from "../../global/globalFunctions";
 
 
 
@@ -43,10 +45,13 @@ export class ImageFeedComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private artworkService: ArtworkService
-    , private artistService: ArtistService, private tagService: TagService) {
+    , private artistService: ArtistService, private tagService: TagService,
+              public globalFunctions: GlobalFunctions) {
+    this.globalFunctions=globalFunctions;
     this.artworkService = artworkService;
     this.tagService = tagService;
     this.artistService = artistService;
+  console.log(globalFunctions.artworkNameParser('data\\ap\\tianzi\\artstation_9970348_37433613_Quick painting practice 速涂练习.jpg'));
   }
 
   ngOnInit(): void {

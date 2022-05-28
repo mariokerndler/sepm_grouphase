@@ -23,4 +23,11 @@ export class GlobalFunctions {
       return null;
     };
   }
+  public artworkNameParser(oldName: string){
+    let result='';
+    result=oldName.substring(0,oldName.lastIndexOf('.'));
+    result=result.substring(result.lastIndexOf('_')+1,result.length);
+    return result;
+
+  }
 }

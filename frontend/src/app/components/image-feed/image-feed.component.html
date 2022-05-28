@@ -55,7 +55,7 @@
 
       <div class="card-img-description-layer">
         <p class="card-img-description">
-          {{artwork.name.substring(artwork.name.lastIndexOf("_")+1).replace(".jpg","")}}
+          {{globalFunctions.artworkNameParser(artwork.name)}}
         </p>
       </div>  </div>
       <span></span>

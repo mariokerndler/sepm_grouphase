@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
@@ -14,13 +14,14 @@ export class TagService {
   private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  private options = { headers: this.headers };
+  private options = {headers: this.headers};
 
   constructor(
     private http: HttpClient,
     private notificationService: NotificationService,
     private globals: Globals
-  ) { }
+  ) {
+  }
 
   /**
    * Fetches all tags stored in the system.

@@ -36,7 +36,7 @@ public class Artwork extends Image implements HasId {
         name = "artwork_tag",
         joinColumns = @JoinColumn(name = "artwork_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
-   private List<Tag> tags;
+    private List<Tag> tags;
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {
         super(imageUrl, fileType);
@@ -49,13 +49,13 @@ public class Artwork extends Image implements HasId {
 
     @Override
     public String toString() {
-        return "Artwork{" +
-            ", name='" + name + '\'' +
-            ", description='" + description + '\'' +
-            ", artist=" + artist.getId() +
-            ", sketches=" + sketches.stream().map(Sketch::getId).toList() +
-            ", commission=" + commission.getId() +
-            '}' + super.toString();
+        return "Artwork{"
+            + ", name='" + name + '\''
+            + ", description='" + description + '\''
+            + ", artist=" + artist.getId()
+            + ", sketches=" + sketches.stream().map(Sketch::getId).toList()
+            + ", commission=" + commission.getId()
+            + '}' + super.toString();
     }
 
     @Override
@@ -63,19 +63,26 @@ public class Artwork extends Image implements HasId {
         return 7;
     }
 
-    public  void addTag(Tag t){
-        if(!tags.contains(t)) {
+    public void addTag(Tag t) {
+        if (!tags.contains(t)) {
             this.tags.add(t);
         }
     }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
+
         Artwork other = (Artwork) obj;
         return this.getId() != null && this.getId().equals(other.getId());
     }

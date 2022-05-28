@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
-import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/artist")
@@ -59,7 +59,7 @@ public class ArtistEndpoint {
     @Transactional
     public List<ArtistDto> getAllArtists() {
         LOGGER.debug("Get /Artist");
-        return artistService.getAllArtists().stream().map(u -> artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
+        return artistService.getAllArtists().stream().map(artistMapper::artistToArtistDto).collect(Collectors.toList());
     }
 
     @PermitAll
@@ -67,7 +67,7 @@ public class ArtistEndpoint {
     @PostMapping
     @Operation(summary = "Post new artist")
     @Transactional
-    public ArtistDto saveArtist(@Valid @RequestBody ArtistDto artistDto) {
+    public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class ArtistEndpoint {
     @PutMapping
     @Operation(summary = "Update artist")
     @Transactional
-    public void updateArtist(@Valid @RequestBody ArtistDto artistDto) {
+    public void updateArtist(@RequestBody ArtistDto artistDto) {
         try {
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {
@@ -94,13 +94,13 @@ public class ArtistEndpoint {
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value="/{id}")
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Get  artist by id")
     @Transactional
     public ArtistDto getArtistById(@PathVariable Long id) {
         try {
             log.info(String.valueOf(id));
-         return artistMapper.artistToArtistDto(artistService.findArtistById(id));
+            return artistMapper.artistToArtistDto(artistService.findArtistById(id));
         } catch (Exception e) {
             LOGGER.error(e.getMessage() + id.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());

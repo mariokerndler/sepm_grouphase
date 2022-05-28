@@ -10,7 +10,8 @@ export class UserPageInformationComponent implements OnInit {
 
   @Input() user: ApplicationUserDto;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

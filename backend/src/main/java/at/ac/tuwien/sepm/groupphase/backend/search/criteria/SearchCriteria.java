@@ -16,8 +16,8 @@ public class SearchCriteria {
     private String predicateType;
 
     public boolean isOrPredicate() {
-        if(predicateType.toLowerCase().equals("or")){
-            return  true;
+        if (predicateType.toLowerCase().equals("or")) {
+            return true;
         }
         return false;
     }

@@ -1,13 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -25,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +30,6 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Profile("generateData")
@@ -106,8 +102,8 @@ public class UserDataGenerator {
                         for (File artworkFile : artistProfileDirectoryListing) {
                             if (artworkFile.isFile()) {
                                 Faker f = new Faker();
-                                Artwork artwork = new Artwork();
                                 String description = new Faker().rickAndMorty().quote();
+
                                 if (description.length() > 50) {
                                     description = description.substring(0, 50);
                                 }
@@ -122,6 +118,7 @@ public class UserDataGenerator {
                                     selectedTags.add(tags.get(f.random().nextInt(0, tags.size() - 1)));
                                 }
 
+                                Artwork artwork = new Artwork();
                                 artwork.setTags(selectedTags);
                                 artwork.setDescription(description);
                                 artwork.setArtist(a);

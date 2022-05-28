@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ArtworkDto} from '../dtos/artworkDto';
@@ -53,18 +53,18 @@ export class ArtworkService {
     return this.http.delete<void>(`${baseUri}/${id}`, deleteOptions);
   }
 
-  createArtwork(artwork: ArtworkDto,errorAction?: () => void,successAction?: () => void): Observable<ArtworkDto> {
+  createArtwork(artwork: ArtworkDto, errorAction?: () => void, successAction?: () => void): Observable<ArtworkDto> {
     return this.http.post<ArtworkDto>(baseUri, artwork, this.options)
       .pipe(
         catchError((err) => {
-          if(errorAction != null) {
+          if (errorAction != null) {
             errorAction();
           }
 
           return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto>('Creating Artwork')(err);
         }),
         tap(_ => {
-          if(successAction != null) {
+          if (successAction != null) {
             successAction();
           }
         }));

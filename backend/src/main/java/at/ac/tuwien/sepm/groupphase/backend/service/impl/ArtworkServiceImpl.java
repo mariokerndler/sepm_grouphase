@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +19,8 @@ import java.util.List;
 @Slf4j
 public class ArtworkServiceImpl implements ArtworkService {
     private final ArtworkRepository artworkRepo;
-    private  final ImageFileManager ifm;
+    private final ImageFileManager ifm;
+
     @Autowired
     public ArtworkServiceImpl(ArtworkRepository artworkRepo, ImageFileManager ifm) {
         this.artworkRepo = artworkRepo;
@@ -37,7 +35,7 @@ public class ArtworkServiceImpl implements ArtworkService {
     @Override
     public void saveArtwork(Artwork a) throws IOException {
 
-        a.setImageUrl( this.ifm.writeArtistImage(a));
+        a.setImageUrl(this.ifm.writeArtistImage(a));
         log.info(a.toString());
         this.artworkRepo.save(a);
     }
@@ -57,17 +55,17 @@ public class ArtworkServiceImpl implements ArtworkService {
         return artworkRepo.findAll(spec);
     }
 
+
     @Override
     public List<Artwork> searchArtworks(Specification<Artwork> spec, Pageable page, int randomSeed) {
-            if(spec==null){
-                if(randomSeed!=0){
-                    return  this.artworkRepo.findArtworkRandom(randomSeed,page).getContent();
-                }
-                else{
-                    this.artworkRepo.findAll(page).getContent();
-                }
-
+        if (spec == null) {
+            if (randomSeed != 0) {
+                return this.artworkRepo.findArtworkRandom(randomSeed, page).getContent();
+            } else {
+                this.artworkRepo.findAll(page).getContent();
             }
-            return  this.artworkRepo.findAll(spec, page).getContent();
+
         }
+        return this.artworkRepo.findAll(spec, page).getContent();
+    }
 }

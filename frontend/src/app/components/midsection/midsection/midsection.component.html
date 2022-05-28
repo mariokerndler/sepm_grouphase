@@ -1,5 +1,5 @@
 <div *ngIf="artworks !== []" class="content">
-  <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="center start">
+  <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="8px grid">
     <div *ngFor="let artwork of artworks">
       <app-card-view [artwork]="artwork"></app-card-view>
     </div>

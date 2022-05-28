@@ -36,6 +36,7 @@ public class ArtworkEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final ArtworkService artworkService;
     private final ArtworkMapper artworkMapper;
+
     @Autowired
     public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper) {
         this.artworkService = artworkService;
@@ -49,16 +50,16 @@ public class ArtworkEndpoint {
     @ResponseBody
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
-    public List<ArtworkDto> search(@RequestParam( name="randomSeed",defaultValue = "0")int randomSeed,
-                                   @RequestParam( name="tagIds")List<String> tagIds,
-                                   @RequestParam( name="pageNr",defaultValue = "0")int pageNr,
-                                   @RequestParam( name="searchOperation",defaultValue = "")String searchOperation) {
-        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperation,pageNr,randomSeed);
-        String search= tagSearchDto.getSearchOperations();
+    public List<ArtworkDto> search(@RequestParam(name = "randomSeed", defaultValue = "0") int randomSeed,
+                                   @RequestParam(name = "tagIds") List<String> tagIds,
+                                   @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
+                                   @RequestParam(name = "searchOperation", defaultValue = "") String searchOperation) {
+        TagSearchDto tagSearchDto = new TagSearchDto(tagIds, searchOperation, pageNr, randomSeed);
+        String search = tagSearchDto.getSearchOperations();
 
-        Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
+        Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
-        String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
+        String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(
             "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
         Matcher matcher = pattern.matcher(search + ",");
@@ -74,7 +75,7 @@ public class ArtworkEndpoint {
         Specification<Artwork> spec = builder.build();
 
 
-        if(tagSearchDto.getTagIds()!=null) {
+        if (tagSearchDto.getTagIds() != null) {
             if (spec == null) {
                 spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
             }
@@ -83,7 +84,7 @@ public class ArtworkEndpoint {
             }
             log.info(tagSearchDto.getSearchOperations());
         }
-        return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
     }
 
@@ -92,18 +93,16 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
-    public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id ){
+    public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
         LOGGER.info("Get /Artist");
         List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
-        List<ArtworkDto> artworksDto = artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
-
-        return artworksDto;
+        return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
     }
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping
+    @DeleteMapping()
     @Operation(summary = "getAllArtworksByArtist")
     public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         LOGGER.info("Delete Artwork" + artworkDto.getName());

@@ -34,11 +34,10 @@ public class Gallery {
 
     @Override
     public String toString() {
-        return "Gallery{" +
-            "id=" + id +
-            ", artist=" + artist.getId() +
-            ", artworks=" + artworks.stream().map(Artwork::getId).toList() +
-            '}';
+        return "Gallery{"
+            + "id=" + id + ", artist=" + artist.getId()
+            + ", artworks=" + artworks.stream().map(Artwork::getId).toList()
+            + '}';
     }
 
     @Override
@@ -48,12 +47,17 @@ public class Gallery {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Gallery other = (Gallery) obj;
         return id != null && id.equals(other.getId());
     }

@@ -83,8 +83,8 @@ public class ArtistDto {
         this.profileSettings = profileSettings;
     }
 
-    public void addArtworkId(Long i){
-        if(artworksIds == null){
+    public void addArtworkId(Long i) {
+        if (artworksIds == null) {
             return;
         }
 

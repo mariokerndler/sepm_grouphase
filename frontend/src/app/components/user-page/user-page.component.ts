@@ -25,7 +25,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private notificationService: NotificationService,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 
   private static navigateToUserList() {
     // TODO: Implement a user list
@@ -38,7 +39,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
         .subscribe((user) => {
           this.user = user;
 
-          if(this.user.userRole === UserRole.artist) {
+          if (this.user.userRole === UserRole.artist) {
             this.navigateToArtistPage();
           }
 

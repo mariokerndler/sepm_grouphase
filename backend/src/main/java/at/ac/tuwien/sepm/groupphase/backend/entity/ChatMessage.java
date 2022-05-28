@@ -25,7 +25,7 @@ public class ChatMessage {
     private LocalDateTime sentDate;
 
     @ManyToOne
-    @JoinColumn(name="chat")
+    @JoinColumn(name = "chat")
     private Chat chat;
 
     public ChatMessage(String text, LocalDateTime sentDate) {
@@ -35,12 +35,12 @@ public class ChatMessage {
 
     @Override
     public String toString() {
-        return "ChatMessage{" +
-            "id=" + id +
-            ", text='" + text + '\'' +
-            ", sentDate=" + sentDate +
-            ", chat=" + chat.getId() +
-            '}';
+        return "ChatMessage{"
+            + "id=" + id
+            + ", text='" + text + '\''
+            + ", sentDate=" + sentDate
+            + ", chat=" + chat.getId()
+            + '}';
     }
 
     @Override
@@ -50,12 +50,17 @@ public class ChatMessage {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         ChatMessage other = (ChatMessage) obj;
         return id != null && id.equals(other.getId());
     }

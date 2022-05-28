@@ -31,7 +31,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private notificationService: NotificationService,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 
   private static navigateToArtistList() {
     console.log('FAILED');
@@ -43,14 +44,14 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
         .subscribe((user) => {
           this.user = user;
 
-          if(this.user.userRole === UserRole.artist) {
+          if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
 
             this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
               .subscribe((artist) => {
                 this.artist = artist;
 
-                if(this.artist.profileSettings) {
+                if (this.artist.profileSettings) {
                   this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
                 }
 

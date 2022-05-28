@@ -24,20 +24,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TagEndpoint {
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final TagService tagService;
     private final TagMapper tagMapper;
+
     @Autowired
     public TagEndpoint(TagService tagService, TagMapper tagMapper) {
         this.tagService = tagService;
         this.tagMapper = tagMapper;
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     @Operation(summary = "Load all Tags")
-    public List<TagDto> loadALlTags() {
+    public List<TagDto> loadAllTags() {
         log.debug("Get /Tags");
         return tagService.loadAllTags().stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
     }

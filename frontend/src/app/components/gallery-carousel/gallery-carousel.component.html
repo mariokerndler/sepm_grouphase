@@ -14,7 +14,7 @@
       <div class="carousel-image" (click)="onEvent($event)">
     <img [@slide-in]="animState"  (@slide-in.done)="animDone()"    [src]="url+ artworks[animArtwork].imageUrl">
     <div class=" carousel-button">
-      <span tabindex="1" style="font-size: large"   (keyup.enter)="previous()" (click)="previous()">&lt;  </span>
+      <span tabindex="1" style="font-size: large"   (keyup.delete)="previous()" (click)="previous()">&lt;  </span>
       <span></span>
       <span  tabindex="2" style="font-size: large"    (keyup.enter)="next()"(click)="next()">&gt;   </span>
 

@@ -35,6 +35,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
+import { UploadComponent } from './components/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/
     SuccessSnackbarComponent,
     ArtistGalleryComponent,
     RegistrationComponent,
-    LogoutComponent
+    LogoutComponent,
+    UploadComponent
   ],
   imports: [
     BrowserModule,

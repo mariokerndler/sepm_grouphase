@@ -1,11 +1,16 @@
 <div class="gallery-carousel" (click)="close()">
 
-  <div class="carousel-image" (click)="onEvent($event)">
+
     <mat-card class="image-Card">
+
       <mat-card-header>
         <mat-card-title style="text-align: center"> {{artworks[animArtwork].name.substring(artworks[animArtwork].name.lastIndexOf("_")+1)}} </mat-card-title>
-        <mat-card-subtitle style="text-align: center"> by {{artist.userName}} </mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-subtitle style="text-align: center" (click)="routeToArtist()" > by {{artist.userName}} </mat-card-subtitle>
+        <mat-divider></mat-divider>
       </mat-card-header>
+
+      <div class="carousel-image" (click)="onEvent($event)">
     <img [@slide-in]="animState"  (@slide-in.done)="animDone()"    [src]="url+ artworks[animArtwork].imageUrl">
     <div class=" carousel-button">
       <span tabindex="1" style="font-size: large"   (keyup.enter)="previous()" (click)="previous()">&lt;  </span>
@@ -13,7 +18,9 @@
       <span  tabindex="2" style="font-size: large"    (keyup.enter)="next()"(click)="next()">&gt;   </span>
 
     </div>
-    </mat-card>
+      <mat-card-subtitle style="text-align: center"> {{artworks[animArtwork].description}}</mat-card-subtitle>
+
   </div>
   <span style="font-size: large"   class="carousel-close" tabindex ="3" (click)="close()">X</span>
+    </mat-card>
 </div>

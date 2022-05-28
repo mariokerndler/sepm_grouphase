@@ -9,6 +9,7 @@ import {TagService} from '../services/tag.service';
 import {TagDto} from '../dtos/tagDto';
 
 
+
 @Component({
   selector: 'app-image-feed',
   templateUrl: './image-feed.component.html',
@@ -21,7 +22,7 @@ export class ImageFeedComponent implements OnInit {
   //maybe use as component
   filterArtistId = null;
   isOpen = false;
-  tagHidden=true;
+  tagHidden=false;
   cols= 3;
   //rename Artwork
   url = 'assets/';

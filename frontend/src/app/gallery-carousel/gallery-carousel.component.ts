@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ArtworkDto} from '../dtos/artworkDto';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {ArtistService} from "../services/artist.service";
-import {ArtistDto} from "../dtos/artistDto";
+import {ArtistService} from '../services/artist.service';
+import {ArtistDto} from '../dtos/artistDto';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-gallery-carousel',
@@ -51,8 +52,10 @@ export class GalleryCarouselComponent implements OnInit {
   public animArtwork: number;
   url = 'assets/';
   private artistService: ArtistService;
+  private router: Router;
 
-  constructor(artistService: ArtistService) {
+  constructor(artistService: ArtistService, router: Router) {
+    this.router =router;
     this.artistService=artistService;
   }
 
@@ -91,7 +94,7 @@ public  animDone(): void{
       activeElem.blur();
     }
   }
-  private    getImageArtistInfo(){
+  public  getImageArtistInfo(): void{
     this.artistService.getArtistById(this.artworks[this.selectedArtworkId].artistId).subscribe(
       data=>{
         this.artist=data;
@@ -99,4 +102,8 @@ public  animDone(): void{
     );
   }
 
+  public routeToArtist(): void {
+    this.router.navigate(['/artist/'+this.artworks[this.selectedArtworkId].artistId.toString()]);
+
+  }
 }

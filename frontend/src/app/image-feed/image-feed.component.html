@@ -39,16 +39,18 @@
 
 </form>
 
-<div class="container">
-  <div class="feed">
-    <div *ngFor="let artwork of images; let i= index" [style.gridRow]="artwork.row"  [style.gridCol]="artwork.col"  class="image">
+<div id="container" class="container">
+  <div clas="header">Artworks</div>
+<div  class="content" >
+    <div  class="feed" _ngcontent-c6="" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 10px;">
+    <div   *ngFor="let artwork of images; let i= index" [style.gridRow]="artwork.row"  [style.gridCol]="artwork.col"  class="image">
       <img  [src]="url+artwork.imageUrl" alt="error" (click)="selectedArtwork=i">
       <span></span>
-
     </div>
-  </div>
+    </div>
 </div>
 
+</div>
 <app-gallery-carousel *ngIf="selectedArtwork!== null"  (closeCarousel)="selectedArtwork=null"  [artworks]="images" [selectedArtworkId]="selectedArtwork">
 
 

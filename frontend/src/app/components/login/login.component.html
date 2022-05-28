@@ -16,11 +16,11 @@
 <div mat-dialog-content [formGroup]="loginForm" (ngSubmit)="loginUser()" fxLayout="column">
   <p *ngIf="!error">Welcome Back!</p>
   <mat-form-field appearance="fill" class="form-group">
-    <mat-label>Username</mat-label>
+    <mat-label>E-Mail</mat-label>
     <input matInput name="username" formControlName="username" class="form-control" id="inputUsername"
-                     aria-describedby="usernameHelp" >
+                     aria-describedby="usernameHelp" type="email">
     <mat-error *ngIf="loginForm.controls.username.errors">
-      <small  *ngIf="loginForm.controls.username.errors.required">Your username is required! </small>
+      <small  *ngIf="loginForm.controls.username.errors.required">Your E-Mail is required! </small>
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form-group">

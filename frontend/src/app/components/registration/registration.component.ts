@@ -54,8 +54,6 @@ export class RegistrationComponent implements OnInit {
   createNewUser() {
     this.submitted = true;
     if (this.registerForm.valid) {
-
-
       const firstname = this.registerForm.controls.firstname.value;
       const lastname = this.registerForm.controls.lastname.value;
       const username = this.registerForm.controls.username.value;
@@ -65,8 +63,6 @@ export class RegistrationComponent implements OnInit {
 
       this.userService.createUser(firstname, lastname, username, email, address, password).subscribe();
       this.onNoClick();
-
-
      // this.authenticateUser(authRequest);
     } else {
       console.log('Invalid input');

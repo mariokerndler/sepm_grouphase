@@ -59,10 +59,11 @@ export class ImageFeedComponent implements OnInit {
   public loadFeed() {
     if(this.searchInput!==''){
       this.searchParams.randomSeed=0  ;
-      this.searchParams.searchOperations='name~%'+this.searchInput+'%';
+      this.searchParams.searchOperations='name~'+this.searchInput;
 } else{
 
     this.searchParams.randomSeed=1;
+      this.searchParams.searchOperations='';
     }
     this.artworkService.search(this.searchParams).subscribe(
 

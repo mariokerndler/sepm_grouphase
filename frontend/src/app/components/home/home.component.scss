@@ -5,3 +5,13 @@
 .intro-sepm-div {
   padding: 16px 36px 16px 36px;
 }
+
+.container{
+   height: 100%;
+  width: 66vw;
+  min-width: 300px;
+  max-width: 900px;
+  margin:0 auto;
+  display: flex;
+  align-items: center;
+}

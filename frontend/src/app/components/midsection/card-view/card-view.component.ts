@@ -8,6 +8,7 @@ import {ArtworkDto} from '../../../dtos/artworkDto';
 })
 export class CardViewComponent implements OnInit {
   @Input() artwork: ArtworkDto;
+  @Input() classifiedArtist: boolean;
   url = 'assets/';
 
   constructor() {

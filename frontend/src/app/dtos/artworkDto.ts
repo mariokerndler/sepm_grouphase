@@ -6,7 +6,8 @@ export class ArtworkDto {
   imageUrl: string;
   fileType: FileType;
   artistId: number;
-
+  row: string;
+  col: string;
 }
 
 export enum FileType {

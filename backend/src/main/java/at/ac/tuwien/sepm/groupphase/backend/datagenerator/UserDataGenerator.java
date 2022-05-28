@@ -1,11 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -23,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,14 +33,16 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Profile("generateData")
 @Component
+@Slf4j
 public class UserDataGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
-    private static final int NUMBER_OF_PROFILES_TO_GENERATE = 20;
+    private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
 
 
@@ -48,13 +53,15 @@ public class UserDataGenerator {
 
     private final ArtistRepository artistRepo;
 
-    public UserDataGenerator(ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
+
+    public UserDataGenerator( ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo,
+                              TagRepository tagRepository ) {
 
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
-        this.artistRepo = artistRepo;
+
     }
 
     @PostConstruct
@@ -80,14 +87,17 @@ public class UserDataGenerator {
     }
 
     //make sure db is empty before running to avoid Unique key constraint issues
-    private void loadProfiles(int numberOfProfiles) {
+    private void loadProfiles(int numberOfProfiles)   {
         List<Tag> tags = tagRepository.findAll();
+        log.info(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation);
+        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation), 1)) {
 
-        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation), 1)) {
-
-            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).toList();
-
-            result.subList(0, numberOfProfiles).forEach(
+            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
+            int limit=numberOfProfiles;
+            if(numberOfProfiles>result.size()-1){
+                limit= result.size()-1;
+            }
+            result.subList(0,limit).forEach(
 
                 folder -> {
 
@@ -102,8 +112,8 @@ public class UserDataGenerator {
                         for (File artworkFile : artistProfileDirectoryListing) {
                             if (artworkFile.isFile()) {
                                 Faker f = new Faker();
+                                Artwork artwork = new Artwork();
                                 String description = new Faker().rickAndMorty().quote();
-
                                 if (description.length() > 50) {
                                     description = description.substring(0, 50);
                                 }
@@ -152,13 +162,8 @@ public class UserDataGenerator {
         artist.setReviewScore(faker.random().nextInt(0, 5));
         artist.setAddress(faker.address().fullAddress());
         artist.setEmail(faker.internet().emailAddress());
-
-        // TODO: Remove, this is just for testing purpose
-        var password = faker.internet().password(8, 15);
-        artist.setPassword(passwordEncoder.encode(password));
+        artist.setPassword(passwordEncoder.encode(faker.internet().password(8, 15)));
         artist.setUserRole(UserRole.Artist);
-
-        LOGGER.info("Username: " + username + ", Password: " + password);
         return artist;
     }
 
@@ -190,10 +195,16 @@ public class UserDataGenerator {
                     counter++;
 
                 }
+            } catch (MalformedURLException e) {
+                LOGGER.info(e.getMessage());
             } catch (IOException e) {
                 LOGGER.info(e.getMessage());
             }
+
+
         }
+
     }
+
 }
 

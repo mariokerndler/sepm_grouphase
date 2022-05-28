@@ -1,0 +1,61 @@
+<button mat-button color="accent"  (click)="previousPage()">Previous</button>
+<button mat-button color="accent"  (click)="nextPage()">Next</button>
+<label>Filter:</label>
+<form class="col-12">
+
+
+
+  <mat-form-field  >
+    <mat-label>Artists</mat-label>
+    <input type="text" matInput  [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option   *ngFor="let artist of artists " [value]="artist.id">
+        {{artist.username}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="search"  name="searchForm"(keydown.enter)="loadFeed()" [(ngModel)]=" searchInput">
+  </mat-form-field>
+
+
+  <mat-selection-list #list name="tagSelection"  [(ngModel)]="searchParams.tagIds" color="primary" (selectionChange)="onListSelectionChange($event, list.selectedOptions.selected)">
+
+    <mat-label (click)="toggleView()">Tags</mat-label>
+    <div  cdkOverlayOrigin #trigger="cdkOverlayOrigin"  >
+      <ng-template cdk-connected-overlay
+                   [cdkConnectedOverlayOrigin]="trigger"
+                   [cdkConnectedOverlayOpen]="tagHidden">
+        <mat-list-option *ngFor="let tag of tags " [value]="tag.id" [compareWith]="compareFunction"> <br>
+          {{tag.name}}
+        </mat-list-option>
+      </ng-template>
+    </div>
+  </mat-selection-list>
+
+
+</form>
+<mat-divider></mat-divider>
+<div id="container" class="container">
+  <div clas="header"> <br></div>
+<div  class="content" >
+  <div class="card-img-wrap"   >
+    <div  class="feed" _ngcontent-c6="" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px;">
+    <div   *ngFor="let artwork of images; let i= index" [style.gridRow]="artwork.row"  [style.gridCol]="artwork.col"  class="image">
+      <img  [src]="url+artwork.imageUrl" alt="error" (click)="selectedArtwork=i">
+      <div class="card-img-description-layer">
+        <p class="card-img-description">
+          {{artwork.name.substring(artwork.name.lastIndexOf("_")+1).replace(".jpg","")}}
+        </p>
+      </div>
+      <span></span>
+    </div>   </div>
+    </div>
+</div>
+
+</div>
+<app-gallery-carousel *ngIf="selectedArtwork!== null"  (closeCarousel)="selectedArtwork=null"  [artworks]="images" [selectedArtworkId]="selectedArtwork">
+
+
+</app-gallery-carousel>

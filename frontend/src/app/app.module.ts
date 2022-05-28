@@ -37,12 +37,15 @@ import {
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
-import {LogoutComponent} from './components/logout/logout.component';
 import {UserPageComponent} from './components/user-page/user-page.component';
 import {
   UserPageInformationComponent
 } from './components/user-page/user-page-information/user-page-information.component';
 import {UserPageEditComponent} from './components/user-page/user-page-edit/user-page-edit.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
+import {ImageFeedComponent} from './components/image-feed/image-feed.component';
+import { GalleryCarouselComponent } from './components/gallery-carousel/gallery-carousel.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +63,11 @@ import {UserPageEditComponent} from './components/user-page/user-page-edit/user-
     ArtistPageEditComponent,
     ErrorSnackbarComponent,
     SuccessSnackbarComponent,
+    ArtistGalleryComponent,
     RegistrationComponent,
+    LogoutComponent,
+    ImageFeedComponent,
+    GalleryCarouselComponent,
     LogoutComponent,
     UserPageComponent,
     UserPageInformationComponent,

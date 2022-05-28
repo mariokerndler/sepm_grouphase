@@ -14,6 +14,7 @@ export class ArtistInformationComponent implements OnInit {
 
   // TODO: Fill in the real profile picture
   artistUrl = 'https://picsum.photos/150/150';
+  tabIndex = 0;
 
   constructor() {
   }
@@ -22,5 +23,10 @@ export class ArtistInformationComponent implements OnInit {
     if (this.artist.profileSettings) {
       this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
     }
+  }
+
+  switchTab(index: number) {
+    this.tabIndex = index;
+
   }
 }

@@ -1,12 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ArtworkService} from '../services/artwork.service';
-import {TagSearch} from '../dtos/tag-search';
-import {ArtworkDto} from '../dtos/artworkDto';
-import {ArtistDto} from '../dtos/artistDto';
+import {ArtworkService} from '../../services/artwork.service';
+import {TagSearch} from '../../dtos/tag-search';
+import {ArtworkDto} from '../../dtos/artworkDto';
+import {ArtistDto} from '../../dtos/artistDto';
 import {FormBuilder} from '@angular/forms';
-import {ArtistService} from '../services/artist.service';
-import {TagService} from '../services/tag.service';
-import {TagDto} from '../dtos/tagDto';
+import {ArtistService} from '../../services/artist.service';
+import {TagService} from '../../services/tag.service';
+import {TagDto} from '../../dtos/tagDto';
 
 
 

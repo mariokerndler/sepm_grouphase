@@ -7,7 +7,7 @@ import {MessageComponent} from './components/message/message.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
 import {LogoutComponent} from './components/logout/logout.component';
-import {ImageFeedComponent} from './image-feed/image-feed.component';
+import {ImageFeedComponent} from './components/image-feed/image-feed.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},

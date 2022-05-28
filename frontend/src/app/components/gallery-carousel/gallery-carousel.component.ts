@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ArtworkDto} from '../dtos/artworkDto';
+import {ArtworkDto} from '../../dtos/artworkDto';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {ArtistService} from '../services/artist.service';
-import {ArtistDto} from '../dtos/artistDto';
+import {ArtistService} from '../../services/artist.service';
+import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
 
 @Component({

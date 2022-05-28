@@ -35,8 +35,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
-import {ImageFeedComponent} from './image-feed/image-feed.component';
-import { GalleryCarouselComponent } from './gallery-carousel/gallery-carousel.component';
+import {ImageFeedComponent} from './components/image-feed/image-feed.component';
+import { GalleryCarouselComponent } from './components/gallery-carousel/gallery-carousel.component';
 
 @NgModule({
   declarations: [

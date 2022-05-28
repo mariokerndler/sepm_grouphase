@@ -7,7 +7,7 @@ import {FormBuilder} from '@angular/forms';
 import {ArtistService} from '../services/artist.service';
 import {TagService} from '../services/tag.service';
 import {TagDto} from '../dtos/tagDto';
-import {MatSelectionListChange} from "@angular/material/list";
+
 
 @Component({
   selector: 'app-image-feed',
@@ -20,7 +20,8 @@ export class ImageFeedComponent implements OnInit {
   @Input() artworks: ArtworkDto[];
   //maybe use as component
   filterArtistId = null;
-
+  isOpen = false;
+  tagHidden=true;
   cols= 3;
   //rename Artwork
   url = 'assets/';
@@ -68,31 +69,9 @@ export class ImageFeedComponent implements OnInit {
     );
   }
 
-  private loadArtists() {
-    this.artistService.getAllArtists().subscribe(
-      data => {
-
-        data.forEach(a => {
 
 
-        });
-        this.artists = data;
-      }, error => {
-        console.log('no error handling exists so im just here to say hi');
-      }
-    );
-  }
 
-  private loadAllTags() {
-    this.tagService.getAllTags().subscribe(
-      data => {
-        console.log(data);
-        this.tags = data;
-      }, error => {
-        console.log('no error handling exists so im just here to say hi');
-      }
-    );
-  }
 
   public nextPage(): void {
     this.searchParams.pageNr += 1;
@@ -107,10 +86,37 @@ export class ImageFeedComponent implements OnInit {
     }
 
   }
-  //not working
+
   public onListSelectionChange(event: any, options: any): void {
-    for(const i of options) {
-      console.log(i.value);
-    }
+    this.loadFeed();
+  }
+
+  toggleView() {
+    this.tagHidden=! this.tagHidden;
+
+  }
+  private loadAllTags() {
+    this.tagService.getAllTags().subscribe(
+      data => {
+        console.log(data);
+        this.tags = data;
+      }, error => {
+        console.log('no error handling exists so im just here to say hi');
+      }
+    );
+  }
+  private loadArtists() {
+    this.artistService.getAllArtists().subscribe(
+      data => {
+
+        data.forEach(a => {
+
+
+        });
+        this.artists = data;
+      }, error => {
+        console.log('no error handling exists so im just here to say hi');
+      }
+    );
   }
 }

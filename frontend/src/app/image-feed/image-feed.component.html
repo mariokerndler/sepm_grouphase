@@ -2,6 +2,16 @@
 <button mat-button color="accent"  (click)="nextPage()">Next</button>
 <label>Filter:</label>
 <form class="example-form">
+
+
+
+
+
+
+
+
+
+
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Artists</mat-label>
     <input type="text" matInput  [matAutocomplete]="auto">
@@ -12,13 +22,21 @@
     </mat-autocomplete>
   </mat-form-field>
 
+  <mat-selection-list #list name="tagSelection"  [(ngModel)]="searchParams.tagIds" color="primary" (selectionChange)="onListSelectionChange($event, list.selectedOptions.selected)">
 
-  <mat-selection-list #list  [(ngModel)]="selectedTags" color="primary" (selectionChange)="onListSelectionChange($event, list.selectedOptions.selected)">
-    <mat-list-option *ngFor="let tag of tags " [value]="tag.id" [compareWith]="compareFunction">
-      {{tag.name}}
-    </mat-list-option>
-
+    <mat-label (click)="toggleView()">Tags</mat-label>
+    <div  cdkOverlayOrigin #trigger="cdkOverlayOrigin"  >
+      <ng-template cdk-connected-overlay
+                   [cdkConnectedOverlayOrigin]="trigger"
+                   [cdkConnectedOverlayOpen]="tagHidden">
+        <mat-list-option *ngFor="let tag of tags " [value]="tag.id" [compareWith]="compareFunction"> <br>
+          {{tag.name}}
+        </mat-list-option>
+      </ng-template>
+    </div>
   </mat-selection-list>
+
+
 </form>
 
 <div class="container">

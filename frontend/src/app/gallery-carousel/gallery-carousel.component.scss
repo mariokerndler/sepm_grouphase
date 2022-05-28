@@ -13,7 +13,7 @@
   .carousel-image{
     background-color: darkgray;
     padding:1.5rem;
-    @media(max-width: 700px) {
+    @media(max-width: 700px) and ( max-height: 500px) {
       padding:0.5rem;
 
     }
@@ -23,7 +23,7 @@
   }
   img{
         max-width: 80vw;
-      max-height: 120vh;
+      max-height: 80vh;
   }
   .carousel-button{
     padding: 1.5rem;

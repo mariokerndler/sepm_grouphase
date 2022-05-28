@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ArtworkDto} from '../dtos/artworkDto';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ArtistService} from "../services/artist.service";
+import {ArtistDto} from "../dtos/artistDto";
 
 @Component({
   selector: 'app-gallery-carousel',
@@ -10,7 +12,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     trigger('slide-in',[
     state('left',style({
       opacity:0,
-      transform:'translateX(-100%)'
+      transform:'translateX(+100%)'
     })),
       state('middle',style({
         opacity:1,
@@ -18,24 +20,24 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
       })),
       state('right',style({
         opacity:0,
-        transform:'translateX(100%)'
+        transform:'translateX(-100%)'
       })),
       transition('left => middle',[
         style({
           opacity:0,
-          transform:'translateX(100%)'
+          transform:'translateX(-100%)'
         }),
-        animate('250ms')
+        animate('200ms')
       ]),
       transition('right => middle',[
         style({
           opacity:0,
-          transform:'translateX(-100%)'
+          transform:'translateX(+100%)'
         }),
-        animate('250ms')
+        animate('200ms')
       ]),
       transition('middle => *',[
-        animate('250ms')
+        animate('200ms')
       ])
     ])
   ]
@@ -45,15 +47,19 @@ export class GalleryCarouselComponent implements OnInit {
   @Input() selectedArtworkId: number;
   @Output() closeCarousel = new EventEmitter<void>();
   public animState = 'middle';
+  public artist: ArtistDto;
   public animArtwork: number;
   url = 'assets/';
+  private artistService: ArtistService;
 
-  constructor() {
+  constructor(artistService: ArtistService) {
+    this.artistService=artistService;
   }
 
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
     console.log(this.selectedArtworkId);
+    this.getImageArtistInfo();
   }
   public  onEvent(event: Event): void{
     event.stopPropagation();
@@ -63,13 +69,14 @@ export class GalleryCarouselComponent implements OnInit {
     this.closeCarousel.emit();
   }
   public previous(): void {
+    this.getImageArtistInfo();
     this.animState='left';
     this.selectedArtworkId=this.selectedArtworkId>0? this.selectedArtworkId-1 : this.artworks.length-1;
 
     this.blur();
   }
   public  next(): void{
-
+    this.getImageArtistInfo();
     this.animState='right';
     this.selectedArtworkId=this.selectedArtworkId>this.artworks.length-1 ?0: this.selectedArtworkId+1   ;
 
@@ -83,6 +90,13 @@ public  animDone(): void{
     if(activeElem!==null){
       activeElem.blur();
     }
+  }
+  private    getImageArtistInfo(){
+    this.artistService.getArtistById(this.artworks[this.selectedArtworkId].artistId).subscribe(
+      data=>{
+        this.artist=data;
+      }
+    );
   }
 
 }

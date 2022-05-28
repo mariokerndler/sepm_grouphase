@@ -12,6 +12,7 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.github.javafaker.Faker;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -38,10 +39,11 @@ import java.util.stream.Stream;
 
 @Profile("generateData")
 @Component
+@Slf4j
 public class UserDataGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
-    private static final int NUMBER_OF_PROFILES_TO_GENERATE = 0;
+    private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
 
 
@@ -51,15 +53,16 @@ public class UserDataGenerator {
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
 
-    private final ArtistRepository artistRepo;
 
-    public UserDataGenerator( ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
+
+    public UserDataGenerator( ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo,
+                              TagRepository tagRepository ) {
 
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
-        this.artistRepo = artistRepo;
+
     }
 
     @PostConstruct
@@ -86,12 +89,15 @@ public class UserDataGenerator {
     //make sure db is empty before running to avoid Unique key constraint issues
     private void loadProfiles(int numberOfProfiles)   {
         List<Tag> tags = tagRepository.findAll();
-
+        log.info(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation);
         try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation), 1)) {
 
             List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
-
-            result.subList(0,numberOfProfiles).forEach(
+            int limit=numberOfProfiles;
+            if(numberOfProfiles>result.size()-1){
+                limit= result.size()-1;
+            }
+            result.subList(0,limit).forEach(
 
                 folder -> {
 

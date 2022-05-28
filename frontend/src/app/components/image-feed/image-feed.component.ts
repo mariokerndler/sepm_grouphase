@@ -75,8 +75,10 @@ export class ImageFeedComponent implements OnInit {
     );
   }
   public nextPage(): void {
-    this.searchParams.pageNr += 1;
-    this.loadFeed();
+    if(this.images.length>0) {
+      this.searchParams.pageNr += 1;
+      this.loadFeed();
+    }
   }
 
 

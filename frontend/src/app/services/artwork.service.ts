@@ -45,7 +45,7 @@ export class ArtworkService {
 
     // Todo: Set TagIds Param
     // Todo: Set Randomizer Seed
-    const params = new HttpParams().set('tagIds',tagSearch.tagIds.toString() ).set('searchOperations', searchOperations).set('pageNr', tagSearch.pageNr == null? '0': tagSearch.pageNr).set('randomSeed', '1');
+    const params = new HttpParams().set('tagIds',tagSearch.tagIds.toString() ).set('searchOperations', searchOperations).set('pageNr', tagSearch.pageNr == null? '0': tagSearch.pageNr).set('randomSeed', tagSearch.randomSeed);
     console.log(params.toString());
     const searchOptions = {
     headers: this.headers,

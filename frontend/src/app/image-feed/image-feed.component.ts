@@ -29,6 +29,7 @@ export class ImageFeedComponent implements OnInit {
   images: ArtworkDto[];
   artists: ArtistDto[];
   tags: TagDto[];
+  searchInput='';
   selectedTags: TagDto[]=[];
   searchParams: TagSearch = {
     pageNr: 0,
@@ -56,24 +57,22 @@ export class ImageFeedComponent implements OnInit {
   }
   compareFunction = (o1: any, o2: any) => o1.id === o2.id;
   public loadFeed() {
+    if(this.searchInput!==''){
+      this.searchParams.randomSeed=0  ;
+      this.searchParams.searchOperations='name~'+this.searchInput;
+} else{
+
+    this.searchParams.randomSeed=1;
+    }
     this.artworkService.search(this.searchParams).subscribe(
+
       data => {
-
-        data.forEach(a => {
-
-
-        });
         this.images = data;
       }, error => {
         console.log('no error handling exists so im just here to say hi');
       }
     );
   }
-
-
-
-
-
   public nextPage(): void {
     this.searchParams.pageNr += 1;
     this.loadFeed();

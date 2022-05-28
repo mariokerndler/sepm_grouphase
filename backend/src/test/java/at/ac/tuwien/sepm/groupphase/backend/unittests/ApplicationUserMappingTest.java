@@ -1,12 +1,17 @@
 package at.ac.tuwien.sepm.groupphase.backend.unittests;
+
 import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Image;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
+import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import org.junit.jupiter.api.Test;
@@ -32,51 +37,34 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class ArtworkMappingTest implements TestData {
+public class ApplicationUserMappingTest {
 
     @Autowired
-    private ArtistService artistService;
+    private UserService userService;
 
     @Autowired
-    private ArtworkService artworkService;
-
-    @Autowired
-    private ArtworkMapper artworkMapper;
+    private UserMapper userMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Artwork artwork;
+    private ApplicationUser applicationUser;
 
-    private Artist artist;
-
-    public Artwork getArtwork(Long id, byte[] content) {
-        return artwork = new Artwork("artwork1", "okay dog pls", "./data/image0", FileType.PNG,  artistService.findArtistById(id), null, null, content);
+    public ApplicationUser getApplicationUser() {
+        return applicationUser = new ApplicationUser("aUser", "aName", "aSurname", "aMail@mail.com", "testStraße 1", passwordEncoder.encode("tester"), false, UserRole.User);
     }
-
-    public Artist getTestArtist1() {
-        return artist = new Artist("testArtist", "bob", "test", "test", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
-    }
-
 
     @Test
     public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
-        File file = new File("./data/image0.png");
-        byte[] image = Files.readAllBytes(file.toPath());
+        ApplicationUser applicationUser = getApplicationUser();
+        ApplicationUserDto applicationUserDto = userMapper.userToUserDto(applicationUser);
 
-        Artist artist = getTestArtist1();
-        artistService.saveArtist(artist);
-        Long id = artist.getId();
-        Artwork artwork = getArtwork(id, image);
-        ArtworkDto artworkDto = artworkMapper.artworkToArtworkDto(artwork);
         assertAll(
-            () -> assertEquals(0, artworkDto.getId()),
-            () -> assertEquals("okay dog pls", artworkDto.getDescription()),
-            () -> assertEquals("./data/image0", artworkDto.getImageUrl()),
-            () -> assertEquals(FileType.PNG, artworkDto.getFileType()),
-            () -> assertEquals(1, artworkDto.getArtistId())
+            () -> assertEquals(null, applicationUserDto.getId()),
+            () -> assertEquals("aUser", applicationUserDto.getUserName()),
+            () -> assertEquals("aSurname", applicationUserDto.getSurname()),
+            () -> assertEquals(UserRole.User, applicationUserDto.getUserRole()),
+            () -> assertEquals("aMail@mail.com", applicationUserDto.getEmail())
         );
     }
-
 }

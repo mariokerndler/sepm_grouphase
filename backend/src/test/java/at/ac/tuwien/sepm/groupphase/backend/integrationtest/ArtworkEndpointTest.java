@@ -213,6 +213,19 @@ public class ArtworkEndpointTest {
                 .content(requestJson4))
             .andExpect(status().isOk()).andReturn();
 
+        mockMvc.perform(get("/artwork/2").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk()).andReturn();
+
+        Artwork anotherArtwork1 = getArtwork1(2L, null);
+        ArtworkDto anotherDto1 = artworkMapper.artworkToArtworkDto(anotherArtwork1);
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow5 = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson5 = ow5.writeValueAsString(anotherDto1);
+
+        mockMvc.perform(delete("/artwork").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson5))
+            .andExpect(status().isOk()).andReturn();
+
     }
 
     public List<ArtistDto> allArtists() throws Exception {

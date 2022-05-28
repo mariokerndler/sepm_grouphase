@@ -1,6 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.unittests;
+
 import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
@@ -32,51 +35,37 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class ArtworkMappingTest implements TestData {
+public class ArtistMappingTest {
 
     @Autowired
     private ArtistService artistService;
 
     @Autowired
-    private ArtworkService artworkService;
-
-    @Autowired
-    private ArtworkMapper artworkMapper;
+    private ArtistMapper artistMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Artwork artwork;
-
     private Artist artist;
-
-    public Artwork getArtwork(Long id, byte[] content) {
-        return artwork = new Artwork("artwork1", "okay dog pls", "./data/image0", FileType.PNG,  artistService.findArtistById(id), null, null, content);
-    }
 
     public Artist getTestArtist1() {
         return artist = new Artist("testArtist", "bob", "test", "test", "test", passwordEncoder.encode("test")
             , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
     }
 
-
     @Test
     public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
-        File file = new File("./data/image0.png");
-        byte[] image = Files.readAllBytes(file.toPath());
-
         Artist artist = getTestArtist1();
-        artistService.saveArtist(artist);
-        Long id = artist.getId();
-        Artwork artwork = getArtwork(id, image);
-        ArtworkDto artworkDto = artworkMapper.artworkToArtworkDto(artwork);
+        ArtistDto artistDto = artistMapper.artistToArtistDto(artist);
+
         assertAll(
-            () -> assertEquals(0, artworkDto.getId()),
-            () -> assertEquals("okay dog pls", artworkDto.getDescription()),
-            () -> assertEquals("./data/image0", artworkDto.getImageUrl()),
-            () -> assertEquals(FileType.PNG, artworkDto.getFileType()),
-            () -> assertEquals(1, artworkDto.getArtistId())
+            () -> assertEquals(null, artistDto.getId()),
+            () -> assertEquals("testArtist", artistDto.getUserName()),
+            () -> assertEquals("test", artistDto.getSurname()),
+            () -> assertEquals(UserRole.Artist, artistDto.getUserRole()),
+            () -> assertEquals(1.0, artistDto.getReviewScore())
         );
+
     }
 
 }

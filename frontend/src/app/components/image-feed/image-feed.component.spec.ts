@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ImageFeedComponent } from './image-feed.component';
+import {ImageFeedComponent} from './image-feed.component';
 
 describe('ImageFeedComponent', () => {
   let component: ImageFeedComponent;
@@ -8,9 +8,9 @@ describe('ImageFeedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageFeedComponent ]
+      declarations: [ImageFeedComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -20,6 +20,6 @@ describe('ImageFeedComponent', () => {
   });
 
   it('should create', () => {
-      expect(component).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 });

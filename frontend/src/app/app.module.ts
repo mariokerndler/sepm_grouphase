@@ -42,10 +42,10 @@ import {
   UserPageInformationComponent
 } from './components/user-page/user-page-information/user-page-information.component';
 import {UserPageEditComponent} from './components/user-page/user-page-edit/user-page-edit.component';
-import { LogoutComponent } from './components/logout/logout.component';
-import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
+import {LogoutComponent} from './components/logout/logout.component';
+import {ArtistGalleryComponent} from './components/artist-page/artist-gallery/artist-gallery.component';
 import {ImageFeedComponent} from './components/image-feed/image-feed.component';
-import { GalleryCarouselComponent } from './components/gallery-carousel/gallery-carousel.component';
+import {GalleryCarouselComponent} from './components/gallery-carousel/gallery-carousel.component';
 
 @NgModule({
   declarations: [

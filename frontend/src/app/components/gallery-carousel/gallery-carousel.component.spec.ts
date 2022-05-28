@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GalleryCarouselComponent } from './gallery-carousel.component';
+import {GalleryCarouselComponent} from './gallery-carousel.component';
 
 describe('GalleryCarouselComponent', () => {
   let component: GalleryCarouselComponent;
@@ -8,9 +8,9 @@ describe('GalleryCarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GalleryCarouselComponent ]
+      declarations: [GalleryCarouselComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

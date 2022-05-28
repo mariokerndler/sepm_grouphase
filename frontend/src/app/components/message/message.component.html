@@ -25,7 +25,8 @@
 
           <div class="form-group">
             <label for="inputTitle">Title</label>
-            <input [(ngModel)]="currentMessage.title" [readOnly]="currentMessage.id" aria-describedby="titleHelp" class="form-control" id="inputTitle"
+            <input [(ngModel)]="currentMessage.title" [readOnly]="currentMessage.id" aria-describedby="titleHelp"
+                   class="form-control" id="inputTitle"
                    name="title" placeholder="Enter title" required
                    type="text">
             <div *ngIf="submitted && messageForm.controls.title.errors" class="error">
@@ -38,7 +39,8 @@
 
           <div class="form-group">
             <label for="inputSummary">Summary</label>
-            <textarea [(ngModel)]="currentMessage.summary" [readOnly]="currentMessage.id" aria-describedby="summaryHelp" class="form-control" id="inputSummary"
+            <textarea [(ngModel)]="currentMessage.summary" [readOnly]="currentMessage.id" aria-describedby="summaryHelp"
+                      class="form-control" id="inputSummary"
                       name="summary" placeholder="Enter summary" required
                       rows="3"></textarea>
             <div *ngIf="submitted && messageForm.controls.summary.errors" class="error">
@@ -51,7 +53,8 @@
 
           <div class="form-group">
             <label for="inputText">Text</label>
-            <textarea [(ngModel)]="currentMessage.text" [readOnly]="currentMessage.id" aria-describedby="textHelp" class="form-control" id="inputText"
+            <textarea [(ngModel)]="currentMessage.text" [readOnly]="currentMessage.id" aria-describedby="textHelp"
+                      class="form-control" id="inputText"
                       name="text" placeholder="Enter text" required
                       rows="6"></textarea>
             <div *ngIf="submitted && messageForm.controls.text.errors" class="error">
@@ -61,7 +64,8 @@
             </div>
           </div>
 
-          <button (click)="addMessage(messageForm)" *ngIf="!currentMessage.id" class="btn btn-success float-right" id="add-msg"
+          <button (click)="addMessage(messageForm)" *ngIf="!currentMessage.id" class="btn btn-success float-right"
+                  id="add-msg"
                   type="button">Add message
           </button>
 
@@ -90,7 +94,8 @@
           </button>
         </div>
 
-        <div [ngClass]="['modal', 'fade', 'message-modal-'+message.id]" aria-hidden="true" aria-labelledby="Message details modal"
+        <div [ngClass]="['modal', 'fade', 'message-modal-'+message.id]" aria-hidden="true"
+             aria-labelledby="Message details modal"
              role="dialog"
              tabindex="-1">
           <div class="modal-dialog modal-lg">

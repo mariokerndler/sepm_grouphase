@@ -52,8 +52,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public void updateArtist(Artist artist) throws IOException {
-        Artist oldArtist = findArtistById(artist.getId());
-        {
+        Artist oldArtist = findArtistById(artist.getId()); {
             if (!oldArtist.getUserName().equals(artist.getUserName())) {
                 ifm.renameArtistFolder(artist, oldArtist.getUserName());
             }
@@ -64,6 +63,7 @@ public class ArtistServiceImpl implements ArtistService {
                 }
             }
         }
+
         artistRepo.save(artist);
     }
 }

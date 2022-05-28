@@ -9,7 +9,6 @@ import {TagService} from '../../services/tag.service';
 import {TagDto} from '../../dtos/tagDto';
 
 
-
 @Component({
   selector: 'app-image-feed',
   templateUrl: './image-feed.component.html',
@@ -22,15 +21,15 @@ export class ImageFeedComponent implements OnInit {
   //maybe use as component
   filterArtistId = null;
   isOpen = false;
-  tagHidden=false;
-  cols= 3;
+  tagHidden = false;
+  cols = 3;
   //rename Artwork
   url = 'assets/';
   images: ArtworkDto[];
   artists: ArtistDto[];
   tags: TagDto[];
-  searchInput='';
-  selectedTags: TagDto[]=[];
+  searchInput = '';
+  selectedTags: TagDto[] = [];
   searchParams: TagSearch = {
     pageNr: 0,
     randomSeed: 1,
@@ -53,19 +52,20 @@ export class ImageFeedComponent implements OnInit {
     this.loadFeed();
     this.loadArtists();
     this.loadAllTags();
-   // document.documentElement.style.setProperty(`--${your-variable}`, value
+    // document.documentElement.style.setProperty(`--${your-variable}`, value
   }
-  compareFunction = (o1: any, o2: any) => o1.id === o2.id;
-  public loadFeed() {
-    if(this.searchInput!==''){
-      this.searchParams.randomSeed=0  ;
-      this.searchParams.searchOperations='name~%'+this.searchInput+'%';
-} else{
 
-    this.searchParams.randomSeed=1;
+  compareFunction = (o1: any, o2: any) => o1.id === o2.id;
+
+  public loadFeed() {
+    if (this.searchInput !== '') {
+      this.searchParams.randomSeed = 0;
+      this.searchParams.searchOperations = 'name~%' + this.searchInput + '%';
+    } else {
+
+      this.searchParams.randomSeed = 1;
     }
     this.artworkService.search(this.searchParams).subscribe(
-
       data => {
         this.images = data;
       }, error => {
@@ -73,6 +73,7 @@ export class ImageFeedComponent implements OnInit {
       }
     );
   }
+
   public nextPage(): void {
     this.searchParams.pageNr += 1;
     this.loadFeed();
@@ -92,9 +93,10 @@ export class ImageFeedComponent implements OnInit {
   }
 
   toggleView() {
-    this.tagHidden=! this.tagHidden;
+    this.tagHidden = !this.tagHidden;
 
   }
+
   private loadAllTags() {
     this.tagService.getAllTags().subscribe(
       data => {
@@ -105,6 +107,7 @@ export class ImageFeedComponent implements OnInit {
       }
     );
   }
+
   private loadArtists() {
     this.artistService.getAllArtists().subscribe(
       data => {

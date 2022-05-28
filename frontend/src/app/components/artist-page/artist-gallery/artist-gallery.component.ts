@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 
@@ -15,7 +13,8 @@ export class ArtistGalleryComponent implements OnInit {
   artistProfilePicture: string;
 
 
-  constructor(private artworkService: ArtworkService) {}
+  constructor(private artworkService: ArtworkService) {
+  }
 
 
   ngOnInit(): void {
@@ -31,8 +30,10 @@ export class ArtistGalleryComponent implements OnInit {
         image.onload = (_) => {
           const imageData = new Uint8Array([0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xf3, 0xc0, 0xff, 0xc0, 0xff, 0xc0,
             0xf7, 0xc0, 0xff, 0xc0]);
-          const artwork = {name: 'test',description: 'test', imageData, imageUrl: '/data/ap/aaronjoshuaaa/test.jpg',
-            fileType: FileType.jpg, artistId: this.artist.id} as ArtworkDto;
+          const artwork = {
+            name: 'test', description: 'test', imageData, imageUrl: '/data/ap/aaronjoshuaaa/test.jpg',
+            fileType: FileType.jpg, artistId: this.artist.id
+          } as ArtworkDto;
           this.artworkService.createArtwork(artwork).subscribe();
         };
       };

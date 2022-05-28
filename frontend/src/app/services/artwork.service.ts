@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
 import {ArtworkDto} from '../dtos/artworkDto';
 import {tap} from 'rxjs/operators';
@@ -23,6 +23,7 @@ export class ArtworkService {
   constructor(private http: HttpClient,
               private notificationService: NotificationService) {
   }
+
   /**
    * Fetches artworks that match the the given search-criteria from the system.
    *
@@ -33,21 +34,33 @@ export class ArtworkService {
    */
 
   search(tagSearch: TagSearch, errorAction?: () => void): Observable<ArtworkDto[]> {
-
-
     let searchOperations = tagSearch.searchOperations;
-    if(!searchOperations){
+    if (!searchOperations) {
       searchOperations = '';
     }
 
-
     // Todo: Set TagIds Param
     // Todo: Set Randomizer Seed
-    const params = new HttpParams().set('tagIds',tagSearch.tagIds.toString() ).set('searchOperations', searchOperations).set('pageNr', tagSearch.pageNr == null? '0': tagSearch.pageNr).set('randomSeed', tagSearch.randomSeed);
+    const params = new HttpParams();
+
+    if(tagSearch?.tagIds) {
+      params.set('tagIds', tagSearch.tagIds.toString());
+    }
+
+    if(tagSearch?.searchOperations) {
+      params.set('searchOperations', searchOperations);
+    }
+
+    if(tagSearch?.randomSeed) {
+      params.set('randomSeed', tagSearch?.randomSeed);
+    }
+
+    params.set('pageNr', tagSearch?.pageNr == null ? '0' : tagSearch?.pageNr);
+
     console.log(params.toString());
     const searchOptions = {
-    headers: this.headers,
-    params
+      headers: this.headers,
+      params
     };
     return this.http.get<ArtworkDto[]>(baseUri, searchOptions)
       .pipe(
@@ -59,6 +72,7 @@ export class ArtworkService {
         })
       );
   }
+
   /**
    * Fetches the list of {@link ArtworkDto artworks} with the given {@link ArtistDto#id id} from the system.
    *
@@ -78,6 +92,7 @@ export class ArtworkService {
         })
       );
   }
+
   /**
    * Deletes the {@link ArtworkDto artwork} with the given {@link ArtworkDto#id id} from the system.
    *
@@ -99,7 +114,7 @@ export class ArtworkService {
    * @param successAction Optional, will execute if the POST request succeeds.
    * @return observable containing the newly created {@link ArtworkDto}.
    */
-  createArtwork(artwork: ArtworkDto,errorAction?: () => void,successAction?: () => void): Observable<ArtworkDto> {
+  createArtwork(artwork: ArtworkDto, errorAction?: () => void, successAction?: () => void): Observable<ArtworkDto> {
     return this.http.post<ArtworkDto>(baseUri, artwork, this.options)
       .pipe(
         catchError((err) => {

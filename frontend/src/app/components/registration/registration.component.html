@@ -19,7 +19,8 @@
   <div class="name">
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>First Name</mat-label>
-      <input aria-describedby="firstnameHelp" class="form-control" formControlName="firstname" id="inputFirstname" matInput
+      <input aria-describedby="firstnameHelp" class="form-control" formControlName="firstname" id="inputFirstname"
+             matInput
              name="firstname">
       <mat-error *ngIf="registerForm.controls.firstname.errors">
         <mat-error *ngIf="registerForm.controls.firstname.errors.required">Your first name is required!</mat-error>
@@ -73,7 +74,8 @@
     <mat-label>Password</mat-label>
     <input [type]="hidePassword ? 'password' : 'text'" class="form-control" formControlName="password" id="password"
            matInput name="password">
-    <button (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" mat-icon-button
+    <button (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword" mat-icon-button
             matSuffix>
       <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
@@ -87,9 +89,11 @@
 
   <mat-form-field appearance="fill" class="form-group">
     <mat-label>Confirm Password</mat-label>
-    <input [type]="hideConfirmPassword ? 'password' : 'text'" class="form-control" formControlName="confirm" id="confirm"
+    <input [type]="hideConfirmPassword ? 'password' : 'text'" class="form-control" formControlName="confirm"
+           id="confirm"
            matInput name="confirm">
-    <button (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword"
+    <button (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hideConfirmPassword"
             mat-icon-button matSuffix>
       <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>

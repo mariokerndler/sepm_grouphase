@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import {Artwork} from '../dtos/artwork';
+import {ArtworkDto} from '../dtos/artworkDto';
 import {tap} from 'rxjs/operators';
 import {TagSearch} from '../dtos/tag-search';
 import {NotificationService} from './notification/notification.service';
@@ -24,50 +24,110 @@ export class ArtworkService {
               private notificationService: NotificationService) {
   }
 
-  search(tagSearch: TagSearch, errorAction?: () => void): Observable<Artwork[]> {
-    return this.http.get<Artwork[]>(`${baseUri}`, this.options)
+  /**
+   * Fetches artworks that match the the given search-criteria from the system.
+   *
+   * @param tagSearch The {@link TagSearch tag-search } describe the search criteria that will be used to filter the database.
+   * @param errorAction Optional, will execute if the GET request fails.
+   *
+   * @return Observable containing the fetched List of {@link ArtworkDto}.
+   */
+
+  search(tagSearch: TagSearch, errorAction?: () => void): Observable<ArtworkDto[]> {
+    console.log(tagSearch);
+    let searchOperations = tagSearch.searchOperations;
+    if (!searchOperations) {
+      searchOperations = '';
+    }
+
+    // Todo: Set TagIds Param
+    // Todo: Set Randomizer Seed
+    const params = new HttpParams();
+
+    if (tagSearch.tagIds && tagSearch.tagIds.length > 0) {
+      params.set('tagIds', tagSearch.tagIds.toString());
+    }
+
+    if (tagSearch.searchOperations && tagSearch.searchOperations.length > 0) {
+      params.set('searchOperations', searchOperations);
+    }
+
+    if (tagSearch?.randomSeed) {
+      params.set('randomSeed', tagSearch.randomSeed);
+    }
+
+    params.set('pageNr', tagSearch?.pageNr == null ? '0' : tagSearch?.pageNr);
+
+    console.log(params.toString());
+
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+    return this.http.get<ArtworkDto[]>(baseUri, searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
             errorAction();
           }
-          return this.notificationService.notifyUserAboutFailedOperation<Artwork[]>('Searching artworks by tag')(err);
+          return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto[]>('Searching artworks by tag')(err);
         })
       );
   }
 
-
-  getArtworksByArtist(id: number, errorAction?: () => void): Observable<Artwork[]> {
-    return this.http.get<Artwork[]>(`${baseUri}/${id}`, this.options)
+  /**
+   * Fetches the list of {@link ArtworkDto artworks} with the given {@link ArtistDto#id id} from the system.
+   *
+   * @param id The {@link ArtistDto#id id} of the list of {@link ArtworkDto artworks} that will be fetched.
+   * @param errorAction Optional, will execute if the GET request fails.
+   *
+   * @return Observable containing the fetched list of {@link ArtworkDto}.
+   */
+  getArtworksByArtist(id: number, errorAction?: () => void): Observable<ArtworkDto[]> {
+    return this.http.get<ArtworkDto[]>(`${baseUri}/${id}`, this.options)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
             errorAction();
           }
-          return this.notificationService.notifyUserAboutFailedOperation<Artwork[]>('Finding artworks by artist')(err);
+          return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto[]>('Finding artworks by artist')(err);
         })
       );
   }
 
-
-  deleteArtist(id: number, artwork: Artwork): Observable<void> {
+  /**
+   * Deletes the {@link ArtworkDto artwork} with the given {@link ArtworkDto#id id} from the system.
+   *
+   * @param id The {@link ArtworkDto#id id} of the {@link ArtworkDto artwork} that will be deleted.
+   * @param artwork the {@link ArtworkDto artwork} that will be deleted.
+   *
+   * @return Observable containing the fetched list of {@link ArtworkDto}.
+   */
+  deleteArtist(id: number, artwork: ArtworkDto): Observable<void> {
     const deleteOptions = {headers: this.headers, body: artwork};
     return this.http.delete<void>(`${baseUri}/${id}`, deleteOptions);
   }
 
-
-  createArtwork(artwork: Artwork,errorAction?: () => void,successAction?: () => void): Observable<Artwork> {
-    return this.http.post<Artwork>(baseUri, artwork, this.options)
+  /**
+   * Create a new {@link ArtworkDto artwork} and store it in the system
+   *
+   * @param artwork The {@link ArtworkDto} containing the information used to create a new artwork.
+   * @param errorAction Optional, will execute if the POST request fails.
+   * @param successAction Optional, will execute if the POST request succeeds.
+   * @return observable containing the newly created {@link ArtworkDto}.
+   */
+  createArtwork(artwork: ArtworkDto, errorAction?: () => void, successAction?: () => void): Observable<ArtworkDto> {
+    return this.http.post<ArtworkDto>(baseUri, artwork, this.options)
       .pipe(
         catchError((err) => {
-          if(errorAction != null) {
+          if (errorAction != null) {
             errorAction();
           }
 
-          return this.notificationService.notifyUserAboutFailedOperation<Artwork>('Creating Artwork')(err);
+          return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto>('Creating Artwork')(err);
         }),
         tap(_ => {
-          if(successAction != null) {
+          if (successAction != null) {
             successAction();
           }
         }));

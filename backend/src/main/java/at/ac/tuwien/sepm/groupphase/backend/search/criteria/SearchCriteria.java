@@ -2,11 +2,13 @@ package at.ac.tuwien.sepm.groupphase.backend.search.criteria;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class SearchCriteria {
     private String key;
     private String operation;
@@ -14,9 +16,19 @@ public class SearchCriteria {
     private String predicateType;
 
     public boolean isOrPredicate() {
-        if(predicateType.toLowerCase().equals("or")){
-            return  true;
+        if (predicateType.toLowerCase().equals("or")) {
+            return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchCriteria{" +
+            "key='" + key + '\'' +
+            ", operation='" + operation + '\'' +
+            ", value=" + value +
+            ", predicateType='" + predicateType + '\'' +
+            '}';
     }
 }

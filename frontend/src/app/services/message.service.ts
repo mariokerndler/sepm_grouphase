@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Message} from '../dtos/message';
+import {MessageDto} from '../dtos/messageDto';
 import {Observable} from 'rxjs';
 import {Globals} from '../global/globals';
 
@@ -17,8 +17,8 @@ export class MessageService {
   /**
    * Loads all messages from the backend
    */
-  getMessage(): Observable<Message[]> {
-    return this.httpClient.get<Message[]>(this.messageBaseUri);
+  getMessage(): Observable<MessageDto[]> {
+    return this.httpClient.get<MessageDto[]>(this.messageBaseUri);
   }
 
   /**
@@ -26,9 +26,9 @@ export class MessageService {
    *
    * @param id of message to load
    */
-  getMessageById(id: number): Observable<Message> {
+  getMessageById(id: number): Observable<MessageDto> {
     console.log('Load message details for ' + id);
-    return this.httpClient.get<Message>(this.messageBaseUri + '/' + id);
+    return this.httpClient.get<MessageDto>(this.messageBaseUri + '/' + id);
   }
 
   /**
@@ -36,8 +36,8 @@ export class MessageService {
    *
    * @param message to persist
    */
-  createMessage(message: Message): Observable<Message> {
+  createMessage(message: MessageDto): Observable<MessageDto> {
     console.log('Create message with title ' + message.title);
-    return this.httpClient.post<Message>(this.messageBaseUri, message);
+    return this.httpClient.post<MessageDto>(this.messageBaseUri, message);
   }
 }

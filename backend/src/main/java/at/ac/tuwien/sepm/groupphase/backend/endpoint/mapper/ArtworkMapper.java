@@ -9,13 +9,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring",uses= ArtistService.class)
-public abstract class   ArtworkMapper {
+@Mapper(componentModel = "spring", uses = ArtistService.class)
+public abstract class ArtworkMapper {
     @Autowired
     protected ArtistService artistService;
 
     public abstract ArtworkDto artworkToArtworkDto(Artwork a);
-    public abstract Artwork artworkDtoToArtwork(ArtworkDto aDto);
+
+    public abstract Artwork artworkDtoToArtwork(ArtworkDto artworkDto);
 
     @BeforeMapping
     protected void urlDefault(ArtworkDto artworkDto, @MappingTarget Artwork a) {
@@ -27,6 +28,7 @@ public abstract class   ArtworkMapper {
         artworkDto.setArtistId(a.getArtist().getId());
     }
 
+    //TODO: ArtworkD is this a typo?
     @AfterMapping
     protected void addArtistToArtworkD(ArtworkDto a, @MappingTarget Artwork artwork) {
 

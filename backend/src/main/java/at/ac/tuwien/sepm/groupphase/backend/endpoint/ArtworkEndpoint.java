@@ -35,6 +35,7 @@ public class ArtworkEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final ArtworkService artworkService;
     private final ArtworkMapper artworkMapper;
+
     @Autowired
     public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper) {
         this.artworkService = artworkService;
@@ -49,13 +50,18 @@ public class ArtworkEndpoint {
     @ResponseBody
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
-    public List<ArtworkDto> search(@RequestBody TagSearchDto tagSearchDto  ) {
+    public List<ArtworkDto> search(@RequestParam(name = "randomSeed", defaultValue = "0") int randomSeed,
+                                   @RequestParam(name = "tagIds", required = false) List<String> tagIds,
+                                   @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
+                                   @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
+        ;
+        TagSearchDto tagSearchDto = new TagSearchDto(tagIds, searchOperations, pageNr, randomSeed);
         LOGGER.info("Search artworks by criteria " + tagSearchDto.toString());
-        String search= tagSearchDto.getSearchOperations();
+        String search = tagSearchDto.getSearchOperations();
 
-        Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
+        Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
-        String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
+        String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(
             "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
         Matcher matcher = pattern.matcher(search + ",");
@@ -66,20 +72,27 @@ public class ArtworkEndpoint {
                 matcher.group(4),
                 matcher.group(3),
                 matcher.group(5));
+            log.info(matcher.group(1));
+            log.info(matcher.group(2));
+            log.info(matcher.group(3));
+            log.info(matcher.group(4));
+            log.info(matcher.group(5));
         }
 
         Specification<Artwork> spec = builder.build();
 
-        if(tagSearchDto.getTagIds()!=null) {
-            if (spec == null) {
-                spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+        if (tagSearchDto.getTagIds() != null) {
+            if (tagSearchDto.getTagIds().size() > 0) {
+                if (spec == null) {
+                    spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+                }
+                for (String tag : tagSearchDto.getTagIds()) {
+                    spec.and(TagSpecification.filterByTags(tag));
+                }
+                log.info(tagSearchDto.getSearchOperations());
             }
-            for (String tag : tagSearchDto.getTagIds()) {
-                spec.and(TagSpecification.filterByTags(tag));
-            }
-            log.info(tagSearchDto.getSearchOperations());
         }
-        return artworkService.searchArtworks(spec,page).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
     }
 
@@ -91,9 +104,9 @@ public class ArtworkEndpoint {
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id ){
         LOGGER.info("Get artworks by artist with id " + id);
         try {
-            List<Artwork> artworks=artworkService.findArtworksByArtist(id);
+            List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
-            List<ArtworkDto> artworksDto= artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+            List<ArtworkDto> artworksDto = artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
 
             return artworksDto;

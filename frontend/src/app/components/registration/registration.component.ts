@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {LoginComponent} from '../login/login.component';
 import {UserService} from '../../services/user.service';
+import {GlobalFunctions} from '../../global/globalFunctions';
 
 
 @Component({
@@ -32,7 +29,8 @@ export class RegistrationComponent implements OnInit {
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private router: Router) {
+    private router: Router,
+    private globalFunctions: GlobalFunctions) {
     this.registerForm = this.formBuilder.group({
       firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
       lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
@@ -41,8 +39,8 @@ export class RegistrationComponent implements OnInit {
       username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirm: ['', [Validators.required, Validators.minLength(8)]],
-    },{
-      validator: this.mustMatch('password', 'confirm')
+    }, {
+      validator: globalFunctions.mustMatch('password', 'confirm')
     });
   }
 
@@ -52,8 +50,6 @@ export class RegistrationComponent implements OnInit {
   createNewUser() {
     this.submitted = true;
     if (this.registerForm.valid) {
-
-
       const firstname = this.registerForm.controls.firstname.value;
       const lastname = this.registerForm.controls.lastname.value;
       const username = this.registerForm.controls.username.value;
@@ -63,9 +59,7 @@ export class RegistrationComponent implements OnInit {
 
       this.userService.createUser(firstname, lastname, username, email, address, password).subscribe();
       this.onNoClick();
-
-
-     // this.authenticateUser(authRequest);
+      // this.authenticateUser(authRequest);
     } else {
       console.log('Invalid input');
     }
@@ -77,6 +71,7 @@ export class RegistrationComponent implements OnInit {
    *
    * @param authRequest authentication data from the user login form
    */
+
   /*
 authenticateUser(authRequest: AuthRequest) {
   console.log('Try to authenticate user: ' + authRequest.email);
@@ -99,9 +94,9 @@ authenticateUser(authRequest: AuthRequest) {
   });
 }
 */
-/**
- * Error flag will be deactivated, which clears the error message
- */
+  /**
+   * Error flag will be deactivated, which clears the error message
+   */
   vanishError() {
     this.error = false;
   }
@@ -115,26 +110,7 @@ authenticateUser(authRequest: AuthRequest) {
     this.dialog.open(LoginComponent);
   }
 
-  ngOnInit() {}
-
-  mustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-
-      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
-        return;
-      }
-
-      // set error on matchingControl if validation fails
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ mustMatch: true });
-      } else {
-        matchingControl.setErrors(null);
-      }
-      return null;
-    };
+  ngOnInit() {
   }
-
 }
 

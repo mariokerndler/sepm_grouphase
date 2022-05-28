@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {MessageComponent} from './message.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -12,9 +12,9 @@ describe('MessageComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule],
-      declarations: [ MessageComponent ]
+      declarations: [MessageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

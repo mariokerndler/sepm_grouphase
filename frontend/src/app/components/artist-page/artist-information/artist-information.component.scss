@@ -61,6 +61,15 @@
   width: 100%;
 }
 
+.see-more-link {
+  text-decoration: none;
+}
+
+
+.see-more-link:hover {
+  text-decoration: underline;
+}
+
 @media screen and (max-width: 959px) {
   .artist-about-description {
     padding-top: 10px;

@@ -15,7 +15,8 @@ export interface DialogData {
 export class NotificationService {
   constructor(
     private dialog: MatDialog,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) {
+  }
 
   /**
    * Displays a given message and title.
@@ -72,7 +73,8 @@ export class NotificationService {
   templateUrl: 'notification-templates/simple-dialog-template.html'
 })
 export class SimpleDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  }
 }
 
 @Component({
@@ -87,7 +89,8 @@ export class SimpleDialogComponent {
   ]
 })
 export class ErrorSnackbarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {}
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {
+  }
 }
 
 @Component({
@@ -102,5 +105,6 @@ export class ErrorSnackbarComponent {
   ]
 })
 export class SuccessSnackbarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {}
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {
+  }
 }

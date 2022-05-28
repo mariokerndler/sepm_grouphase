@@ -1,9 +1,10 @@
 import {LayoutComponent} from './layoutComponent';
+import {Color} from '@angular-material-components/color-picker';
 
 export class ArtistProfileSettings {
-  backgroundColor: string;
-  primaryColor: string;
-  secondaryColor: string;
-  headerColor: string;
+  backgroundColor?: Color;
+  primaryColor?: Color;
+  secondaryColor?: Color;
+  headerColor?: Color;
   layout: LayoutComponent[];
 }

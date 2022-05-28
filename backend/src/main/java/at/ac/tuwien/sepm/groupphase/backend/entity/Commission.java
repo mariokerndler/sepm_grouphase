@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Commission {
+public class Commission implements HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +58,19 @@ public class Commission {
     @OneToOne(mappedBy = "commission")
     private Artwork artwork;
 
-    public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Reference> references, List<Receipt> receipts, Review review, Artwork artwork) {
+    public Commission(
+        Artist artist,
+        ApplicationUser customer,
+        int sketchesShown,
+        int feedbackSent,
+        double price,
+        LocalDateTime issueDate,
+        LocalDateTime deadlineDate,
+        String instructions,
+        List<Reference> references,
+        List<Receipt> receipts,
+        Review review,
+        Artwork artwork) {
         this.artist = artist;
         this.customer = customer;
         this.sketchesShown = sketchesShown;
@@ -97,12 +110,17 @@ public class Commission {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Commission other = (Commission) obj;
         return id != null && id.equals(other.getId());
     }

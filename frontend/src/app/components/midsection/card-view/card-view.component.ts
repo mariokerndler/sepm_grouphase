@@ -1,12 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Artwork} from '../../../dtos/artwork';
-import {Globals} from '../../../global/globals';
-import {Router} from '@angular/router';
-
-
-
-
-
+import {ArtworkDto} from '../../../dtos/artworkDto';
 
 @Component({
   selector: 'app-card-view',
@@ -14,17 +7,13 @@ import {Router} from '@angular/router';
   styleUrls: ['./card-view.component.scss']
 })
 export class CardViewComponent implements OnInit {
-  @Input() artwork: Artwork;
+  @Input() artwork: ArtworkDto;
+  @Input() classifiedArtist: boolean;
   url = 'assets/';
 
-
-  constructor(private globals: Globals, private router: Router) {
-
+  constructor() {
   }
 
   ngOnInit(): void {
   }
-
-
-
 }

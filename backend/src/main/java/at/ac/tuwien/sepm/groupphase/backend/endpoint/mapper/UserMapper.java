@@ -11,20 +11,17 @@ import org.mapstruct.MappingTarget;
 public abstract class UserMapper {
 
 
-   public  abstract   ApplicationUserDto userToUserDto( ApplicationUser applicationUser);
+    public abstract ApplicationUserDto userToUserDto(ApplicationUser applicationUser);
 
 
-     public abstract ApplicationUser userDtoToUser(ApplicationUserDto applicationUserDto);
+    public abstract ApplicationUser userDtoToUser(ApplicationUserDto applicationUserDto);
 
-     @AfterMapping
-     protected void makeEmailLowerCase( @MappingTarget ApplicationUser applicationUser){
+    @AfterMapping
+    protected void makeEmailLowerCase(@MappingTarget ApplicationUser applicationUser) {
 
-         applicationUser.setEmail(applicationUser.getEmail().toLowerCase());
+        applicationUser.setEmail(applicationUser.getEmail().toLowerCase());
 
-     }
-
-
-
+    }
 
 
 }

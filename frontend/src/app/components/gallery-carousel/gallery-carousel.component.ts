@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {ArtworkDto} from '../../dtos/artworkDto';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ArtistService} from '../../services/artist.service';
@@ -61,7 +61,9 @@ export class GalleryCarouselComponent implements OnInit {
     this.router = router;
     this.artistService = artistService;
   }
-
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(evt: KeyboardEvent) {
+   this.close();
+  }
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
     console.log(this.selectedArtworkId);
@@ -128,7 +130,7 @@ export class GalleryCarouselComponent implements OnInit {
 
   }
 
-  public stringiyTags(): string {
+  public stringifyTags(): string {
     let result = '';
     this.imageTags.forEach(
       t => {

@@ -50,7 +50,7 @@ export class ArtworkService {
     params
     };
     return this.http.get<ArtworkDto[]>(baseUri, searchOptions)
-      .pipe(
+        .pipe(
         catchError((err) => {
           if (errorAction != null) {
             errorAction();

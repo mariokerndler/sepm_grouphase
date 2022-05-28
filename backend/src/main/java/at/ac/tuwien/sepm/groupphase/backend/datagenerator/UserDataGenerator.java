@@ -105,7 +105,7 @@ public class UserDataGenerator {
                         for (File artworkFile : artistProfileDirectoryListing) {
                             if (artworkFile.isFile()) {
                                 Faker f = new Faker();
-                                String description = new Faker().rickAndMorty().quote();
+                                String description = new Faker().harryPotter().quote();
                                 if (description.length() > 50) {
                                     description = description.substring(0, 50);
                                 }

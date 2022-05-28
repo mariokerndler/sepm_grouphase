@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {Artist} from '../../../dtos/artist';
-import {Artwork} from '../../../dtos/artwork';
+import {ArtworkDto} from '../../../dtos/artworkDto';
+import {ArtworkService} from '../../../services/artwork.service';
 
 @Component({
   selector: 'app-midsection',
@@ -12,47 +11,33 @@ export class MidsectionComponent implements OnInit {
 
   @Input() artistId: number;
   @Input() columnCount = 5;
-  artworks: Artwork[];
+  artworks: ArtworkDto[];
 
   constructor(
-    private fakerService: FakerGeneratorService
+    private artworkService: ArtworkService
   ) { }
 
   ngOnInit(): void {
-    const artist: Artist = this.fetchArtist(this.artistId);
-
-    this.artworks = this.fetchArtworks(artist ? artist.artworkIds : null);
+    this.fetchArtworks(this.artistId);
   }
 
-  private fetchArtist(artistId?: number): Artist {
-    if(!artistId) {
-      return null;
+  private fetchArtworks(artistId?: number) {
+    if(artistId) {
+      this.fetchArtworksFromUser(artistId);
     } else {
-      this.fakerService.generateFakeArtist(artistId, 1, 1).subscribe({
-        next: (artist) => artist
-      });
+      this.fetchArtworksFromAllUsers();
     }
   }
 
-  private fetchArtworks(artworkIds?: number[]): Artwork[] {
-    let artworks: Artwork[] = [];
-
-    if(!artworkIds) {
-      this.fakerService.generateFakeArtworkByAmount(12).subscribe({
-        next: (fakeArtworks) => {
-          artworks = fakeArtworks;
-        }
-      });
-    } else {
-      for (const id of artworkIds) {
-        this.fakerService.generateFakeArtwork(id).subscribe({
-          next: (artwork) => {
-            artworks.push(artwork);
-          }
-        });
+  private fetchArtworksFromUser(artistId: number) {
+    this.artworkService.getArtworksByArtist(artistId).subscribe({
+      next: (loadedArtworks) => {
+        this.artworks = loadedArtworks;
       }
-    }
+    });
+  }
 
-    return artworks;
+  private fetchArtworksFromAllUsers() {
+    // TODO: Fetch artworks from different users.
   }
 }

@@ -18,9 +18,8 @@ public class ProfilePicture extends Image{
     @OneToOne
     private Artist artist;
 
-    public ProfilePicture(Artist artist) {
-        this.artist = artist;
-    }
+
+
 
     @Override
     public String toString() {

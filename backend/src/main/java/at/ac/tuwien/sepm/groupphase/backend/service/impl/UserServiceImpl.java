@@ -4,7 +4,9 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -66,6 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApplicationUser findUserById(Long id) {
+        log.info(ImageDataPaths.assetAbsoluteLocation);
         Optional<ApplicationUser> user= userRepo.findById(id);
         if (user.isPresent()) {
             LOGGER.info(user.get().getUserName());

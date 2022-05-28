@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.github.javafaker.Faker;
 import org.slf4j.Logger;
@@ -42,9 +43,8 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 20;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
-    private static final String artistProfileDir = "./data/ap";
-    private static final String tagDir = "./data/tags/tags.txt";
-    private final UserRepository userRepository;
+
+
     private final ArtistRepository artistRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
@@ -52,8 +52,8 @@ public class UserDataGenerator {
 
     private final ArtistRepository artistRepo;
 
-    public UserDataGenerator(UserRepository userRepository, ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
-        this.userRepository = userRepository;
+    public UserDataGenerator(ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo, TagRepository tagRepository, ArtistRepository artistRepo) {
+
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
@@ -63,35 +63,20 @@ public class UserDataGenerator {
 
     @PostConstruct
     private void generateUser() throws IOException {
-        // TODO: Maybe differentiate by explicitly checking whether the one entity is actually the admin ?
-        /**
-        if (userRepository.findAll().size() > NUMBER_OF_USERS_TO_GENERATE + 1) {
-            LOGGER.debug("User already generated");
-        } else {
-            for (int i = 0; i < NUMBER_OF_USERS_TO_GENERATE; i++) {
-                ApplicationUser user = new ApplicationUser(String.format("testUser%s", i), "bob", "test", "test"+i, "test", passwordEncoder.encode("test")
-                    , false, UserRole.User);
-                userRepository.save(user);
-            }
-        }
-        Artist artist = new Artist(String.format("testUser%s", -1), "bob", "test", "test", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, null, 1.0, null, null, null, null, null);
-
-        artistRepository.save(artist);
-**/
 
         loadTags(NUMBER_OF_TAGS_TO_GENERATE);
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
 
     }
+
     private void loadTags(int numberOftags) throws FileNotFoundException {
-        File text = new File(tagDir);
-        List<String> tags= new LinkedList<>();
-        Scanner scanner= new Scanner(text);
-        while (scanner.hasNext() && numberOftags>0){
+        File text = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.tagLocation);
+        List<String> tags = new LinkedList<>();
+        Scanner scanner = new Scanner(text);
+        while (scanner.hasNext() && numberOftags > 0) {
             numberOftags--;
             Tag t = new Tag(scanner.nextLine());
-            if(!tags.contains(t.getName())) {
+            if (!tags.contains(t.getName())) {
                 tags.add(t.getName());
                 tagRepository.save(t);
             }
@@ -99,21 +84,22 @@ public class UserDataGenerator {
     }
 
     //make sure db is empty before running to avoid Unique key constraint issues
-    private void loadProfiles(int numberOfProfiles)   {
+    private void loadProfiles(int numberOfProfiles) {
         List<Tag> tags = tagRepository.findAll();
 
-        try (Stream<Path> walk = Files.walk(Paths.get(artistProfileDir), 1)) {
+        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation), 1)) {
 
-            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
+            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).toList();
 
-            result.subList(0,numberOfProfiles).forEach(
+            result.subList(0, numberOfProfiles).forEach(
 
                 folder -> {
 
                     LOGGER.info(folder.toString());
-                    Artist a = generateArtistProfile();
+                    File fldr = new File(folder);
+                    Artist a = generateArtistProfile(fldr.getName());
                     artistRepository.save(a);
-                    LOGGER.info("Saved artist: "+a.getUserName());
+                    LOGGER.info("Saved artist: " + a.getUserName());
                     File artistProfileDir = new File(folder);
                     File[] artistProfileDirectoryListing = artistProfileDir.listFiles();
                     if (artistProfileDirectoryListing != null) {
@@ -129,7 +115,7 @@ public class UserDataGenerator {
                                 if (name.length() > 50) {
                                     name = name.substring(0, 50);
                                 }
-                                List<Tag> selectedTags = new LinkedList<Tag>();
+                                List<Tag> selectedTags = new LinkedList<>();
 
                                 for (int j = 0; j < f.random().nextInt(0, 10); j++) {
 
@@ -140,47 +126,47 @@ public class UserDataGenerator {
                                 artwork.setDescription(description);
                                 artwork.setArtist(a);
                                 artwork.setFileType(FileType.JPG);
-                                artwork.setImageUrl(artworkFile.toString());
+                                artwork.setImageUrl(artworkFile.toString().replace(ImageDataPaths.assetAbsoluteLocation, ""));
                                 artwork.setName(name);
                                 artworkRepo.save(artwork);
 
                                 LOGGER.info("Saved artwork: " + artwork.getImageUrl());
                             }
                         }
-                    }
-
-                    else{
+                    } else {
                         LOGGER.info("Error saving  artwork: ");
                     }
 
                 });
-        }
-
-        catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private Artist generateArtistProfile () {
-
+    private Artist generateArtistProfile(String username) {
         Faker faker = new Faker();
         Artist artist = new Artist();
         artist.setAdmin(false);
-        artist.setUserName(faker.name().username());
+        artist.setUserName(username);
         artist.setName(faker.name().firstName());
         artist.setSurname(faker.name().lastName());
         artist.setDescription(faker.university().name());
         artist.setReviewScore(faker.random().nextInt(0, 5));
         artist.setAddress(faker.address().fullAddress());
         artist.setEmail(faker.internet().emailAddress());
-        artist.setPassword(passwordEncoder.encode(faker.internet().password(8, 15)));
+
+        // TODO: Remove, this is just for testing purpose
+        var password = faker.internet().password(8, 15);
+        artist.setPassword(passwordEncoder.encode(password));
         artist.setUserRole(UserRole.Artist);
+
+        LOGGER.info("Username: " + username + ", Password: " + password);
         return artist;
     }
 
     //old approach not working, issues with cloudflare protection 403 error.
-    private void downloadSamplePicture ( int numberOfImages) throws IOException {
+    private void downloadSamplePicture(int numberOfImages) throws IOException {
         // only  incr. when actually saving
         int counter = 0;
 
@@ -199,7 +185,7 @@ public class UserDataGenerator {
 
             con.connect();
             try (InputStream in = con.getInputStream()) {
-                String filename = artistProfileDir + String.format("/artwork%s.png", counter);
+                String filename = ImageDataPaths.artistProfileLocation + String.format("/artwork%s.png", counter);
                 File file = new File(filename);
                 if (!file.exists()) {
                     Files.copy(in, Paths.get(filename));
@@ -207,16 +193,10 @@ public class UserDataGenerator {
                     counter++;
 
                 }
-            } catch (MalformedURLException e) {
-                LOGGER.info(e.getMessage());
             } catch (IOException e) {
                 LOGGER.info(e.getMessage());
             }
-
-
         }
-
     }
-
 }
 

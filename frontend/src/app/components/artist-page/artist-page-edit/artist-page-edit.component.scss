@@ -19,13 +19,12 @@
 
   .element-container,
   .gallery-settings,
-  .gallery-settings-tags
-  {
+  .gallery-settings-tags {
     width: 100%;
   }
 }
 
-.save-button {
+.home-button {
   position: -webkit-sticky;
   position: sticky;
   bottom: 0;
@@ -33,7 +32,7 @@
   padding: 32px;
 }
 
-.save-text {
+.home-text {
   margin-left: 10px;
 }
 

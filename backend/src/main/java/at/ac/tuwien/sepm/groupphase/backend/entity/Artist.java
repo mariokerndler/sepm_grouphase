@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import lombok.*;
 
@@ -13,15 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 @DiscriminatorValue("Artist")
 @Entity
-public class Artist extends ApplicationUser {
+public class Artist extends ApplicationUser implements HasId {
 
     @OneToOne(mappedBy = "artist")
     private ProfilePicture profilePicture;
 
-    @Column(length = 200)
+    @Column
     private String description;
 
-    @Column
+    @Column(length = 500)
     private String profileSettings;
 
     @Column
@@ -65,8 +66,8 @@ public class Artist extends ApplicationUser {
 
     @Override
     public String toString() {
-        return "Artist{" +
-            "} " + super.toString();
+        return "Artist{"
+            + "} " + super.toString();
     }
 
     @Override
@@ -76,12 +77,17 @@ public class Artist extends ApplicationUser {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Artist other = (Artist) obj;
         return this.getId() != null && this.getId().equals(other.getId());
     }

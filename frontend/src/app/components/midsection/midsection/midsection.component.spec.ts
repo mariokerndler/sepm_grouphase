@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MidsectionComponent } from './midsection.component';
+import {MidsectionComponent} from './midsection.component';
 
 describe('MidsectionComponent', () => {
   let component: MidsectionComponent;
@@ -8,9 +8,9 @@ describe('MidsectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MidsectionComponent ]
+      declarations: [MidsectionComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

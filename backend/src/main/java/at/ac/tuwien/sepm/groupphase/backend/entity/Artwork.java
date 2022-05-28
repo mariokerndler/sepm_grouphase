@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Artwork extends Image{
+public class Artwork extends Image implements HasId {
 
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 50)
+    //TODO: why no length constraint?
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne
@@ -35,7 +37,7 @@ public class Artwork extends Image{
         name = "artwork_tag",
         joinColumns = @JoinColumn(name = "artwork_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
-   private List<Tag> tags;
+    private List<Tag> tags;
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {
         super(imageUrl, fileType);
@@ -48,13 +50,13 @@ public class Artwork extends Image{
 
     @Override
     public String toString() {
-        return "Artwork{" +
-            ", name='" + name + '\'' +
-            ", description='" + description + '\'' +
-            ", artist=" + artist.getId() +
-            ", sketches=" + sketches.stream().map(Sketch::getId).toList() +
-            ", commission=" + commission.getId() +
-            '}' + super.toString();
+        return "Artwork{"
+            + ", name='" + name + '\''
+            + ", description='" + description + '\''
+            + ", artist=" + artist.getId()
+            + ", sketches=" + sketches.stream().map(Sketch::getId).toList()
+            + ", commission=" + commission.getId()
+            + '}' + super.toString();
     }
 
     @Override
@@ -62,19 +64,26 @@ public class Artwork extends Image{
         return 7;
     }
 
-    public  void addTag(Tag t){
-        if(!tags.contains(t)) {
+    public void addTag(Tag t) {
+        if (!tags.contains(t)) {
             this.tags.add(t);
         }
     }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
+
         Artwork other = (Artwork) obj;
         return this.getId() != null && this.getId().equals(other.getId());
     }

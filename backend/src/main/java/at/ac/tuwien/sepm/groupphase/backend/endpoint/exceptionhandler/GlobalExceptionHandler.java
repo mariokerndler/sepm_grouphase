@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.lang.invoke.MethodHandles;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,6 +38,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    protected ResponseEntity handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        //Get all errors
+        List<String> errors = ex.getConstraintViolations()
+            .stream()
+            .map(err -> err.getPropertyPath() + " " + err.getMessage())
+            .collect(Collectors.toList());
+
+        body.put("Validation errors", errors);
+
+        return new ResponseEntity<>(body.toString(), new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     /**
      * Override methods from ResponseEntityExceptionHandler to send a customized HTTP response for a know exception
      * from e.g. Spring
@@ -45,6 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
+        LOGGER.warn(ex.getMessage());
         Map<String, Object> body = new LinkedHashMap<>();
         //Get all errors
         List<String> errors = ex.getBindingResult()

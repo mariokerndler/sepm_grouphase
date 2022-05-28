@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,9 +25,9 @@ public class ImageFileManager {
 
     public String writeArtistImage(Artwork a) {
 
-        try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName())) {
+        try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName())) {
             outputStream.write(a.getImageData());
-           return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
+            return ImageDataPaths.artistProfilePictureLocation + "/" + a.getName();
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();
@@ -35,44 +36,44 @@ public class ImageFileManager {
     }
 
 
-    public List<byte[]> readArtistImages(Artist artist){
+    public List<byte[]> readArtistImages(Artist artist) {
         List<byte[]> images = new ArrayList<>();
-        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.artistProfileLocation+""), 1)) {
+        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.artistProfileLocation + ""), 1)) {
             List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
 
             result.forEach(
-            file->{
-                try {
-                    byte[] imageData= Files.readAllBytes(Path.of(file));
-                    images.add(imageData);
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+                file -> {
+                    try {
+                        byte[] imageData = Files.readAllBytes(Path.of(file));
+                        images.add(imageData);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return  images;
+        return images;
     }
-    public void deleteArtistImage(Artwork a){
-        File imageFile = new File( ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName());
+
+    public void deleteArtistImage(Artwork a) {
+        File imageFile = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName());
         imageFile.delete();
     }
 
-    public String writeAndReplaceArtistProfileImage(  Artist a) throws IOException {
+    public String writeAndReplaceArtistProfileImage(Artist a) throws IOException {
 
-        File f = new File(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfilePictureLocation +a.getUserName());
-        if(!f.isDirectory() || ! f.exists()){
+        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfilePictureLocation + a.getUserName());
+        if (!f.isDirectory() || !f.exists()) {
             Files.createDirectories(f.toPath());
         }
-        File profilePicture   = new File(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfilePictureLocation+a.getUserName()+"/"
-            +ImageDataPaths.artistProfilePictureIdentifier);
+        File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfilePictureLocation + a.getUserName() + "/"
+            + ImageDataPaths.artistProfilePictureIdentifier);
         try (FileOutputStream outputStream = new FileOutputStream(profilePicture)) {
             outputStream.write(a.getProfilePicture().getImageData());
-            return ImageDataPaths.artistProfilePictureLocation+a.getUserName()+"/"
-                +ImageDataPaths.artistProfilePictureIdentifier;
+            return ImageDataPaths.artistProfilePictureLocation + a.getUserName() + "/"
+                + ImageDataPaths.artistProfilePictureIdentifier;
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();
@@ -80,19 +81,20 @@ public class ImageFileManager {
         }
 
     }
-    public  byte[] readArtistProfileImageData(Artist a){
-                    try {
-                        byte[] imageData= Files.readAllBytes(Path.of(ImageDataPaths.artistProfilePictureLocation+a.getUserName()+"/"
-                            +ImageDataPaths.artistProfilePictureIdentifier));
-                        return imageData;
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
+
+    public byte[] readArtistProfileImageData(Artist a) {
+        try {
+            byte[] imageData = Files.readAllBytes(Path.of(ImageDataPaths.artistProfilePictureLocation + a.getUserName() + "/"
+                + ImageDataPaths.artistProfilePictureIdentifier));
+            return imageData;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    public void renameArtistFolder(Artist artist,String oldUserName) throws IOException {
-        File oldImageFile = new File( ImageDataPaths.artistProfileLocation+oldUserName);
-        Files.move(oldImageFile.toPath(),oldImageFile.toPath().resolveSibling( ImageDataPaths.artistProfileLocation+ artist.getUserName() ));
+
+    public void renameArtistFolder(Artist artist, String oldUserName) throws IOException {
+        File oldImageFile = new File(ImageDataPaths.artistProfileLocation + oldUserName);
+        Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(ImageDataPaths.artistProfileLocation + artist.getUserName()));
     }
 }

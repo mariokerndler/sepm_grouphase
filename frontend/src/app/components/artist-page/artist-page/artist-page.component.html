@@ -1,12 +1,23 @@
-<div fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="artist-page">
-  <app-artist-information *ngIf="artist" [artist]="artist"></app-artist-information>
+<div [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}" class="artist-page-wrapper">
+  <div
+    *ngIf="isReady"
+    class="artist-page"
+    fxLayout="column"
+    fxLayoutAlign="start space-evenly"
+    fxLayoutGap="0.5rem">
+    <app-artist-information *ngIf="artist" [artist]="artist"></app-artist-information>
 
-  <!--<app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>-->
+    <!--<app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>-->
+  </div>
+
+  <div *ngIf="canEdit" class="edit-button">
+    <button (click)="navigateToEdit()" color="accent" mat-button>
+      <mat-icon color="accent">edit</mat-icon>
+      <span [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}"
+            class="edit-text">Edit your page</span>
+    </button>
+  </div>
 </div>
 
-<div class="edit-button">
-  <button mat-button color="accent" (click)="navigateToEdit()">
-    <mat-icon color="accent">edit</mat-icon>
-    <span class="edit-text">Edit your page</span>
-  </button>
-</div>
+
+

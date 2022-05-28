@@ -1,4 +1,4 @@
-export class Artwork {
+export class ArtworkDto {
   id: number;
   name: string;
   description: string;
@@ -6,11 +6,12 @@ export class Artwork {
   imageUrl: string;
   fileType: FileType;
   artistId: number;
-
+  row: string;
+  col: string;
 }
 
 export enum FileType {
   png = 'PNG',
-  gif = 'GIG',
+  gif = 'GIF',
   jpg = 'JPG',
 }

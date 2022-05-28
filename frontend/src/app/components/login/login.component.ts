@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
-import {Artwork} from '../../dtos/artwork';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {RegistrationComponent} from '../registration/registration.component';
 
@@ -20,9 +19,6 @@ export class LoginComponent implements OnInit {
   // Error flag
   error = false;
   errorMessage = '';
-
-  // For Faker testing
-  artwork: Artwork;
   hidePassword = true;
 
   constructor(
@@ -61,7 +57,8 @@ export class LoginComponent implements OnInit {
       next: () => {
         console.log('Successfully logged in user: ' + authRequest.email);
         this.onNoClick();
-        this.router.navigate(['/message']);
+        this.router.navigate(['/message'])
+          .catch((err) => console.log(err));
       }/*,
       error: error => {
         console.log('Could not log in due to:');
@@ -92,5 +89,6 @@ export class LoginComponent implements OnInit {
     this.dialog.open(RegistrationComponent);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

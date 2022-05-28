@@ -1,4 +1,4 @@
-export class Tag{
+export class TagDto {
   id: number;
   name: string;
 }

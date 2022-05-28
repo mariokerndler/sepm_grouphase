@@ -1,45 +1,48 @@
-<button mat-icon-button class="close-button" mat-dialog-close>
+<button class="close-button" mat-dialog-close mat-icon-button>
   <mat-icon>close</mat-icon>
 </button>
 <h1 mat-dialog-title>Login</h1>
 
-<div *ngIf="error" class="error-message" role="alert" >
+<div *ngIf="error" class="error-message" role="alert">
 
-    <strong>Authentication problems!</strong> <br>
-    {{ errorMessage }}
-  <button mat-icon-button (click)="vanishError()" class="close-error" data-dismiss="alert" aria-label="Close">
+  <strong>Authentication problems!</strong> <br>
+  {{ errorMessage }}
+  <button (click)="vanishError()" aria-label="Close" class="close-error" data-dismiss="alert" mat-icon-button>
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
 
-<div mat-dialog-content [formGroup]="loginForm" (ngSubmit)="loginUser()" fxLayout="column">
+<div (ngSubmit)="loginUser()" [formGroup]="loginForm" fxLayout="column" mat-dialog-content>
   <p *ngIf="!error">Welcome Back!</p>
   <mat-form-field appearance="fill" class="form-group">
-    <mat-label>Username</mat-label>
-    <input matInput name="username" formControlName="username" class="form-control" id="inputUsername"
-                     aria-describedby="usernameHelp" >
+    <mat-label>E-Mail</mat-label>
+    <input aria-describedby="usernameHelp" class="form-control" formControlName="username" id="inputUsername" matInput
+           name="username" type="email">
     <mat-error *ngIf="loginForm.controls.username.errors">
-      <small  *ngIf="loginForm.controls.username.errors.required">Your username is required! </small>
+      <small *ngIf="loginForm.controls.username.errors.required">Your E-Mail is required! </small>
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form-group">
     <mat-label>Password</mat-label>
-    <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" formControlName="password" class="form-control" id="password">
-    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+    <input [type]="hidePassword ? 'password' : 'text'" class="form-control" formControlName="password" id="password"
+           matInput name="password">
+    <button (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword" mat-icon-button
+            matSuffix>
       <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
     <mat-error *ngIf="loginForm.controls.password.errors">
       <small *ngIf="loginForm.controls.password.errors.required">Your password is required!</small>
-      <small *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters long!</small>
+      <small *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters
+        long!</small>
     </mat-error>
   </mat-form-field>
-  <button mat-flat-button name="submit-button" color="primary" class="submit-button" cdkFocusInitial (click)="loginUser()">Login</button>
+  <button (click)="loginUser()" cdkFocusInitial class="submit-button" color="primary" mat-flat-button
+          name="submit-button">Login
+  </button>
   <div fxLayout="column">
-    <span style="text-align: center" >Not a member?</span>
-    <button mat-button  class="submit-button" (click)="openDialog()">Create Account</button>
+    <span style="text-align: center">Not a member?</span>
+    <button (click)="openDialog()" class="submit-button" mat-button>Create Account</button>
   </div>
 </div>
-
-
-

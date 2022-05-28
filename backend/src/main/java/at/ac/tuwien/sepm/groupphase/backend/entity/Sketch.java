@@ -16,13 +16,13 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Sketch extends Image{
+public class Sketch extends Image {
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="artwork")
+    @JoinColumn(name = "artwork")
     private Artwork artwork;
 
     public Sketch(String description, String imageUrl, FileType fileType, Artwork artwork) {
@@ -33,10 +33,10 @@ public class Sketch extends Image{
 
     @Override
     public String toString() {
-        return "Sketch{" +
-            "description='" + description + '\'' +
-            ", artwork=" + artwork.getId() +
-            '}' + super.toString();
+        return "Sketch{"
+            + "description='" + description + '\''
+            + ", artwork=" + artwork.getId()
+            + '}' + super.toString();
     }
 
     @Override
@@ -46,12 +46,17 @@ public class Sketch extends Image{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Sketch other = (Sketch) obj;
         return this.getId() != null && this.getId().equals(other.getId());
     }

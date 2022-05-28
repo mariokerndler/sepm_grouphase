@@ -2,7 +2,7 @@ export class ArtworkDto {
   id: number;
   name: string;
   description: string;
-  imageData: Uint8Array;
+  imageData: number[];
   imageUrl: string;
   fileType: FileType;
   artistId: number;

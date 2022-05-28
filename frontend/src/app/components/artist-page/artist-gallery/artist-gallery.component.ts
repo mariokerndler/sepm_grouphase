@@ -33,17 +33,27 @@ export class ArtistGalleryComponent implements OnInit {
       reader.readAsDataURL(file.target.files[0]);
       reader.onload = () => {
         const base64result = reader.result.toString().split(',')[1];
+        const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
+        let filetype = FileType.jpg;
+        if(dataType === 'png'){
+          filetype = FileType.png;
+        }
+        if(dataType === 'gif'){
+          filetype = FileType.gif;
+        }
+        console.log(filetype);
         const binary = new Uint8Array(this.base64ToBinaryArray(base64result));
-        console.log(binary);
-        this.uploadNewImage(new Uint8Array(binary));
+        const image = Array.from(binary);
+        console.log(image);
+        this.uploadNewImage(image, filetype);
 
       };
     }
   }
 
-  uploadNewImage(imageData: Uint8Array){
-    const artwork = {name:'test', description:'test', imageData,
-      imageUrl:'/test', fileType: FileType.png, artistId:this.artist.id} as ArtworkDto;
+  uploadNewImage(imageData, filetype){
+    const artwork = {name:'test10', description:'test2', imageData,
+      imageUrl:'', fileType: filetype, artistId:this.artist.id} as ArtworkDto;
     this.artworkService.createArtwork(artwork).subscribe();
   }
 

@@ -13,7 +13,7 @@
   </mat-form-field>
 
 
-  <mat-selection-list   [(ngModel)]="selectedTags" color="primary" (selectionChange)="onListSelectionChange($event)">
+  <mat-selection-list #list  [(ngModel)]="selectedTags" color="primary" (selectionChange)="onListSelectionChange($event, list.selectedOptions.selected)">
     <mat-list-option *ngFor="let tag of tags " [value]="tag.id" [compareWith]="compareFunction">
       {{tag.name}}
     </mat-list-option>

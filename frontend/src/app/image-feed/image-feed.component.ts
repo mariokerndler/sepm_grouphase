@@ -108,7 +108,9 @@ export class ImageFeedComponent implements OnInit {
 
   }
   //not working
-  public onListSelectionChange(event: any): void {
-    console.log(event.value );
+  public onListSelectionChange(event: any, options: any): void {
+    for(const i of options) {
+      console.log(i.value);
+    }
   }
 }

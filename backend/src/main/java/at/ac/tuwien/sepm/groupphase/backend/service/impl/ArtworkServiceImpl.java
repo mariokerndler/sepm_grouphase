@@ -57,8 +57,6 @@ public class ArtworkServiceImpl implements ArtworkService {
         return artworkRepo.findAll(spec);
     }
 
-
-
     @Override
     public List<Artwork> searchArtworks(Specification<Artwork> spec, Pageable page, int randomSeed) {
             if(spec==null){

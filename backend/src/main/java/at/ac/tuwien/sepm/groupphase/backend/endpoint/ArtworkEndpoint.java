@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
@@ -102,9 +103,9 @@ public class ArtworkEndpoint {
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping()
+    @DeleteMapping
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         LOGGER.info("Delete Artwork" + artworkDto.getName());
 
         artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
@@ -114,7 +115,7 @@ public class ArtworkEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto) throws IOException {
+    public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) throws IOException {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
 
         artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));

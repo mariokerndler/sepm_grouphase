@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,20 +49,22 @@ public class UserEndpoint {
 
         return userService.getAllUsers().stream().map(userMapper::userToUserDto).collect(Collectors.toList());
     }
+
     @PermitAll
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Update user")
-    public void updateUser(@RequestBody ApplicationUserDto userDto) {
+    public void updateUser(@Valid @RequestBody ApplicationUserDto userDto) {
         log.debug("Post /User/{}", userDto.getUserName());
 
         userService.updateUser(userMapper.userDtoToUser(userDto));
     }
+
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Register user")
-    public void registerUser(@RequestBody ApplicationUserDto userDto) {
+    public void registerUser(@Valid @RequestBody ApplicationUserDto userDto) {
         log.debug("Post /User/{}", userDto.getUserName());
 
         userService.registerUser(userMapper.userDtoToUser(userDto));

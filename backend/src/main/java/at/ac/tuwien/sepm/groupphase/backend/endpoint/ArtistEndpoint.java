@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class ArtistEndpoint {
     @PostMapping
     @Operation(summary = "Post new artist")
     @Transactional
-    public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
+    public ArtistDto saveArtist(@Valid @RequestBody ArtistDto artistDto) {
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {
@@ -81,7 +82,7 @@ public class ArtistEndpoint {
     @PutMapping
     @Operation(summary = "Update artist")
     @Transactional
-    public void updateArtist(@RequestBody ArtistDto artistDto) {
+    public void updateArtist(@Valid @RequestBody ArtistDto artistDto) {
         try {
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {

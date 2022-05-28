@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
+
 @Slf4j
 @Service
 public class ArtistServiceImpl implements ArtistService {
@@ -41,7 +42,7 @@ public class ArtistServiceImpl implements ArtistService {
         Optional<Artist> artist= artistRepo.findById(id);
         if(artist.isPresent()){
             log.info(artist.toString()) ;
-            return   artist.get();
+            return artist.get();
         }
         throw new NotFoundException(String.format("Could not find Artist with id %s", id));
     }

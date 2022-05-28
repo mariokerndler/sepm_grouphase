@@ -60,10 +60,11 @@ export class ImageFeedComponent implements OnInit {
   public loadFeed() {
     if (this.searchInput !== '') {
       this.searchParams.randomSeed = 0;
-      this.searchParams.searchOperations = 'name~%' + this.searchInput + '%';
+      this.searchParams.searchOperations = 'name~' + this.searchInput;
     } else {
 
       this.searchParams.randomSeed = 1;
+      this.searchParams.searchOperations = '';
     }
     this.artworkService.search(this.searchParams).subscribe(
       data => {
@@ -100,7 +101,6 @@ export class ImageFeedComponent implements OnInit {
   private loadAllTags() {
     this.tagService.getAllTags().subscribe(
       data => {
-        console.log(data);
         this.tags = data;
       }, error => {
         console.log('no error handling exists so im just here to say hi');

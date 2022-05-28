@@ -19,7 +19,8 @@
   </mat-form-field>
 
 
-  <mat-selection-list #list (selectionChange)="onListSelectionChange($event, list.selectedOptions.selected)" [(ngModel)]="searchParams.tagIds" color="primary"
+  <mat-selection-list #list (selectionChange)="onListSelectionChange($event, list.selectedOptions.selected)"
+                      [(ngModel)]="searchParams.tagIds" color="primary"
                       name="tagSelection">
 
     <mat-label (click)="toggleView()">Tags</mat-label>
@@ -43,7 +44,7 @@
     <div class="card-img-wrap">
       <div _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px"
            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px;">
-        <div *ngFor="let artwork of images; let i= index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
+        <div *ngFor="let artwork of images; let i = index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
              class="image">
           <img (click)="selectedArtwork=i" [src]="url+artwork.imageUrl" alt="error">
           <div class="card-img-description-layer">

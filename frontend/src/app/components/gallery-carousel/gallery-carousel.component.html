@@ -2,6 +2,7 @@
   <mat-card class="image-Card">
 
     <mat-card-header>
+
       <mat-card-title
         style="text-align: center; font-size: x-large"> {{artworks[animArtwork].name.substring(artworks[animArtwork].name.lastIndexOf("_") + 1)}} </mat-card-title>
       <mat-divider></mat-divider>
@@ -16,11 +17,16 @@
         <span (click)="previous()" (keyup.enter)="previous()" style="font-size: large" tabindex="1">&lt;  </span>
         <span></span>
         <span (click)="next()" (keyup.enter)="next()" style="font-size: large" tabindex="2">&gt;   </span>
-      </div>
-    </div>
 
+      </div>
+
+
+    </div>
     <span (click)="close()" class="carousel-close" style="font-size: large" tabindex="3">Return</span><br>
     <mat-card-subtitle
       style="text-align: center; font-size: x-large"> {{artworks[animArtwork].description}}</mat-card-subtitle>
   </mat-card>
+  <br>
+  <mat-card-subtitle class="tag-view"
+                     style=" text-align: center;color:white; font-size: x-large"> {{stringiyTags()}}</mat-card-subtitle>
 </div>

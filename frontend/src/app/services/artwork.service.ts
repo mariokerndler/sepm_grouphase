@@ -34,6 +34,7 @@ export class ArtworkService {
    */
 
   search(tagSearch: TagSearch, errorAction?: () => void): Observable<ArtworkDto[]> {
+    console.log(tagSearch);
     let searchOperations = tagSearch.searchOperations;
     if (!searchOperations) {
       searchOperations = '';
@@ -43,21 +44,22 @@ export class ArtworkService {
     // Todo: Set Randomizer Seed
     const params = new HttpParams();
 
-    if(tagSearch?.tagIds) {
+    if (tagSearch.tagIds && tagSearch.tagIds.length > 0) {
       params.set('tagIds', tagSearch.tagIds.toString());
     }
 
-    if(tagSearch?.searchOperations) {
+    if (tagSearch.searchOperations && tagSearch.searchOperations.length > 0) {
       params.set('searchOperations', searchOperations);
     }
 
-    if(tagSearch?.randomSeed) {
-      params.set('randomSeed', tagSearch?.randomSeed);
+    if (tagSearch?.randomSeed) {
+      params.set('randomSeed', tagSearch.randomSeed);
     }
 
     params.set('pageNr', tagSearch?.pageNr == null ? '0' : tagSearch?.pageNr);
 
     console.log(params.toString());
+
     const searchOptions = {
       headers: this.headers,
       params

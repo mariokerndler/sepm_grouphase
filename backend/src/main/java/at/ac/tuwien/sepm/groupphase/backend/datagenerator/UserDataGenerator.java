@@ -6,11 +6,15 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -105,14 +109,15 @@ public class UserDataGenerator {
                                 if (description.length() > 50) {
                                     description = description.substring(0, 50);
                                 }
+
                                 String name = artworkFile.getName();
                                 if (name.length() > 50) {
                                     name = name.substring(0, 50);
                                 }
+
                                 List<Tag> selectedTags = new LinkedList<>();
 
                                 for (int j = 0; j < f.random().nextInt(0, 10); j++) {
-
                                     selectedTags.add(tags.get(f.random().nextInt(0, tags.size() - 1)));
                                 }
 

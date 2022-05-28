@@ -15,8 +15,10 @@ public enum SearchOperation {
                 return GREATER_THAN;
             case '<':
                 return LESS_THAN;
-            case '~':
+            case '$':
                 return LIKE;
+            case '~':
+                return CONTAINS;
             default:
                 return null;
         }

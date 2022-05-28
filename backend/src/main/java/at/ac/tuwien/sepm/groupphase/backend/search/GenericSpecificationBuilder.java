@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.search;
 
 import at.ac.tuwien.sepm.groupphase.backend.search.criteria.SearchCriteria;
 import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,7 +12,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 public class GenericSpecificationBuilder<T> {
     private final List<SearchCriteria> params;
 

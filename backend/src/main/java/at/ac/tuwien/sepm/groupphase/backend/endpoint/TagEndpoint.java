@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import java.lang.invoke.MethodHandles;
@@ -41,6 +38,14 @@ public class TagEndpoint {
     public List<TagDto> loadAllTags() {
         log.debug("Get /Tags");
         return tagService.loadAllTags().stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
+    }
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    @Operation(summary = "Load Tags for Image")
+    public List<TagDto> findTagsForImage(@PathVariable Long id) {
+        log.debug("Get /Image Tags");
+        return tagService.loadTagsByImage(id).stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
     }
 
 }

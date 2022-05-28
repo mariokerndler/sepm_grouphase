@@ -1,0 +1,17 @@
+<div class="artist-page-wrapper">
+  <div
+    *ngIf="isReady"
+    fxLayout="column"
+    fxLayoutAlign="start space-evenly"
+    fxLayoutGap="0.5rem"
+    class="artist-page">
+    <app-user-information *ngIf="user" [user]="user"></app-user-information>
+  </div>
+
+  <div *ngIf="canEdit" class="edit-button">
+    <button mat-button color="accent" (click)="navigateToUserEditPage()" >
+      <mat-icon color="accent">edit</mat-icon>
+      <span class="edit-text">Edit your page</span>
+    </button>
+  </div>
+</div>

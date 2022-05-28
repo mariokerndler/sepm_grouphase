@@ -34,6 +34,9 @@ import { ArtistPageEditComponent } from './components/artist-page/artist-page-ed
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { UserPageComponent } from './components/user-page/user-page.component';
+import { UserPageInformationComponent } from './components/user-page/user-page-information/user-page-information.component';
+import { UserPageEditComponent } from './components/user-page/user-page-edit/user-page-edit.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import { LogoutComponent } from './components/logout/logout.component';
     ErrorSnackbarComponent,
     SuccessSnackbarComponent,
     RegistrationComponent,
-    LogoutComponent
+    LogoutComponent,
+    UserPageComponent,
+    UserPageInformationComponent,
+    UserPageEditComponent
   ],
   imports: [
     BrowserModule,

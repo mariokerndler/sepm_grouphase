@@ -2,8 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,12 +59,7 @@ public class ArtistEndpoint {
     @Transactional
     public List<ArtistDto> getAllArtists() {
         LOGGER.debug("Get /Artist");
-        try {
-            return artistService.getAllArtists().stream().map(u->artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
-        } catch (NotFoundException n) {
-            LOGGER.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        return artistService.getAllArtists().stream().map(u -> artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
     }
 
     @PermitAll
@@ -73,7 +67,7 @@ public class ArtistEndpoint {
     @PostMapping
     @Operation(summary = "Post new artist")
     @Transactional
-    public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
+    public ArtistDto saveArtist(@Valid @RequestBody ArtistDto artistDto) {
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {
@@ -88,7 +82,7 @@ public class ArtistEndpoint {
     @PutMapping
     @Operation(summary = "Update artist")
     @Transactional
-    public void updateArtist(@RequestBody ArtistDto artistDto) {
+    public void updateArtist(@Valid @RequestBody ArtistDto artistDto) {
         try {
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {

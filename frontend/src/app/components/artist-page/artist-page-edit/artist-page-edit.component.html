@@ -54,11 +54,11 @@
              <mat-label class="primary">Description</mat-label>
              <textarea #description matInput rows="6" maxlength="512" name="description" formControlName="description" aria-describedby="descriptionHelp"></textarea>
              <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint>
-             <mat-hint align="end">{{description.value.length}} / 512</mat-hint>
+             <mat-hint align="end">{{description?.value.length}} / 512</mat-hint>
            </mat-form-field>
          </form>
 
-        <div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+        <div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem" *ngIf="isArtist">
           <h3 class="primary">Profile picture</h3>
           <img [src]="artistProfilePicture" class="edit-page-pfp" alt="">
           <input accept="image/png, image/jpeg"
@@ -72,7 +72,7 @@
         </div>
       </div>
 
-      <button mat-flat-button color="accent" class="update-user-button" (click)="updateUser()">Update user</button>
+      <button mat-flat-button color="accent" class="update-user-button" (click)="updateUserInformation()">Update user</button>
     </mat-tab>
 
     <mat-tab label="Password">
@@ -118,7 +118,7 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Appearance">
+    <mat-tab label="Appearance" *ngIf="isArtist">
       <h2 class="primary">Update the profile appearance</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
         <form class="edit-page-pf-form" [formGroup]="appearanceForm">

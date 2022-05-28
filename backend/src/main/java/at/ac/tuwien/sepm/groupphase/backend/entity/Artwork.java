@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +13,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Artwork extends Image{
+public class Artwork extends Image implements HasId {
 
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne

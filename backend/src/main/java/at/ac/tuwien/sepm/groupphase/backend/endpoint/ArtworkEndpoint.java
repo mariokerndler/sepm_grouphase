@@ -13,26 +13,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -111,18 +102,19 @@ public class ArtworkEndpoint {
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping( )
+    @DeleteMapping()
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
-        LOGGER.info("Delete Artwork"+artworkDto.getName());
+    public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
+        LOGGER.info("Delete Artwork" + artworkDto.getName());
 
         artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
     }
+
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto ) {
+    public void postArtwork(@RequestBody ArtworkDto artworkDto) throws IOException {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
 
         artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));

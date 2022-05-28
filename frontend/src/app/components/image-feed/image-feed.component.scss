@@ -180,3 +180,27 @@ mat-menu.content{
 #tagMenuItems{
   color: #536281;
 }
+.pagination {
+  position: fixed;
+  right: 46%;
+  top:8%;
+  display: flex;
+  align-items: center;
+  display: inline-block;
+}
+
+.paginationButton   {
+
+  display: inline-block;
+  float: left;
+  padding: 8px 16px;
+
+}
+.paginationText  {
+
+  display: inline-block;
+  float: left;
+
+    padding: 14px 5px ;
+
+}

@@ -16,7 +16,7 @@
     <input matInput placeholder="search"  name="searchForm"(keydown.enter)="loadFeed()" [(ngModel)]=" searchInput">
   </mat-form-field>
 
-  <mat-label    color="primary"[matMenuTriggerFor]="tagListMenu">Tags</mat-label>
+  <mat-label    color="primary"[matMenuTriggerFor]="tagListMenu">Tags selected {{searchParams.tagIds.length}}</mat-label>
   <mat-menu   #tagListMenu name="tagListMenu"     color="primary">
 
 <mat-checkbox #tagMenuItems  name="tagCheckbox"*ngFor="let tag of tags;let i= index " [value]="tag.id"

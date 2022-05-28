@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -19,7 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.ValidationException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepository;
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApplicationUser findUserById(Long id) {
         log.info(ImageDataPaths.assetAbsoluteLocation);
-        Optional<ApplicationUser> user= userRepo.findById(id);
+        Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             LOGGER.info(user.get().getUserName());
             return user.get();
@@ -83,15 +82,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(ApplicationUser user) {
-        LOGGER.debug("Service: Update User ",user.toString());
+        LOGGER.debug("Service: Update User ", user.toString());
         userValidator.validateUser(user);
         userRepo.save(user);
 
     }
 
     @Override
-    public void registerUser(ApplicationUser user)    {
-        LOGGER.debug("Service: Register User ",user.toString());
+    public void registerUser(ApplicationUser user) {
+        LOGGER.debug("Service: Register User ", user.toString());
         userValidator.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);

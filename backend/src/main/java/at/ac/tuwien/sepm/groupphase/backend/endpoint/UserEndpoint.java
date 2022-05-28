@@ -58,6 +58,7 @@ public class UserEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+
     @PermitAll
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -71,6 +72,7 @@ public class UserEndpoint {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
         }
     }
+
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

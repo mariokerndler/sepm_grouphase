@@ -21,7 +21,7 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 25,unique = true)
+    @Column(nullable = false, length = 25, unique = true)
     private String userName;
 
     @Column(nullable = false, length = 35)
@@ -59,16 +59,16 @@ public class ApplicationUser {
 
     @Override
     public String toString() {
-        return "ApplicationUser{" +
-            "id=" + id +
-            ", userName='" + userName + '\'' +
-            ", name='" + name + '\'' +
-            ", surname='" + surname + '\'' +
-            ", email='" + email + '\'' +
-            ", address='" + address + '\'' +
-            ", admin=" + admin +
-            ", userRole=" + userRole +
-            '}';
+        return "ApplicationUser{"
+            + "id=" + id
+            + ", userName='" + userName + '\''
+            + ", name='" + name + '\''
+            + ", surname='" + surname + '\''
+            + ", email='" + email + '\''
+            + ", address='" + address + '\''
+            + ", admin=" + admin
+            + ", userRole=" + userRole
+            + '}';
     }
 
     @Override
@@ -78,12 +78,18 @@ public class ApplicationUser {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
+
         ApplicationUser other = (ApplicationUser) obj;
         return id != null && id.equals(other.getId());
     }

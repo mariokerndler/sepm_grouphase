@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-
 @NoArgsConstructor
 @Getter
 @Setter
@@ -18,31 +16,30 @@ public class ArtworkDto {
     private String name;
     private String description;
     private byte[] imageData;
-    private String  imageUrl;
+    private String imageUrl;
     private FileType fileType;
-    private  long artistId;
+    private long artistId;
 
     //todo sketch reference
-
-    @Override
-    public String toString() {
-        return "ArtworkDto{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", description='" + description + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", fileType=" + fileType +
-            ", artistId=" + artistId +
-
-            '}';
-    }
 
     public ArtworkDto(String name, String description, String imageUrl, FileType fileType, Artist artist) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.fileType = fileType;
-        this.artistId=   artist.getId();
+        this.artistId = artist.getId();
+    }
+
+    @Override
+    public String toString() {
+        return "ArtworkDto{"
+            + "id=" + id
+            + ", name='" + name + '\''
+            + ", description='" + description + '\''
+            + ", imageUrl='" + imageUrl + '\''
+            + ", fileType=" + fileType
+            + ", artistId=" + artistId
+            + '}';
     }
 
 }

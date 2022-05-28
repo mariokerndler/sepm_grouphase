@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +18,7 @@ import javax.annotation.security.PermitAll;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/artist")
@@ -61,7 +61,7 @@ public class ArtistEndpoint {
     public List<ArtistDto> getAllArtists() {
         LOGGER.debug("Get /Artist");
         try {
-            return artistService.getAllArtists().stream().map(u->artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
+            return artistService.getAllArtists().stream().map(u -> artistMapper.artistToArtistDto(u)).collect(Collectors.toList());
         } catch (NotFoundException n) {
             LOGGER.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
@@ -100,13 +100,13 @@ public class ArtistEndpoint {
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value="/{id}")
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Get  artist by id")
     @Transactional
     public ArtistDto getArtistById(@PathVariable Long id) {
         try {
             log.info(String.valueOf(id));
-         return artistMapper.artistToArtistDto(artistService.findArtistById(id));
+            return artistMapper.artistToArtistDto(artistService.findArtistById(id));
         } catch (Exception e) {
             LOGGER.error(e.getMessage() + id.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());

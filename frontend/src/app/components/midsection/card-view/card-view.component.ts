@@ -10,7 +10,8 @@ export class CardViewComponent implements OnInit {
   @Input() artwork: ArtworkDto;
   url = 'assets/';
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

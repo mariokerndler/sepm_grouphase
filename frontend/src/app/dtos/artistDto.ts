@@ -2,7 +2,7 @@ import {CommissionDto} from './commissionDto';
 import {ReviewDto} from './reviewDto';
 import {ApplicationUserDto} from './applicationUserDto';
 
-export class ArtistDto extends ApplicationUserDto{
+export class ArtistDto extends ApplicationUserDto {
   reviewScore: number;
   galleryId: number;
   artworkIds: number[];
@@ -13,7 +13,7 @@ export class ArtistDto extends ApplicationUserDto{
   //profilePicture: string;
 }
 
-export enum UserRole{
+export enum UserRole {
   user = 'User',
   admin = 'Admin',
   artist = 'Artist',

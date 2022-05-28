@@ -13,13 +13,13 @@ import javax.persistence.*;
 @MappedSuperclass
 public class Image {
 
+    @Transient
+    byte[] imageData;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false, length = 150, unique = true)
     private String imageUrl;
-
     @Column(nullable = false)
     private FileType fileType;
 
@@ -28,16 +28,13 @@ public class Image {
         this.fileType = fileType;
     }
 
-    @Transient
-    byte[] imageData;
-
     @Override
     public String toString() {
-        return "Image{" +
-            "id=" + id +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", fileType=" + fileType +
-            '}';
+        return "Image{"
+            + "id=" + id
+            + ", imageUrl='" + imageUrl + '\''
+            + ", fileType=" + fileType
+            + '}';
     }
 
     @Override
@@ -47,12 +44,17 @@ public class Image {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Image other = (Image) obj;
         return id != null && id.equals(other.getId());
     }

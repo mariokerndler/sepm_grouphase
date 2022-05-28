@@ -56,7 +56,19 @@ public class Commission {
     @OneToOne(mappedBy = "commission")
     private Artwork artwork;
 
-    public Commission(Artist artist, ApplicationUser customer, int sketchesShown, int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String instructions, List<Reference> references, List<Receipt> receipts, Review review, Artwork artwork) {
+    public Commission(
+        Artist artist,
+        ApplicationUser customer,
+        int sketchesShown,
+        int feedbackSent,
+        double price,
+        LocalDateTime issueDate,
+        LocalDateTime deadlineDate,
+        String instructions,
+        List<Reference> references,
+        List<Receipt> receipts,
+        Review review,
+        Artwork artwork) {
         this.artist = artist;
         this.customer = customer;
         this.sketchesShown = sketchesShown;
@@ -73,20 +85,19 @@ public class Commission {
 
     @Override
     public String toString() {
-        return "Commission{" +
-            "id=" + id +
-            ", artist=" + artist.getId() +
-            ", customer=" + customer.getId() +
-            ", sketchesShown=" + sketchesShown +
-            ", feedbackSent=" + feedbackSent +
-            ", price=" + price +
-            ", issueDate=" + issueDate +
-            ", deadlineDate=" + deadlineDate +
-            ", instructions='" + instructions + '\'' +
-            ", receipts=" + receipts.stream().map(Receipt::getId).toList() +
-            ", review=" + review.getId() +
-            ", artwork=" + artwork.getId() +
-            '}';
+        return "Commission{"
+            + "id=" + id + ", artist=" + artist.getId()
+            + ", customer=" + customer.getId()
+            + ", sketchesShown=" + sketchesShown
+            + ", feedbackSent=" + feedbackSent
+            + ", price=" + price
+            + ", issueDate=" + issueDate
+            + ", deadlineDate=" + deadlineDate
+            + ", instructions='" + instructions + '\''
+            + ", receipts=" + receipts.stream().map(Receipt::getId).toList()
+            + ", review=" + review.getId()
+            + ", artwork=" + artwork.getId()
+            + '}';
     }
 
     @Override
@@ -96,12 +107,17 @@ public class Commission {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Commission other = (Commission) obj;
         return id != null && id.equals(other.getId());
     }

@@ -24,7 +24,7 @@ import {UserService} from '../../../services/user.service';
   templateUrl: './artist-page-edit.component.html',
   styleUrls: ['./artist-page-edit.component.scss']
 })
-export class ArtistPageEditComponent implements OnInit, OnDestroy{
+export class ArtistPageEditComponent implements OnInit, OnDestroy {
 
   @ViewChild('fileInput') pfpInput: ElementRef;
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
@@ -45,12 +45,12 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   isReady = false;
 
   availableComponents: LayoutComponent[] = [
-    { componentName: 'Gallery', disabled: false, tags: []},
-    { componentName: 'Reviews', disabled: false, tags: []}
+    {componentName: 'Gallery', disabled: false, tags: []},
+    {componentName: 'Reviews', disabled: false, tags: []}
   ];
 
   chosenComponents: LayoutComponent[] = [
-    { componentName: 'Profile information', disabled: true, tags: [] }
+    {componentName: 'Profile information', disabled: true, tags: []}
   ];
 
   selectedComponent: LayoutComponent;
@@ -87,27 +87,27 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   ): ArtistDto {
     const updatedArtist: ArtistDto = oldArtist;
 
-    if(username) {
+    if (username) {
       updatedArtist.userName = username.valueOf();
     }
 
-    if(name) {
+    if (name) {
       updatedArtist.name = name.valueOf();
     }
 
-    if(surname) {
+    if (surname) {
       updatedArtist.surname = surname.valueOf();
     }
 
-    if(email) {
+    if (email) {
       updatedArtist.email = email.valueOf();
     }
 
-    if(address) {
+    if (address) {
       updatedArtist.address = address.valueOf();
     }
 
-    if(profileSettings) {
+    if (profileSettings) {
       updatedArtist.profileSettings = profileSettings.valueOf().replace(/"/g, '\'');
     }
 
@@ -124,23 +124,23 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   ): ApplicationUserDto {
     const updatedUser: ApplicationUserDto = oldUser;
 
-    if(username) {
+    if (username) {
       updatedUser.userName = username.valueOf();
     }
 
-    if(name) {
+    if (name) {
       updatedUser.name = name.valueOf();
     }
 
-    if(surname) {
+    if (surname) {
       updatedUser.surname = surname.valueOf();
     }
 
-    if(email) {
+    if (email) {
       updatedUser.email = email.valueOf();
     }
 
-    if(address) {
+    if (address) {
       updatedUser.address = address.valueOf();
     }
 
@@ -155,12 +155,12 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
           this.user = user;
 
           // Check if the user can edit this page
-          if(this.user.email !== this.authService.getUserAuthEmail()) {
+          if (this.user.email !== this.authService.getUserAuthEmail()) {
             this.goBack();
           }
 
           // Check if it's an artist
-          if(this.user.userRole === UserRole.artist) {
+          if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
 
             // Fetch artist
@@ -169,7 +169,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
                 this.artist = artist;
 
                 // Fetch artist profile settings
-                if(this.artist.profileSettings) {
+                if (this.artist.profileSettings) {
                   this.artist.profileSettings = this.artist.profileSettings.replace(/'/g, '\"');
                 }
               });
@@ -213,7 +213,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
 
     // TODO: Description is missing
 
-    if(this.artist) {
+    if (this.artist) {
       this.artistService.updateArtist(ArtistPageEditComponent.updateArtist(
         this.artist,
         username,
@@ -235,7 +235,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   }
 
   updatePassword() {
-    if(this.passwordForm.valid) {
+    if (this.passwordForm.valid) {
       const oldPassword = this.passwordForm.controls.oldPassword.value;
       const newPassword = this.passwordForm.controls.password.value;
       const confirmPassword = this.passwordForm.controls.confirm.value;
@@ -246,7 +246,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   }
 
   updateAppearance() {
-    if(this.appearanceForm.valid) {
+    if (this.appearanceForm.valid) {
       const backgroundColor = this.appearanceForm.controls.backgroundColor.value as Color;
       const primaryColor = this.appearanceForm.controls.primaryColor.value as Color;
       const secondaryColor = this.appearanceForm.controls.secondaryColor.value as Color;
@@ -296,7 +296,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
     } else {
       const item = this.availableComponents[event.previousIndex];
       const newItem = {
-        componentName:  item.componentName,
+        componentName: item.componentName,
         disabled: item.disabled,
         tags: [...item.tags]
       };
@@ -346,7 +346,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   removeTag(tag: TagDto): void {
     const index = this.selectedComponent.tags.indexOf(tag);
 
-    if(index >= 0) {
+    if (index >= 0) {
       this.selectedComponent.tags.splice(index, 1);
     }
   }
@@ -400,7 +400,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
     this.editForm.controls['email'].setValue(this.artist ? this.artist.email : this.user.email);
     this.editForm.controls['address'].setValue(this.artist ? this.artist.address : this.user.address);
 
-    if(this.isArtist) {
+    if (this.isArtist) {
       this.setFormValuesForArtist();
     }
   }
@@ -408,29 +408,29 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy{
   private setFormValuesForArtist() {
     this.editForm.controls['description'].setValue(this.artist?.description);
 
-    if(!this.artist?.profileSettings) {
+    if (!this.artist?.profileSettings) {
       return;
     }
 
     const profileSettings: ArtistProfileSettings = JSON.parse(this.artist.profileSettings);
 
-    if(!profileSettings) {
+    if (!profileSettings) {
       return;
     }
 
-    if(profileSettings.backgroundColor) {
+    if (profileSettings.backgroundColor) {
       this.appearanceForm.controls['backgroundColor'].setValue('#' + profileSettings.backgroundColor.hex);
     }
 
-    if(profileSettings.primaryColor) {
+    if (profileSettings.primaryColor) {
       this.appearanceForm.controls['primaryColor'].setValue('#' + profileSettings.primaryColor.hex);
     }
 
-    if(profileSettings.secondaryColor) {
+    if (profileSettings.secondaryColor) {
       this.appearanceForm.controls['secondaryColor'].setValue('#' + profileSettings.secondaryColor.hex);
     }
 
-    if(profileSettings.headerColor) {
+    if (profileSettings.headerColor) {
       this.appearanceForm.controls['headerColor'].setValue('#' + profileSettings.headerColor.hex);
     }
 

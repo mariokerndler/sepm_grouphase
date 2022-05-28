@@ -1,4 +1,4 @@
-export class TagSearch{
+export class TagSearch {
   id: number;
   tagIds: string[];
   searchOperations: string;

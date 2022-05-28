@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +13,7 @@ import javax.persistence.ManyToOne;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Reference extends Image{
+public class Reference extends Image {
 
 
     @ManyToOne
@@ -28,9 +27,9 @@ public class Reference extends Image{
 
     @Override
     public String toString() {
-        return "Reference{" +
-            "commission=" + commission +
-            '}' + super.toString();
+        return "Reference{"
+            + "commission=" + commission
+            + '}' + super.toString();
     }
 
     @Override
@@ -40,12 +39,17 @@ public class Reference extends Image{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Reference other = (Reference) obj;
         return this.getId() != null && this.getId().equals(other.getId());
     }

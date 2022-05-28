@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class TagDto {
 
-    private  String name;
+    private String name;
     private long id;
 }

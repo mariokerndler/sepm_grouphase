@@ -34,9 +34,8 @@ export class TagService {
         catchError(this.notificationService.notifyUserAboutFailedOperation<TagDto[]>('Fetching all tags'))
       );
   }
-
   getImageTags(id: number): Observable<TagDto[]> {
-    return this.http.get<TagDto[]>(this.tagBaseUri + '/' + id, this.options)
+    return this.http.get<TagDto[]>(this.tagBaseUri+'/'+id, this.options)
       .pipe(
         catchError(this.notificationService.notifyUserAboutFailedOperation<TagDto[]>('Fetching all Tags for Image'))
       );

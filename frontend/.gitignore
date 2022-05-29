@@ -39,5 +39,3 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Assets data
-/src/assets/data/*

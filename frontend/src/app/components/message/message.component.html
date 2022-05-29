@@ -1,6 +1,6 @@
 <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
   <strong>Error! </strong> {{ errorMessage }}
-  <button (click)="vanishError()" aria-label="Close" class="close" data-dismiss="alert" type="button">
+  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -9,28 +9,24 @@
 <div class="mt-4 container">
 
   <div class="row p-2 mb-4">
-    <button (click)="openAddModal(messageAddModal)" *ngIf="isAdmin()" class="btn btn-secondary btn-sm mr-4"
-            type="button">Add message
-    </button>
+    <button *ngIf="isAdmin()" type="button" class="btn btn-secondary btn-sm mr-4" (click)="openAddModal(messageAddModal)">Add message</button>
 
     <ng-template #messageAddModal let-modal>
       <div class="modal-header">
         <h5 class="modal-title">Message</h5>
-        <button (click)="modal.dismiss('X')" aria-label="Close" class="close" type="button">
+        <button type="button" class="close" (click)="modal.dismiss('X')" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form #messageForm="ngForm" (ngSubmit)="addMessage(messageForm)">
+        <form (ngSubmit)="addMessage(messageForm)" #messageForm="ngForm">
 
           <div class="form-group">
             <label for="inputTitle">Title</label>
-            <input [(ngModel)]="currentMessage.title" [readOnly]="currentMessage.id" aria-describedby="titleHelp"
-                   class="form-control" id="inputTitle"
-                   name="title" placeholder="Enter title" required
-                   type="text">
+            <input type="text" name="title" class="form-control" id="inputTitle" required
+                   aria-describedby="titleHelp" placeholder="Enter title" [(ngModel)]="currentMessage.title" [readOnly]="currentMessage.id">
             <div *ngIf="submitted && messageForm.controls.title.errors" class="error">
-              <small *ngIf="messageForm.controls.title.errors.required" class="form-text text-warning">Your title
+              <small class="form-text text-warning" *ngIf="messageForm.controls.title.errors.required">Your title
                 is
                 required!
               </small>
@@ -39,12 +35,10 @@
 
           <div class="form-group">
             <label for="inputSummary">Summary</label>
-            <textarea [(ngModel)]="currentMessage.summary" [readOnly]="currentMessage.id" aria-describedby="summaryHelp"
-                      class="form-control" id="inputSummary"
-                      name="summary" placeholder="Enter summary" required
-                      rows="3"></textarea>
+            <textarea rows="3" name="summary" class="form-control" id="inputSummary" required
+                      aria-describedby="summaryHelp" placeholder="Enter summary" [(ngModel)]="currentMessage.summary" [readOnly]="currentMessage.id"></textarea>
             <div *ngIf="submitted && messageForm.controls.summary.errors" class="error">
-              <small *ngIf="messageForm.controls.summary.errors.required" class="form-text text-warning">Your
+              <small class="form-text text-warning" *ngIf="messageForm.controls.summary.errors.required">Your
                 summary is
                 required!
               </small>
@@ -53,27 +47,21 @@
 
           <div class="form-group">
             <label for="inputText">Text</label>
-            <textarea [(ngModel)]="currentMessage.text" [readOnly]="currentMessage.id" aria-describedby="textHelp"
-                      class="form-control" id="inputText"
-                      name="text" placeholder="Enter text" required
-                      rows="6"></textarea>
+            <textarea rows="6" name="text" class="form-control" id="inputText" required
+                      aria-describedby="textHelp" placeholder="Enter text" [(ngModel)]="currentMessage.text" [readOnly]="currentMessage.id"></textarea>
             <div *ngIf="submitted && messageForm.controls.text.errors" class="error">
-              <small *ngIf="messageForm.controls.text.errors.required" class="form-text text-warning">Your text is
+              <small class="form-text text-warning" *ngIf="messageForm.controls.text.errors.required">Your text is
                 required!
               </small>
             </div>
           </div>
 
-          <button (click)="addMessage(messageForm)" *ngIf="!currentMessage.id" class="btn btn-success float-right"
-                  id="add-msg"
-                  type="button">Add message
-          </button>
+          <button type="button" (click)="addMessage(messageForm)" id="add-msg" class="btn btn-success float-right" *ngIf="!currentMessage.id">Add message</button>
 
         </form>
       </div>
       <div class="modal-footer">
-        <button (click)="modal.dismiss('close')" class="btn btn-secondary" id="close-modal-btn" type="button">Close
-        </button>
+        <button type="button" class="btn btn-secondary" id="close-modal-btn" (click)="modal.dismiss('close')">Close</button>
       </div>
     </ng-template>
   </div>
@@ -81,7 +69,7 @@
 
   <div class="row">
 
-    <div *ngFor="let message of getMessage()" class="col-xl-3 col-lg-4 p-2">
+    <div class="col-xl-3 col-lg-4 p-2" *ngFor="let message of getMessage()">
 
       <div class="card">
 
@@ -89,20 +77,19 @@
           <h5 class="card-title">{{message.title}}</h5>
           <h6 class="card-subtitle mb-2 text-muted">{{message.publishedAt | date}}</h6>
           <p class="card-text">{{message.summary}}</p>
-          <button (click)="openExistingMessageModal(message.id, messageAddModal)" class="btn btn-primary" type="button">
+          <button (click)="openExistingMessageModal(message.id, messageAddModal)" type="button" class="btn btn-primary">
             Details
           </button>
         </div>
 
-        <div [ngClass]="['modal', 'fade', 'message-modal-'+message.id]" aria-hidden="true"
+        <div [ngClass]="['modal', 'fade', 'message-modal-'+message.id]" tabindex="-1" role="dialog"
              aria-labelledby="Message details modal"
-             role="dialog"
-             tabindex="-1">
+             aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">{{message.title}}</h5>
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -111,7 +98,7 @@
                 <p class="mt-2"> {{message.text}} </p>
               </div>
               <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
             </div>
           </div>

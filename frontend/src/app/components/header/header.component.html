@@ -9,8 +9,7 @@
     <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button> Login</button>
     <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button> Register</button>
     <!--<button mat-button *ngIf="authService.isLoggedIn()" routerLink="/artist/{{user.id}}">Profile</button>-->
-    <button (click)="authService.logoutUser()" *ngIf="authService.isLoggedIn()" mat-button routerLink="/">Logout
-    </button>
+    <button (click)="authService.logoutUser()" *ngIf="authService.isLoggedIn()" mat-button routerLink="/">Logout</button>
   </div>
 </mat-toolbar>
 
@@ -26,7 +25,7 @@
       <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">
         Register
       </mat-list-option>
-      <mat-list-option *ngIf="authService.isLoggedIn" routerLink="/artists" routerLinkActive="active">
+      <mat-list-option *ngIf="authService.isLoggedIn()" routerLink="/artists" routerLinkActive="active">
         Artists
       </mat-list-option>
     </mat-selection-list>

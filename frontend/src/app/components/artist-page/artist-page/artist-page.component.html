@@ -6,8 +6,7 @@
     fxLayoutAlign="start space-evenly"
     fxLayoutGap="0.5rem">
     <app-artist-information *ngIf="artist" [artist]="artist"></app-artist-information>
-
-    <!--<app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>-->
+    <app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>
   </div>
 
   <div *ngIf="canEdit" class="edit-button">
@@ -15,6 +14,14 @@
       <mat-icon color="accent">edit</mat-icon>
       <span [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}"
             class="edit-text">Edit your page</span>
+    </button>
+  </div>
+
+  <div *ngIf="!canEdit" class="edit-button">
+    <button (click)="goBack()" color="accent" mat-button>
+      <mat-icon color="accent">arrow_back</mat-icon>
+      <span [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}"
+            class="edit-text">Go Back</span>
     </button>
   </div>
 </div>

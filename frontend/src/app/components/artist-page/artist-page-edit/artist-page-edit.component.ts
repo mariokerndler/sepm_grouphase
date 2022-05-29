@@ -364,7 +364,8 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   private navigateToArtistList() {
-    // TODO: Implement
+    this.router.navigate(['/artists'])
+      .catch((_) => this.notificationService.displayErrorSnackbar('Could not navigate to artist list.'));
   }
 
   private fillFormValidators() {

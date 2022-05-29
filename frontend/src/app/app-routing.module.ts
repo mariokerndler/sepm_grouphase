@@ -13,7 +13,7 @@ import {UserPageEditComponent} from './components/user-page/user-page-edit/user-
 import {ArtistFeedComponent} from './components/artist-feed/artist-feed.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', redirectTo: 'feed', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
@@ -22,7 +22,8 @@ const routes: Routes = [
   {path: 'user/:id', component: UserPageComponent},
   {path: 'user/:id/edit', component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},
-  {path: 'artists', component: ArtistFeedComponent}
+  {path: 'artists', component: ArtistFeedComponent},
+  {path: '**', redirectTo: 'feed'}
 ];
 
 @NgModule({

@@ -8,6 +8,7 @@ import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 import {AuthService} from '../../../services/auth.service';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-artist-page',
@@ -27,6 +28,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private artistService: ArtistService,
     private userService: UserService,
     private notificationService: NotificationService,
@@ -65,20 +67,6 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           this.isReady = true;
         })
     );
-
-    /*
-        this.routeSubscription = this.route.params.subscribe(
-      (params) => this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
-        .subscribe((artist) => {
-          this.artist = artist;
-          if(this.artist.profileSettings) {
-            this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
-          }
-          this.isReady = true;
-          this.canEdit = this.authService.getUserAuthEmail() === this.artist.email;
-        })
-    );
-     */
   }
 
   ngOnDestroy() {
@@ -101,5 +89,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           this.notificationService.displayErrorSnackbar(error.toString());
         }
       );
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

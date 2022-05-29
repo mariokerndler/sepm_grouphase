@@ -1,0 +1,17 @@
+<div fxFlex fxLayout="column">
+  <form class="search-form" fxLayoutAlign="center">
+    <mat-form-field  class="primary search-field" appearance="fill">
+      <mat-label class="primary">Search Commissions</mat-label>
+      <input matInput placeholder="search">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </form>
+  <div  class="content">
+    <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="8px grid">
+      <div *ngFor="let n of numSequence(20)">
+        <app-commission-card></app-commission-card>
+      </div>
+    </div>
+</div>
+</div>
+

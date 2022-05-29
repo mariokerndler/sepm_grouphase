@@ -17,7 +17,8 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient,
               private globals: Globals,
-              private notificationService: NotificationService) { }
+              private notificationService: NotificationService) {
+  }
 
   private static setToken(authResponse: string) {
     localStorage.setItem('authToken', authResponse);
@@ -83,7 +84,7 @@ export class AuthService {
    * Returns the user email based on the current token
    */
   getUserAuthEmail() {
-    if(this.getToken() != null) {
+    if (this.getToken() != null) {
       const decoded: any = jwt_decode(this.getToken());
 
       return decoded.sub;

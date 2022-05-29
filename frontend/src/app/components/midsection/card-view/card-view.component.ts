@@ -11,7 +11,8 @@ export class CardViewComponent implements OnInit {
   @Input() classifiedArtist: boolean;
   url = 'assets/';
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

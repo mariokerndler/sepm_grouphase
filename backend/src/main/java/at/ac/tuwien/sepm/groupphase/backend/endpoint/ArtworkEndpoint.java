@@ -31,6 +31,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.StringJoiner;
@@ -59,16 +61,17 @@ public class ArtworkEndpoint {
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
     public List<ArtworkDto> search(@RequestParam( name="randomSeed",defaultValue = "0")int randomSeed,
-                                   @RequestParam( name="tagIds")List<String> tagIds,
+                                   @RequestParam( name="tagIds", required = false)List<String> tagIds,
                                    @RequestParam( name="pageNr",defaultValue = "0")int pageNr,
-                                   @RequestParam( name="searchOperation",defaultValue = "")String searchOperation) {
-        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperation,pageNr,randomSeed);
+                                   @RequestParam( name="searchOperations",defaultValue = "")String searchOperations) {
+        ;
+        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperations.toLowerCase(),pageNr,randomSeed);
+        log.info(tagSearchDto.toString());
         String search= tagSearchDto.getSearchOperations();
-
 
         Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
-        String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
+        String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(
             "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
         Matcher matcher = pattern.matcher(search + ",");
@@ -79,20 +82,29 @@ public class ArtworkEndpoint {
                 matcher.group(4),
                 matcher.group(3),
                 matcher.group(5));
+            log.info(matcher.group(1));
+            log.info(matcher.group(2));
+            log.info(matcher.group(3));
+            log.info(matcher.group(4));
+            log.info(matcher.group(5));
         }
 
         Specification<Artwork> spec = builder.build();
-/*
+
+
+
 
         if(tagSearchDto.getTagIds()!=null) {
-            if (spec == null) {
-                spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+            if(tagSearchDto.getTagIds().size()>0) {
+                if (spec == null) {
+                    spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+                }
+                for (String tag : tagSearchDto.getTagIds()) {
+                    spec.and(TagSpecification.filterByTags(tag));
+                }
+                log.info(tagSearchDto.getSearchOperations());
             }
-            for (String tag : tagSearchDto.getTagIds()) {
-                spec.and(TagSpecification.filterByTags(tag));
-            }
-            log.info(tagSearchDto.getSearchOperations());
-        } */
+        }
         return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
     }

@@ -22,10 +22,11 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     public globals: Globals,
     public dialog: MatDialog,
-    private userService: UserService) {}
+    private userService: UserService) {
+  }
 
   ngOnInit() {
-    if(this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn()) {
       const email: string = this.authService.getUserAuthEmail();
       /*
       this.userService.getUserByEmail(email)
@@ -42,7 +43,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openDialog(isLogin: boolean) {
-    if(isLogin) {
+    if (isLogin) {
       this.dialog.open(LoginComponent);
     } else {
       this.dialog.open(RegistrationComponent);

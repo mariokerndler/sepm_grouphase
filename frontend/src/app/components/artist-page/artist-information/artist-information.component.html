@@ -1,82 +1,39 @@
-<!--
-
 <div class="information-container">
-  <div fxLayout="column" fxFill>
+  <div fxFill fxLayout="column">
     <div fxLayout="row">
-      <div fxFlex="70" fxLayoutGap="5px" fxLayout="row">
+      <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
         <div fxLayoutAlign="center center">
           <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
         </div>
-        <div class="artist-full-name-container" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="5px">
-          <span class="accent-color artist-full-name" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}">{{artist.name}} {{artist.surname}}</span>
-          <span class="accent-color artist-role" [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}">Artist</span>
+        <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+          <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
+                class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
+          <span [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" class="accent-color artist-role">Artist</span>
         </div>
       </div>
     </div>
     <div class="artist-middle-menu">
-      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-evenly center" class="artist-middle-menu-container">
-        <button mat-button routerLink="/artist/{{artist.id}}" color="accent">Home</button>
-        <button mat-button routerLink="/artist/{{artist.id}}/{{artist.galleryId}}" color="accent">Gallery</button>
-        <button mat-button routerLink="/artist/{{artist.id}}/reviews" color="accent">Reviews</button>
-        <button mat-button routerLink="/artist/{{artist.id}}/contact" color="accent">Contact</button>
+      <div class="artist-middle-menu-container" fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px">
+        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
+                routerLink="/artist/{{artist.id}}">Home
+        </button>
+        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
+                routerLink="/artist/{{artist.id}}/{{artist.galleryId}}">Gallery
+        </button>
+        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
+                routerLink="/artist/{{artist.id}}/reviews">Reviews
+        </button>
+        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
+                routerLink="/artist/{{artist.id}}/contact">Contact
+        </button>
       </div>
     </div>
     <div>
-      <span class="primary artist-about-header">About</span>
-      <p class="primary artist-about-description">
+      <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}" class="accent-color artist-about-header">About</span>
+      <p class="accent-color artist-about-description">
         {{artist.description}}
       </p>
-      <div>
-        <span class="primary artist-about-header">Gallery</span>
-        <a fxFlex fxLayoutAlign="end" class="primary see-more-link" routerLink="/artist/{{artist.id}}/gallery">See More</a>
-      </div>
-      <app-midsection [artistId]="artist.id" [columnCount]="4" [imageAmount]="8"></app-midsection>
-
     </div>
   </div>
-</div>
-!-->
-<div class="information-container">
-  <div fxLayout="column" fxFill>
-    <div fxLayout="row">
-      <div fxFlex="70" fxLayoutGap="5px" fxLayout="row">
-        <div fxLayoutAlign="center center">
-          <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
-        </div>
-        <div class="artist-full-name-container" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="5px">
-          <span class="accent-color artist-full-name" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}">{{artist.name}} {{artist.surname}}</span>
-          <span class="accent-color artist-role" [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}">Artist</span>
-        </div>
-      </div>
-    </div>
-    <div class="artist-middle-menu">
-      <mat-tab-group dynamicHeight backgroundColor="primary" [(selectedIndex)]="tabIndex">
-        <mat-tab label="Home">
-          <div>
-            <span class="accent-color artist-about-header" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}">About</span>
-            <p class="accent-color artist-about-description">
-              {{artist.description}}
-            </p>
-            <div>
-              <span class="primary artist-about-header">Gallery</span>
-              <a fxFlex fxLayoutAlign="end" class="primary see-more-link" (click)="switchTab(1)">See More</a>
-            </div>
-            <app-midsection [artistId]="artist.id" [columnCount]="4" [imageAmount]="8"></app-midsection>
-          </div>
-        </mat-tab>
-
-        <mat-tab label="Gallery">
-          <app-artist-gallery [artist]="artist"></app-artist-gallery>
-        </mat-tab>
-
-        <mat-tab label="Reviews">
-          <h2 class="primary">Update the profile appearance</h2>
-        </mat-tab>
-        <mat-tab label="Contact">
-          <h2 class="primary">Update the profile appearance</h2>
-        </mat-tab>
-      </mat-tab-group>
-  </div>
-</div>
 </div>
 

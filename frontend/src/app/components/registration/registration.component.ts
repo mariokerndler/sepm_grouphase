@@ -1,16 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {LoginComponent} from '../login/login.component';
 import {UserService} from '../../services/user.service';
 import {GlobalFunctions} from '../../global/globalFunctions';
-import {UserRole} from '../../dtos/artistDto';
-import {ApplicationUserDto} from '../../dtos/applicationUserDto';
 
 
 @Component({
@@ -45,7 +39,7 @@ export class RegistrationComponent implements OnInit {
       username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirm: ['', [Validators.required, Validators.minLength(8)]],
-    },{
+    }, {
       validator: globalFunctions.mustMatch('password', 'confirm')
     });
   }
@@ -56,22 +50,16 @@ export class RegistrationComponent implements OnInit {
   createNewUser() {
     this.submitted = true;
     if (this.registerForm.valid) {
-
-
-      const name = this.registerForm.controls.firstname.value;
-      const surname = this.registerForm.controls.lastname.value;
-      const userName = this.registerForm.controls.username.value;
+      const firstname = this.registerForm.controls.firstname.value;
+      const lastname = this.registerForm.controls.lastname.value;
+      const username = this.registerForm.controls.username.value;
       const email = this.registerForm.controls.email.value;
       const address = this.registerForm.controls.address.value;
       const password = this.registerForm.controls.password.value;
 
-      const user = {name, surname,userName, email, address, password, userRole: UserRole.user, admin: false} as ApplicationUserDto;
-
-      this.userService.createUser(user).subscribe();
+      this.userService.createUser(firstname, lastname, username, email, address, password).subscribe();
       this.onNoClick();
-
-
-     // this.authenticateUser(authRequest);
+      // this.authenticateUser(authRequest);
     } else {
       console.log('Invalid input');
     }
@@ -83,6 +71,7 @@ export class RegistrationComponent implements OnInit {
    *
    * @param authRequest authentication data from the user login form
    */
+
   /*
 authenticateUser(authRequest: AuthRequest) {
   console.log('Try to authenticate user: ' + authRequest.email);
@@ -105,9 +94,9 @@ authenticateUser(authRequest: AuthRequest) {
   });
 }
 */
-/**
- * Error flag will be deactivated, which clears the error message
- */
+  /**
+   * Error flag will be deactivated, which clears the error message
+   */
   vanishError() {
     this.error = false;
   }
@@ -121,6 +110,7 @@ authenticateUser(authRequest: AuthRequest) {
     this.dialog.open(LoginComponent);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }
 

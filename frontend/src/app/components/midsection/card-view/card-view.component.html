@@ -1,7 +1,7 @@
 <a [routerLink]="'/artwork/' + artwork.id" routerLinkActive="active">
   <div class="card-container">
-    <div class="card-img-wrap" [ngStyle]="{'maxWidth': classifiedArtist  ? '400px' : '400px' }">
-      <img class="card-img" *ngIf="artwork" [src]='url + artwork.imageUrl' [alt]="artwork.name">
+    <div class="card-img-wrap">
+      <img *ngIf="artwork" [alt]="artwork.name" [src]='url + artwork.imageUrl' class="card-img">
       <div class="card-img-description-layer">
         <p class="card-img-description">
           {{artwork.name}}

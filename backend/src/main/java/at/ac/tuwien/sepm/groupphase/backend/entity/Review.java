@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Review {
+public class Review implements HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,7 @@ public class Review {
     @JoinColumn(nullable = false)
     private ApplicationUser customer;
 
-    @Column(nullable = false, length = 250)
+    @Column(nullable = false)
     private String text;
 
     @OneToOne
@@ -44,14 +45,14 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{" +
-            "id=" + id +
-            ", artist=" + artist.getId() +
-            ", customer=" + customer.getId() +
-            ", text='" + text + '\'' +
-            ", commission=" + commission.getId() +
-            ", starRating=" + starRating +
-            '}';
+        return "Review{"
+            + "id=" + id
+            + ", artist=" + artist.getId()
+            + ", customer=" + customer.getId()
+            + ", text='" + text + '\''
+            + ", commission=" + commission.getId()
+            + ", starRating=" + starRating
+            + '}';
     }
 
     @Override
@@ -61,12 +62,17 @@ public class Review {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Review other = (Review) obj;
         return id != null && id.equals(other.getId());
     }

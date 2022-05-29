@@ -1,0 +1,69 @@
+<form class="col-12">
+  <mat-form-field>
+    <mat-label>Artists</mat-label>
+    <input [matAutocomplete]="auto" matInput type="text">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let artist of artists " [value]="artist.id">
+        {{artist.userName}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Search</mat-label>
+    <input (keydown.enter)="loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"  matInput name="searchForm" placeholder="search">
+  </mat-form-field>
+
+  <mat-label [matMenuTriggerFor]="tagListMenu" color="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>
+  <mat-menu #tagListMenu color="primary" name="tagListMenu">
+
+    <mat-checkbox #tagMenuItems (change)="onTagSelect($event)" (click)="$event.stopPropagation()" *ngFor="let tag of tags;let i= index "
+                  [(ngModel)]="tag.selected"
+                  [value]="tag.id"
+                  name="tagCheckbox">
+      <span> {{tag.name}}</span>
+    </mat-checkbox>
+
+
+  </mat-menu>
+
+  <div class="pagination">
+    <button (click)="previousPage()" class="paginationButton" color="accent" mat-button>&lt;</button>
+    <mat-label class="paginationText" color="accent" style="width: 20px">{{searchParams.pageNr}}</mat-label>
+    <button (click)="nextPage()" class="paginationButton" color="accent" mat-button>&gt;</button>
+
+
+  </div>
+
+</form>
+
+<mat-divider></mat-divider>
+<div class="container" id="container">
+  <div clas="header"><br></div>
+  <div class="content">
+    <div class="card-img-wrap">
+      <div _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px"
+           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px;">
+        <div *ngFor="let artwork of images; let i= index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
+             class="image">
+
+          <img (click)="selectedArtwork=i" [src]="url+artwork.imageUrl" alt="error">
+
+
+          <div class="card-img-description-layer">
+            <p class="card-img-description">
+              {{globalFunctions.artworkNameParser(artwork.name)}}
+            </p>
+          </div>
+        </div>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<app-gallery-carousel (closeCarousel)="selectedArtwork=null" *ngIf="selectedArtwork!== null" [artworks]="images"
+                      [selectedArtworkId]="selectedArtwork">
+
+</app-gallery-carousel>

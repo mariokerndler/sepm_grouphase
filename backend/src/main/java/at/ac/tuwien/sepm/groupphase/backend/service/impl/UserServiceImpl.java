@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.ValidationException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepository;
@@ -72,31 +73,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApplicationUser findUserById(Long id) {
         log.info(ImageDataPaths.assetAbsoluteLocation);
-        Optional<ApplicationUser> user= userRepo.findById(id);
+        Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             LOGGER.info(user.get().getUserName());
             return user.get();
         } else {
-            throw new NotFoundException(String.format("Could not find User   with id %s", id));
+            throw new NotFoundException(String.format("Could not find User with id %s", id));
         }
     }
 
     @Override
     public void updateUser(ApplicationUser user) {
-        LOGGER.debug("Service: Update User ",user.toString());
+        LOGGER.debug("Service: Update User ", user.toString());
         userValidator.validateUser(user);
         userRepo.save(user);
 
     }
 
     @Override
-    public void registerUser(ApplicationUser user)    {
-        LOGGER.debug("Service: Register User ",user.toString());
+    public void registerUser(ApplicationUser user) {
+        LOGGER.debug("Service: Register User ", user.toString());
         userValidator.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
+    }
 
-
+    @Override
+    public List<ApplicationUser> searchUser(Specification<ApplicationUser> spec) {
+        return this.userRepo.findAll(spec);
     }
 
     @Override

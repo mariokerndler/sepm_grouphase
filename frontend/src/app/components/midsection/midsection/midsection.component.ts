@@ -17,14 +17,15 @@ export class MidsectionComponent implements OnInit {
 
   constructor(
     private artworkService: ArtworkService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.fetchArtworks(this.artistId);
   }
 
   private fetchArtworks(artistId?: number) {
-    if(artistId) {
+    if (artistId) {
       this.fetchArtworksFromUser(artistId);
     } else {
       this.fetchArtworksFromAllUsers();

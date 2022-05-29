@@ -5,6 +5,7 @@ import {ArtistService} from '../../services/artist.service';
 import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
 import {TagService} from '../../services/tag.service';
+import {GlobalFunctions} from "../../global/globalFunctions";
 
 @Component({
   selector: 'app-gallery-carousel',
@@ -71,7 +72,9 @@ export class GalleryCarouselComponent implements OnInit {
   private artistService: ArtistService;
   private router: Router;
 
-  constructor(artistService: ArtistService, router: Router, private tagService: TagService) {
+  constructor(artistService: ArtistService, router: Router, public tagService: TagService,
+              public globalFunctions: GlobalFunctions) {
+    this.globalFunctions=globalFunctions;
     this.tagService = tagService;
     this.router = router;
     this.artistService = artistService;
@@ -92,6 +95,7 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public close(): void {
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(0px)');
     this.closeCarousel.emit();
   }
 
@@ -145,6 +149,7 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public routeToArtist(): void {
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(0px)');
     this.router.navigate(['/artist/' + this.artworks[this.selectedArtworkId].artistId.toString()]);
 
   }

@@ -38,6 +38,7 @@ html, body {
 }
 
 .feed {
+   filter:var(--bgFilter);
 
   max-height: 90rem; //change here
   overflow-y: auto;
@@ -118,9 +119,7 @@ html, body {
 }
 
 
-::ng-deep input.mat-input-element {
-  color: white;
-}
+
 
 md-divider {
   border-width: 1px;

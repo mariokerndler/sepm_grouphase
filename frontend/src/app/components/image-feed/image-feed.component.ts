@@ -143,9 +143,10 @@ export class ImageFeedComponent implements OnInit {
   }
 
 
-  setSelectedArtwork(i) {
+  setSelectedArtwork(i: number) {
     this.selectedArtwork=i;
-
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
 
   }
+
 }

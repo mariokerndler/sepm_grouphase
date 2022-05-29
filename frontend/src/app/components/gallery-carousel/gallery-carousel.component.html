@@ -5,11 +5,13 @@
 
     <mat-card-header>
 
-      <mat-card-title
-        style="text-align: center; font-size: x-large; color:#d7bce8"> {{artworks[animArtwork].name.substring(artworks[animArtwork].name.lastIndexOf("_") + 1)}} </mat-card-title>
+      <mat-card-title class="image-title"
+        style="text-align: center;  color:#d7bce8"> {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
       <mat-divider></mat-divider>
-      <mat-card-subtitle (click)="routeToArtist()" style="text-align: center; font-size: x-large; color:#dedae0">
-        by {{artist.userName}} </mat-card-subtitle>
+
+
+        <mat-card-subtitle class="carousel-artist" (click)="routeToArtist()" style="text-align: center; font-size: x-large; color:#dedae0">by {{artist.userName}}
+      </mat-card-subtitle>
       <mat-divider></mat-divider>
     </mat-card-header>
 
@@ -28,9 +30,13 @@
           tabindex="3">Return</span><br>
     <mat-card-subtitle
       style="text-align: center; font-size: x-large;color: #d7bce8;">{{artworks[animArtwork].description}} </mat-card-subtitle>
+    <mat-label  class="downloadButton"  download="artworks[animArtwork].name" href="url+ artworks[animArtwork].imageUrl">Download</mat-label>
   </mat-card>
   <br>
   <mat-card-subtitle class="tag-view"
                      style=" text-align: center;color: white  ; font-size: x-large"> {{stringifyTags()}}&zwnj;
   </mat-card-subtitle>
+
+
+
 </div>

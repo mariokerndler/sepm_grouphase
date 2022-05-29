@@ -25,7 +25,6 @@ public class ImageFileManager {
 
 
     public String writeArtistImage(Artwork a) throws IOException {
-
         try (
             FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName() + "." + a.getFileType())) {
             outputStream.write(a.getImageData());

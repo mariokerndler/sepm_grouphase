@@ -46,7 +46,7 @@
         <div *ngFor="let artwork of images; let i= index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
              class="image">
 
-          <img (click)="selectedArtwork=i" [src]="url+artwork.imageUrl" alt="error">
+          <img (click)="selectedArtwork=i" [src]="url+artwork.imageUrl" alt="">
 
 
           <div class="card-img-description-layer">

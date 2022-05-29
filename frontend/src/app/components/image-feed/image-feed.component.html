@@ -10,7 +10,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Search</mat-label>
-    <input (keydown.enter)="loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"  matInput name="searchForm" placeholder="search">
+    <input (keydown.enter)="searchParams.pageNr=0; loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"  matInput name="searchForm" placeholder="search">
   </mat-form-field>
 
   <mat-label [matMenuTriggerFor]="tagListMenu" color="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>

@@ -11,6 +11,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    @Query(nativeQuery=true, value="SELECT DISTINCT     *  FROM Tag  LEFT JOIN  ARTWORK_TAG ON ARTWORK_TAG.TAG_ID=Tag.Id WHERE  Artwork_TAG.ARTWORK_ID=:aId")
+    @Query(nativeQuery=true, value="select * from TAG left Join ARTWORK_TAG on Tag.ID = Artwork_Tag.tag_ID WHERE  ARtwork_ID=:aId")
     List<Tag> findArtworkTags(@Param("aId") Long aId);
 }

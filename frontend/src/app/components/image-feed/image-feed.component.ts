@@ -138,6 +138,7 @@ export class ImageFeedComponent implements OnInit {
       .filter(menuitem => menuitem.selected)
       .map(menuitem => menuitem.id.toString());
     this.searchParams.pageNr=0;
+    console.log(this.searchParams.tagIds);
     this.loadFeed();
   }
 

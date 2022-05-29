@@ -4,13 +4,13 @@
     <input [matAutocomplete]="auto" matInput type="text">
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let artist of artists " [value]="artist.id">
-        {{artist.name }}
+        {{artist.userName}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Search</mat-label>
-    <input (keydown.enter)="loadFeed()" [(ngModel)]=" searchInput" matInput name="searchForm" placeholder="search">
+    <input (keydown.enter)="loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"  matInput name="searchForm" placeholder="search">
   </mat-form-field>
 
   <mat-label [matMenuTriggerFor]="tagListMenu" color="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>

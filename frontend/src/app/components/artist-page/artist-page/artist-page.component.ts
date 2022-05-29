@@ -23,6 +23,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   isReady = false;
   isArtist = false;
   canEdit = false;
+  tabIndex = 0;
+  // TODO: Fill in the real profile picture
+  artistUrl = 'https://picsum.photos/150/150';
   private routeSubscription: Subscription;
 
   constructor(
@@ -58,13 +61,11 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
                 }
 
                 this.canEdit = this.authService.getUserAuthEmail() === this.artist.email;
+                this.isReady = true;
               });
           } else if (this.user.userRole === UserRole.user) {
             this.navigateToUserPage();
           }
-
-          this.canEdit = this.authService.getUserAuthEmail() === this.user.email;
-          this.isReady = true;
         })
     );
   }
@@ -93,5 +94,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.location.back();
+  }
+
+  changeIndex($event: any) {
+    this.tabIndex = $event;
   }
 }

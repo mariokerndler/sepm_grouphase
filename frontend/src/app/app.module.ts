@@ -42,12 +42,13 @@ import {
   UserPageInformationComponent
 } from './components/user-page/user-page-information/user-page-information.component';
 import {UserPageEditComponent} from './components/user-page/user-page-edit/user-page-edit.component';
-import {LogoutComponent} from './components/logout/logout.component';
-import {ArtistGalleryComponent} from './components/artist-page/artist-gallery/artist-gallery.component';
 import {ImageFeedComponent} from './components/image-feed/image-feed.component';
 import {GalleryCarouselComponent} from './components/gallery-carousel/gallery-carousel.component';
 import {ArtistFeedComponent} from './components/artist-feed/artist-feed.component';
 import {ArtistFeedCardComponent} from './components/artist-feed/artist-feed-card/artist-feed-card.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
+import { UploadComponent } from './components/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import {ArtistFeedCardComponent} from './components/artist-feed/artist-feed-card
     UserPageInformationComponent,
     UserPageEditComponent,
     ArtistFeedComponent,
-    ArtistFeedCardComponent
+    ArtistFeedCardComponent,
+    UploadComponent
   ],
   imports: [
     BrowserModule,

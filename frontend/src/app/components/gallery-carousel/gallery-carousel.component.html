@@ -1,36 +1,55 @@
 <div (click)="close()" class="gallery-carousel">
-
-
   <mat-card class="image-Card" style="  background: radial-gradient(#536281, #2f3a51);">
-
     <mat-card-header>
-
       <mat-card-title
-        style="text-align: center; font-size: x-large; color:#d7bce8"> {{artworks[animArtwork].name.substring(artworks[animArtwork].name.lastIndexOf("_") + 1)}} </mat-card-title>
+        class="image-title"
+        style="text-align: center;  color:#d7bce8">
+        {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}}
+      </mat-card-title>
       <mat-divider></mat-divider>
-      <mat-card-subtitle (click)="routeToArtist()" style="text-align: center; font-size: x-large; color:#dedae0">
-        by {{artist.userName}} </mat-card-subtitle>
+      <mat-card-subtitle
+        class="carousel-artist"
+        (click)="routeToArtist()"
+        style="text-align: center; font-size: x-large; color:#dedae0">
+        by {{artist.userName}}
+      </mat-card-subtitle>
       <mat-divider></mat-divider>
     </mat-card-header>
 
     <div (click)="onEvent($event)" class="carousel-image">
-      <img (@slide-in.done)="animDone()" [@slide-in]="animState" [src]="url+ artworks[animArtwork].imageUrl">
-      <div class=" carousel-button">
-        <span (click)="previous()" (keyup.delete)="previous()" style="font-size: large" tabindex="1">&lt;  </span>
+      <img
+        (@slide-in.done)="animDone()"
+        [@slide-in]="animState"
+        [src]="url + artworks[animArtwork].imageUrl" [alt]="globalFunctions.artworkNameParser(artworks[animArtwork].name)">
+      <div class="carousel-button">
+        <span (click)="previous()" style="font-size: large" tabindex="1" class="material-icons">arrow_back_ios</span>
         <span></span>
-        <span (click)="next()" (keyup.enter)="next()" style="font-size: large" tabindex="2">&gt; </span>
-
+        <span (click)="next()" style="font-size: large" tabindex="2" class="material-icons">arrow_forward_ios</span>
       </div>
-
-
     </div>
-    <span (click)="close()" class="carousel-close" style="font-size: large; color:#dedae0;"
-          tabindex="3">Return</span><br>
+
+    <span
+      (click)="close()"
+      class="carousel-close"
+      style="font-size: large; color:#dedae0;"
+      tabindex="3">
+      Return
+    </span>
+    <br>
     <mat-card-subtitle
-      style="text-align: center; font-size: x-large;color: #d7bce8;">{{artworks[animArtwork].description}} </mat-card-subtitle>
+      style="text-align: center; font-size: x-large;color: #d7bce8;">
+      {{artworks[animArtwork].description}}
+    </mat-card-subtitle>
+    <!--
+    <mat-label class="downloadButton" download="artworks[animArtwork].name" href="url+ artworks[animArtwork].imageUrl">
+      Download
+    </mat-label>
+    -->
   </mat-card>
   <br>
-  <mat-card-subtitle class="tag-view"
-                     style=" text-align: center;color: white  ; font-size: x-large"> {{stringifyTags()}}&zwnj;
+  <mat-card-subtitle
+    class="tag-view"
+    style=" text-align: center; color: white; font-size: x-large">
+    {{stringifyTags()}}&zwnj;
   </mat-card-subtitle>
 </div>

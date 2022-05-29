@@ -5,6 +5,7 @@ import {ArtistService} from '../../services/artist.service';
 import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
 import {TagService} from '../../services/tag.service';
+import {GlobalFunctions} from "../../global/globalFunctions";
 
 @Component({
   selector: 'app-gallery-carousel',
@@ -49,14 +50,31 @@ export class GalleryCarouselComponent implements OnInit {
   @Input() selectedArtworkId: number;
   @Output() closeCarousel = new EventEmitter<void>();
   public animState = 'middle';
-  public artist: ArtistDto;
+  public artist: ArtistDto ={
+    address: '',
+    admin: false,
+    artworkIds: [],
+    commissions: [],
+    email: '',
+    galleryId: 0,
+    name: '',
+    password: '',
+    reviewScore: 0,
+    reviews: [],
+    surname: '',
+    userName: '',
+    userRole: undefined
+
+  };
   public animArtwork: number;
   url = 'assets/';
   public imageTags = [];
   private artistService: ArtistService;
   private router: Router;
 
-  constructor(artistService: ArtistService, router: Router, private tagService: TagService) {
+  constructor(artistService: ArtistService, router: Router, public tagService: TagService,
+              public globalFunctions: GlobalFunctions) {
+    this.globalFunctions=globalFunctions;
     this.tagService = tagService;
     this.router = router;
     this.artistService = artistService;
@@ -68,7 +86,7 @@ export class GalleryCarouselComponent implements OnInit {
 
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
-    console.log(this.selectedArtworkId);
+    //console.log(this.selectedArtworkId);
     this.getImageArtistInfo();
   }
 
@@ -77,6 +95,7 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public close(): void {
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(0px)');
     this.closeCarousel.emit();
   }
 
@@ -91,7 +110,7 @@ export class GalleryCarouselComponent implements OnInit {
   public next(): void {
     this.getImageArtistInfo();
     this.animState = 'right';
-    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 1 ? 0 : this.selectedArtworkId + 1;
+    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 2   ? 0 : this.selectedArtworkId + 1;
 
   }
 
@@ -108,9 +127,11 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public loadImageTags() {
-    this.tagService.getImageTags(this.selectedArtworkId).subscribe(
+    //console.log('id '+ this.selectedArtworkId);
+    this.tagService.getImageTags(this.artworks[this.selectedArtworkId].id).subscribe(
+
       data => {
-        console.log(data);
+        //console.log(data);
         this.imageTags = data;
       }, error => {
         console.log('no error handling exists so im just here to say hi');
@@ -128,6 +149,7 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public routeToArtist(): void {
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(0px)');
     this.router.navigate(['/artist/' + this.artworks[this.selectedArtworkId].artistId.toString()]);
 
   }

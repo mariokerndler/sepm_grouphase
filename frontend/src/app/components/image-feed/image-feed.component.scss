@@ -38,6 +38,7 @@ html, body {
 }
 
 .feed {
+   filter:var(--bgFilter);
 
   max-height: 90rem; //change here
   overflow-y: auto;
@@ -118,9 +119,7 @@ html, body {
 }
 
 
-::ng-deep input.mat-input-element {
-  color: white;
-}
+
 
 md-divider {
   border-width: 1px;
@@ -163,17 +162,32 @@ md-divider {
   /* transition effect. not necessary */
   transition: opacity 1.4s, visibility 1.8s;
 }
+.feedWrapper{
+
+}
 
 .card-img-wrap:hover .card-img-description-layer {
   visibility: visible;
   opacity: 0.7;
 }
+#carousel:not(:active){
 
+      visibility: visible;
+  filter:blur(5px);
+}
+#carousel:active {
+filter:blur(5px);
+}
 .card-img-description {
   transition: 2s;
+
+
   transform: translateY(1em);
   font-size: 1rem;
+  bot:0;
+  position: fixed;
   text-align: center;
+  margin-bottom:3px;
 }
 
 .card-img-wrap:hover .card-img-description {
@@ -194,26 +208,23 @@ mat-menu.content {
 }
 
 .pagination {
-  position: fixed;
+  display: flex;
+  padding-left: 18%;
   right: 46%;
   top: 8%;
-  display: flex;
+  display: inline-block;
   align-items: center;
 }
 
 .paginationButton {
-
   display: inline-block;
   float: left;
   padding: 8px 16px;
-
 }
 
 .paginationText {
-
   display: inline-block;
   float: left;
-
   padding: 14px 5px;
-
 }
+

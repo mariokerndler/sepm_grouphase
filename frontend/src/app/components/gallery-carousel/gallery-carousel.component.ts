@@ -106,7 +106,7 @@ export class GalleryCarouselComponent implements OnInit {
   public next(): void {
     this.getImageArtistInfo();
     this.animState = 'right';
-    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 1 ? 0 : this.selectedArtworkId + 1;
+    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 2   ? 0 : this.selectedArtworkId + 1;
 
   }
 

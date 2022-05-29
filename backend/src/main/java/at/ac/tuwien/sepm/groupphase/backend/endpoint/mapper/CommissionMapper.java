@@ -16,6 +16,7 @@ public abstract class CommissionMapper {
     public abstract SimpleCommissionDto commissionToSimpleCommissionDto(Commission commission);
 
     @Mapping(source = "artistId", target = "artist")
+    // Todo: Uncomment and fix ambiguous mapping error with mapstruct
     //@Mapping(source = "customerId", target = "customer")
     public abstract Commission simpleCommissionDtoToCommission(SimpleCommissionDto simpleCommissionDto);
 

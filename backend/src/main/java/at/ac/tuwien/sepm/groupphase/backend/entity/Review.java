@@ -30,6 +30,7 @@ public class Review implements HasId {
     private String text;
 
     @OneToOne
+    @JoinColumn(nullable = false)
     private Commission commission;
 
     @Column(nullable = false, name = "star_rating")

@@ -20,7 +20,6 @@ public class Commission implements HasId {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Artist artist;
 
     @ManyToOne
@@ -39,8 +38,7 @@ public class Commission implements HasId {
     @Column(nullable = false, name = "issue_date")
     private LocalDateTime issueDate;
 
-    //TODO: Should deadline always be given ? This could be null
-    @Column(nullable = false, name = "deadline_date")
+    @Column(name = "deadline_date")
     private LocalDateTime deadlineDate;
 
     @Column(nullable = false)

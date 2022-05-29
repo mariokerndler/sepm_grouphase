@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Getter
@@ -14,6 +15,7 @@ import javax.persistence.OneToOne;
 public class ProfilePicture extends Image {
 
     @OneToOne
+    @JoinColumn(nullable = false)
     private Artist artist;
 
 

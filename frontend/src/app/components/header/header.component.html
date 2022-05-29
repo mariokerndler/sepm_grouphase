@@ -20,9 +20,14 @@
       <mat-icon (click)="sidenav.toggle()">close</mat-icon>
     </button>
     <mat-selection-list [multiple]="false" class="sidenav">
-      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login
+      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">
+        Login
       </mat-list-option>
-      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register
+      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">
+        Register
+      </mat-list-option>
+      <mat-list-option *ngIf="authService.isLoggedIn" routerLink="/artists" routerLinkActive="active">
+        Artists
       </mat-list-option>
     </mat-selection-list>
 

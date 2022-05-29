@@ -32,9 +32,9 @@ export class ArtistFeedComponent implements OnInit {
 
   ngOnInit(): void {
     this.artistService.getAllArtists()
-      .subscribe((response) => {
-        this.artists = response;
-        this.artists = this.glogalFunctions.shuffleArray(this.artists);
+      .subscribe((artists) => {
+        this.artists = artists;
+        //this.artists = this.glogalFunctions.shuffleArray(this.artists);
         this.totalSize = this.artists.length;
         this.iterator();
         this.isReady = true;

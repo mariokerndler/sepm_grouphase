@@ -1,1 +1,29 @@
-<p>commission-details works!</p>
+<div fxLayout="row" class="primary title"  >
+  <button class="back-arrow" mat-icon-button><</button>
+  <h1>{{commission.title}}</h1>
+</div>
+<div *ngIf="user" fxLayout="row" class="primary total">
+  <div class="profile" fxLayout="column">
+    <img [src]="userProfilePicture" alt="" class="commission-pfp">
+    <br>
+    <strong class="userName">{{user.userName}}</strong>
+  </div>
+
+  <div class="description">
+    <strong>Description:</strong>
+    <br><br>
+    <p>{{commission.description}}</p>
+    <br>
+     <strong class="referenceImages">Reference Images:</strong>
+    <br><br>
+    <div class="images" fxLayout="row">
+      <img [src]="userProfilePicture" alt="" class="commission-image">
+      <img [src]="userProfilePicture" alt="" class="commission-image">
+      <img [src]="userProfilePicture" alt="" class="commission-image">
+    </div>
+    <br><br>
+    <strong class="referenceImages">Price: ${{commission.price}}</strong>
+    <br><br>
+    <strong class="referenceImages">Date: ${{commission.startDate.toLocaleDateString()}} - {{commission.endDate.toLocaleDateString()}}</strong>
+  </div>
+</div>

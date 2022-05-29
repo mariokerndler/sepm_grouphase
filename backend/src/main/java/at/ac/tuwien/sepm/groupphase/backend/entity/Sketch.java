@@ -22,7 +22,7 @@ public class Sketch extends Image {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "artwork")
+    @JoinColumn(nullable = false, name = "artwork")
     private Artwork artwork;
 
     public Sketch(String description, String imageUrl, FileType fileType, Artwork artwork) {

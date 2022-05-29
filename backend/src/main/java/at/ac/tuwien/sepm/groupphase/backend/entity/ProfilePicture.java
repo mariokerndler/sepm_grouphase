@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Getter
@@ -14,8 +15,13 @@ import javax.persistence.OneToOne;
 public class ProfilePicture extends Image {
 
     @OneToOne
+    @JoinColumn(nullable = false)
     private Artist artist;
 
+    public ProfilePicture(String imageUrl, FileType fileType, Artist artist) {
+        super(imageUrl, fileType);
+        this.artist = artist;
+    }
 
     @Override
     public String toString() {

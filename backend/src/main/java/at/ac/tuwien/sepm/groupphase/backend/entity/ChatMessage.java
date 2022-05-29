@@ -25,7 +25,7 @@ public class ChatMessage {
     private LocalDateTime sentDate;
 
     @ManyToOne
-    @JoinColumn(name = "chat")
+    @JoinColumn(nullable = false, name = "chat")
     private Chat chat;
 
     public ChatMessage(String text, LocalDateTime sentDate) {

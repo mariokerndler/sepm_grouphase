@@ -12,6 +12,7 @@ import {UserPageComponent} from './components/user-page/user-page.component';
 import {UserPageEditComponent} from './components/user-page/user-page-edit/user-page-edit.component';
 import {ArtistFeedComponent} from './components/artist-feed/artist-feed.component';
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
+import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path: 'user/:id/edit', component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},
   {path: 'artists', component: ArtistFeedComponent},
-  {path: 'commissions', component: CommissionFeedComponent}
+  {path: 'commissions', component: CommissionFeedComponent},
+  {path: 'commissions/:id', component: CommissionDetailsComponent}
 ];
 
 @NgModule({

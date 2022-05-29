@@ -1,4 +1,4 @@
-<mat-card *ngIf="commission && user" class="commission">
+<mat-card *ngIf="commission && user" class="commission" [routerLink]="'/commissions/' + commission.id" routerLinkActive="active">
   <mat-card-title ><strong>{{commission.title}}</strong></mat-card-title>
   <img [src]="userProfilePicture" alt="" class="commission-pfp">
   <mat-card-content>

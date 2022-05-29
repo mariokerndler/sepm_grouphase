@@ -51,6 +51,7 @@ import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/
 import { UploadComponent } from './components/upload/upload.component';
 import { CommissionFeedComponent } from './components/commission/commission-feed/commission-feed.component';
 import { CommissionCardComponent } from './components/commission/commission-card/commission-card.component';
+import { CommissionDetailsComponent } from './components/commission/commission-details/commission-details.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { CommissionCardComponent } from './components/commission/commission-card
     ArtistFeedCardComponent,
     UploadComponent,
     CommissionFeedComponent,
-    CommissionCardComponent
+    CommissionCardComponent,
+    CommissionDetailsComponent
   ],
   imports: [
     BrowserModule,

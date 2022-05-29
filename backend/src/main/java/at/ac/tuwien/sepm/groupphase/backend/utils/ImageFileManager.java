@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,9 +26,12 @@ public class ImageFileManager {
 
     public String writeArtistImage(Artwork a) throws IOException {
 
-        try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName())) {
+        try (
+            FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName() + "." + a.getFileType())) {
             outputStream.write(a.getImageData());
-            return ImageDataPaths.artistProfilePictureLocation + "/" + a.getName();
+
+            return ImageDataPaths.artistProfileLocation+a.getArtist().getUserName()+"/"+a.getName() + "." + a.getFileType();
+           //return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();

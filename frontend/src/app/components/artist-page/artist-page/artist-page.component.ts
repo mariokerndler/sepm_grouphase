@@ -22,7 +22,12 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   isReady = false;
   isArtist = false;
   canEdit = false;
+  tabIndex = 0;
+  // TODO: Fill in the real profile picture
+  artistUrl = 'https://picsum.photos/150/150';
   private routeSubscription: Subscription;
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -101,5 +106,10 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           this.notificationService.displayErrorSnackbar(error.toString());
         }
       );
+  }
+
+
+  changeIndex($event: any) {
+    this.tabIndex = $event;
   }
 }

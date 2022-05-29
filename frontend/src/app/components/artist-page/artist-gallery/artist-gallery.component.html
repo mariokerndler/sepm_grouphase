@@ -1,3 +1,7 @@
+<div>
+  <span class="primary artist-gallery-header">Gallery</span>
+</div>
+
 <div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
   <button mat-button color="accent" (click)="openDialog()">
     <mat-icon color="accent">upload</mat-icon>
@@ -8,11 +12,7 @@
 </div>
 
 
-<div>
-  <span class="primary artist-gallery-header">Gallery</span>
-  <app-midsection [artistId]="artist.id" [columnCount]="4"></app-midsection>
-</div>
-
+<app-image-feed></app-image-feed>
 
 
 

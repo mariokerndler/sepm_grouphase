@@ -67,7 +67,7 @@ export class UploadComponent implements OnInit {
             const image = Array.from(binary);
             this.uploadNewImage(this.uploadForm.controls.artworkName.value, this.uploadForm.controls.description.value, image, filetype);
             this.dialogRef.close();
-            window.location.reload();
+            //window.location.reload();
           }
         };
     }

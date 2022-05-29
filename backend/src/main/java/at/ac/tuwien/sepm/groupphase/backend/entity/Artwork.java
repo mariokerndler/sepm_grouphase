@@ -53,8 +53,8 @@ public class Artwork extends Image implements HasId {
             + ", name='" + name + '\''
             + ", description='" + description + '\''
             + ", artist=" + artist.getId()
-            + ", sketches=" + sketches.stream().map(Sketch::getId).toList()
-            + ", commission=" + commission.getId()
+           // + ", sketches=" + sketches.stream().map(Sketch::getId).toList()
+           // + ", commission=" + commission.getId()
             + '}' + super.toString();
     }
 

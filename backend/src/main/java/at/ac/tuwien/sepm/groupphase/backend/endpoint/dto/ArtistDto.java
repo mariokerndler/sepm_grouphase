@@ -102,14 +102,4 @@ public class ArtistDto {
             ", profileSettings='" + profileSettings + '\'' +
             '}';
     }
-
-
-    //TODO: unused
-    public void addArtworkId(Long i) {
-        if (artworksIds == null) {
-            return;
-        }
-
-        this.artworksIds.add(i);
-    }
 }

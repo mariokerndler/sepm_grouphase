@@ -11,6 +11,8 @@ import java.util.List;
 @Service
 public interface ArtworkService {
 
+    Artwork findById(Long id);
+
     List<Artwork> findArtworksByArtist(Long id);
 
     void saveArtwork(Artwork a) throws IOException;

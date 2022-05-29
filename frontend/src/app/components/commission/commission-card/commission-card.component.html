@@ -1,14 +1,14 @@
-<mat-card class="commission">
-  <mat-card-title ><strong>Commission Title</strong></mat-card-title>
+<mat-card *ngIf="commission && user" class="commission">
+  <mat-card-title ><strong>{{commission.title}}</strong></mat-card-title>
   <img [src]="userProfilePicture" alt="" class="commission-pfp">
   <mat-card-content>
-    <strong>Max Mustermann</strong>
+    <strong>{{user.userName}}</strong>
     <br><br>
-    <strong>Price: 300$</strong>
+    <strong>Price: ${{commission.price}}</strong>
     <br>
-    <strong>Date: 30.05.2022 - 21.06.2022</strong>
+    <strong>Date: {{commission.startDate.toLocaleDateString()}} - {{commission.endDate.toLocaleDateString()}}</strong>
     <br><br>
-    <p>This is just a random <br> description which describes <br> some of the information <br> within in the commission...</p>
+    <p >{{commission.description.substring(0,100)}}...</p>
   </mat-card-content>
   <mat-card-actions>
     <span> <strong> See More </strong></span>

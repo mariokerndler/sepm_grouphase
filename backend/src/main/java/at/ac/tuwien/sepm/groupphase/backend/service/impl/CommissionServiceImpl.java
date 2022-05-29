@@ -49,6 +49,15 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void saveCommission(Commission c) {
         LOGGER.info("Save commission " + c);
+        //TODO: writeReference in imageFileManager
+        /*
+        if (c.getReferences() != null) {
+            List<Reference> references = c.getReferences();
+            for (Reference r : references) {
+                //r.setImageUrl(this.ifm.writeReference(r));
+            }
+        }
+         */
         this.commissionRepo.save(c);
     }
 
@@ -65,6 +74,15 @@ public class CommissionServiceImpl implements CommissionService {
         if (c.getArtwork() != null) {
             this.ifm.deleteArtistImage(c.getArtwork());
         }
+
+        //TODO: deleteReference in imageFileManager
+        /*if (c.getReferences() != null) {
+            List<Reference> references = c.getReferences();
+            for (Reference r : references) {
+
+                //this.ifm.deleteReference(r);
+            }
+        }*/
         this.commissionRepo.deleteById(c.getId());
     }
 }

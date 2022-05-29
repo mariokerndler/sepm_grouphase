@@ -11,6 +11,7 @@ import lombok.Setter;
 public class ReferenceDto {
 
     private Long id;
+    private byte[] imageData;
     private String imageUrl;
     private FileType fileType;
     private Long commissionId;

@@ -53,7 +53,7 @@ public class Commission implements HasId {
     @OneToOne(mappedBy = "commission")
     private Review review;
 
-    @OneToOne(mappedBy = "commission")
+    @OneToOne(mappedBy = "commission", cascade = CascadeType.ALL)
     private Artwork artwork;
 
     public Commission(

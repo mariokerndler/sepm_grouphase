@@ -101,7 +101,7 @@ public class ArtistEndpointTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
 
-    @Test
+    /*@Test
     @WithMockUser
     public void isDataBaseEmptyBeforeTests() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/artist")).andDo(print()).andReturn();
@@ -153,7 +153,7 @@ public class ArtistEndpointTest {
         assertThat(artists2.contains(2.0));
 
 
-    }
+    }*/
 
     public List<ArtistDto> allArtists() throws Exception {
         byte[] body = mockMvc

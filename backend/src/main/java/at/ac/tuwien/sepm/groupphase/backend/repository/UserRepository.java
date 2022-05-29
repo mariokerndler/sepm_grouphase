@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository<U extends ApplicationUser> extends JpaRepository<U, Long> {
@@ -16,4 +17,6 @@ public interface UserRepository<U extends ApplicationUser> extends JpaRepository
     U findApplicationUsersByEmailAndAdmin(String email, Boolean isAdmin);
 
     List<U> findByPasswordEquals(String password);
+
+    Optional<ApplicationUser> findByUserName(String userName);
 }

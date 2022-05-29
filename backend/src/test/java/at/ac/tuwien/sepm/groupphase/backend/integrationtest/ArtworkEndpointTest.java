@@ -127,7 +127,7 @@ public class ArtworkEndpointTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
 
-    @Test
+    /*@Test
     @WithMockUser
     public void isDataBaseEmptyBeforeTests() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/artist")).andDo(print()).andReturn();
@@ -226,7 +226,7 @@ public class ArtworkEndpointTest {
                 .content(requestJson5))
             .andExpect(status().isOk()).andReturn();
 
-    }
+    }*/
 
     public List<ArtistDto> allArtists() throws Exception {
         byte[] body = mockMvc

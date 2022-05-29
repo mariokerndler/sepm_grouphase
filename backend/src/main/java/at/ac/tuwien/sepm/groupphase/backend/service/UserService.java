@@ -34,6 +34,8 @@ public interface UserService extends UserDetailsService {
 
     ApplicationUser findUserById(Long id);
 
+    ApplicationUser findByUserName(String username);
+
     void updateUser(ApplicationUser user);
 
     List<ApplicationUser> getAllUsers();

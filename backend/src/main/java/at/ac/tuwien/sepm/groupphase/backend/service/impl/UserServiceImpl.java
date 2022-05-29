@@ -80,6 +80,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ApplicationUser findByUserName(String username) {
+        log.info(ImageDataPaths.assetAbsoluteLocation);
+        Optional<ApplicationUser> user= userRepo.findByUserName(username);
+        if (user.isPresent()) {
+            LOGGER.info(user.get().getUserName());
+            return user.get();
+        } else {
+            throw new NotFoundException(String.format("Could not find User with username %s", username));
+        }
+    }
+
+    @Override
     public void updateUser(ApplicationUser user) {
         LOGGER.debug("Service: Update User ",user.toString());
         userValidator.validateUser(user);

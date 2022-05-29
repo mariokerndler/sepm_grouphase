@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserPageEditComponent } from './user-page-edit.component';
+import {UserPageEditComponent} from './user-page-edit.component';
 
 describe('UserPageEditComponent', () => {
   let component: UserPageEditComponent;
@@ -8,9 +8,9 @@ describe('UserPageEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserPageEditComponent ]
+      declarations: [UserPageEditComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

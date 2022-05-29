@@ -24,7 +24,7 @@
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle.version>10.1</checkstyle.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-        <org.projectlombok.version> 1.18.24</org.projectlombok.version>
+        <org.projectlombok.version>1.18.24</org.projectlombok.version>
         <org.projectlombok-mapstruct-binding.version>0.2.0</org.projectlombok-mapstruct-binding.version>
         <h2.version>2.1.210</h2.version>
     </properties>

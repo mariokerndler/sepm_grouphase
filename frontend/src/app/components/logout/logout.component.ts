@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {NotificationService} from '../../services/notification/notification.service';
@@ -13,7 +13,8 @@ export class LogoutComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private notificationService: NotificationService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.authService.logoutUser();

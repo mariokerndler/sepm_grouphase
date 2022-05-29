@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router) {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this.submitted = true;
     if (this.loginForm.valid) {
-      const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+      const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
       this.authenticateUser(authRequest);
     } else {
       console.log('Invalid input');
@@ -89,5 +89,6 @@ export class LoginComponent implements OnInit {
     this.dialog.open(RegistrationComponent);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

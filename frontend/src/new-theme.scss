@@ -3,7 +3,7 @@
 
 @include mat.core();
 
-$light-pink-palette:(
+$light-pink-palette: (
   50: #ffecf1,
   100: #ffd0d8,
   200: #fb9fa4,
@@ -15,20 +15,20 @@ $light-pink-palette:(
   800: #da2d37,
   900: #cb212b,
   contrast: (
-  50: #2f3a51,
-  100: #434f6a,
-  200: #434F6A,
-  300: #536281,
-  400: #657699,
-  500: #7484ab,
-  600: #8897ba,
-  700: #9daacb,
-  800: #cfdbf4,
-  900: #ecefff
+    50: #2f3a51,
+    100: #434f6a,
+    200: #434F6A,
+    300: #536281,
+    400: #657699,
+    500: #7484ab,
+    600: #8897ba,
+    700: #9daacb,
+    800: #cfdbf4,
+    900: #ecefff
   )
 );
 
-$dark-blue-palette:(
+$dark-blue-palette: (
   50: #ecefff,
   100: #cfdbf4,
   200: #b7c3df,
@@ -61,10 +61,10 @@ $new-theme-primary: mat.define-palette($dark-blue-palette, 800);
 $new-theme-accent: mat.define-palette($light-pink-palette, 200);
 
 $new-theme: mat.define-light-theme((
-    color: (
-      primary: $new-theme-primary,
-      accent: $new-theme-accent,
-    ),
+  color: (
+    primary: $new-theme-primary,
+    accent: $new-theme-accent,
+  ),
   typography: $new-theme-typography
 ));
 

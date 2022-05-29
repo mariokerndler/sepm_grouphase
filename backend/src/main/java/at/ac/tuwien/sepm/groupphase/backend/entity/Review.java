@@ -45,14 +45,14 @@ public class Review implements HasId {
 
     @Override
     public String toString() {
-        return "Review{" +
-            "id=" + id +
-            ", artist=" + artist.getId() +
-            ", customer=" + customer.getId() +
-            ", text='" + text + '\'' +
-            ", commission=" + commission.getId() +
-            ", starRating=" + starRating +
-            '}';
+        return "Review{"
+            + "id=" + id
+            + ", artist=" + artist.getId()
+            + ", customer=" + customer.getId()
+            + ", text='" + text + '\''
+            + ", commission=" + commission.getId()
+            + ", starRating=" + starRating
+            + '}';
     }
 
     @Override
@@ -62,12 +62,17 @@ public class Review implements HasId {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Review other = (Review) obj;
         return id != null && id.equals(other.getId());
     }

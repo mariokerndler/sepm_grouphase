@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Artist} from '../../../dtos/artist';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {Gallery} from '../../../dtos/gallery';
+import {ArtworkService} from '../../../services/artwork.service';
+import {UploadComponent} from '../../upload/upload.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-artist-gallery',
@@ -16,11 +14,22 @@ export class ArtistGalleryComponent implements OnInit {
   artistProfilePicture: string;
 
 
-  constructor() {}
+  constructor(private artworkService: ArtworkService, public dialog: MatDialog) {}
 
 
   ngOnInit(): void {
     this.artistProfilePicture = 'https://picsum.photos/100/100';
   }
+
+  openDialog() {
+    this.dialog.open(UploadComponent, {
+      data: {
+        artist: this.artist,
+      }
+    });
+  }
+
+
+
 
 }

@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepository;
@@ -70,7 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApplicationUser findUserById(Long id) {
         log.info(ImageDataPaths.assetAbsoluteLocation);
-        Optional<ApplicationUser> user= userRepo.findById(id);
+        Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             LOGGER.info(user.get().getUserName());
             return user.get();
@@ -93,18 +96,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(ApplicationUser user) {
-        LOGGER.debug("Service: Update User ",user.toString());
+        LOGGER.debug("Service: Update User ", user.toString());
         userValidator.validateUser(user);
         userRepo.save(user);
 
     }
 
     @Override
-    public void registerUser(ApplicationUser user)    {
-        LOGGER.debug("Service: Register User ",user.toString());
+    public void registerUser(ApplicationUser user) {
+        LOGGER.debug("Service: Register User ", user.toString());
         userValidator.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
+    }
+
+    @Override
+    public List<ApplicationUser> searchUser(Specification<ApplicationUser> spec) {
+        return this.userRepo.findAll(spec);
     }
 
     @Override

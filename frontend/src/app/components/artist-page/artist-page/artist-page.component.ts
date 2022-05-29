@@ -22,7 +22,12 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   isReady = false;
   isArtist = false;
   canEdit = false;
+  tabIndex = 0;
+  // TODO: Fill in the real profile picture
+  artistUrl = 'https://picsum.photos/150/150';
   private routeSubscription: Subscription;
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +36,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private notificationService: NotificationService,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 
   private static navigateToArtistList() {
     console.log('FAILED');
@@ -43,14 +49,14 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
         .subscribe((user) => {
           this.user = user;
 
-          if(this.user.userRole === UserRole.artist) {
+          if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
 
             this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
               .subscribe((artist) => {
                 this.artist = artist;
 
-                if(this.artist.profileSettings) {
+                if (this.artist.profileSettings) {
                   this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
                 }
 
@@ -100,5 +106,10 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           this.notificationService.displayErrorSnackbar(error.toString());
         }
       );
+  }
+
+
+  changeIndex($event: any) {
+    this.tabIndex = $event;
   }
 }

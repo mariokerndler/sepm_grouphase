@@ -8,9 +8,7 @@ import {ArtistService} from '../../services/artist.service';
 import {TagService} from '../../services/tag.service';
 import {TagDto} from '../../dtos/tagDto';
 import {MatCheckboxChange} from '@angular/material/checkbox';
-import {global} from "@angular/compiler/src/util";
-import {GlobalFunctions} from "../../global/globalFunctions";
-
+import {GlobalFunctions} from '../../global/globalFunctions';
 
 
 @Component({
@@ -25,16 +23,16 @@ export class ImageFeedComponent implements OnInit {
   //maybe use as component
   filterArtistId = null;
   isOpen = false;
-  tagHidden=false;
-  cols= 3;
+  tagHidden = false;
+  cols = 3;
   //rename Artwork
   url = 'assets/';
   images: ArtworkDto[];
   artists: ArtistDto[];
   tags: TagDto[];
-  searchInput='';
-  selectedTags: TagDto[]=[];
-  selectedTagsRaw='';
+  searchInput = '';
+  selectedTags: TagDto[] = [];
+  selectedTagsRaw = '';
   searchParams: TagSearch = {
     pageNr: 0,
     randomSeed: 1,
@@ -47,31 +45,32 @@ export class ImageFeedComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private artworkService: ArtworkService
     , private artistService: ArtistService, private tagService: TagService,
               public globalFunctions: GlobalFunctions) {
-    this.globalFunctions=globalFunctions;
+    this.globalFunctions = globalFunctions;
     this.artworkService = artworkService;
     this.tagService = tagService;
     this.artistService = artistService;
-  console.log(globalFunctions.artworkNameParser('data\\ap\\tianzi\\artstation_9970348_37433613_Quick painting practice 速涂练习.jpg'));
+    console.log(globalFunctions.artworkNameParser('data\\ap\\tianzi\\artstation_9970348_37433613_Quick painting practice 速涂练习.jpg'));
   }
 
   ngOnInit(): void {
     this.loadFeed();
     this.loadArtists();
     this.loadAllTags();
-   // document.documentElement.style.setProperty(`--${your-variable}`, value
+    // document.documentElement.style.setProperty(`--${your-variable}`, value
   }
-  compareFunction = (o1: any, o2: any) => o1.id === o2.id;
-  public loadFeed() {
-    if(this.searchInput!==''){
-      this.searchParams.randomSeed=0  ;
-      this.searchParams.searchOperations='name~'+this.searchInput;
-} else{
 
-    this.searchParams.randomSeed=1;
-      this.searchParams.searchOperations='';
+  compareFunction = (o1: any, o2: any) => o1.id === o2.id;
+
+  public loadFeed() {
+    if (this.searchInput !== '') {
+      this.searchParams.randomSeed = 0;
+      this.searchParams.searchOperations = 'name~' + this.searchInput;
+    } else {
+
+      this.searchParams.randomSeed = 1;
+      this.searchParams.searchOperations = '';
     }
     this.artworkService.search(this.searchParams).subscribe(
-
       data => {
         this.images = data;
       }, error => {
@@ -79,8 +78,9 @@ export class ImageFeedComponent implements OnInit {
       }
     );
   }
+
   public nextPage(): void {
-    if(this.images.length>0) {
+    if (this.images.length > 0) {
       this.searchParams.pageNr += 1;
       this.loadFeed();
     }
@@ -100,9 +100,10 @@ export class ImageFeedComponent implements OnInit {
   }
 
   toggleView() {
-    this.tagHidden=! this.tagHidden;
+    this.tagHidden = !this.tagHidden;
 
   }
+
   public loadAllTags() {
     this.tagService.getAllTags().subscribe(
       data => {
@@ -113,6 +114,7 @@ export class ImageFeedComponent implements OnInit {
       }
     );
   }
+
   public loadArtists() {
     this.artistService.getAllArtists().subscribe(
       data => {
@@ -127,6 +129,7 @@ export class ImageFeedComponent implements OnInit {
       }
     );
   }
+
   onTagSelect($event: MatCheckboxChange) {
     this.searchParams.tagIds = this.tags
       .filter(menuitem => menuitem.selected)

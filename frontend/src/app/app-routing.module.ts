@@ -10,6 +10,7 @@ import {LogoutComponent} from './components/logout/logout.component';
 import {ImageFeedComponent} from './components/image-feed/image-feed.component';
 import {UserPageComponent} from './components/user-page/user-page.component';
 import {UserPageEditComponent} from './components/user-page/user-page-edit/user-page-edit.component';
+import {ArtistFeedComponent} from './components/artist-feed/artist-feed.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: 'artist/:id/edit', component: ArtistPageEditComponent},
   {path: 'user/:id', component: UserPageComponent},
   {path: 'user/:id/edit', component: UserPageEditComponent},
-  {path: 'feed', component: ImageFeedComponent}
+  {path: 'feed', component: ImageFeedComponent},
+  {path: 'artists', component: ArtistFeedComponent}
 ];
 
 @NgModule({

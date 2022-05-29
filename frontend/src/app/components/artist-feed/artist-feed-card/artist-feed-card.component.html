@@ -1,0 +1,17 @@
+<div *ngIf="isReady" class="artist-feed-card-container" fxLayout="row">
+  <!-- Profile -->
+  <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="0.5rem">
+    <img [src]="artistPfp" alt="{{artist.userName}} profile picture" class="artist-feed-card-pfp">
+    <span class="artist-feed-card-fullName accent-color">{{artist.name}} {{artist.surname}}</span>
+    <span class="artist-feed-card-userName">{{artist.userName}}</span>
+    <button (click)="navigateToArtist(artist)" color="accent" mat-button>Go to profile page</button>
+  </div>
+
+  <!-- Artist images-->
+  <div class="artist-feed-card-image-container" fxLayout="row" fxLayoutGap="0.2rem">
+    <div *ngFor="let artwork of artworks">
+      <img [alt]="artwork.name" [src]="globals.assetsPath + artwork.imageUrl" class="artist-feed-card-image-preview">
+    </div>
+
+  </div>
+</div>

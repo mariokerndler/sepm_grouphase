@@ -7,6 +7,7 @@ export class Globals {
   readonly backendUri: string = Globals.findBackendUrl();
   readonly testingBackendUri: string = 'http://localhost:8080';
   readonly projectName: string = 'Project: Sketchbook';
+  readonly assetsPath: string = 'assets/';
 
   private static findBackendUrl(): string {
     if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080

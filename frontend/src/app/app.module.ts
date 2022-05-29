@@ -46,6 +46,8 @@ import {LogoutComponent} from './components/logout/logout.component';
 import {ArtistGalleryComponent} from './components/artist-page/artist-gallery/artist-gallery.component';
 import {ImageFeedComponent} from './components/image-feed/image-feed.component';
 import {GalleryCarouselComponent} from './components/gallery-carousel/gallery-carousel.component';
+import {ArtistFeedComponent} from './components/artist-feed/artist-feed.component';
+import {ArtistFeedCardComponent} from './components/artist-feed/artist-feed-card/artist-feed-card.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import {GalleryCarouselComponent} from './components/gallery-carousel/gallery-ca
     LogoutComponent,
     UserPageComponent,
     UserPageInformationComponent,
-    UserPageEditComponent
+    UserPageEditComponent,
+    ArtistFeedComponent,
+    ArtistFeedCardComponent
   ],
   imports: [
     BrowserModule,

@@ -61,9 +61,11 @@ export class GalleryCarouselComponent implements OnInit {
     this.router = router;
     this.artistService = artistService;
   }
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(evt: KeyboardEvent) {
-   this.close();
+    this.close();
   }
+
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
     console.log(this.selectedArtworkId);

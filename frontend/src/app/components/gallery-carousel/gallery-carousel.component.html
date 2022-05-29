@@ -1,30 +1,36 @@
-<div class="gallery-carousel" (click)="close()">
+<div (click)="close()" class="gallery-carousel">
 
 
-    <mat-card style="  background: radial-gradient(#536281, #2f3a51);" class="image-Card">
+  <mat-card class="image-Card" style="  background: radial-gradient(#536281, #2f3a51);">
 
-      <mat-card-header>
+    <mat-card-header>
 
-        <mat-card-title style="text-align: center; font-size: x-large; color:#d7bce8"> {{artworks[animArtwork].name.substring(artworks[animArtwork].name.lastIndexOf("_")+1)}} </mat-card-title>
-        <mat-divider></mat-divider>
-        <mat-card-subtitle style="text-align: center; font-size: x-large; color:#dedae0" (click)="routeToArtist()" > by {{artist.userName}} </mat-card-subtitle>
-        <mat-divider></mat-divider>
-      </mat-card-header>
+      <mat-card-title
+        style="text-align: center; font-size: x-large; color:#d7bce8"> {{artworks[animArtwork].name.substring(artworks[animArtwork].name.lastIndexOf("_") + 1)}} </mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-subtitle (click)="routeToArtist()" style="text-align: center; font-size: x-large; color:#dedae0">
+        by {{artist.userName}} </mat-card-subtitle>
+      <mat-divider></mat-divider>
+    </mat-card-header>
 
-      <div class="carousel-image" (click)="onEvent($event)">
-    <img [@slide-in]="animState"  (@slide-in.done)="animDone()"    [src]="url+ artworks[animArtwork].imageUrl">
-    <div class=" carousel-button">
-      <span tabindex="1" style="font-size: large"   (keyup.delete)="previous()" (click)="previous()">&lt;  </span>
-      <span></span>
-      <span  tabindex="2" style="font-size: large"    (keyup.enter)="next()"(click)="next()">&gt; </span>
+    <div (click)="onEvent($event)" class="carousel-image">
+      <img (@slide-in.done)="animDone()" [@slide-in]="animState" [src]="url+ artworks[animArtwork].imageUrl">
+      <div class=" carousel-button">
+        <span (click)="previous()" (keyup.delete)="previous()" style="font-size: large" tabindex="1">&lt;  </span>
+        <span></span>
+        <span (click)="next()" (keyup.enter)="next()" style="font-size: large" tabindex="2">&gt; </span>
+
+      </div>
+
 
     </div>
-
-
-  </div>
-    <span style="font-size: large; color:#dedae0;"   class="carousel-close" tabindex ="3" (click)="close()">Return</span><br>
-      <mat-card-subtitle style="text-align: center; font-size: x-large;color: #d7bce8;">{{artworks[animArtwork].description}} </mat-card-subtitle>
-    </mat-card>
+    <span (click)="close()" class="carousel-close" style="font-size: large; color:#dedae0;"
+          tabindex="3">Return</span><br>
+    <mat-card-subtitle
+      style="text-align: center; font-size: x-large;color: #d7bce8;">{{artworks[animArtwork].description}} </mat-card-subtitle>
+  </mat-card>
   <br>
-  <mat-card-subtitle class="tag-view" style=" text-align: center;color: white  ; font-size: x-large"> {{stringifyTags()}}&zwnj; </mat-card-subtitle>
+  <mat-card-subtitle class="tag-view"
+                     style=" text-align: center;color: white  ; font-size: x-large"> {{stringifyTags()}}&zwnj;
+  </mat-card-subtitle>
 </div>

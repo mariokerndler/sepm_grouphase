@@ -87,7 +87,7 @@ public class Commission implements HasId {
     public String toString() {
         return "Commission{" +
             "id=" + id +
-            (artist == null ? "" : ", artist=" + artist.getId()) +
+            ", artist=" + (artist == null ? null : artist.getId()) +
             ", customer=" + customer.getId() +
             ", sketchesShown=" + sketchesShown +
             ", feedbackSent=" + feedbackSent +

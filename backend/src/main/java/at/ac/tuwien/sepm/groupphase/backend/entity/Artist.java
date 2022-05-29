@@ -66,8 +66,17 @@ public class Artist extends ApplicationUser implements HasId {
 
     @Override
     public String toString() {
-        return "Artist{"
-            + "} " + super.toString();
+        return "Artist{" +
+            "profilePicture=" + (profilePicture == null ? null : profilePicture.getId()) +
+            ", description='" + description + '\'' +
+            ", profileSettings='" + profileSettings + '\'' +
+            ", reviewScore=" + reviewScore +
+            ", gallery=" + (gallery == null ? null : gallery.getId()) +
+            ", artworks=" + (artworks == null ? null : artworks.stream().map(Artwork::getId)) +
+            ", commissions=" + (commissions == null ? null : commissions.stream().map(Commission::getId)) +
+            ", reviews=" + (reviews == null ? null : reviews.stream().map(Review::getId)) +
+            ", tags=" + tags +
+            "} " + super.toString();
     }
 
     @Override

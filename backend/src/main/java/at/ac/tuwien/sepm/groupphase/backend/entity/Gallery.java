@@ -35,8 +35,9 @@ public class Gallery {
     @Override
     public String toString() {
         return "Gallery{"
-            + "id=" + id + ", artist=" + artist.getId()
-            + ", artworks=" + artworks.stream().map(Artwork::getId).toList()
+            + "id=" + id
+            + ", artist=" + artist.getId()
+            + ", artworks=" + (artworks == null ? null : artworks.stream().map(Artwork::getId).toList())
             + '}';
     }
 

@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,10 @@ public class ProfilePicture extends Image {
     @JoinColumn(nullable = false)
     private Artist artist;
 
+    public ProfilePicture(String imageUrl, FileType fileType, Artist artist) {
+        super(imageUrl, fileType);
+        this.artist = artist;
+    }
 
     @Override
     public String toString() {

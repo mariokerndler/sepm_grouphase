@@ -23,16 +23,4 @@ public abstract class ArtworkMapper {
         a.setImageUrl("default");
     }
 
-    @AfterMapping
-    protected void addArtistIdToArtworkDto(Artwork a, @MappingTarget ArtworkDto artworkDto) {
-        artworkDto.setArtistId(a.getArtist().getId());
-    }
-
-    //TODO: ArtworkD is this a typo?
-    @AfterMapping
-    protected void addArtistToArtworkD(ArtworkDto a, @MappingTarget Artwork artwork) {
-
-
-        artwork.setArtist(artistService.findArtistById(a.getArtistId()));
-    }
 }

@@ -20,7 +20,6 @@ public class ArtistDto {
     @Size(max = 50)
     private String userName;
 
-    // TODO: Should we allow more than one first name?
     @ValidAlphaNumeric
     @Size(max = 50)
     private String name;

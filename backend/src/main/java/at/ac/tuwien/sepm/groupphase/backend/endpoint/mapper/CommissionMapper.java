@@ -24,5 +24,4 @@ public abstract class CommissionMapper {
     @Mapping(source = "customerDto", target = "customer")
     public abstract Commission detailedCommissionDtoToCommission(DetailedCommissionDto detailedCommissionDto);
 
-    //TODO: see what before or after mappings are needed
 }

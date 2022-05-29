@@ -100,9 +100,10 @@ public class ArtworkEndpoint {
                     spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
                 }
                 for (String tag : tagSearchDto.getTagIds()) {
-                    spec.and(TagSpecification.filterByTags(tag));
+                    spec =spec.and(TagSpecification.filterByTags(tag).and(spec));
+                    log.info("filtering by:" +tag);
                 }
-                log.info(tagSearchDto.getSearchOperations());
+
             }
         }
         return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());

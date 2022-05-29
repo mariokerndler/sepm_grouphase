@@ -49,7 +49,22 @@ export class GalleryCarouselComponent implements OnInit {
   @Input() selectedArtworkId: number;
   @Output() closeCarousel = new EventEmitter<void>();
   public animState = 'middle';
-  public artist: ArtistDto;
+  public artist: ArtistDto ={
+    address: '',
+    admin: false,
+    artworkIds: [],
+    commissions: [],
+    email: '',
+    galleryId: 0,
+    name: '',
+    password: '',
+    reviewScore: 0,
+    reviews: [],
+    surname: '',
+    userName: '',
+    userRole: undefined
+
+  };
   public animArtwork: number;
   url = 'assets/';
   public imageTags = [];
@@ -91,7 +106,7 @@ export class GalleryCarouselComponent implements OnInit {
   public next(): void {
     this.getImageArtistInfo();
     this.animState = 'right';
-    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 1 ? 0 : this.selectedArtworkId + 1;
+    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 2   ? 0 : this.selectedArtworkId + 1;
 
   }
 
@@ -108,7 +123,9 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public loadImageTags() {
-    this.tagService.getImageTags(this.selectedArtworkId).subscribe(
+    console.log("id "+ this.selectedArtworkId);
+    this.tagService.getImageTags(this.artworks[this.selectedArtworkId].id).subscribe(
+
       data => {
         console.log(data);
         this.imageTags = data;

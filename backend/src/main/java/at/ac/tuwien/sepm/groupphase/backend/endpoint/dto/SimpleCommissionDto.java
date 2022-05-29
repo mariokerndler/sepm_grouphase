@@ -12,9 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 public class SimpleCommissionDto {
 
-    private long id;
-    private long artistId;
-    private long customerId;
+    private Long id;
+    private Long artistId;
+    private Long customerId;
     private int sketchesShown;
     private int feedbackSent;
     private double price;

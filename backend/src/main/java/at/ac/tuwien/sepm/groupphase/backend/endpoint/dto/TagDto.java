@@ -18,6 +18,10 @@ public class TagDto {
     @Size(max = 35)
     private String name;
 
+    public TagDto(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "TagDto{" +

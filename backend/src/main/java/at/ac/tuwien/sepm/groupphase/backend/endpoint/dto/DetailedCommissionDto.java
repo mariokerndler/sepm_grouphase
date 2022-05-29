@@ -27,15 +27,15 @@ public class DetailedCommissionDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadlineDate;
     private String instructions;
-    private List<ReferenceDto> references;
-    private List<ReceiptDto> receipts;
-    private ReviewDto review;
+    private List<ReferenceDto> referencesDtos;
+    private List<ReceiptDto> receiptsDtos;
+    private ReviewDto reviewDto;
     private ArtworkDto artworkDto;
 
     public DetailedCommissionDto(ArtistDto artistDto, ApplicationUserDto customerDto, int sketchesShown,
                                  int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate,
-                                 String instructions, List<ReferenceDto> references, List<ReceiptDto> receipts,
-                                 ReviewDto review, ArtworkDto artworkDto) {
+                                 String instructions, List<ReferenceDto> referencesDtos, List<ReceiptDto> receiptsDtos,
+                                 ReviewDto reviewDto, ArtworkDto artworkDto) {
         this.artistDto = artistDto;
         this.customerDto = customerDto;
         this.sketchesShown = sketchesShown;
@@ -44,9 +44,9 @@ public class DetailedCommissionDto {
         this.issueDate = issueDate;
         this.deadlineDate = deadlineDate;
         this.instructions = instructions;
-        this.references = references;
-        this.receipts = receipts;
-        this.review = review;
+        this.referencesDtos = referencesDtos;
+        this.receiptsDtos = receiptsDtos;
+        this.reviewDto = reviewDto;
         this.artworkDto = artworkDto;
     }
 
@@ -54,18 +54,18 @@ public class DetailedCommissionDto {
     public String toString() {
         return "DetailedCommissionDto{" +
             "id=" + id +
-            ", artistDto=" + artistDto.getId() +
-            ", customerDto=" + customerDto.getId() +
+            ", artistDtoId=" + (artistDto == null ? null : artistDto.getId()) +
+            ", customerDtoId=" + (customerDto == null ? null : customerDto.getId()) +
             ", sketchesShown=" + sketchesShown +
             ", feedbackSent=" + feedbackSent +
             ", price=" + price +
             ", issueDate=" + issueDate +
             ", deadlineDate=" + deadlineDate +
             ", instructions='" + instructions + '\'' +
-            (references == null ? "" : ", references=" + references.stream().map(ReferenceDto::getId).toList()) +
-            (references == null ? "" : ", receipts=" + receipts.stream().map(ReceiptDto::getId).toList()) +
-            ", review=" + review +
-            (artworkDto == null ? "" : ", artworkDto=" + artworkDto.getId()) +
+            ", referencesDtosIds=" + (referencesDtos == null ? null : referencesDtos.stream().map(ReferenceDto::getId).toList()) +
+            ", receiptsDtosIds=" + (receiptsDtos == null ? null : receiptsDtos.stream().map(ReceiptDto::getId).toList()) +
+            ", reviewDto=" + reviewDto +
+            ", artworkDtoId=" + (artworkDto == null ? null : artworkDto.getId()) +
             '}';
     }
 }

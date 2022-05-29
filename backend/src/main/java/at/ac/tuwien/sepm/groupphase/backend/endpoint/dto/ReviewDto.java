@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,8 +28,8 @@ public class ReviewDto {
     public String toString() {
         return "ReviewDto{" +
             "id=" + id +
-            ", artistDto=" + artistDto +
-            ", customerDto=" + customerDto +
+            ", artistDtoId=" + (artistDto == null ? null : artistDto.getId()) +
+            ", customerDtoId=" + (customerDto == null ? null : customerDto.getId()) +
             ", text='" + text + '\'' +
             ", commissionId=" + commissionId +
             ", starRating=" + starRating +

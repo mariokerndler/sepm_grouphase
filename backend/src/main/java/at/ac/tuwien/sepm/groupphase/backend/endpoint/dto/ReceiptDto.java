@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +18,14 @@ public class ReceiptDto {
     private double taxRate;
     private List<String> companyInfo;
     private Long commissionId;
+
+    public ReceiptDto(double price, LocalDateTime issueDate, double taxRate, List<String> companyInfo, Long commissionId) {
+        this.price = price;
+        this.issueDate = issueDate;
+        this.taxRate = taxRate;
+        this.companyInfo = companyInfo;
+        this.commissionId = commissionId;
+    }
 
     @Override
     public String toString() {

@@ -51,7 +51,9 @@ public class ArtistDto {
     @Min(0)
     @Max(5)
     private double reviewScore;
+
     private Long galleryId;
+
     private List<Long> artworksIds;
 
     private List<Long> commissionsIds;
@@ -81,6 +83,29 @@ public class ArtistDto {
         this.profileSettings = profileSettings;
     }
 
+    @Override
+    public String toString() {
+        return "ArtistDto{" +
+            "id=" + id +
+            ", userName='" + userName + '\'' +
+            ", name='" + name + '\'' +
+            ", surname='" + surname + '\'' +
+            ", email='" + email + '\'' +
+            ", address='" + address + '\'' +
+            ", password='" + password + '\'' +
+            ", admin=" + admin +
+            ", userRole=" + userRole +
+            ", reviewScore=" + reviewScore +
+            ", galleryId=" + galleryId +
+            ", artworksIds=" + artworksIds +
+            ", commissionsIds=" + commissionsIds +
+            ", reviewsIds=" + reviewsIds +
+            ", profileSettings='" + profileSettings + '\'' +
+            '}';
+    }
+
+
+    //TODO: unused
     public void addArtworkId(Long i) {
         if (artworksIds == null) {
             return;

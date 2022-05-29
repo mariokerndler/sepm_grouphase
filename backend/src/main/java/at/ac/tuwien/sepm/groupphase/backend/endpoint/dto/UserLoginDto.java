@@ -48,7 +48,7 @@ public class UserLoginDto {
             + '}';
     }
 
-
+    //TODO: substitute this with @Builder annotation, not sure of dependencies tho
     public static final class UserLoginDtoBuilder {
         private String email;
         private String password;

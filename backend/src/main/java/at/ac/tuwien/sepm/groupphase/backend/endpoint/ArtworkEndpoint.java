@@ -1,0 +1,162 @@
+package at.ac.tuwien.sepm.groupphase.backend.endpoint;
+
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TagSearchDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
+import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
+import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.type.StringNVarcharType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.annotation.security.PermitAll;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping(value = "/artwork")
+@Slf4j
+public class ArtworkEndpoint {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private final ArtworkService artworkService;
+    private final ArtworkMapper artworkMapper;
+    @Autowired
+    public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper) {
+        this.artworkService = artworkService;
+        this.artworkMapper = artworkMapper;
+    }
+
+    //see https://www.baeldung.com/rest-api-query-search-language-more-operations
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    @ResponseBody
+    @Transactional
+    @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
+    public List<ArtworkDto> search(@RequestParam( name="randomSeed",defaultValue = "0")int randomSeed,
+                                   @RequestParam( name="tagIds", required = false)List<String> tagIds,
+                                   @RequestParam( name="pageNr",defaultValue = "0")int pageNr,
+                                   @RequestParam( name="searchOperations",defaultValue = "")String searchOperations) {
+        ;
+        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperations.toLowerCase(),pageNr,randomSeed);
+        log.info(tagSearchDto.toString());
+        String search= tagSearchDto.getSearchOperations();
+
+        Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
+        GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
+        String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
+        Pattern pattern = Pattern.compile(
+            "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
+        Matcher matcher = pattern.matcher(search + ",");
+        while (matcher.find()) {
+            builder.with(
+                matcher.group(1),
+                matcher.group(2),
+                matcher.group(4),
+                matcher.group(3),
+                matcher.group(5));
+            log.info(matcher.group(1));
+            log.info(matcher.group(2));
+            log.info(matcher.group(3));
+            log.info(matcher.group(4));
+            log.info(matcher.group(5));
+        }
+
+        Specification<Artwork> spec = builder.build();
+
+
+
+
+        if(tagSearchDto.getTagIds()!=null) {
+            if(tagSearchDto.getTagIds().size()>0) {
+                if (spec == null) {
+                    spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+                }
+                for (String tag : tagSearchDto.getTagIds()) {
+                    spec =spec.and(TagSpecification.filterByTags(tag).and(spec));
+                    log.info("filtering by:" +tag);
+                }
+
+            }
+        }
+        return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+
+    }
+
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    @Operation(summary = "getAllArtworksByArtist")
+    public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id ){
+        LOGGER.info("Get /Artist");
+        try {
+            List<Artwork> artworks=artworkService.findArtworksByArtist(id);
+
+            List<ArtworkDto> artworksDto= artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+
+
+            return artworksDto;
+        } catch (Exception n) {
+            LOGGER.error(n.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping( )
+    @Operation(summary = "getAllArtworksByArtist")
+    public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
+        LOGGER.info("Delete Artwork"+artworkDto.getName());
+        try {
+
+            artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+
+        } catch (Exception n) {
+            LOGGER.error(n.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        }
+    }
+    @PermitAll
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get Detailed informations about a specific user")
+    public void postArtwork(@RequestBody ArtworkDto artworkDto ) {
+        LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
+        try {
+            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+        } catch (Exception v) {
+            LOGGER.error(v.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        }
+
+    }
+}

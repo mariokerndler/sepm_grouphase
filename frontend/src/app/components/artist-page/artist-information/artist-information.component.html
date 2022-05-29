@@ -1,0 +1,23 @@
+<div>
+  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}" class="accent-color artist-about-header">About</span>
+  <p class="accent-color artist-about-description">
+    {{artist.description}}
+  </p>
+</div>
+<br>
+<div>
+  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}" class="accent-color artist-about-header">Gallery</span>
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <button mat-button color="accent" (click)="switchTab(1)">See More</button>
+  </div>
+</div>
+<br>
+<div>
+  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}" class="accent-color artist-about-header">Reviews</span>
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <button mat-button color="accent" (click)="switchTab(2)">See More</button>
+  </div>
+  <p class="accent-color artist-about-description">
+    {{artist.description}}
+  </p>
+</div>

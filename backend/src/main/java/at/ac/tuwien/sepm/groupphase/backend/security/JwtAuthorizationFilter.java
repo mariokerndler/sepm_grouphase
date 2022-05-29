@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
@@ -34,6 +35,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws IOException, ServletException {
+
+        // if a registration is completed, the post-request contains the header auth : Registration
+        // and this filter is disabled.
+        // Todo Maybe there is a better solution than this
+        if (Objects.equals(request.getHeader("auth"), "frontend")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         try {
             UsernamePasswordAuthenticationToken authToken = getAuthToken(request);
             if (authToken != null) {
@@ -50,6 +60,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthToken(HttpServletRequest request)
         throws JwtException, IllegalArgumentException {
+
         String token = request.getHeader(securityProperties.getAuthHeader());
         if (token == null || token.isEmpty()) {
             return null;

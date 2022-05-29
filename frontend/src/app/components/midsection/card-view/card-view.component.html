@@ -1,0 +1,12 @@
+<a [routerLink]="'/artwork/' + artwork.id" routerLinkActive="active">
+  <div class="card-container">
+    <div class="card-img-wrap">
+      <img *ngIf="artwork" [alt]="artwork.name" [src]='url + artwork.imageUrl' class="card-img">
+      <div class="card-img-description-layer">
+        <p class="card-img-description">
+          {{artwork.name}}
+        </p>
+      </div>
+    </div>
+  </div>
+</a>

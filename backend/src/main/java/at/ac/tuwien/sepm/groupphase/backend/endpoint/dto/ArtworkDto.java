@@ -26,7 +26,6 @@ public class ArtworkDto {
 
     private byte[] imageData;
 
-    @NotBlank
     @Size(max = 255)
     private String imageUrl;
 

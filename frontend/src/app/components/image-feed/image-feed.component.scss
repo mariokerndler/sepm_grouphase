@@ -118,9 +118,6 @@ html, body {
 }
 
 
-::ng-deep input.mat-input-element {
-  color: white;
-}
 
 md-divider {
   border-width: 1px;
@@ -173,11 +170,11 @@ md-divider {
 }
 #carousel:not(:active){
 
-      visibility: visible;
+  visibility: visible;
   filter:blur(5px);
 }
 #carousel:active {
-filter:blur(5px);
+  filter:blur(5px);
 }
 .card-img-description {
   transition: 2s;
@@ -213,6 +210,7 @@ mat-menu.content {
   display: flex;
   align-items: center;
 }
+
 
 .paginationButton {
 

@@ -60,7 +60,7 @@ public class ArtworkMappingTest implements TestData {
     }
 
 
-    @Test
+    /*@Test
     public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
         File file = new File("./data/image0.png");
         byte[] image = Files.readAllBytes(file.toPath());
@@ -77,6 +77,6 @@ public class ArtworkMappingTest implements TestData {
             () -> assertEquals(FileType.PNG, artworkDto.getFileType()),
             () -> assertEquals(1, artworkDto.getArtistId())
         );
-    }
+    }*/
 
 }

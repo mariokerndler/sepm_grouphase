@@ -18,5 +18,5 @@ public interface UserRepository<U extends ApplicationUser> extends JpaRepository
 
     List<U> findByPasswordEquals(String password);
 
-    Optional<ApplicationUser> findByUserName(String userName);
+    Optional<ApplicationUser> findApplicationUserByUserName(String userName);
 }

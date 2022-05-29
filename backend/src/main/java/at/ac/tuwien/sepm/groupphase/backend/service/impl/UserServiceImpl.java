@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApplicationUser findUserById(Long id) {
+    public ApplicationUser findApplicationUserById(Long id) {
         log.info(ImageDataPaths.assetAbsoluteLocation);
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
@@ -83,9 +83,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApplicationUser findByUserName(String username) {
+    public ApplicationUser findApplicationUserByUserName(String username) {
         log.info(ImageDataPaths.assetAbsoluteLocation);
-        Optional<ApplicationUser> user= userRepo.findByUserName(username);
+        Optional<ApplicationUser> user= userRepo.findApplicationUserByUserName(username);
         if (user.isPresent()) {
             LOGGER.info(user.get().getUserName());
             return user.get();
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(ApplicationUser user) {
         LOGGER.debug("Service: Update User ", user.toString());
-        userValidator.validateUser(user);
+        userValidator.validateUser(user, false);
         userRepo.save(user);
 
     }
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(ApplicationUser user) {
         LOGGER.debug("Service: Register User ", user.toString());
-        userValidator.validateUser(user);
+        userValidator.validateUser(user, true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
     }

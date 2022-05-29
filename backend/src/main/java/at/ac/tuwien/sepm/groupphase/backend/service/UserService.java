@@ -33,7 +33,9 @@ public interface UserService extends UserDetailsService {
      */
     ApplicationUser findApplicationUserByEmail(String email);
 
-    ApplicationUser findUserById(Long id);
+    ApplicationUser findApplicationUserById(Long id);
+
+    ApplicationUser findApplicationUserByUserName(String username);
 
     void updateUser(ApplicationUser user);
 

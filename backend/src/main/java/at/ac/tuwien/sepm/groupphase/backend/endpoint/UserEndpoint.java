@@ -43,7 +43,7 @@ public class UserEndpoint {
     public ApplicationUserDto findById(@PathVariable Long id) {
         log.debug("Get /User/{}", id);
 
-        ApplicationUser applicationUser = userService.findUserById(id);
+        ApplicationUser applicationUser = userService.findApplicationUserById(id);
         log.info(applicationUser.getUserName());
         ApplicationUserDto audto = userMapper.userToUserDto(applicationUser);
         log.info(audto.toString());

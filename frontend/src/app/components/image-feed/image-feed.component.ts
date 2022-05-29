@@ -77,6 +77,7 @@ export class ImageFeedComponent implements OnInit {
         console.log('no error handling exists so im just here to say hi');
       }
     );
+
   }
 
   public nextPage(): void {
@@ -96,7 +97,9 @@ export class ImageFeedComponent implements OnInit {
   }
 
   public onListSelectionChange(event: any, options: any): void {
+    this.searchParams.pageNr=0;
     this.loadFeed();
+
   }
 
   toggleView() {
@@ -134,8 +137,14 @@ export class ImageFeedComponent implements OnInit {
     this.searchParams.tagIds = this.tags
       .filter(menuitem => menuitem.selected)
       .map(menuitem => menuitem.id.toString());
+    this.searchParams.pageNr=0;
     this.loadFeed();
   }
 
 
+  setSelectedArtwork(i) {
+    this.selectedArtwork=i;
+
+
+  }
 }

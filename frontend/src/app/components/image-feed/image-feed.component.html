@@ -39,16 +39,16 @@
 </form>
 
 <mat-divider class="primary"></mat-divider>
-<div class="container" id="container" *ngIf="imagesLoaded">
+<div class="container" id="container">
   <div class="header"><br></div>
   <div class="content">
     <div class="card-img-wrap">
       <div _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px"
            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px;">
-        <div *ngFor="let artwork of images" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
+        <div *ngFor="let artwork of images, let i = index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
              class="image">
 
-          <img (click)="setSelectedArtwork(artwork) " [src]="globals.assetsPath + artwork.imageUrl" [alt]="globalFunctions.artworkNameParser(artwork.name)">
+          <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" [alt]="globalFunctions.artworkNameParser(artwork.name)">
           <div class="card-img-description-layer">
             <p class="card-img-description">
               {{globalFunctions.artworkNameParser(artwork.name)}}
@@ -61,16 +61,6 @@
   </div>
 </div>
 
-<!--
-<mat-paginator
-  (page)="handlePage($event)"
-  [length]="totalSize"
-  [pageSizeOptions]="[5,10,25,100]"
-  [pageSize]="pageSize"
-  aria-label="Select page"
-  color="primary">
-</mat-paginator>
--->
 <div *ngIf="imagesLoaded">
   <app-gallery-carousel
     (closeCarousel)="selectedArtwork=null"

@@ -46,17 +46,16 @@ public class SimpleCommissionDto {
 
     @Override
     public String toString() {
-        return "SimpleCommissionDto{" +
-            "id=" + id +
-            ", artistId=" + artistId +
-            ", customerId=" + customerId +
-            ", sketchesShown=" + sketchesShown +
-            ", feedbackSent=" + feedbackSent +
-            ", price=" + price +
-            ", issueDate=" + issueDate +
-            ", deadlineDate=" + deadlineDate +
-            ", instructions='" + instructions + '\'' +
-            ", referenceIds=" + referencesIds +
-            '}';
+        return "SimpleCommissionDto{"
+            + "id=" + id
+            + ", artistId=" + artistId
+            + ", customerId=" + customerId
+            + ", sketchesShown=" + sketchesShown
+            + ", feedbackSent=" + feedbackSent
+            + ", price=" + price
+            + ", issueDate=" + issueDate
+            + ", deadlineDate=" + deadlineDate
+            + ", instructions='" + instructions + '\''
+            + ", referenceIds=" + referencesIds + '}';
     }
 }

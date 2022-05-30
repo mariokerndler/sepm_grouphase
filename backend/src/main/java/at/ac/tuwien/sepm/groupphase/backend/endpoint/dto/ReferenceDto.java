@@ -24,11 +24,10 @@ public class ReferenceDto {
 
     @Override
     public String toString() {
-        return "ReferenceDto{" +
-            "id=" + id +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", fileType=" + fileType +
-            ", commissionId=" + commissionId +
-            '}';
+        return "ReferenceDto{"
+            + "id=" + id
+            + ", imageUrl='" + imageUrl + '\''
+            + ", fileType=" + fileType
+            + ", commissionId=" + commissionId + '}';
     }
 }

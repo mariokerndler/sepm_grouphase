@@ -62,9 +62,19 @@ public class ArtistDto {
     @Size(max = 255)
     private String profileSettings;
 
-    public ArtistDto(String userName, String name, String surname, String email, String address,
-                     String password, Boolean admin, UserRole userRole, double reviewScore, Long galleryId,
-                     List<Long> artworksIds, List<Long> commissions, List<Long> reviews,
+    public ArtistDto(String userName,
+                     String name,
+                     String surname,
+                     String email,
+                     String address,
+                     String password,
+                     Boolean admin,
+                     UserRole userRole,
+                     double reviewScore,
+                     Long galleryId,
+                     List<Long> artworksIds,
+                     List<Long> commissions,
+                     List<Long> reviews,
                      String profileSettings) {
         this.userName = userName;
         this.name = name;
@@ -84,22 +94,21 @@ public class ArtistDto {
 
     @Override
     public String toString() {
-        return "ArtistDto{" +
-            "id=" + id +
-            ", userName='" + userName + '\'' +
-            ", name='" + name + '\'' +
-            ", surname='" + surname + '\'' +
-            ", email='" + email + '\'' +
-            ", address='" + address + '\'' +
-            ", password='" + password + '\'' +
-            ", admin=" + admin +
-            ", userRole=" + userRole +
-            ", reviewScore=" + reviewScore +
-            ", galleryId=" + galleryId +
-            ", artworksIds=" + artworksIds +
-            ", commissionsIds=" + commissionsIds +
-            ", reviewsIds=" + reviewsIds +
-            ", profileSettings='" + profileSettings + '\'' +
-            '}';
+        return "ArtistDto{"
+            + "id=" + id
+            + ", userName='" + userName + '\''
+            + ", name='" + name + '\''
+            + ", surname='" + surname + '\''
+            + ", email='" + email + '\''
+            + ", address='" + address + '\''
+            + ", password='" + password + '\''
+            + ", admin=" + admin
+            + ", userRole=" + userRole
+            + ", reviewScore=" + reviewScore
+            + ", galleryId=" + galleryId
+            + ", artworksIds=" + artworksIds
+            + ", commissionsIds=" + commissionsIds
+            + ", reviewsIds=" + reviewsIds
+            + ", profileSettings='" + profileSettings + '\'' + '}';
     }
 }

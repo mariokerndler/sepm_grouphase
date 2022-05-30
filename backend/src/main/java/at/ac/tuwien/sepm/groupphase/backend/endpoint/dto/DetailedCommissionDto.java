@@ -32,10 +32,18 @@ public class DetailedCommissionDto {
     private ReviewDto reviewDto;
     private ArtworkDto artworkDto;
 
-    public DetailedCommissionDto(ArtistDto artistDto, ApplicationUserDto customerDto, int sketchesShown,
-                                 int feedbackSent, double price, LocalDateTime issueDate, LocalDateTime deadlineDate,
-                                 String instructions, List<ReferenceDto> referencesDtos, List<ReceiptDto> receiptsDtos,
-                                 ReviewDto reviewDto, ArtworkDto artworkDto) {
+    public DetailedCommissionDto(ArtistDto artistDto,
+                                 ApplicationUserDto customerDto,
+                                 int sketchesShown,
+                                 int feedbackSent,
+                                 double price,
+                                 LocalDateTime issueDate,
+                                 LocalDateTime deadlineDate,
+                                 String instructions,
+                                 List<ReferenceDto> referencesDtos,
+                                 List<ReceiptDto> receiptsDtos,
+                                 ReviewDto reviewDto,
+                                 ArtworkDto artworkDto) {
         this.artistDto = artistDto;
         this.customerDto = customerDto;
         this.sketchesShown = sketchesShown;
@@ -52,20 +60,19 @@ public class DetailedCommissionDto {
 
     @Override
     public String toString() {
-        return "DetailedCommissionDto{" +
-            "id=" + id +
-            ", artistDtoId=" + (artistDto == null ? null : artistDto.getId()) +
-            ", customerDtoId=" + (customerDto == null ? null : customerDto.getId()) +
-            ", sketchesShown=" + sketchesShown +
-            ", feedbackSent=" + feedbackSent +
-            ", price=" + price +
-            ", issueDate=" + issueDate +
-            ", deadlineDate=" + deadlineDate +
-            ", instructions='" + instructions + '\'' +
-            ", referencesDtosIds=" + (referencesDtos == null ? null : referencesDtos.stream().map(ReferenceDto::getId).toList()) +
-            ", receiptsDtosIds=" + (receiptsDtos == null ? null : receiptsDtos.stream().map(ReceiptDto::getId).toList()) +
-            ", reviewDto=" + reviewDto +
-            ", artworkDtoId=" + (artworkDto == null ? null : artworkDto.getId()) +
-            '}';
+        return "DetailedCommissionDto{"
+            + "id=" + id
+            + ", artistDtoId=" + (artistDto == null ? null : artistDto.getId())
+            + ", customerDtoId=" + (customerDto == null ? null : customerDto.getId())
+            + ", sketchesShown=" + sketchesShown
+            + ", feedbackSent=" + feedbackSent
+            + ", price=" + price
+            + ", issueDate=" + issueDate
+            + ", deadlineDate=" + deadlineDate
+            + ", instructions='" + instructions + '\''
+            + ", referencesDtosIds=" + (referencesDtos == null ? null : referencesDtos.stream().map(ReferenceDto::getId).toList())
+            + ", receiptsDtosIds=" + (receiptsDtos == null ? null : receiptsDtos.stream().map(ReceiptDto::getId).toList())
+            + ", reviewDto=" + reviewDto
+            + ", artworkDtoId=" + (artworkDto == null ? null : artworkDto.getId()) + '}';
     }
 }

@@ -24,11 +24,10 @@ public class SearchCriteria {
 
     @Override
     public String toString() {
-        return "SearchCriteria{" +
-            "key='" + key + '\'' +
-            ", operation='" + operation + '\'' +
-            ", value=" + value +
-            ", predicateType='" + predicateType + '\'' +
-            '}';
+        return "SearchCriteria{"
+            + "key='" + key + '\''
+            + ", operation='" + operation + '\''
+            + ", value=" + value
+            + ", predicateType='" + predicateType + '\'' + '}';
     }
 }

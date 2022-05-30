@@ -33,13 +33,12 @@ public class ReceiptDto {
 
     @Override
     public String toString() {
-        return "ReceiptDto{" +
-            "id=" + id +
-            ", price=" + price +
-            ", issueDate=" + issueDate +
-            ", taxRate=" + taxRate +
-            ", companyInfo=" + companyInfo +
-            ", commissionId=" + commissionId +
-            '}';
+        return "ReceiptDto{"
+            + "id=" + id
+            + ", price=" + price
+            + ", issueDate=" + issueDate
+            + ", taxRate=" + taxRate
+            + ", companyInfo=" + companyInfo
+            + ", commissionId=" + commissionId + '}';
     }
 }

@@ -56,19 +56,18 @@ public class Commission implements HasId {
     @OneToOne(mappedBy = "commission", cascade = CascadeType.ALL)
     private Artwork artwork;
 
-    public Commission(
-        Artist artist,
-        ApplicationUser customer,
-        int sketchesShown,
-        int feedbackSent,
-        double price,
-        LocalDateTime issueDate,
-        LocalDateTime deadlineDate,
-        String instructions,
-        List<Reference> references,
-        List<Receipt> receipts,
-        Review review,
-        Artwork artwork) {
+    public Commission(Artist artist,
+                      ApplicationUser customer,
+                      int sketchesShown,
+                      int feedbackSent,
+                      double price,
+                      LocalDateTime issueDate,
+                      LocalDateTime deadlineDate,
+                      String instructions,
+                      List<Reference> references,
+                      List<Receipt> receipts,
+                      Review review,
+                      Artwork artwork) {
         this.artist = artist;
         this.customer = customer;
         this.sketchesShown = sketchesShown;
@@ -85,20 +84,19 @@ public class Commission implements HasId {
 
     @Override
     public String toString() {
-        return "Commission{" +
-            "id=" + id +
-            ", artist=" + (artist == null ? null : artist.getId()) +
-            ", customer=" + customer.getId() +
-            ", sketchesShown=" + sketchesShown +
-            ", feedbackSent=" + feedbackSent +
-            ", price=" + price +
-            ", issueDate=" + issueDate +
-            ", deadlineDate=" + deadlineDate +
-            ", instructions='" + instructions + '\'' +
-            (receipts == null ? "" : ", receipts=" + receipts.stream().map(Receipt::getId).toList()) +
-            (review == null ? "" : ", review=" + review.getId()) +
-            (artwork == null ? "" : ", artwork=" + artwork.getId()) +
-            '}';
+        return "Commission{"
+            + "id=" + id
+            + ", artist=" + (artist == null ? null : artist.getId())
+            + ", customer=" + customer.getId()
+            + ", sketchesShown=" + sketchesShown
+            + ", feedbackSent=" + feedbackSent
+            + ", price=" + price
+            + ", issueDate=" + issueDate
+            + ", deadlineDate=" + deadlineDate
+            + ", instructions='" + instructions + '\''
+            + (receipts == null ? "" : ", receipts=" + receipts.stream().map(Receipt::getId).toList())
+            + (review == null ? "" : ", review=" + review.getId())
+            + (artwork == null ? "" : ", artwork=" + artwork.getId()) + '}';
     }
 
     @Override

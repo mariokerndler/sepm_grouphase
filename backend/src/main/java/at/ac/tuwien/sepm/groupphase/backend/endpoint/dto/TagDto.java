@@ -24,9 +24,8 @@ public class TagDto {
 
     @Override
     public String toString() {
-        return "TagDto{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            '}';
+        return "TagDto{"
+            + "id=" + id
+            + ", name='" + name + '\'' + '}';
     }
 }

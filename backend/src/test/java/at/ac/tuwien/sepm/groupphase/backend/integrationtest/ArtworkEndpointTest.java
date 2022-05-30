@@ -168,8 +168,6 @@ public class ArtworkEndpointTest {
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
-        //assertEquals(UserRole.Artist, artists.get(0).getUserRole());
-        //Long id = artists.get(0).getId();
 
 
         ApplicationUser anotherObject = getTestArtist2();
@@ -183,7 +181,6 @@ public class ArtworkEndpointTest {
 
         List<ArtistDto> artists2 = allArtists();
         assertEquals(2, artists2.size());
-        System.out.println(artists2.toArray().toString());
 
         assertThat(artists2.contains("bob"));
         assertThat(artists2.contains("bobby"));
@@ -192,6 +189,9 @@ public class ArtworkEndpointTest {
         assertThat(artists2.contains("testArtist2"));
         assertThat(artists2.contains("description"));
         assertThat(artists2.contains(2.0));
+
+        Artist artworkArtist = getArtistById(1L);
+        System.out.println("artworkArtist: " + artworkArtist);
 
         Artwork anArtwork = getArtwork(1L, image);
         ArtworkDto aDto = artworkMapper.artworkToArtworkDto(anArtwork);

@@ -37,10 +37,8 @@ export class CommissionDetailsComponent implements OnInit {
     this.fetchUser(this.commission.id);
   }
 
-  /**
-   * Gets the specified horse, with the id from the URL
-   *
-   */
+
+
   /*
   private getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
@@ -71,6 +69,8 @@ export class CommissionDetailsComponent implements OnInit {
     }
     */
   }
+
+
 
 
 

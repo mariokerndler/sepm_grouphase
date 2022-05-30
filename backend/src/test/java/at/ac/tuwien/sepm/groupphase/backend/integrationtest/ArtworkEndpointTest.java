@@ -190,10 +190,10 @@ public class ArtworkEndpointTest {
         assertThat(artists2.contains("description"));
         assertThat(artists2.contains(2.0));
 
-        Artist artworkArtist = getArtistById(1L);
-        System.out.println("artworkArtist: " + artworkArtist);
+        Long artistIdForArtwork = artists.get(0).getId();
+        System.out.println("artworkArtist: " + artistIdForArtwork);
 
-        Artwork anArtwork = getArtwork(1L, image);
+        Artwork anArtwork = getArtwork(artistIdForArtwork, image);
         ArtworkDto aDto = artworkMapper.artworkToArtworkDto(anArtwork);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
@@ -205,7 +205,7 @@ public class ArtworkEndpointTest {
                 .content(requestJson3))
             .andExpect(status().isOk()).andReturn();
 
-        Artwork anotherArtwork = getArtwork1(2L, image1);
+        Artwork anotherArtwork = getArtwork1(artistIdForArtwork, image1);
         ArtworkDto anotherDto = artworkMapper.artworkToArtworkDto(anotherArtwork);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow4 = objectMapper.writer().withDefaultPrettyPrinter();
@@ -239,7 +239,7 @@ public class ArtworkEndpointTest {
                 .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andReturn().getResponse().getContentAsByteArray();
-        List<ArtistDto> artistResult = objectMapper.readerFor(ApplicationUserDto.class).<ArtistDto>readValues(body).readAll();
+        List<ArtistDto> artistResult = objectMapper.readerFor(ArtistDto.class).<ArtistDto>readValues(body).readAll();
         return artistResult;
     }
 }

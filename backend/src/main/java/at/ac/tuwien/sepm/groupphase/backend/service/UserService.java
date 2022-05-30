@@ -43,4 +43,6 @@ public interface UserService extends UserDetailsService {
     void registerUser(ApplicationUser userDtoToUser);
 
     List<ApplicationUser> searchUser(Specification<ApplicationUser> spec);
+
+     ApplicationUser searchUserByEmail(String email);
 }

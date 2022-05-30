@@ -80,10 +80,23 @@ public class UserEndpoint {
 
         userService.registerUser(userMapper.userDtoToUser(userDto));
     }
+    @PermitAll
+    @GetMapping("/email")
+    @Transactional
+    @Operation(summary = "find user by email")
+    public ApplicationUserDto searchUsersByEmail(
+        @RequestParam( name="email",defaultValue = "")String email) {
 
+
+
+        log.info(email);
+        return userMapper.userToUserDto( userService.searchUserByEmail(email));
+
+    }
     @PermitAll
     @GetMapping()
     @Transactional
+    @Operation(summary = "find users by criteria")
     public List<ApplicationUserDto> searchUsers(
         @RequestParam( name="searchOperations",defaultValue = "")String searchOperations) {
 

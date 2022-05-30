@@ -140,7 +140,7 @@ public class CommissionRepositoryTest {
 
         assertAll(
             () -> assertEquals(0, commissionRepository.findAll().size()),
-            () -> assertEquals(true, commissionRepository.findById(commission.getId()).isEmpty())
+            () -> assertTrue(commissionRepository.findById(commission.getId()).isEmpty())
         );
     }
 

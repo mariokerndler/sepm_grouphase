@@ -1,6 +1,2 @@
 .idea
 node_modules
-cypress/screenshots/*
-cypress/videos/*
-cypress/results/*
-cypress/reports/*

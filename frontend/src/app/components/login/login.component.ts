@@ -3,8 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {RegistrationComponent} from '../registration/registration.component';
+
 
 @Component({
   selector: 'app-login',
@@ -19,16 +18,10 @@ export class LoginComponent implements OnInit {
   // Error flag
   error = false;
   errorMessage = '';
-  hidePassword = true;
 
-  constructor(
-    public dialogRef: MatDialogRef<LoginComponent>,
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
@@ -39,7 +32,7 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this.submitted = true;
     if (this.loginForm.valid) {
-      const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
+      const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
       this.authenticateUser(authRequest);
     } else {
       console.log('Invalid input');
@@ -56,10 +49,8 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(authRequest).subscribe({
       next: () => {
         console.log('Successfully logged in user: ' + authRequest.email);
-        this.onNoClick();
-        this.router.navigate(['/message'])
-          .catch((err) => console.log(err));
-      }/*,
+        this.router.navigate(['/message']);
+      },
       error: error => {
         console.log('Could not log in due to:');
         console.log(error);
@@ -69,7 +60,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.errorMessage = error.error;
         }
-      } */
+      }
     });
   }
 
@@ -80,15 +71,7 @@ export class LoginComponent implements OnInit {
     this.error = false;
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  openDialog() {
-    this.onNoClick();
-    this.dialog.open(RegistrationComponent);
-  }
-
   ngOnInit() {
   }
+
 }

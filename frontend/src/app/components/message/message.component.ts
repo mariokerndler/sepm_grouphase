@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, OnInit, TemplateRef} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, ViewChildren} from '@angular/core';
 import {MessageService} from '../../services/message.service';
-import {MessageDto} from '../../dtos/messageDto';
+import {Message} from '../../dtos/message';
 import {NgbModal, NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -17,9 +17,9 @@ export class MessageComponent implements OnInit {
   // After first submission attempt, form validation will start
   submitted = false;
 
-  currentMessage: MessageDto;
+  currentMessage: Message;
 
-  private message: MessageDto[];
+  private message: Message[];
 
   constructor(private messageService: MessageService,
               private ngbPaginationConfig: NgbPaginationConfig,
@@ -41,7 +41,7 @@ export class MessageComponent implements OnInit {
   }
 
   openAddModal(messageAddModal: TemplateRef<any>) {
-    this.currentMessage = new MessageDto();
+    this.currentMessage = new Message();
     this.modalService.open(messageAddModal, {ariaLabelledBy: 'modal-basic-title'});
   }
 
@@ -72,7 +72,7 @@ export class MessageComponent implements OnInit {
     }
   }
 
-  getMessage(): MessageDto[] {
+  getMessage(): Message[] {
     return this.message;
   }
 
@@ -88,7 +88,7 @@ export class MessageComponent implements OnInit {
    *
    * @param message the message which should be created
    */
-  private createMessage(message: MessageDto) {
+  private createMessage(message: Message) {
     this.messageService.createMessage(message).subscribe({
         next: () => {
           this.loadMessage();
@@ -105,7 +105,7 @@ export class MessageComponent implements OnInit {
    */
   private loadMessage() {
     this.messageService.getMessage().subscribe({
-      next: (message: MessageDto[]) => {
+      next: (message: Message[]) => {
         this.message = message;
       },
       error: error => {
@@ -126,7 +126,7 @@ export class MessageComponent implements OnInit {
   }
 
   private clearForm() {
-    this.currentMessage = new MessageDto();
+    this.currentMessage = new Message();
     this.submitted = false;
   }
 

@@ -1,8 +1,5 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": false
-  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -31,10 +28,11 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/new-theme.scss"
+              "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.slim.min.js"
+              "node_modules/jquery/dist/jquery.slim.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -97,7 +95,6 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/styles.scss"
             ],
             "scripts": [],

@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {FooterComponent} from './footer.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -12,9 +12,9 @@ describe('FooterComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule],
-      declarations: [FooterComponent]
+      declarations: [ FooterComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,97 +1,42 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
-
-
-@Getter
-@Setter
-@NoArgsConstructor
-@Table(name = "ApplicationUser")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "Usertype")
-@Entity
+//TODO: replace this class with a correct ApplicationUser Entity implementation
 public class ApplicationUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, length = 50, unique = true)
-    private String userName;
-
-    @Column(nullable = false, length = 35)
-    private String name;
-
-    @Column(nullable = false, length = 35)
-    private String surname;
-
-    @Column(nullable = false, length = 100, unique = true)
     private String email;
-
-    @Column(nullable = false, length = 100)
-    private String address;
-
-    @Column(nullable = false, length = 100)
     private String password;
-
-    @Column(nullable = false, length = 100)
     private Boolean admin;
 
-    @Column(nullable = false)
-    private UserRole userRole;
+    public ApplicationUser() {
+    }
 
-    public ApplicationUser(String userName, String name, String surname, String email, String address,
-                           String password, Boolean admin, UserRole userRole) {
-        this.userName = userName;
-        this.name = name;
-        this.surname = surname;
+    public ApplicationUser(String email, String password, Boolean admin) {
         this.email = email;
-        this.address = address;
         this.password = password;
         this.admin = admin;
-        this.userRole = userRole;
     }
 
-    @Override
-    public String toString() {
-        return "ApplicationUser{"
-            + "id=" + id
-            + ", userName='" + userName + '\''
-            + ", name='" + name + '\''
-            + ", surname='" + surname + '\''
-            + ", email='" + email + '\''
-            + ", address='" + address + '\''
-            + ", admin=" + admin
-            + ", userRole=" + userRole
-            + '}';
+    public String getEmail() {
+        return email;
     }
 
-    @Override
-    public int hashCode() {
-        return 3;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (obj == null) {
-            return false;
-        }
-
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        ApplicationUser other = (ApplicationUser) obj;
-        return id != null && id.equals(other.getId());
+    public String getPassword() {
+        return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 }

@@ -199,10 +199,6 @@ filter:blur(5px);
   height: auto;
 }
 
-mat-menu.content {
-  color: gray;
-}
-
 #tagMenuItems {
   color: #536281;
 }
@@ -217,18 +213,24 @@ mat-menu.content {
 }
 
 .paginationButton {
-
   display: inline-block;
   float: left;
   padding: 8px 16px;
-
 }
 
 .paginationText {
-
   display: inline-block;
   float: left;
-
   padding: 14px 5px;
+}
 
+.mat-menu-panel {
+  background: lightgray;
+  margin-top: .3rem;
+
+  .mat-menu-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+  }
 }

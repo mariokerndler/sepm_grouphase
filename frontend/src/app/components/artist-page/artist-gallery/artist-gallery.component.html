@@ -7,22 +7,6 @@
     <mat-icon color="accent">upload</mat-icon>
     <span>Upload new picture</span>
   </button>
-
-
 </div>
 
-
-<app-image-feed></app-image-feed>
-
-
-
-
-
-
-
-
-
-
-
-
-
+<app-image-feed *ngIf="isReady" [artworks]="artworks"></app-image-feed>

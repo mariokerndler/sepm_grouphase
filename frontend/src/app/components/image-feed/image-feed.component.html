@@ -1,6 +1,6 @@
 <form class="col-12">
-  <mat-form-field>
-    <mat-label>Artists</mat-label>
+  <mat-form-field *ngIf="!artworks">
+    <mat-label class="primary">Artists</mat-label>
     <input [matAutocomplete]="auto" matInput type="text">
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let artist of artists " [value]="artist.id">
@@ -9,46 +9,46 @@
     </mat-autocomplete>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Search</mat-label>
-    <input (keydown.enter)="searchParams.pageNr=0; loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"  matInput name="searchForm" placeholder="search">
+    <mat-label class="primary">Search</mat-label>
+    <input (keydown.enter)="searchParams.pageNr=0; loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"
+           matInput name="searchForm" placeholder="search" class="primary">
   </mat-form-field>
 
-  <mat-label [matMenuTriggerFor]="tagListMenu" color="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>
-  <mat-menu #tagListMenu color="primary" name="tagListMenu">
-
-    <mat-checkbox #tagMenuItems (change)="onTagSelect($event)" (click)="$event.stopPropagation()" *ngFor="let tag of tags;let i= index "
+  <mat-label [matMenuTriggerFor]="tagListMenu" class="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>
+  <mat-menu #tagListMenu="matMenu">
+    <mat-checkbox #tagMenuItems
+                  (change)="onTagSelect($event)"
+                  (click)="$event.stopPropagation()"
+                  *ngFor="let tag of tags"
                   [(ngModel)]="tag.selected"
-                  [value]="tag.id"
+                  [value]="tag.name"
                   name="tagCheckbox">
-      <span> {{tag.name}}</span>
+      {{tag.name}}
     </mat-checkbox>
-
-
   </mat-menu>
 
   <div class="pagination">
-    <button (click)="previousPage()" class="paginationButton" color="accent" mat-button>&lt;</button>
+    <button (click)="previousPage()" class="paginationButton" color="accent" mat-button>
+      <span class="material-icons">chevron_left</span>
+    </button>
     <mat-label class="paginationText" color="accent" style="width: 20px">{{searchParams.pageNr}}</mat-label>
-    <button (click)="nextPage()" class="paginationButton" color="accent" mat-button>&gt;</button>
-
-
+    <button (click)="nextPage()" class="paginationButton" color="accent" mat-button>
+      <span class="material-icons">chevron_right</span>
+    </button>
   </div>
-
 </form>
 
-<mat-divider></mat-divider>
-<div class="container" id="container">
-  <div clas="header"><br></div>
+<mat-divider class="primary"></mat-divider>
+<div class="container" id="container" *ngIf="imagesLoaded">
+  <div class="header"><br></div>
   <div class="content">
     <div class="card-img-wrap">
       <div _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px"
            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px;">
-        <div *ngFor="let artwork of images; let i= index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
+        <div *ngFor="let artwork of images" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
              class="image">
 
-          <img (click)="setSelectedArtwork(i) " [src]="url+artwork.imageUrl" alt="">
-
-
+          <img (click)="setSelectedArtwork(artwork) " [src]="globals.assetsPath + artwork.imageUrl" [alt]="globalFunctions.artworkNameParser(artwork.name)">
           <div class="card-img-description-layer">
             <p class="card-img-description">
               {{globalFunctions.artworkNameParser(artwork.name)}}
@@ -59,11 +59,24 @@
       </div>
     </div>
   </div>
-
 </div>
 
+<!--
+<mat-paginator
+  (page)="handlePage($event)"
+  [length]="totalSize"
+  [pageSizeOptions]="[5,10,25,100]"
+  [pageSize]="pageSize"
+  aria-label="Select page"
+  color="primary">
+</mat-paginator>
+-->
+<div *ngIf="imagesLoaded">
+  <app-gallery-carousel
+    (closeCarousel)="selectedArtwork=null"
+    *ngIf="selectedArtwork!== null"
+    [artworks]="images"
+    [selectedArtworkId]="selectedArtwork">
+  </app-gallery-carousel>
+</div>
 
-  <app-gallery-carousel (closeCarousel)="selectedArtwork=null" *ngIf="selectedArtwork!== null" [artworks]="images"
-                      [selectedArtworkId]="selectedArtwork">
-
-</app-gallery-carousel>

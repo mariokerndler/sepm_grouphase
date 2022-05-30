@@ -5,7 +5,7 @@ import {ArtistService} from '../../services/artist.service';
 import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
 import {TagService} from '../../services/tag.service';
-import {GlobalFunctions} from "../../global/globalFunctions";
+import {GlobalFunctions} from '../../global/globalFunctions';
 
 @Component({
   selector: 'app-gallery-carousel',

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -31,6 +32,17 @@ public class ArtworkServiceImpl implements ArtworkService {
     @Override
     public List<Artwork> findArtworksByArtist(Long id) {
         return artworkRepo.findArtworkByArtistId(id);
+    }
+
+    @Override
+    public Artwork findById(Long id) {
+        Optional<Artwork> artwork = artworkRepo.findById(id);
+
+        if (artwork.isPresent()) {
+            return artwork.get();
+        } else {
+            throw new NotFoundException(String.format("Could not find Artwork with id %s", id));
+        }
     }
 
     @Override

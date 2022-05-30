@@ -36,19 +36,19 @@ public class CommissionEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    @Operation(summary = "Get all artists")
+    @Operation(summary = "Get all commissions")
     @Transactional
     public List<SimpleCommissionDto> getAllCommissions() {
-        LOGGER.debug("Get /Artist");
+        LOGGER.info("Get all commissions");
         return commissionService.getAllCommissions().stream().map(u -> commissionMapper.commissionToSimpleCommissionDto(u)).collect(Collectors.toList());
     }
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    @Operation(summary = "Get detailed information about a specific commission")
+    @Operation(summary = "Get commission by id")
     public DetailedCommissionDto findById(@PathVariable Long id) {
-        LOGGER.debug("Get /commission/{}", id);
+        LOGGER.info("Get commission with id " + id);
         return commissionMapper.commissionToDetailedCommissionDto(commissionService.findById(id));
     }
 
@@ -57,7 +57,7 @@ public class CommissionEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Post commission")
     public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
-        LOGGER.info("Post commission " + commissionDto.toString());
+        LOGGER.info("Post commission " + commissionDto);
         try {
             commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception v) {
@@ -73,10 +73,11 @@ public class CommissionEndpoint {
     @Operation(summary = "Update commission")
     @Transactional
     public void updateCommission(@RequestBody DetailedCommissionDto commissionDto) {
+        LOGGER.info("Update commission " + commissionDto);
         try {
             commissionService.updateCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage() + commissionDto.toString());
+            LOGGER.error(e.getMessage() + commissionDto);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -87,7 +88,7 @@ public class CommissionEndpoint {
     @DeleteMapping
     @Operation(summary = "Delete commission")
     public void deleteCommission(@RequestBody DetailedCommissionDto commissionDto) {
-        LOGGER.info("Delete commission " + commissionDto.toString());
+        LOGGER.info("Delete commission " + commissionDto);
         try {
             commissionService.deleteCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception n) {

@@ -44,16 +44,16 @@ public class Commission implements HasId {
     @Column(nullable = false)
     private String instructions;
 
-    @OneToMany(mappedBy = "commission")
+    @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)
     private List<Reference> references;
 
-    @OneToMany(mappedBy = "commission")
+    @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)
     private List<Receipt> receipts;
 
-    @OneToOne(mappedBy = "commission")
+    @OneToOne(mappedBy = "commission", cascade = CascadeType.ALL)
     private Review review;
 
-    @OneToOne(mappedBy = "commission")
+    @OneToOne(mappedBy = "commission", cascade = CascadeType.ALL)
     private Artwork artwork;
 
     public Commission(

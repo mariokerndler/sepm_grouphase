@@ -20,7 +20,6 @@ public class ArtistDto {
     @Size(max = 50)
     private String userName;
 
-    // TODO: Should we allow more than one first name?
     @ValidAlphaNumeric
     @Size(max = 50)
     private String name;
@@ -102,15 +101,5 @@ public class ArtistDto {
             ", reviewsIds=" + reviewsIds +
             ", profileSettings='" + profileSettings + '\'' +
             '}';
-    }
-
-
-    //TODO: unused
-    public void addArtworkId(Long i) {
-        if (artworksIds == null) {
-            return;
-        }
-
-        this.artworksIds.add(i);
     }
 }

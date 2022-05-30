@@ -6,15 +6,11 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -29,9 +25,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -104,7 +98,6 @@ public class UserDataGenerator {
                     if (artistProfileDirectoryListing != null) {
                         for (File artworkFile : artistProfileDirectoryListing) {
                             if (artworkFile.isFile()) {
-                                Faker f = new Faker();
                                 String description = new Faker().harryPotter().quote();
                                 if (description.length() > 50) {
                                     description = description.substring(0, 50);
@@ -117,8 +110,18 @@ public class UserDataGenerator {
 
                                 List<Tag> selectedTags = new LinkedList<>();
 
+                                // Generate random sequence of numbers from 0 to tags.size()-1
+                                ArrayList numbers = new ArrayList();
+                                for (int i = 0; i < tags.size(); i++) {
+                                    numbers.add(i);
+                                }
+
+                                Collections.shuffle(numbers);
+
+                                // Add a random number of tags to list by selecting the first few
+                                Faker f = new Faker();
                                 for (int j = 0; j < f.random().nextInt(0, 10); j++) {
-                                    selectedTags.add(tags.get(f.random().nextInt(0, tags.size() - 1)));
+                                    selectedTags.add(tags.get(j));
                                 }
 
                                 Artwork artwork = new Artwork();

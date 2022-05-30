@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,12 @@ public class CommissionRepositoryTest {
     @Autowired
     ArtistRepository artistRepository;
 
+    @AfterEach
+    public void beforeEach() {
+        commissionRepository.deleteAll();
+        artistRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @Test
     public void givenNothing_whenSaveCommission_thenFindListWithOneElementAndFindCommissionById() {
@@ -70,7 +77,7 @@ public class CommissionRepositoryTest {
             .feedbackSent(0)
             .price(300)
             .issueDate(LocalDateTime.now())
-            .deadlineDate(LocalDateTime.now())
+            .deadlineDate(LocalDateTime.now().plusDays(20))
             .instructions("do the thing")
             .build();
 

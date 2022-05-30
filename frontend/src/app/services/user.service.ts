@@ -5,22 +5,21 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import {NotificationService} from './notification/notification.service';
 import {UserRole} from '../dtos/artistDto';
-
-const backendUrl = 'http://localhost:8080';
-const baseUri = backendUrl + '/user';
+import {Globals} from '../global/globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  headers = new HttpHeaders({
+  private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  options = {headers: this.headers};
-
+  private options = {headers: this.headers};
+  private tagBaseUri = this.globals.backendUri + '/users';
 
   constructor(
     private http: HttpClient,
+    private globals: Globals,
     private notificationService: NotificationService) {
   }
 
@@ -39,7 +38,7 @@ export class UserService {
       userRole
     } as ApplicationUserDto;
 
-    return this.http.post<ApplicationUserDto>(baseUri, user, this.options)
+    return this.http.post<ApplicationUserDto>(this.tagBaseUri, user, this.options)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
@@ -56,11 +55,11 @@ export class UserService {
   }
 
   getAll(): Observable<ApplicationUserDto[]> {
-    return this.http.get<ApplicationUserDto[]>(baseUri, this.options);
+    return this.http.get<ApplicationUserDto[]>(this.tagBaseUri, this.options);
   }
 
   getUserById(id: number, errorAction?: () => void): Observable<ApplicationUserDto> {
-    return this.http.get<ApplicationUserDto>(`${baseUri}/${id}`, this.options)
+    return this.http.get<ApplicationUserDto>(`${this.tagBaseUri}/${id}`, this.options)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
@@ -73,7 +72,7 @@ export class UserService {
 
   updateUser(user: ApplicationUserDto, errorAction?: () => void, successAction?: () => void): Observable<ApplicationUserDto> {
     return this.http.put<ApplicationUserDto>(
-      `${baseUri}`,
+      `${this.tagBaseUri}`,
       user,
       this.options
     ).pipe(
@@ -100,7 +99,7 @@ export class UserService {
       params
     };
 
-    return this.http.get<ApplicationUserDto[]>(baseUri, searchOptions)
+    return this.http.get<ApplicationUserDto[]>(this.tagBaseUri, searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
@@ -122,7 +121,7 @@ export class UserService {
       params
     };
 
-    return this.http.get<ApplicationUserDto>(`${baseUri}/email`, searchOptions)
+    return this.http.get<ApplicationUserDto>(`${this.tagBaseUri}/email`, searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {

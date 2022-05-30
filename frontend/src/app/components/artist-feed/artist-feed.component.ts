@@ -1,28 +1,28 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ArtistService} from '../../services/artist.service';
 import {ArtistDto} from '../../dtos/artistDto';
 import {FormControl} from '@angular/forms';
 import {map, Observable, startWith} from 'rxjs';
 import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-artist-feed',
   templateUrl: './artist-feed.component.html',
   styleUrls: ['./artist-feed.component.scss']
 })
-export class ArtistFeedComponent implements OnInit {
-  isReady = false;
+export class ArtistFeedComponent implements OnInit, AfterViewInit {
 
-  artistSlice: ArtistDto[] = [];
-  pageSize = 10;
-  currentPage = 0;
-  totalSize = 0;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  isReady = false;
 
   searchFormControl = new FormControl();
   filteredOptions: Observable<ArtistDto[]>;
 
-  public dataSource = new MatTableDataSource<ArtistDto>();
-
+  dataSource: MatTableDataSource<ArtistDto>;
   private artists: ArtistDto[];
 
   constructor(
@@ -34,34 +34,37 @@ export class ArtistFeedComponent implements OnInit {
     this.artistService.getAllArtists()
       .subscribe((artists) => {
         this.artists = artists;
-        this.totalSize = this.artists.length;
-        //this.iterator();
+        this.dataSource = new MatTableDataSource<ArtistDto>(this.artists);
+        this.isReady = true;
+      });
 
-        this.filteredOptions = this.searchFormControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value))
-        );
+    this.filteredOptions = this.searchFormControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
 
+  }
+
+  ngAfterViewInit() {
+    this.artistService.getAllArtists()
+      .subscribe((artists) => {
+        this.artists = artists;
+        this.dataSource = new MatTableDataSource<ArtistDto>(this.artists);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.isReady = true;
       });
   }
 
-  /*
-  handlePage(e: any) {
-    this.currentPage = e.pageIndex;
-    this.pageSize = e.pageSize;
-    this.iterator();
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.dataSource.filter = filterValue;
   }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    this.artistSlice = this.artists.slice(start, end);
-  }
-   */
 
   private _filter(value: string): ArtistDto[] {
     const filterValue = value.toLowerCase();
+    this.applyFilter(filterValue);
 
     return this.artists.filter(option => option.userName.toLowerCase().includes(filterValue));
   }

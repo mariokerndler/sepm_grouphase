@@ -10,7 +10,7 @@ import {TagDto} from '../dtos/tagDto';
 })
 export class TagService {
 
-  private tagBaseUri: string = this.globals.testingBackendUri + '/tag';
+  private tagBaseUri: string = this.globals.backendUri + '/tags';
   private headers = new HttpHeaders({
     auth: 'frontend'
   });

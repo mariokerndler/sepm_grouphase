@@ -10,7 +10,8 @@ import {Globals} from '../global/globals';
 })
 export class ArtistService {
 
-  private artistBaseUri: string = this.globals.testingBackendUri + '/artist';
+  private artistBaseUri: string = this.globals.backendUri + '/artists';
+
   private headers = new HttpHeaders({
     auth: 'frontend'
   });

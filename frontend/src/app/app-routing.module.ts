@@ -25,9 +25,9 @@ const routes: Routes = [
   {path: 'user/:id/edit', component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},
   {path: 'artists', component: ArtistFeedComponent},
-  {path: '**', redirectTo: 'feed'},
   {path: 'commissions', component: CommissionFeedComponent},
-  {path: 'commissions/:id', component: CommissionDetailsComponent}
+  {path: 'commissions/:id', component: CommissionDetailsComponent},
+  {path: '**', redirectTo: 'feed'},
 ];
 
 @NgModule({

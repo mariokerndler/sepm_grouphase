@@ -49,6 +49,9 @@ import {ArtistFeedCardComponent} from './components/artist-feed/artist-feed-card
 import { LogoutComponent } from './components/logout/logout.component';
 import { ArtistGalleryComponent } from './components/artist-page/artist-gallery/artist-gallery.component';
 import { UploadComponent } from './components/upload/upload.component';
+import { CommissionFeedComponent } from './components/commission/commission-feed/commission-feed.component';
+import { CommissionCardComponent } from './components/commission/commission-card/commission-card.component';
+import { CommissionDetailsComponent } from './components/commission/commission-details/commission-details.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +80,10 @@ import { UploadComponent } from './components/upload/upload.component';
     UserPageEditComponent,
     ArtistFeedComponent,
     ArtistFeedCardComponent,
-    UploadComponent
+    UploadComponent,
+    CommissionFeedComponent,
+    CommissionCardComponent,
+    CommissionDetailsComponent
   ],
   imports: [
     BrowserModule,

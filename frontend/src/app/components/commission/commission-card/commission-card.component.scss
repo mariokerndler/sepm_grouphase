@@ -1,0 +1,30 @@
+.commission-pfp {
+  border-radius: 10%;
+  height: 50px;
+  width: 50px;
+}
+
+.commission{
+  background-color: #fb9fa4;
+  color: #434F6A;
+  border-radius: 5%;
+  margin: 0.5rem;
+  transition: all 0.5s;
+  width: 220px;
+  height: 300px;
+}
+.commission:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+
+}
+
+mat-card-title{
+  font-size: 1rem;
+  text-align: center;
+}
+
+mat-card-actions{
+  text-align: center;
+}
+

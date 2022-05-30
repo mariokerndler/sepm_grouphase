@@ -120,7 +120,6 @@ html, body {
 
 
 
-
 md-divider {
   border-width: 1px;
   border-style: solid;
@@ -172,11 +171,11 @@ md-divider {
 }
 #carousel:not(:active){
 
-      visibility: visible;
+  visibility: visible;
   filter:blur(5px);
 }
 #carousel:active {
-filter:blur(5px);
+  filter:blur(5px);
 }
 .card-img-description {
   transition: 2s;
@@ -199,6 +198,10 @@ filter:blur(5px);
   height: auto;
 }
 
+mat-menu.content {
+  color: gray;
+}
+
 #tagMenuItems {
   color: #536281;
 }
@@ -213,14 +216,18 @@ filter:blur(5px);
 }
 
 .paginationButton {
+
   display: inline-block;
   float: left;
   padding: 8px 16px;
+
 }
 
 .paginationText {
+
   display: inline-block;
   float: left;
+
   padding: 14px 5px;
 }
 

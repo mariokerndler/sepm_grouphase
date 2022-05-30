@@ -143,14 +143,8 @@ export class ImageFeedComponent implements OnInit {
   }
 
 
-  setSelectedArtwork(artwork: ArtworkDto) {
-    this.selectedArtwork = artwork.id;
+  setSelectedArtwork(i: number) {
+    this.selectedArtwork=i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
-  }
-
-  handlePage(e: any) {
-    this.currentPage = e.pageIndex;
-    this.pageSize = e.pageSize;
-    //this.iterator();
   }
 }

@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -33,7 +35,8 @@ public class CommissionRepositoryTest {
 
     @Test
     public void givenNothing_whenSaveCommission_thenFindListWithOneElementAndFindCommissionById() {
-        ApplicationUser user1 = ApplicationUser.builder()
+
+        Artist artist = Artist.builder()
             .userName("momo45")
             .name("Millie")
             .surname("Bobbington")
@@ -42,9 +45,11 @@ public class CommissionRepositoryTest {
             .password("passwordhash")
             .admin(false)
             .userRole(UserRole.Artist)
+            .description("Description of new artist")
+            .profileSettings("settings string")
             .build();
 
-        ApplicationUser user2 = ApplicationUser.builder()
+        ApplicationUser user = ApplicationUser.builder()
             .userName("sunscreen98")
             .name("Mike")
             .surname("Regen")
@@ -55,32 +60,18 @@ public class CommissionRepositoryTest {
             .userRole(UserRole.User)
             .build();
 
-        //TODO: how to build subclass thing?
-        Artist artist = Artist.builder()
-            .profilePicture()
-            .description()
-            .profileSettings()
-            .reviewScore()
-            .gallery()
-            .artworks()
-            .commissions()
-            .reviews()
-            .tags()
-            .build();
+        artistRepository.save(artist);
+        userRepository.save(user);
 
         Commission commission = Commission.builder()
             .artist(artist)
-            .customer(user2)
+            .customer(user)
             .sketchesShown(3)
             .feedbackSent(0)
             .price(300)
-            .issueDate()
-            .deadlineDate()
-            .instructions()
-            .references()
-            .receipts()
-            .review()
-            .artwork()
+            .issueDate(LocalDateTime.now())
+            .deadlineDate(LocalDateTime.now())
+            .instructions("do the thing")
             .build();
 
         commissionRepository.save(commission);

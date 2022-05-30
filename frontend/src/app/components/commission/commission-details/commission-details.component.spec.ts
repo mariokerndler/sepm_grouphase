@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {UploadComponent} from './upload.component';
+import {CommissionDetailsComponent} from './commission-details.component';
 
-describe('UploadComponent', () => {
-  let component: UploadComponent;
-  let fixture: ComponentFixture<UploadComponent>;
+describe('CommissionDetailsComponent', () => {
+  let component: CommissionDetailsComponent;
+  let fixture: ComponentFixture<CommissionDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UploadComponent]
+      declarations: [CommissionDetailsComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadComponent);
+    fixture = TestBed.createComponent(CommissionDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

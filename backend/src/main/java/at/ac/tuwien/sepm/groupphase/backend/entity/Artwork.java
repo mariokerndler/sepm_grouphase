@@ -35,7 +35,8 @@ public class Artwork extends Image implements HasId {
     @JoinTable(
         name = "artwork_tag",
         joinColumns = @JoinColumn(name = "artwork_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+        inverseJoinColumns = @JoinColumn(name = "tag_id"),
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"artwork_id", "tag_id"})})
     private List<Tag> tags;
 
     public Artwork(String name, String description, String imageUrl, FileType fileType, Artist artist, List<Sketch> sketches, Commission commission) {

@@ -1,10 +1,30 @@
 <div *ngIf="isReady" class="artist-feed-container">
-  <div *ngFor="let artist of artistSlice" fxLayout="column">
+  <div class="artist-feed-search">
+    <form class="artist-feed-form">
+      <mat-form-field>
+        <mat-label class="primary">Search artist</mat-label>
+        <input [formControl]="searchFormControl"
+               [matAutocomplete]="searchAuto"
+               aria-label="Search"
+               class="primary"
+               matInput
+               placeholder="Search artist"
+               type="text">
+        <mat-autocomplete #searchAuto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.userName">
+            {{option.userName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div *ngFor="let artist of filteredOptions | async" fxLayout="column">
     <app-artist-feed-card [artist]="artist"></app-artist-feed-card>
   </div>
 </div>
 
-
+<!--
 <mat-paginator
   (page)="handlePage($event)"
   [length]="totalSize"
@@ -13,6 +33,7 @@
   aria-label="Select page"
   color="primary">
 </mat-paginator>
+-->
 
 <div *ngIf="!isReady" class="artist-feed-container">
   <mat-spinner></mat-spinner>

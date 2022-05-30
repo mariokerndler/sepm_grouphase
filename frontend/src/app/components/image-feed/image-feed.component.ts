@@ -51,15 +51,14 @@ export class ImageFeedComponent implements OnInit {
   };
   public selectedArtwork: number = null;
 
-
-  constructor(private formBuilder: FormBuilder, private artworkService: ArtworkService
-    , private artistService: ArtistService, private tagService: TagService,
-              public globalFunctions: GlobalFunctions) {
-    this.globalFunctions = globalFunctions;
-    this.artworkService = artworkService;
-    this.tagService = tagService;
-    this.artistService = artistService;
-    console.log(globalFunctions.artworkNameParser('data\\ap\\tianzi\\artstation_9970348_37433613_Quick painting practice 速涂练习.jpg'));
+  constructor(
+    private formBuilder: FormBuilder,
+    private artworkService: ArtworkService,
+    private artistService: ArtistService,
+    private tagService: TagService,
+    private notificationService: NotificationService,
+    public globalFunctions: GlobalFunctions,
+    public globals: Globals) {
   }
 
   ngOnInit(): void {
@@ -72,7 +71,7 @@ export class ImageFeedComponent implements OnInit {
   compareFunction = (o1: any, o2: any) => o1.id === o2.id;
 
   public loadFeed() {
-    if(this.artworks) {
+    if (this.artworks) {
       this.images = this.artworks;
       this.imagesLoaded = true;
       return;
@@ -85,14 +84,27 @@ export class ImageFeedComponent implements OnInit {
       this.searchParams.randomSeed = 1;
       this.searchParams.searchOperations = '';
     }
-    this.artworkService.search(this.searchParams).subscribe(
-      data => {
-        this.images = data;
-      }, error => {
-        console.log('no error handling exists so im just here to say hi');
-      }
-    );
 
+    this.artworkService.search(this.searchParams)
+      .subscribe(
+        //temporary solution until be is fixed.
+        (artworks) => {
+          artworks.forEach(a => {
+            try {
+              const img = new URL(a.imageUrl);
+              artworks.forEach(b => {
+                if (b.imageUrl === a.imageUrl && b !== a) {
+                  artworks.splice(artworks.indexOf(b), 1);
+                }
+              });
+            } catch (_) {
+              artworks.splice(artworks.indexOf(a), 1);
+            }
+          });
+          this.images = artworks;
+          this.imagesLoaded = true;
+        }
+      );
   }
 
   public nextPage(): void {
@@ -112,7 +124,7 @@ export class ImageFeedComponent implements OnInit {
   }
 
   public onListSelectionChange(event: any, options: any): void {
-    this.searchParams.pageNr=0;
+    this.searchParams.pageNr = 0;
     this.loadFeed();
   }
 
@@ -121,36 +133,27 @@ export class ImageFeedComponent implements OnInit {
   }
 
   public loadAllTags() {
-    this.tagService.getAllTags().subscribe(
-      data => {
-        console.log(data);
+    this.tagService.getAllTags()
+      .subscribe(data => {
         this.tags = data;
-      }, error => {
-        console.log('no error handling exists so im just here to say hi');
-      }
-    );
+        this.tagsLoaded = true;
+      });
   }
 
   public loadArtists() {
-    this.artistService.getAllArtists().subscribe(
-      data => {
-
-        data.forEach(a => {
-
-
-        });
-        this.artists = data;
-      }, error => {
-        console.log('no error handling exists so im just here to say hi');
-      }
-    );
+    this.artistService.getAllArtists()
+      .subscribe(data => {
+          this.artists = data;
+          this.artistsLoaded = true;
+        }
+      );
   }
 
   onTagSelect($event: MatCheckboxChange) {
     this.searchParams.tagIds = this.tags
       .filter(menuitem => menuitem.selected)
       .map(menuitem => menuitem.id.toString());
-    this.searchParams.pageNr=0;
+    this.searchParams.pageNr = 0;
     console.log(this.searchParams.tagIds);
     this.loadFeed();
   }
@@ -159,12 +162,5 @@ export class ImageFeedComponent implements OnInit {
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
-
-  }
-
-  handlePage(e: any) {
-    this.currentPage = e.pageIndex;
-    this.pageSize = e.pageSize;
-    //this.iterator();
   }
 }

@@ -1,17 +1,30 @@
 .sidenav {
   padding-left: 2rem;
   padding-right: 5rem;
+
+}
+
+.mat-drawer-inner-container {
+  background: #2f3a51;
+}
+
+.mat-drawer {
+
+  background-color: #2f3a51;
 }
 
 .close-menu-icon {
   padding-left: 1rem;
   padding-top: 0.5rem;
 }
-.title{
+
+.title {
   font-size: 1.5em;
 }
+
 .title:hover {
   cursor: pointer;
 }
+
 
 

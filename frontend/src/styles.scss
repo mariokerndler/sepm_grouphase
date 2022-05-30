@@ -30,9 +30,11 @@ $background: #434F6A;
   }
 
 }
+
 :root {
   --bgFilter: blur(0px);
 }
+
 /* You can add global styles to this file, and also import other style files */
 body {
   background-color: $background;
@@ -40,7 +42,7 @@ body {
 
 // TODO: Idk if that is a good idea
 * {
-  font-family:  'Didact Gothic', sans-serif;
+  font-family: 'Didact Gothic', sans-serif;
 }
 
 html, body {

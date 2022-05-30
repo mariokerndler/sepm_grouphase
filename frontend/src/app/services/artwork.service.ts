@@ -34,16 +34,15 @@ export class ArtworkService {
    */
 
   search(tagSearch: TagSearch, errorAction?: () => void): Observable<ArtworkDto[]> {
-
-
     let searchOperations = tagSearch.searchOperations;
     if (!searchOperations) {
       searchOperations = '';
     }
-    const params = new HttpParams().set('tagIds'
-      , tagSearch.tagIds.toString()).set('searchOperations',
-      searchOperations).set('pageNr', tagSearch.pageNr == null ?
-      '0' : tagSearch.pageNr).set('randomSeed', tagSearch.randomSeed);
+    const params = new HttpParams()
+      .set('tagIds', tagSearch.tagIds.toString())
+      .set('searchOperations', searchOperations)
+      .set('pageNr', tagSearch.pageNr == null ? '0' : tagSearch.pageNr)
+      .set('randomSeed', tagSearch.randomSeed);
    // console.log(params.toString());
     const searchOptions = {
       headers: this.headers,

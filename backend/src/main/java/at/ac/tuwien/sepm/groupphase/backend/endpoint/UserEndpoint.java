@@ -1,19 +1,14 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TagSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
-import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -50,17 +45,18 @@ public class UserEndpoint {
         return audto;
 
     }
-/**
-    @PermitAll
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    @Operation(summary = "Get Detailed information's about a specific user")
-    public List<ApplicationUserDto> getAllUsers() {
-        log.debug("Get /User");
 
-        return userService.getAllUsers().stream().map(userMapper::userToUserDto).collect(Collectors.toList());
-    }
-**/
+    /**
+     * @PermitAll
+     * @ResponseStatus(HttpStatus.OK)
+     * @GetMapping
+     * @Operation(summary = "Get Detailed information's about a specific user")
+     * public List<ApplicationUserDto> getAllUsers() {
+     * log.debug("Get /User");
+     * <p>
+     * return userService.getAllUsers().stream().map(userMapper::userToUserDto).collect(Collectors.toList());
+     * }
+     **/
     @PermitAll
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -84,33 +80,34 @@ public class UserEndpoint {
     @PermitAll
     @GetMapping()
     @Transactional
+    @Operation(summary = "Search user")
     public List<ApplicationUserDto> searchUsers(
-        @RequestParam( name="searchOperations",defaultValue = "")String searchOperations) {
+        @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
 
-            log.info(searchOperations);
-            GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
-            String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
-            Pattern pattern = Pattern.compile(
-                "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
-            Matcher matcher = pattern.matcher(searchOperations + ",");
-            while (matcher.find()) {
-                builder.with(
-                    matcher.group(1),
-                    matcher.group(2),
-                    matcher.group(4).toLowerCase(),
-                    matcher.group(3),
-                    matcher.group(5));
-                log.info(matcher.group(1));
-                log.info(matcher.group(2));
-                log.info(matcher.group(3));
-                log.info(matcher.group(4));
-                log.info(matcher.group(5));
-            }
-
-            Specification<ApplicationUser> spec = builder.build();
-
-            return userService.searchUser(spec).stream().map(a -> userMapper.userToUserDto(a)).collect(Collectors.toList());
-
+        log.info(searchOperations);
+        GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
+        String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
+        Pattern pattern = Pattern.compile(
+            "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
+        Matcher matcher = pattern.matcher(searchOperations + ",");
+        while (matcher.find()) {
+            builder.with(
+                matcher.group(1),
+                matcher.group(2),
+                matcher.group(4).toLowerCase(),
+                matcher.group(3),
+                matcher.group(5));
+            log.info(matcher.group(1));
+            log.info(matcher.group(2));
+            log.info(matcher.group(3));
+            log.info(matcher.group(4));
+            log.info(matcher.group(5));
         }
+
+        Specification<ApplicationUser> spec = builder.build();
+
+        return userService.searchUser(spec).stream().map(userMapper::userToUserDto).collect(Collectors.toList());
+
+    }
 }
 

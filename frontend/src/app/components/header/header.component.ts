@@ -4,8 +4,9 @@ import {Globals} from '../../global/globals';
 import {MatDialog} from '@angular/material/dialog';
 import {LoginComponent} from '../login/login.component';
 import {RegistrationComponent} from '../registration/registration.component';
-import {UserService} from '../../services/user.service';
 import {ApplicationUserDto} from '../../dtos/applicationUserDto';
+import {Router} from '@angular/router';
+import {NotificationService} from '../../services/notification/notification.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ import {ApplicationUserDto} from '../../dtos/applicationUserDto';
 })
 export class HeaderComponent implements OnInit {
 
+  userId: number;
   isReady = false;
   user: ApplicationUserDto;
 
@@ -22,23 +24,17 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     public globals: Globals,
     public dialog: MatDialog,
-    private userService: UserService) {
+    private notificationService: NotificationService,
+    private router: Router) {
   }
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      const email: string = this.authService.getUserAuthEmail();
-      /*
-      this.userService.getUserByEmail(email)
-        .subscribe((user) => {
-            this.user = user;
-            this.isReady = true;
-          }
-        );
-       */
+      this.userId = this.authService.getUserId();
       this.isReady = true;
     } else {
-      this.isReady = true;
+      this.userId = null;
+      this.isReady = false;
     }
   }
 
@@ -48,5 +44,16 @@ export class HeaderComponent implements OnInit {
     } else {
       this.dialog.open(RegistrationComponent);
     }
+  }
+
+  navigateToProfile() {
+    this.router.navigate(['/artist', this.userId])
+      .catch(_ => this.notificationService.displayErrorSnackbar('Could not navigate to user page.'));
+  }
+
+  logoutUser() {
+    this.authService.logoutUser();
+    this.router.navigate(['/feed'])
+      .catch(_ => this.notificationService.displayErrorSnackbar('Could not navigate to frontpage.'));
   }
 }

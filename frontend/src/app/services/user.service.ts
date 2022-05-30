@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApplicationUserDto} from '../dtos/applicationUserDto';
 import {catchError, Observable} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import {NotificationService} from './notification/notification.service';
 import {UserRole} from '../dtos/artistDto';
@@ -91,5 +91,25 @@ export class UserService {
       }));
   }
 
+  searchUser(searchOperations: string, errorAction?: () => void): Observable<ApplicationUserDto[]> {
+    const params = new HttpParams()
+      .set('searchOperations', searchOperations);
 
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+
+    return this.http.get<ApplicationUserDto[]>(baseUri, searchOptions)
+      .pipe(
+        catchError((err) => {
+          if(errorAction != null) {
+            errorAction();
+          }
+
+          return this.notificationService
+            .notifyUserAboutFailedOperation<ApplicationUserDto[]>('Search user by search operation')(err);
+        })
+      );
+  }
 }

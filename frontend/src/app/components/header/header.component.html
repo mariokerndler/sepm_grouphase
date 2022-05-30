@@ -6,10 +6,10 @@
   </div>
   <span class="title" routerLink="/">{{globals.projectName}}</span>
   <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
-    <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button> Login</button>
-    <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button> Register</button>
-    <!--<button mat-button *ngIf="authService.isLoggedIn()" routerLink="/artist/{{user.id}}">Profile</button>-->
-    <button (click)="authService.logoutUser()" *ngIf="authService.isLoggedIn()" mat-button routerLink="/">Logout</button>
+    <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button>Login</button>
+    <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button>Register</button>
+    <button (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()"  mat-button>Profile</button>
+    <button (click)="logoutUser()" *ngIf="authService.isLoggedIn()" mat-button>Logout</button>
   </div>
 </mat-toolbar>
 

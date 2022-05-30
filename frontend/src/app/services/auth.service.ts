@@ -7,6 +7,7 @@ import {tap} from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import {Globals} from '../global/globals';
 import {NotificationService} from './notification/notification.service';
+import {ApplicationUserDto} from '../dtos/applicationUserDto';
 
 @Injectable({
   providedIn: 'root'
@@ -35,16 +36,24 @@ export class AuthService {
     return date;
   }
 
+  private static setUserId(id: number) {
+    localStorage.setItem('userId', String(id));
+  }
+
   /**
    * Login in the user. If it was successful, a valid JWT token will be stored
    *
    * @param authRequest User data
+   * @param authorizedUser The applicationUserDto of the authorized user
    */
-  loginUser(authRequest: AuthRequest): Observable<string> {
+  loginUser(authRequest: AuthRequest, authorizedUser: ApplicationUserDto): Observable<string> {
     return this.httpClient.post(this.authBaseUri, authRequest, {responseType: 'text'})
       .pipe(
         catchError(this.notificationService.notifyUserAboutFailedOperation('Login')),
-        tap((authResponse: string) => AuthService.setToken(authResponse))
+        tap((authResponse: string) => {
+          AuthService.setToken(authResponse);
+          AuthService.setUserId(authorizedUser.id);
+        })
       );
   }
 
@@ -88,6 +97,14 @@ export class AuthService {
       const decoded: any = jwt_decode(this.getToken());
 
       return decoded.sub;
+    }
+  }
+
+  getUserId() {
+    const id = localStorage.getItem('userId');
+
+    if(id != null) {
+      return Number(id);
     }
   }
 }

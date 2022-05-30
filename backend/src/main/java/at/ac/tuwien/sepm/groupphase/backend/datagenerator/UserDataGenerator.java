@@ -51,20 +51,18 @@ public class UserDataGenerator {
 
     public UserDataGenerator(ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo,
                              TagRepository tagRepository) {
-
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
-
     }
 
     @PostConstruct
     private void generateUser() throws IOException {
-
         loadTags(NUMBER_OF_TAGS_TO_GENERATE);
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
 
+        generateArtistTestAccount("testArtist", "12345678");
     }
 
     private void loadTags(int numberOftags) throws FileNotFoundException {
@@ -141,7 +139,6 @@ public class UserDataGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private Artist generateArtistProfile(String username) {
@@ -158,6 +155,13 @@ public class UserDataGenerator {
         artist.setPassword(passwordEncoder.encode(faker.internet().password(8, 15)));
         artist.setUserRole(UserRole.Artist);
         return artist;
+    }
+
+    private void generateArtistTestAccount(String username, String password) {
+        Artist artist = generateArtistProfile(username);
+        artist.setEmail(username + "@test.com");
+        artist.setPassword(passwordEncoder.encode(password));
+        artistRepository.save(artist);
     }
 
     //old approach not working, issues with cloudflare protection 403 error.

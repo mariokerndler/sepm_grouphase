@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ArtistService} from '../../services/artist.service';
-import {NotificationService} from '../../services/notification/notification.service';
 import {ArtistDto} from '../../dtos/artistDto';
-import {MatPaginator} from '@angular/material/paginator';
-import {GlobalFunctions} from '../../global/globalFunctions';
+import {FormControl} from '@angular/forms';
+import {map, Observable, startWith} from 'rxjs';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-artist-feed',
@@ -11,9 +11,6 @@ import {GlobalFunctions} from '../../global/globalFunctions';
   styleUrls: ['./artist-feed.component.scss']
 })
 export class ArtistFeedComponent implements OnInit {
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   isReady = false;
 
   artistSlice: ArtistDto[] = [];
@@ -21,12 +18,15 @@ export class ArtistFeedComponent implements OnInit {
   currentPage = 0;
   totalSize = 0;
 
+  searchFormControl = new FormControl();
+  filteredOptions: Observable<ArtistDto[]>;
+
+  public dataSource = new MatTableDataSource<ArtistDto>();
+
   private artists: ArtistDto[];
 
   constructor(
-    private artistService: ArtistService,
-    private notificationService: NotificationService,
-    private glogalFunctions: GlobalFunctions
+    private artistService: ArtistService
   ) {
   }
 
@@ -34,13 +34,19 @@ export class ArtistFeedComponent implements OnInit {
     this.artistService.getAllArtists()
       .subscribe((artists) => {
         this.artists = artists;
-        //this.artists = this.glogalFunctions.shuffleArray(this.artists);
         this.totalSize = this.artists.length;
-        this.iterator();
+        //this.iterator();
+
+        this.filteredOptions = this.searchFormControl.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+
         this.isReady = true;
       });
   }
 
+  /*
   handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
@@ -51,5 +57,12 @@ export class ArtistFeedComponent implements OnInit {
     const end = (this.currentPage + 1) * this.pageSize;
     const start = this.currentPage * this.pageSize;
     this.artistSlice = this.artists.slice(start, end);
+  }
+   */
+
+  private _filter(value: string): ArtistDto[] {
+    const filterValue = value.toLowerCase();
+
+    return this.artists.filter(option => option.userName.toLowerCase().includes(filterValue));
   }
 }

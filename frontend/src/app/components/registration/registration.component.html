@@ -1,3 +1,4 @@
+
 <button class="close-button" mat-dialog-close mat-icon-button>
   <mat-icon>close</mat-icon>
 </button>
@@ -13,7 +14,7 @@
 </div>
 
 
-<div (ngSubmit)="createNewUser()" [formGroup]="registerForm" fxLayout="column" mat-dialog-content>
+<div  (ngSubmit)="createNewUser()" [formGroup]="registerForm" fxLayout="column" mat-dialog-content>
   <p *ngIf="!error">Welcome to Project Sketchbook!</p>
 
   <div class="name">
@@ -107,14 +108,14 @@
   </mat-form-field>
 
 
-  <button (click)="createNewUser()" cdkFocusInitial class="submit-button" color="primary" mat-flat-button>Register
+  <button (click)="createNewUser()" cdkFocusInitial class="submit-button" color="primary" class="mat-primary" mat-flat-button>Register
   </button>
   <br>
   <div fxLayout="column">
     <span style="text-align: center">Already Registered?</span>
-    <button (click)="openDialog()" class="submit-button" mat-button>Sign In</button>
+    <button (click)="openDialog()" class="submit-button" color="primary" class="mat-primary" mat-flat-button>Sign In</button>
   </div>
+
+
+
 </div>
-
-
-

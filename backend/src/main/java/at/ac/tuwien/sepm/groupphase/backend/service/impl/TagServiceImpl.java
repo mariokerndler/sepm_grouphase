@@ -27,6 +27,6 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> loadTagsByImage(Long id) {
-      return  this.tagRepository.findArtworkTags(id);
+        return this.tagRepository.findArtworkTags(id);
     }
 }

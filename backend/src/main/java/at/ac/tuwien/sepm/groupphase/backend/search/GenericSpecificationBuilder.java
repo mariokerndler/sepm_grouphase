@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Slf4j
 public class GenericSpecificationBuilder<T> {
     private final List<SearchCriteria> params;

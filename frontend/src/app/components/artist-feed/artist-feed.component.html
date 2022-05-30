@@ -3,13 +3,13 @@
     <form class="artist-feed-form">
       <mat-form-field>
         <mat-label class="primary">Search artist</mat-label>
-        <input type="text"
-               placeholder="Search artist"
-               aria-label="Search"
-               matInput
-               [formControl]="searchFormControl"
+        <input [formControl]="searchFormControl"
                [matAutocomplete]="searchAuto"
-               class="primary">
+               aria-label="Search"
+               class="primary"
+               matInput
+               placeholder="Search artist"
+               type="text">
         <mat-autocomplete #searchAuto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option.userName">
             {{option.userName}}

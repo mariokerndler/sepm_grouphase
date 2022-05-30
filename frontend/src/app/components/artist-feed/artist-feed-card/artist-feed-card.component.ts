@@ -28,7 +28,7 @@ export class ArtistFeedCardComponent implements OnInit {
   ) {
     const supports = 'loading' in HTMLImageElement.prototype;
 
-    if(supports) {
+    if (supports) {
       nativeElement.setAttribute('loading', 'lazy');
     }
   }

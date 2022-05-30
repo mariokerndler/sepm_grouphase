@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CommissionFeedComponent } from './commission-feed.component';
+import {CommissionFeedComponent} from './commission-feed.component';
 
 describe('CommissionFeedComponent', () => {
   let component: CommissionFeedComponent;
@@ -8,9 +8,9 @@ describe('CommissionFeedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommissionFeedComponent ]
+      declarations: [CommissionFeedComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

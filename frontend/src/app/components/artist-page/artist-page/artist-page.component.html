@@ -20,7 +20,8 @@
           </div>
         </div>
         <div class="artist-middle-menu">
-          <mat-tab-group backgroundColor="primary" dynamicHeight [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}" [(selectedIndex)]="tabIndex">
+          <mat-tab-group [(selectedIndex)]="tabIndex" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
+                         backgroundColor="primary" dynamicHeight>
             <mat-tab label="Home">
               <br>
               <app-artist-information (tabIndexEvent)="changeIndex($event)" [artist]="artist"></app-artist-information>
@@ -31,7 +32,7 @@
             </mat-tab>
             <mat-tab label="Reviews">
             </mat-tab>
-            <mat-tab  label="Contact">
+            <mat-tab label="Contact">
             </mat-tab>
           </mat-tab-group>
         </div>

@@ -17,8 +17,8 @@
   <p *ngIf="!error">Welcome Back!</p>
   <mat-form-field appearance="fill" class="form-group">
     <mat-label>E-mail</mat-label>
-    <input matInput name="email" formControlName="email" class="form-control" id="inputEmail"
-                     aria-describedby="emailHelp" >
+    <input aria-describedby="emailHelp" class="form-control" formControlName="email" id="inputEmail" matInput
+           name="email">
     <mat-error *ngIf="loginForm.controls.email.errors">
       <small *ngIf="loginForm.controls.email.errors.required">Your email is required! </small>
       <small *ngIf="loginForm.controls.email.errors.email">The email you entered is invalid! </small>

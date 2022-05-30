@@ -103,12 +103,34 @@ export class UserService {
     return this.http.get<ApplicationUserDto[]>(baseUri, searchOptions)
       .pipe(
         catchError((err) => {
-          if(errorAction != null) {
+          if (errorAction != null) {
             errorAction();
           }
 
           return this.notificationService
-            .notifyUserAboutFailedOperation<ApplicationUserDto[]>('Search user by search operation')(err);
+            .notifyUserAboutFailedOperation<ApplicationUserDto[]>('Search user by search operations')(err);
+        })
+      );
+  }
+
+  getUserByEmail(email: string, errorAction?: () => void): Observable<ApplicationUserDto> {
+    const params = new HttpParams()
+      .set('email', email);
+
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+
+    return this.http.get<ApplicationUserDto>(`${baseUri}/email`, searchOptions)
+      .pipe(
+        catchError((err) => {
+          if (errorAction != null) {
+            errorAction();
+          }
+
+          return this.notificationService
+            .notifyUserAboutFailedOperation<ApplicationUserDto>('Search user by search operations')(err);
         })
       );
   }

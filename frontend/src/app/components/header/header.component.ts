@@ -17,7 +17,6 @@ import {NotificationService} from '../../services/notification/notification.serv
 export class HeaderComponent implements OnInit {
 
   userId: number;
-  isReady = false;
   user: ApplicationUserDto;
 
   constructor(
@@ -31,10 +30,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
       this.userId = this.authService.getUserId();
-      this.isReady = true;
     } else {
       this.userId = null;
-      this.isReady = false;
     }
   }
 

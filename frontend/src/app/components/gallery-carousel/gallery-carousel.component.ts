@@ -51,7 +51,7 @@ export class GalleryCarouselComponent implements OnInit {
   @Input() selectedArtworkId: number;
   @Output() closeCarousel = new EventEmitter<void>();
   public animState = 'middle';
-  public artist: ArtistDto ={
+  public artist: ArtistDto = {
     address: '',
     admin: false,
     artworkIds: [],
@@ -75,7 +75,7 @@ export class GalleryCarouselComponent implements OnInit {
 
   constructor(artistService: ArtistService, router: Router, public tagService: TagService,
               public globalFunctions: GlobalFunctions) {
-    this.globalFunctions=globalFunctions;
+    this.globalFunctions = globalFunctions;
     this.tagService = tagService;
     this.router = router;
     this.artistService = artistService;
@@ -111,7 +111,7 @@ export class GalleryCarouselComponent implements OnInit {
   public next(): void {
     this.getImageArtistInfo();
     this.animState = 'right';
-    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 2   ? 0 : this.selectedArtworkId + 1;
+    this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 2 ? 0 : this.selectedArtworkId + 1;
 
   }
 
@@ -130,7 +130,6 @@ export class GalleryCarouselComponent implements OnInit {
   public loadImageTags() {
     //console.log('id '+ this.selectedArtworkId);
     this.tagService.getImageTags(this.artworks[this.selectedArtworkId].id).subscribe(
-
       data => {
         //console.log(data);
         this.imageTags = data;

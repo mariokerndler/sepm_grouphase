@@ -103,7 +103,7 @@ export class AuthService {
   getUserId() {
     const id = localStorage.getItem('userId');
 
-    if(id != null) {
+    if (id != null) {
       return Number(id);
     }
   }

@@ -4,7 +4,7 @@
   width: 50px;
 }
 
-.commission{
+.commission {
   background-color: #fb9fa4;
   color: #434F6A;
   border-radius: 5%;
@@ -13,18 +13,19 @@
   width: 220px;
   height: 300px;
 }
+
 .commission:hover {
   cursor: pointer;
   transform: scale(1.05);
 
 }
 
-mat-card-title{
+mat-card-title {
   font-size: 1rem;
   text-align: center;
 }
 
-mat-card-actions{
+mat-card-actions {
   text-align: center;
 }
 

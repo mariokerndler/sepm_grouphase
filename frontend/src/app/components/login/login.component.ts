@@ -59,18 +59,15 @@ export class LoginComponent implements OnInit {
     console.log('Try to authenticate user: ' + authRequest.email);
 
     // Fetch user from email
-    // TODO: fetch email should not be split at the @ symbol, but backend doesnt support it atm
-    this.userService.searchUser('email~' + authRequest.email.split('@')[0]).subscribe(
-      (foundUsers) => {
-        if(foundUsers.length !== 1) {
+    this.userService.getUserByEmail(authRequest.email).subscribe(
+      (foundUser) => {
+        if (!foundUser) {
           this.notificationService.displayErrorSnackbar('Could not authenticate user with e-mail: ' + authRequest.email);
           return;
         }
 
-        const authUser = foundUsers[0];
-
         // Auth user
-        this.authService.loginUser(authRequest, authUser).subscribe({
+        this.authService.loginUser(authRequest, foundUser).subscribe({
           next: () => {
             console.log('Successfully logged in user: ' + authRequest.email);
             this.onNoClick();

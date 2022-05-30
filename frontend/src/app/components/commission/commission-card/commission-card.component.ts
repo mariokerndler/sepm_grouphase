@@ -13,13 +13,14 @@ export class CommissionCardComponent implements OnInit {
   userProfilePicture = 'https://picsum.photos/150/150';
   user: ApplicationUserDto;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit(): void {
     this.fetchUser(this.commission.userId);
   }
 
-  private fetchUser(userId: number){
+  private fetchUser(userId: number) {
     this.userService.getUserById(userId).subscribe({
       next: (loadedUser) => {
         this.user = loadedUser;

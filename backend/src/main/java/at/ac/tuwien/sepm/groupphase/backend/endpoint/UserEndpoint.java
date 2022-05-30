@@ -78,9 +78,19 @@ public class UserEndpoint {
     }
 
     @PermitAll
+    @GetMapping("/email")
+    @Transactional
+    @Operation(summary = "find user by email")
+    public ApplicationUserDto searchUsersByEmail(
+        @RequestParam(name = "email", defaultValue = "") String email) {
+        log.info(email);
+        return userMapper.userToUserDto(userService.searchUserByEmail(email));
+    }
+
+    @PermitAll
     @GetMapping()
     @Transactional
-    @Operation(summary = "Search user")
+    @Operation(summary = "find users by criteria")
     public List<ApplicationUserDto> searchUsers(
         @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
 
@@ -107,7 +117,6 @@ public class UserEndpoint {
         Specification<ApplicationUser> spec = builder.build();
 
         return userService.searchUser(spec).stream().map(userMapper::userToUserDto).collect(Collectors.toList());
-
     }
 }
 

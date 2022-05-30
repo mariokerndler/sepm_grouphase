@@ -4,11 +4,12 @@
     <mat-card-header>
 
       <mat-card-title class="image-title"
-        style="text-align: center;  color:#d7bce8"> {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
+                      style="text-align: center;  color:#d7bce8"> {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
       <mat-divider></mat-divider>
 
 
-        <mat-card-subtitle class="carousel-artist" (click)="routeToArtist()" style="text-align: center; font-size: x-large; color:#dedae0">by {{artist.userName}}
+      <mat-card-subtitle (click)="routeToArtist()" class="carousel-artist"
+                         style="text-align: center; font-size: x-large; color:#dedae0">by {{artist.userName}}
       </mat-card-subtitle>
       <mat-divider></mat-divider>
     </mat-card-header>
@@ -16,9 +17,11 @@
     <div (click)="onEvent($event)" class="carousel-image">
       <img (@slide-in.done)="animDone()" [@slide-in]="animState" [src]="url+ artworks[animArtwork].imageUrl">
       <div class=" carousel-button">
-        <span (click)="previous()" (keyup.delete)="previous()" style="font-size: large" tabindex="1"><mat-icon class="material-icons">chevron_leftt</mat-icon></span>
+        <span (click)="previous()" (keyup.delete)="previous()" style="font-size: large" tabindex="1"><mat-icon
+          class="material-icons">chevron_leftt</mat-icon></span>
         <span></span>
-        <span (click)="next()" (keyup.enter)="next()" style="font-size: large" tabindex="2"><mat-icon class="material-icons">chevron_right</mat-icon> </span>
+        <span (click)="next()" (keyup.enter)="next()" style="font-size: large" tabindex="2"><mat-icon
+          class="material-icons">chevron_right</mat-icon> </span>
 
       </div>
     </div>
@@ -32,7 +35,6 @@
   <mat-card-subtitle class="tag-view"
                      style=" text-align: center;color: white  ; font-size: x-large"> {{stringifyTags()}}&zwnj;
   </mat-card-subtitle>
-
 
 
 </div>

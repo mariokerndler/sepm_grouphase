@@ -182,9 +182,7 @@ public class ArtworkEndpointTest {
             .andExpect(status().isOk()).andReturn();
 
         List<ArtistDto> artists2 = allArtists();
-        System.out.println(artists2);
         assertEquals(2, artists2.size());
-        //Long id1 = artists.get(0).getId();
 
         assertThat(artists2.contains("bob"));
         assertThat(artists2.contains("bobby"));
@@ -200,6 +198,7 @@ public class ArtworkEndpointTest {
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(aDto);
         System.out.println(aDto);
+        System.out.println(Arrays.toString(image));
 
 
         mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)

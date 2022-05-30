@@ -81,4 +81,117 @@ public class CommissionRepositoryTest {
             () -> assertNotNull(commissionRepository.findById(commission.getId()))
         );
     }
+
+    @Test
+    public void givenNothing_saveCommission_andCheckIfPresent_thenDeleteCommission_andCheckIfGone() {
+        Artist artist = Artist.builder()
+            .userName("muRi77")
+            .name("Murray")
+            .surname("Richards")
+            .email("mur@aol.de")
+            .address("Mispelstreet")
+            .password("passwordhash")
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("Description of new artist")
+            .profileSettings("settings string")
+            .build();
+
+        ApplicationUser user = ApplicationUser.builder()
+            .userName("sunnyboy56")
+            .name("Leslie")
+            .surname("Rogers")
+            .email("lezzy@gmail.com")
+            .address("Greatstreet")
+            .password("passwordhash2")
+            .admin(false)
+            .userRole(UserRole.User)
+            .build();
+
+        artistRepository.save(artist);
+        userRepository.save(user);
+
+        Commission commission = Commission.builder()
+            .artist(artist)
+            .customer(user)
+            .sketchesShown(3)
+            .feedbackSent(0)
+            .price(300)
+            .issueDate(LocalDateTime.now())
+            .deadlineDate(LocalDateTime.now().plusWeeks(18))
+            .instructions("make me a statue")
+            .build();
+
+        commissionRepository.save(commission);
+
+        assertAll(
+            () -> assertEquals(1, commissionRepository.findAll().size()),
+            () -> assertNotNull(commissionRepository.findById(commission.getId()))
+        );
+
+        commissionRepository.deleteById(commission.getId());
+
+        assertAll(
+            () -> assertEquals(0, commissionRepository.findAll().size()),
+            () -> assertEquals(true, commissionRepository.findById(commission.getId()).isEmpty())
+        );
+    }
+
+
+    @Test
+    public void givenNothing_saveCommission_andCheckIfPresent_thenUpdate_andCheckContents() {
+        Artist artist = Artist.builder()
+            .userName("cliff2005")
+            .name("Cliff")
+            .surname("Bar")
+            .email("c.b@aol.de")
+            .address("Mispelstreet")
+            .password("passwordhash")
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("Description of new artist")
+            .profileSettings("settings string")
+            .build();
+
+        ApplicationUser user = ApplicationUser.builder()
+            .userName("jumboJames2")
+            .name("Jeanie")
+            .surname("James")
+            .email("lezzy@gmail.com")
+            .address("Greatstreet")
+            .password("passwordhash2")
+            .admin(false)
+            .userRole(UserRole.User)
+            .build();
+
+        artistRepository.save(artist);
+        userRepository.save(user);
+
+        Commission commission = Commission.builder()
+            .artist(artist)
+            .customer(user)
+            .sketchesShown(4)
+            .feedbackSent(0)
+            .price(8000)
+            .issueDate(LocalDateTime.now())
+            .deadlineDate(LocalDateTime.now().plusWeeks(12))
+            .instructions("draw me like one of your french girls")
+            .build();
+
+        commissionRepository.save(commission);
+
+        assertAll(
+            () -> assertEquals(1, commissionRepository.findAll().size()),
+            () -> assertEquals(false, commissionRepository.findById(commission.getId()).isEmpty())
+        );
+
+        commission.setFeedbackSent(4);
+
+        commissionRepository.save(commission);
+
+        assertAll(
+            () -> assertEquals(1, commissionRepository.findAll().size()),
+            () -> assertEquals(4, commissionRepository.findById(commission.getId()).get().getFeedbackSent())
+        );
+    }
 }

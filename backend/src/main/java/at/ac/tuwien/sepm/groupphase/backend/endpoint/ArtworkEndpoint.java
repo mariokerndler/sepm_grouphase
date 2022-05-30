@@ -54,9 +54,9 @@ public class ArtworkEndpoint {
                                    @RequestParam(name = "tagIds", required = false) List<String> tagIds,
                                    @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
                                    @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
-        ;
+
         TagSearchDto tagSearchDto = new TagSearchDto(tagIds, searchOperations, pageNr, randomSeed);
-        LOGGER.info("Search artworks by criteria " + tagSearchDto.toString());
+        LOGGER.info("Search artworks by criteria " + tagSearchDto);
         String search = tagSearchDto.getSearchOperations();
 
         Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
@@ -101,7 +101,7 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
-    public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id ){
+    public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
         LOGGER.info("Get artworks by artist with id " + id);
         try {
             List<Artwork> artworks = artworkService.findArtworksByArtist(id);
@@ -120,7 +120,7 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
     @Operation(summary = "Delete artwork")
-    public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
+    public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
         LOGGER.info("Delete artwork " + artworkDto.getName());
         try {
 
@@ -136,7 +136,7 @@ public class ArtworkEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Post artwork")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto ) {
+    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         LOGGER.info("Post artwork " + artworkDto.getName());
         try {
             artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));

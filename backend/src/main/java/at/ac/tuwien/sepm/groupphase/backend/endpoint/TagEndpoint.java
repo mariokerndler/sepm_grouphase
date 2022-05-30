@@ -39,6 +39,7 @@ public class TagEndpoint {
         log.debug("Get /Tags");
         return tagService.loadAllTags().stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")

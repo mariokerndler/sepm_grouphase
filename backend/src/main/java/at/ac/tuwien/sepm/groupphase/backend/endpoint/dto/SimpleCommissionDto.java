@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,18 +19,33 @@ import java.util.List;
 public class SimpleCommissionDto {
 
     private Long id;
+
     private Long artistId;
+
+    @NotNull
     private Long customerId;
+
+    @Min(0)
     private int sketchesShown;
+
+    @Min(0)
     private int feedbackSent;
+
+    @Min(0)
     private double price;
+
+    @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime issueDate;
+
+    @Future
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadlineDate;
+
     private String instructions;
+
     //TODO: can we map this to show just the url? ask in meeting
     private List<Long> referencesIds;
 
@@ -46,17 +65,16 @@ public class SimpleCommissionDto {
 
     @Override
     public String toString() {
-        return "SimpleCommissionDto{" +
-            "id=" + id +
-            ", artistId=" + artistId +
-            ", customerId=" + customerId +
-            ", sketchesShown=" + sketchesShown +
-            ", feedbackSent=" + feedbackSent +
-            ", price=" + price +
-            ", issueDate=" + issueDate +
-            ", deadlineDate=" + deadlineDate +
-            ", instructions='" + instructions + '\'' +
-            ", referenceIds=" + referencesIds +
-            '}';
+        return "SimpleCommissionDto{"
+            + "id=" + id
+            + ", artistId=" + artistId
+            + ", customerId=" + customerId
+            + ", sketchesShown=" + sketchesShown
+            + ", feedbackSent=" + feedbackSent
+            + ", price=" + price
+            + ", issueDate=" + issueDate
+            + ", deadlineDate=" + deadlineDate
+            + ", instructions='" + instructions + '\''
+            + ", referenceIds=" + referencesIds + '}';
     }
 }

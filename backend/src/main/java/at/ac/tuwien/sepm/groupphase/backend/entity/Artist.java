@@ -2,21 +2,25 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue("Artist")
 @Entity
 public class Artist extends ApplicationUser implements HasId {
 
-    @OneToOne(mappedBy = "artist")
+    @OneToOne(mappedBy = "artist", cascade = CascadeType.ALL)
     private ProfilePicture profilePicture;
 
     @Column
@@ -42,16 +46,27 @@ public class Artist extends ApplicationUser implements HasId {
     private List<Review> reviews;
 
     @ManyToMany
-    @JoinTable(
-        name = "artist_tag",
-        joinColumns = @JoinColumn(name = "artist_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JoinTable(name = "artist_tag", joinColumns = @JoinColumn(name = "artist_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
 
 
-    public Artist(String userName, String name, String surname, String email, String address, String password,
-                  Boolean admin, UserRole userRole, ProfilePicture profilePicture, String description, String profileSettings, double reviewScore,
-                  Gallery gallery, List<Artwork> artworks, List<Commission> commissions, List<Review> reviews, List<Tag> tags) {
+    public Artist(String userName,
+                  String name,
+                  String surname,
+                  String email,
+                  String address,
+                  String password,
+                  Boolean admin,
+                  UserRole userRole,
+                  ProfilePicture profilePicture,
+                  String description,
+                  String profileSettings,
+                  double reviewScore,
+                  Gallery gallery,
+                  List<Artwork> artworks,
+                  List<Commission> commissions,
+                  List<Review> reviews,
+                  List<Tag> tags) {
         super(userName, name, surname, email, address, password, admin, userRole);
         this.profilePicture = profilePicture;
         this.description = description;
@@ -66,17 +81,16 @@ public class Artist extends ApplicationUser implements HasId {
 
     @Override
     public String toString() {
-        return "Artist{" +
-            "profilePicture=" + (profilePicture == null ? null : profilePicture.getId()) +
-            ", description='" + description + '\'' +
-            ", profileSettings='" + profileSettings + '\'' +
-            ", reviewScore=" + reviewScore +
-            ", gallery=" + (gallery == null ? null : gallery.getId()) +
-            ", artworks=" + (artworks == null ? null : artworks.stream().map(Artwork::getId)) +
-            ", commissions=" + (commissions == null ? null : commissions.stream().map(Commission::getId)) +
-            ", reviews=" + (reviews == null ? null : reviews.stream().map(Review::getId)) +
-            ", tags=" + tags +
-            "} " + super.toString();
+        return "Artist{"
+            + "profilePicture=" + (profilePicture == null ? null : profilePicture.getId())
+            + ", description='" + description + '\''
+            + ", profileSettings='" + profileSettings + '\''
+            + ", reviewScore=" + reviewScore
+            + ", gallery=" + (gallery == null ? null : gallery.getId())
+            + ", artworks=" + (artworks == null ? null : artworks.stream().map(Artwork::getId))
+            + ", commissions=" + (commissions == null ? null : commissions.stream().map(Commission::getId))
+            + ", reviews=" + (reviews == null ? null : reviews.stream().map(Review::getId))
+            + ", tags=" + tags + "} " + super.toString();
     }
 
     @Override

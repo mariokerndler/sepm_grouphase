@@ -26,13 +26,12 @@ public class ReviewDto {
 
     @Override
     public String toString() {
-        return "ReviewDto{" +
-            "id=" + id +
-            ", artistDtoId=" + (artistDto == null ? null : artistDto.getId()) +
-            ", customerDtoId=" + (customerDto == null ? null : customerDto.getId()) +
-            ", text='" + text + '\'' +
-            ", commissionId=" + commissionId +
-            ", starRating=" + starRating +
-            '}';
+        return "ReviewDto{"
+            + "id=" + id
+            + ", artistDtoId=" + (artistDto == null ? null : artistDto.getId())
+            + ", customerDtoId=" + (customerDto == null ? null : customerDto.getId())
+            + ", text='" + text + '\''
+            + ", commissionId=" + commissionId
+            + ", starRating=" + starRating + '}';
     }
 }

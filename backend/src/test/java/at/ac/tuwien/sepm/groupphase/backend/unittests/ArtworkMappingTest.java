@@ -1,4 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.unittests;
+import at.ac.tuwien.sepm.groupphase.backend.basetest.GetImageByteArray;
 import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
@@ -62,8 +63,7 @@ public class ArtworkMappingTest implements TestData {
 
     @Test
     public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
-        File file = new File("./data/image0.png");
-        byte[] image = Files.readAllBytes(file.toPath());
+        byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
 
         Artist artist = getTestArtist1();
         artistService.saveArtist(artist);

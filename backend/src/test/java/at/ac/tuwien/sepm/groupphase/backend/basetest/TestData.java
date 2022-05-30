@@ -1,5 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.basetest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,4 +34,13 @@ public interface TestData {
         }
     };
 
+    /**
+     * imageUrl0: "https://i.ibb.co/HTT7Ym3/image0.jpg"
+     * imageUrl1: "https://i.ibb.co/7yHp276/image1.jpg"
+     * imageUrl2: "https://i.ibb.co/cDT8JHg/image2.jpg"
+     * imageUrl3: "https://i.ibb.co/wy4PbD4/image3.jpg"
+     *
+     */
+
 }
+

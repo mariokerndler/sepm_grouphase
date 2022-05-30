@@ -49,7 +49,7 @@ public class ArtistMappingTest {
     private Artist artist;
 
     public Artist getTestArtist1() {
-        return artist = new Artist("testArtist", "bob", "test", "test", "test", passwordEncoder.encode("test")
+        return artist = new Artist("testArtist", "bob", "test", "test@test.com", "test", passwordEncoder.encode("test")
             , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
     }
 

@@ -58,7 +58,8 @@ export class ImageFeedComponent implements OnInit {
     private tagService: TagService,
     private notificationService: NotificationService,
     public globalFunctions: GlobalFunctions,
-    public globals: Globals) {}
+    public globals: Globals) {
+  }
 
   ngOnInit(): void {
     this.loadFeed();
@@ -70,7 +71,7 @@ export class ImageFeedComponent implements OnInit {
   compareFunction = (o1: any, o2: any) => o1.id === o2.id;
 
   public loadFeed() {
-    if(this.artworks) {
+    if (this.artworks) {
       this.images = this.artworks;
       this.imagesLoaded = true;
       return;
@@ -88,16 +89,16 @@ export class ImageFeedComponent implements OnInit {
       .subscribe(
         //temporary solution until be is fixed.
         (artworks) => {
-          artworks.forEach(a =>{
+          artworks.forEach(a => {
             try {
               const img = new URL(a.imageUrl);
-              artworks.forEach(b=>{
-                if(b.imageUrl===a.imageUrl && b !==a){
-                  artworks.splice(artworks.indexOf(b),1);
+              artworks.forEach(b => {
+                if (b.imageUrl === a.imageUrl && b !== a) {
+                  artworks.splice(artworks.indexOf(b), 1);
                 }
               });
             } catch (_) {
-              artworks.splice(artworks.indexOf(a),1);
+              artworks.splice(artworks.indexOf(a), 1);
             }
           });
           this.images = artworks;
@@ -123,7 +124,7 @@ export class ImageFeedComponent implements OnInit {
   }
 
   public onListSelectionChange(event: any, options: any): void {
-    this.searchParams.pageNr=0;
+    this.searchParams.pageNr = 0;
     this.loadFeed();
   }
 
@@ -142,24 +143,24 @@ export class ImageFeedComponent implements OnInit {
   public loadArtists() {
     this.artistService.getAllArtists()
       .subscribe(data => {
-        this.artists = data;
-        this.artistsLoaded = true;
-      }
-    );
+          this.artists = data;
+          this.artistsLoaded = true;
+        }
+      );
   }
 
   onTagSelect($event: MatCheckboxChange) {
     this.searchParams.tagIds = this.tags
       .filter(menuitem => menuitem.selected)
       .map(menuitem => menuitem.id.toString());
-    this.searchParams.pageNr=0;
+    this.searchParams.pageNr = 0;
     console.log(this.searchParams.tagIds);
     this.loadFeed();
   }
 
 
   setSelectedArtwork(i: number) {
-    this.selectedArtwork=i;
+    this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 }

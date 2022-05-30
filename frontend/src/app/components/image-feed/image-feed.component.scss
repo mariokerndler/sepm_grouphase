@@ -39,7 +39,7 @@ html, body {
 
 .feed {
   scrollbar-gutter: stable;
-   filter:var(--bgFilter);
+  filter: var(--bgFilter);
   max-width: 95%;
   max-height: 48rem; //change here
   overflow-y: auto;
@@ -106,7 +106,6 @@ html, body {
 }
 
 
-
 .scroll-wrapper {
   // width: 1000px;
 
@@ -114,7 +113,6 @@ html, body {
   position: relative;
 
 }
-
 
 
 md-divider {
@@ -164,24 +162,27 @@ md-divider {
   visibility: visible;
   opacity: 0.7;
 }
-#carousel:not(:active){
+
+#carousel:not(:active) {
 
   visibility: visible;
-  filter:blur(5px);
+  filter: blur(5px);
 }
+
 #carousel:active {
-  filter:blur(5px);
+  filter: blur(5px);
 }
+
 .card-img-description {
   transition: 2s;
 
 
   transform: translateY(1em);
   font-size: 1rem;
-  bot:0;
+  bot: 0;
   position: fixed;
   text-align: center;
-  margin-bottom:3px;
+  margin-bottom: 3px;
 }
 
 .card-img-wrap:hover .card-img-description {
@@ -204,7 +205,6 @@ mat-menu.content {
 .pagination {
 
   flex-direction: row;
-
 
 
   display: flex;

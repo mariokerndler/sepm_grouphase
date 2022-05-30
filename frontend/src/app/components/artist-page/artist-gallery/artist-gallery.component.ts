@@ -19,7 +19,8 @@ export class ArtistGalleryComponent implements OnInit {
   constructor(
     private artworkService: ArtworkService,
     public dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.artistProfilePicture = 'https://picsum.photos/100/100';
@@ -40,8 +41,6 @@ export class ArtistGalleryComponent implements OnInit {
       }
     });
   }
-
-
 
 
 }

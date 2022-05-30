@@ -1,5 +1,6 @@
-<mat-card *ngIf="commission && user" class="commission" [routerLink]="'/commissions/' + commission.id" routerLinkActive="active">
-  <mat-card-title ><strong>{{commission.title}}</strong></mat-card-title>
+<mat-card *ngIf="commission && user" [routerLink]="'/commissions/' + commission.id" class="commission"
+          routerLinkActive="active">
+  <mat-card-title><strong>{{commission.title}}</strong></mat-card-title>
   <img [src]="userProfilePicture" alt="" class="commission-pfp">
   <mat-card-content>
     <strong>{{user.userName}}</strong>
@@ -8,7 +9,7 @@
     <br>
     <strong>Date: {{commission.startDate.toLocaleDateString()}} - {{commission.endDate.toLocaleDateString()}}</strong>
     <br><br>
-    <p >{{commission.description.substring(0,100)}}...</p>
+    <p>{{commission.description.substring(0, 100)}}...</p>
   </mat-card-content>
   <mat-card-actions>
     <span> <strong> See More </strong></span>

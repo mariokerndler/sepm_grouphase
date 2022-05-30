@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
-import {ArtworkDto} from '../../../dtos/artworkDto';
 
 @Component({
   selector: 'app-commission-details',
@@ -12,7 +11,8 @@ import {ArtworkDto} from '../../../dtos/artworkDto';
 })
 export class CommissionDetailsComponent implements OnInit {
 
-  commission = {id: 1, artistId: null, userId: 1, title:'Commission Title',
+  commission = {
+    id: 1, artistId: null, userId: 1, title: 'Commission Title',
     description: 'This is just a random description which describes some of the information within in the commission.' +
       'This is just a random description which describes some of the information ' +
       'within in the commission and now shows a more detailed description.\n' +
@@ -23,20 +23,21 @@ export class CommissionDetailsComponent implements OnInit {
       'sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum ' +
       'dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ' +
       'tempor invidunt.',
-    sketchesShown:0, feedbackSend: 0, comArtworkId: null, feedback: [], price: 300,
-    startDate: new Date(2022,1,1),
-    endDate: new Date(2022, 3, 1), referenceImageIds: [1,2,3]} as CommissionDto;
+    sketchesShown: 0, feedbackSend: 0, comArtworkId: null, feedback: [], price: 300,
+    startDate: new Date(2022, 1, 1),
+    endDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
+  } as CommissionDto;
 
   userProfilePicture = 'https://picsum.photos/150/150';
   user: ApplicationUserDto;
   artworks;
 
-  constructor(private userService: UserService, private artworkService: ArtworkService) { }
+  constructor(private userService: UserService, private artworkService: ArtworkService) {
+  }
 
   ngOnInit(): void {
     this.fetchUser(this.commission.id);
   }
-
 
 
   /*
@@ -47,7 +48,7 @@ export class CommissionDetailsComponent implements OnInit {
   }
   */
 
-  private fetchUser(userId: number){
+  private fetchUser(userId: number) {
     this.userService.getUserById(userId).subscribe({
       next: (loadedUser) => {
         this.user = loadedUser;
@@ -69,11 +70,6 @@ export class CommissionDetailsComponent implements OnInit {
     }
     */
   }
-
-
-
-
-
 
 
 }

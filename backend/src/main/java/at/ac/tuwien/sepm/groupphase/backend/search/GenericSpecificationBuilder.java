@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Slf4j
 public class GenericSpecificationBuilder<T> {
     private final List<SearchCriteria> params;
@@ -103,7 +104,7 @@ public class GenericSpecificationBuilder<T> {
             case ENDS_WITH:
                 return builder.like(root.get(criteria.getKey()), "%" + criteria.getValue());
             case CONTAINS:
-                return   builder.like( builder.lower(
+                return builder.like(builder.lower(
                     root.get(criteria.getKey())
                 ), "%" + criteria.getValue() + "%");
             default:

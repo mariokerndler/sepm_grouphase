@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/tag")
+@RequestMapping(value = "api/v1/tags")
 @Slf4j
 public class TagEndpoint {
 
@@ -39,6 +39,7 @@ public class TagEndpoint {
         log.debug("Get /Tags");
         return tagService.loadAllTags().stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")

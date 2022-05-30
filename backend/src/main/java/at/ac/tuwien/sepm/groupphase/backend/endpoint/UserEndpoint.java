@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "api/v1/users")
 @RequiredArgsConstructor
 public class UserEndpoint {
 

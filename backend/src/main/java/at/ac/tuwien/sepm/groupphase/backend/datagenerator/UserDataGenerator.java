@@ -31,10 +31,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Profile("generateData")
 @Component
-@Slf4j
 public class UserDataGenerator {
+
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;

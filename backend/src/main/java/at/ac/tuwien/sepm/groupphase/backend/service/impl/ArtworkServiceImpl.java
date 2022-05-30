@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
 public class ArtworkServiceImpl implements ArtworkService {
     private final ArtworkRepository artworkRepo;
     private final ImageFileManager ifm;

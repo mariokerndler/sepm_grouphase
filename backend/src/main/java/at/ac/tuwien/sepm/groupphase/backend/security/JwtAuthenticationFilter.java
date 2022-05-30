@@ -3,8 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.security;
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserLoginDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,12 +17,12 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
 
@@ -48,7 +47,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throw new BadCredentialsException("Wrong API request or JSON schema", e);
         } catch (BadCredentialsException e) {
             if (user != null && user.getEmail() != null) {
-                LOGGER.error("Unsuccessful authentication attempt for user {}", user.getEmail());
+                log.error("Unsuccessful authentication attempt for user {}", user.getEmail());
             }
             throw e;
         }
@@ -60,7 +59,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                               AuthenticationException failed) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(failed.getMessage());
-        LOGGER.debug("Invalid authentication attempt: {}", failed.getMessage());
+        log.debug("Invalid authentication attempt: {}", failed.getMessage());
     }
 
     @Override
@@ -76,6 +75,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             .collect(Collectors.toList());
 
         response.getWriter().write(jwtTokenizer.getAuthToken(user.getUsername(), roles));
-        LOGGER.info("Successfully authenticated user {}", user.getUsername());
+        log.info("Successfully authenticated user {}", user.getUsername());
     }
 }

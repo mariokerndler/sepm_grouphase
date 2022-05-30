@@ -1,9 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Artist} from '../../../dtos/artist';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {FakerGeneratorService} from '../../../services/faker-generator.service';
-import {Gallery} from '../../../dtos/gallery';
+import {ArtworkService} from '../../../services/artwork.service';
+import {UploadComponent} from '../../upload/upload.component';
+import {MatDialog} from '@angular/material/dialog';
+import {ArtworkDto} from '../../../dtos/artworkDto';
 
 @Component({
   selector: 'app-artist-gallery',
@@ -13,14 +12,36 @@ import {Gallery} from '../../../dtos/gallery';
 export class ArtistGalleryComponent implements OnInit {
 
   @Input() artist;
+  artworks: ArtworkDto[] = [];
+  isReady = false;
   artistProfilePicture: string;
 
-
-  constructor() {}
-
+  constructor(
+    private artworkService: ArtworkService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.artistProfilePicture = 'https://picsum.photos/100/100';
+
+    this.artworkService.getArtworksByArtist(this.artist.id)
+      .subscribe(
+        (artworks) => {
+          this.artworks = artworks;
+          this.isReady = true;
+        }
+      );
   }
+
+  openDialog() {
+    this.dialog.open(UploadComponent, {
+      data: {
+        artist: this.artist,
+      }
+    });
+  }
+
+
+
 
 }

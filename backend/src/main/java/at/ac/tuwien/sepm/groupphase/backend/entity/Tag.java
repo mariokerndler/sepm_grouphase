@@ -32,10 +32,10 @@ public class Tag {
 
     @Override
     public String toString() {
-        return "Tag{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            '}';
+        return "Tag{"
+            + "id=" + id
+            + ", name='" + name + '\''
+            + '}';
     }
 
     @Override
@@ -45,12 +45,17 @@ public class Tag {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Tag other = (Tag) obj;
         return id != null && id.equals(other.getId());
     }

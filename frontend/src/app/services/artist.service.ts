@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NotificationService} from './notification/notification.service';
-import {catchError,tap, Observable} from 'rxjs';
+import {catchError, Observable, tap} from 'rxjs';
 import {ArtistDto} from '../dtos/artistDto';
 import {Globals} from '../global/globals';
 
@@ -14,13 +14,14 @@ export class ArtistService {
   private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  private options = { headers: this.headers };
+  private options = {headers: this.headers};
 
   constructor(
     private http: HttpClient,
     private notificationService: NotificationService,
     private globals: Globals
-  ) { }
+  ) {
+  }
 
   /**
    * Fetches all artists stored in the system
@@ -45,8 +46,8 @@ export class ArtistService {
   getArtistById(id: number, errorNotification?: () => void): Observable<ArtistDto> {
     return this.http.get<ArtistDto>(this.artistBaseUri + '/' + id, this.options)
       .pipe(
-        catchError( (err) => {
-          if(errorNotification != null) {
+        catchError((err) => {
+          if (errorNotification != null) {
             errorNotification();
           }
 
@@ -66,7 +67,7 @@ export class ArtistService {
     return this.http.put<ArtistDto>(this.artistBaseUri, artistDto, this.options)
       .pipe(
         catchError(this.notificationService.notifyUserAboutFailedOperation<ArtistDto>('Updating artist')),
-        tap( (_) => {
+        tap((_) => {
           this.notificationService.displaySuccessSnackbar(`Successfully updated "${artistDto.userName}"!`);
         })
       );
@@ -83,7 +84,7 @@ export class ArtistService {
     return this.http.post<ArtistDto>(this.artistBaseUri, artistDto, this.options)
       .pipe(
         catchError(this.notificationService.notifyUserAboutFailedOperation<ArtistDto>('Creating new artist')),
-        tap( (successArtist) => {
+        tap((successArtist) => {
           this.notificationService.displaySuccessSnackbar(`Successfully created "${successArtist.userName}"!`);
         })
       );

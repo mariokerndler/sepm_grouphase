@@ -45,14 +45,14 @@ public class Receipt {
 
     @Override
     public String toString() {
-        return "Receipt{" +
-            "id=" + id +
-            ", price=" + price +
-            ", issueDate=" + issueDate +
-            ", taxRate=" + taxRate +
-            ", companyInfo=" + companyInfo +
-            ", commission=" + commission.getId() +
-            '}';
+        return "Receipt{"
+            + "id=" + id
+            + ", price=" + price
+            + ", issueDate=" + issueDate
+            + ", taxRate=" + taxRate
+            + ", companyInfo=" + companyInfo
+            + ", commission=" + commission.getId()
+            + '}';
     }
 
     @Override
@@ -62,12 +62,17 @@ public class Receipt {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Receipt other = (Receipt) obj;
         return id != null && id.equals(other.getId());
     }

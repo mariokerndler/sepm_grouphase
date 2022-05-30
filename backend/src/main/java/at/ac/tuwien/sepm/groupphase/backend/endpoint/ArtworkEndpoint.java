@@ -61,15 +61,17 @@ public class ArtworkEndpoint {
     @Transactional
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
     public List<ArtworkDto> search(@RequestParam( name="randomSeed",defaultValue = "0")int randomSeed,
-                                   @RequestParam( name="tagIds")List<String> tagIds,
+                                   @RequestParam( name="tagIds", required = false)List<String> tagIds,
                                    @RequestParam( name="pageNr",defaultValue = "0")int pageNr,
-                                   @RequestParam( name="searchOperation",defaultValue = "")String searchOperation) {
-        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperation,pageNr,randomSeed);
+                                   @RequestParam( name="searchOperations",defaultValue = "")String searchOperations) {
+        ;
+        TagSearchDto tagSearchDto= new TagSearchDto(tagIds,searchOperations.toLowerCase(),pageNr,randomSeed);
+        log.info(tagSearchDto.toString());
         String search= tagSearchDto.getSearchOperations();
 
         Pageable page= PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
-        String operationSetExper = String.join("|",SearchOperation.SIMPLE_OPERATION_SET);
+        String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(
             "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
         Matcher matcher = pattern.matcher(search + ",");
@@ -80,19 +82,29 @@ public class ArtworkEndpoint {
                 matcher.group(4),
                 matcher.group(3),
                 matcher.group(5));
+            log.info(matcher.group(1));
+            log.info(matcher.group(2));
+            log.info(matcher.group(3));
+            log.info(matcher.group(4));
+            log.info(matcher.group(5));
         }
 
         Specification<Artwork> spec = builder.build();
 
 
+
+
         if(tagSearchDto.getTagIds()!=null) {
-            if (spec == null) {
-                spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+            if(tagSearchDto.getTagIds().size()>0) {
+                if (spec == null) {
+                    spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
+                }
+                for (String tag : tagSearchDto.getTagIds()) {
+                    spec =spec.and(TagSpecification.filterByTags(tag).and(spec));
+                    log.info("filtering by:" +tag);
+                }
+
             }
-            for (String tag : tagSearchDto.getTagIds()) {
-                spec.and(TagSpecification.filterByTags(tag));
-            }
-            log.info(tagSearchDto.getSearchOperations());
         }
         return artworkService.searchArtworks(spec,page,tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
@@ -105,31 +117,46 @@ public class ArtworkEndpoint {
     @Operation(summary = "getAllArtworksByArtist")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id ){
         LOGGER.info("Get /Artist");
-        List<Artwork> artworks = artworkService.findArtworksByArtist(id);
+        try {
+            List<Artwork> artworks=artworkService.findArtworksByArtist(id);
 
-        List<ArtworkDto> artworksDto = artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+            List<ArtworkDto> artworksDto= artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
-        return artworksDto;
+
+            return artworksDto;
+        } catch (Exception n) {
+            LOGGER.error(n.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        }
     }
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping( )
     @Operation(summary = "getAllArtworksByArtist")
-    public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto ){
+    public void deleteArtwork(@RequestBody ArtworkDto artworkDto ){
         LOGGER.info("Delete Artwork"+artworkDto.getName());
+        try {
 
-        artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+            artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+
+        } catch (Exception n) {
+            LOGGER.error(n.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        }
     }
-
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get Detailed informations about a specific user")
-    public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) throws IOException {
+    public void postArtwork(@RequestBody ArtworkDto artworkDto ) {
         LOGGER.debug("Post /Artwork/{}", artworkDto.toString());
-
-        artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+        try {
+            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+        } catch (Exception v) {
+            LOGGER.error(v.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        }
 
     }
 }

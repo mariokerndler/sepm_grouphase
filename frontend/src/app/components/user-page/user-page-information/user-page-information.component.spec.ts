@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserPageInformationComponent } from './user-page-information.component';
+import {UserPageInformationComponent} from './user-page-information.component';
 
 describe('UserInformationComponent', () => {
   let component: UserPageInformationComponent;
@@ -8,9 +8,9 @@ describe('UserInformationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserPageInformationComponent ]
+      declarations: [UserPageInformationComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

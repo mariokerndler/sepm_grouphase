@@ -1,152 +1,166 @@
-<div *ngIf="isReady" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem" class="edit-page">
-  <mat-tab-group dynamicHeight backgroundColor="primary">
+<div *ngIf="isReady" class="edit-page" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem">
+  <mat-tab-group backgroundColor="primary" dynamicHeight>
     <mat-tab label="Public profile">
       <h2 class="primary">Edit your profile</h2>
-      <div class="edit-page-pf-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign="start" fxLayoutGap="0.8rem">
-         <form class="edit-page-pf-form" [formGroup]="editForm">
-           <div fxLayout="row" fxLayoutGap="0.5rem">
-             <mat-form-field class="full-width primary" appearance="fill">
-               <mat-label class="primary">First name</mat-label>
-               <input aria-describedby="firstnameHelp" formControlName="firstname" matInput name="firstname">
-               <mat-error *ngIf="editForm.controls.firstname.errors">
-                 <mat-error *ngIf="editForm.controls.firstname.errors.required">Your first name is required! </mat-error>
-                 <mat-error *ngIf="editForm.controls.firstname.errors.pattern">Your first name contains invalid symbols! </mat-error>
-               </mat-error>
-             </mat-form-field>
+      <div class="edit-page-pf-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign="start"
+           fxLayoutGap="0.8rem">
+        <form [formGroup]="editForm" class="edit-page-pf-form">
+          <div fxLayout="row" fxLayoutGap="0.5rem">
+            <mat-form-field appearance="fill" class="full-width primary">
+              <mat-label class="primary">First name</mat-label>
+              <input aria-describedby="firstnameHelp" formControlName="firstname" matInput name="firstname">
+              <mat-error *ngIf="editForm.controls.firstname.errors">
+                <mat-error *ngIf="editForm.controls.firstname.errors.required">Your first name is required!</mat-error>
+                <mat-error *ngIf="editForm.controls.firstname.errors.pattern">Your first name contains invalid
+                  symbols!
+                </mat-error>
+              </mat-error>
+            </mat-form-field>
 
-             <mat-form-field class="full-width primary" appearance="fill">
-               <mat-label class="primary">Last name</mat-label>
-               <input aria-describedby="lastnameHelp" formControlName="lastname" matInput name="lastname">
-               <mat-error *ngIf="editForm.controls.firstname.errors">
-                 <mat-error *ngIf="editForm.controls.firstname.errors.required">Your last name is required! </mat-error>
-                 <mat-error *ngIf="editForm.controls.firstname.errors.pattern">Your last name contains invalid symbols! </mat-error>
-               </mat-error>
-             </mat-form-field>
-           </div>
+            <mat-form-field appearance="fill" class="full-width primary">
+              <mat-label class="primary">Last name</mat-label>
+              <input aria-describedby="lastnameHelp" formControlName="lastname" matInput name="lastname">
+              <mat-error *ngIf="editForm.controls.firstname.errors">
+                <mat-error *ngIf="editForm.controls.firstname.errors.required">Your last name is required!</mat-error>
+                <mat-error *ngIf="editForm.controls.firstname.errors.pattern">Your last name contains invalid symbols!
+                </mat-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
 
-           <mat-form-field class="full-width primary" appearance="fill">
-             <mat-label class="primary">Username</mat-label>
-             <input aria-describedby="usernameHelp" formControlName="username" matInput name="username">
-             <mat-error *ngIf="editForm.controls.username.errors" >
-               <small *ngIf="editForm.controls.username.errors.required">Your username is required! </small>
-               <small  *ngIf="editForm.controls.username.errors.pattern">Your username contains invalid symbols! </small>
-             </mat-error>
-           </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width primary">
+            <mat-label class="primary">Username</mat-label>
+            <input aria-describedby="usernameHelp" formControlName="username" matInput name="username">
+            <mat-error *ngIf="editForm.controls.username.errors">
+              <small *ngIf="editForm.controls.username.errors.required">Your username is required! </small>
+              <small *ngIf="editForm.controls.username.errors.pattern">Your username contains invalid symbols! </small>
+            </mat-error>
+          </mat-form-field>
 
-           <mat-form-field class="full-width primary" appearance="fill">
-             <mat-label class="primary">E-Mail</mat-label>
-             <input matInput type="email" name="email" formControlName="email" aria-describedby="emailHelp">
-             <mat-error *ngIf="editForm.controls.email.errors">
-               <small *ngIf="editForm.controls.email.errors.required">Your email is required! </small>
-               <small *ngIf="editForm.controls.email.errors.email">The email you entered is invalid! </small>
-             </mat-error>
-           </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width primary">
+            <mat-label class="primary">E-Mail</mat-label>
+            <input aria-describedby="emailHelp" formControlName="email" matInput name="email" type="email">
+            <mat-error *ngIf="editForm.controls.email.errors">
+              <small *ngIf="editForm.controls.email.errors.required">Your email is required! </small>
+              <small *ngIf="editForm.controls.email.errors.email">The email you entered is invalid! </small>
+            </mat-error>
+          </mat-form-field>
 
-           <mat-form-field class="full-width primary" appearance="fill">
-             <mat-label class="primary">Address</mat-label>
-             <input matInput name="address" formControlName="address" aria-describedby="addressHelp">
-             <mat-error *ngIf="editForm.controls.address.errors">
-               <small *ngIf="editForm.controls.address.errors.required">Your address is required! </small>
-             </mat-error>
-           </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width primary">
+            <mat-label class="primary">Address</mat-label>
+            <input aria-describedby="addressHelp" formControlName="address" matInput name="address">
+            <mat-error *ngIf="editForm.controls.address.errors">
+              <small *ngIf="editForm.controls.address.errors.required">Your address is required! </small>
+            </mat-error>
+          </mat-form-field>
 
-           <mat-form-field class="full-width primary" appearance="fill" *ngIf="isArtist">
-             <mat-label class="primary">Description</mat-label>
-             <textarea #description matInput rows="6" maxlength="512" name="description" formControlName="description" aria-describedby="descriptionHelp"></textarea>
-             <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint>
-             <mat-hint align="end">{{description?.value.length}} / 512</mat-hint>
-           </mat-form-field>
-         </form>
+          <mat-form-field *ngIf="isArtist" appearance="fill" class="full-width primary">
+            <mat-label class="primary">Description</mat-label>
+            <textarea #description aria-describedby="descriptionHelp" formControlName="description" matInput
+                      maxlength="512" name="description"
+                      rows="6"></textarea>
+            <mat-hint align="start"><strong>Don't disclose personal info</strong></mat-hint>
+            <mat-hint align="end">{{description?.value.length}} / 512</mat-hint>
+          </mat-form-field>
+        </form>
 
-        <div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem" *ngIf="isArtist">
+        <div *ngIf="isArtist" class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center"
+             fxLayoutGap="0.5rem">
           <h3 class="primary">Profile picture</h3>
-          <img [src]="artistProfilePicture" class="edit-page-pfp" alt="">
-          <input accept="image/png, image/jpeg"
-                 style="display: none;"
-                 type="file" (change)="onFileChanged($event)"
-                 #fileInput>
-            <button mat-button color="accent" (click)="fileInput.click()">
-              <mat-icon color="accent">upload</mat-icon>
-              <span>Upload new profile picture</span>
-            </button>
+          <img [src]="artistProfilePicture" alt="" class="edit-page-pfp">
+          <input #fileInput
+                 (change)="onFileChanged($event)"
+                 accept="image/png, image/jpeg" style="display: none;"
+                 type="file">
+          <button (click)="fileInput.click()" color="accent" mat-button>
+            <mat-icon color="accent">upload</mat-icon>
+            <span>Upload new profile picture</span>
+          </button>
         </div>
       </div>
 
-      <button mat-flat-button color="accent" class="update-user-button" (click)="updateUserInformation()">Update user</button>
+      <button (click)="updateUserInformation()" class="update-user-button" color="accent" mat-flat-button>Update user
+      </button>
     </mat-tab>
 
     <mat-tab label="Password">
       <h2 class="primary">Change your password</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
-        <form class="edit-page-pf-form" [formGroup]="passwordForm">
-          <mat-form-field class="full-width primary" appearance="fill">
+        <form [formGroup]="passwordForm" class="edit-page-pf-form">
+          <mat-form-field appearance="fill" class="full-width primary">
             <mat-label class="primary">Old password</mat-label>
-            <input matInput [type]="!showPassword ? 'password' : 'text'" name="oldPassword" formControlName="oldPassword">
-            <mat-error *ngIf="passwordForm.controls.password.errors" >
+            <input [type]="!showPassword ? 'password' : 'text'" formControlName="oldPassword" matInput
+                   name="oldPassword">
+            <mat-error *ngIf="passwordForm.controls.password.errors">
               <small *ngIf="passwordForm.controls.password.errors.required">Your old password is required!</small>
-              <small *ngIf="passwordForm.controls.password.errors.minlength">Your old password must be at least 8 characters long!</small>
+              <small *ngIf="passwordForm.controls.password.errors.minlength">Your old password must be at least 8
+                characters long!</small>
             </mat-error>
           </mat-form-field>
 
           <div fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutGap="0.5rem">
-            <mat-form-field class="full-width primary" appearance="fill">
+            <mat-form-field appearance="fill" class="full-width primary">
               <mat-label class="primary">New password</mat-label>
-              <input matInput [type]="!showPassword ? 'password' : 'text'" name="password" formControlName="password">
-              <mat-error *ngIf="passwordForm.controls.password.errors" >
+              <input [type]="!showPassword ? 'password' : 'text'" formControlName="password" matInput name="password">
+              <mat-error *ngIf="passwordForm.controls.password.errors">
                 <small *ngIf="passwordForm.controls.password.errors.required">Your new password is required!</small>
-                <small *ngIf="passwordForm.controls.password.errors.minlength">Your new password must be at least 8 characters long!</small>
+                <small *ngIf="passwordForm.controls.password.errors.minlength">Your new password must be at least 8
+                  characters long!</small>
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="full-width primary" appearance="fill">
+            <mat-form-field appearance="fill" class="full-width primary">
               <mat-label class="primary">Confirm new Password</mat-label>
-              <input matInput [type]="!showPassword ? 'password' : 'text'" name="confirm" formControlName="confirm" id="confirm">
+              <input [type]="!showPassword ? 'password' : 'text'" formControlName="confirm" id="confirm" matInput
+                     name="confirm">
               <mat-error *ngIf="passwordForm.controls.confirm.errors">
-                <small  *ngIf="passwordForm.controls.confirm.errors.required">Your new password is required!</small>
-                <small  *ngIf="passwordForm.controls.confirm.errors.minlength">Your new password must be at least 8 characters long!</small>
-                <small *ngIf="passwordForm.controls.confirm.errors.mustMatch">New password and new confirm Password must be match.</small>
+                <small *ngIf="passwordForm.controls.confirm.errors.required">Your new password is required!</small>
+                <small *ngIf="passwordForm.controls.confirm.errors.minlength">Your new password must be at least 8
+                  characters long!</small>
+                <small *ngIf="passwordForm.controls.confirm.errors.mustMatch">New password and new confirm Password must
+                  be match.</small>
               </mat-error>
             </mat-form-field>
           </div>
         </form>
 
-        <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
-          <button mat-flat-button color="accent" (click)="updatePassword()">Update password</button>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+          <button (click)="updatePassword()" color="accent" mat-flat-button>Update password</button>
           <mat-checkbox [(ngModel)]="showPassword">Show Password</mat-checkbox>
         </div>
 
       </div>
     </mat-tab>
 
-    <mat-tab label="Appearance" *ngIf="isArtist">
+    <mat-tab *ngIf="isArtist" label="Appearance">
       <h2 class="primary">Update the profile appearance</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
-        <form class="edit-page-pf-form" [formGroup]="appearanceForm">
+        <form [formGroup]="appearanceForm" class="edit-page-pf-form">
           <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Background</mat-label>
-            <input matInput [ngxMatColorPicker]="bgPicker" formControlName="backgroundColor" class="primary">
-            <ngx-mat-color-toggle matSuffix [for]="bgPicker" class="primary"></ngx-mat-color-toggle>
+            <input [ngxMatColorPicker]="bgPicker" class="primary" formControlName="backgroundColor" matInput>
+            <ngx-mat-color-toggle [for]="bgPicker" class="primary" matSuffix></ngx-mat-color-toggle>
             <ngx-mat-color-picker #bgPicker></ngx-mat-color-picker>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Primary</mat-label>
-            <input matInput [ngxMatColorPicker]="primaryPicker" formControlName="primaryColor" class="primary">
-            <ngx-mat-color-toggle matSuffix [for]="primaryPicker" class="primary"></ngx-mat-color-toggle>
+            <input [ngxMatColorPicker]="primaryPicker" class="primary" formControlName="primaryColor" matInput>
+            <ngx-mat-color-toggle [for]="primaryPicker" class="primary" matSuffix></ngx-mat-color-toggle>
             <ngx-mat-color-picker #primaryPicker></ngx-mat-color-picker>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Secondary</mat-label>
-            <input matInput [ngxMatColorPicker]="secondaryPicker" formControlName="secondaryColor" class="primary">
-            <ngx-mat-color-toggle matSuffix [for]="secondaryPicker" class="primary"></ngx-mat-color-toggle>
+            <input [ngxMatColorPicker]="secondaryPicker" class="primary" formControlName="secondaryColor" matInput>
+            <ngx-mat-color-toggle [for]="secondaryPicker" class="primary" matSuffix></ngx-mat-color-toggle>
             <ngx-mat-color-picker #secondaryPicker></ngx-mat-color-picker>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="primary full-width">
             <mat-label class="primary">Header</mat-label>
-            <input matInput [ngxMatColorPicker]="headerPicker" formControlName="headerColor" class="primary">
-            <ngx-mat-color-toggle matSuffix [for]="headerPicker" class="primary"></ngx-mat-color-toggle>
+            <input [ngxMatColorPicker]="headerPicker" class="primary" formControlName="headerColor" matInput>
+            <ngx-mat-color-toggle [for]="headerPicker" class="primary" matSuffix></ngx-mat-color-toggle>
             <ngx-mat-color-picker #headerPicker></ngx-mat-color-picker>
           </mat-form-field>
         </form>
@@ -154,43 +168,48 @@
 
       <h2 class="primary">Update the profile elements</h2>
 
-      <div fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutGap="0.5rem" fxLayoutAlign="space-between start" class="artist-profile-elements-wrapper" cdkDropListGroup>
-        <div fxFlex="33%" class="element-container">
+      <div cdkDropListGroup class="artist-profile-elements-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column"
+           fxLayoutAlign="space-between start" fxLayoutGap="0.5rem">
+        <div class="element-container" fxFlex="33%">
           <h3 class="primary">Layout elements</h3>
 
           <div
-            cdkDropList
+            (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="availableComponents"
-            cdkDropListSortingDisabled
-            class="element-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="element-box" *ngFor="let item of availableComponents" cdkDrag [cdkDragDisabled]="item.disabled">{{item.componentName}}</div>
-          </div>
-        </div>
-        <div fxFlex="33%" class="element-container">
-          <h3 class="primary">Layout arrangement</h3>
-
-          <div
             cdkDropList
-            [cdkDropListData]="chosenComponents"
-            class="element-list"
-            (cdkDropListDropped)="drop($event)">
-            <div (click)="componentClick(item)" *ngFor="let item of chosenComponents" [cdkDragDisabled]="item.disabled" cdkDrag
+            cdkDropListSortingDisabled
+            class="element-list">
+            <div *ngFor="let item of availableComponents" [cdkDragDisabled]="item.disabled" cdkDrag
                  class="element-box">{{item.componentName}}</div>
           </div>
         </div>
-        <div fxFlex="33%" class="gallery-settings">
+        <div class="element-container" fxFlex="33%">
+          <h3 class="primary">Layout arrangement</h3>
+
+          <div
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="chosenComponents"
+            cdkDropList
+            class="element-list">
+            <div (click)="componentClick(item)" *ngFor="let item of chosenComponents" [cdkDragDisabled]="item.disabled"
+                 cdkDrag
+                 class="element-box">{{item.componentName}}</div>
+          </div>
+        </div>
+        <div class="gallery-settings" fxFlex="33%">
           <div *ngIf="selectedComponent then settingComponent else defaultComponent"></div>
         </div>
       </div>
 
-      <button mat-flat-button color="accent" class="artist-profile-elements-button update-user-button" (click)="updateAppearance()">Update appearance</button>
+      <button (click)="updateAppearance()" class="artist-profile-elements-button update-user-button" color="accent"
+              mat-flat-button>Update appearance
+      </button>
     </mat-tab>
   </mat-tab-group>
 </div>
 
 <div class="home-button">
-  <button mat-button color="accent" (click)="goBack()">
+  <button (click)="goBack()" color="accent" mat-button>
     <mat-icon color="accent">home</mat-icon>
     <span class="home-text">Go back</span>
   </button>
@@ -207,22 +226,22 @@
 <ng-template #gallery>
   <h3 class="primary">{{selectedComponent.componentName}} settings</h3>
   <div class="gallery-settings">
-    <mat-form-field class="gallery-settings-tags" appearance="fill">
+    <mat-form-field appearance="fill" class="gallery-settings-tags">
       <mat-label class="primary">Tags</mat-label>
       <input
         #tagInput
-      [formControl]="tagForm"
-      [matAutocomplete]="auto"
-      [matChipInputFor]="tagList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+        [formControl]="tagForm"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="tagList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
         <mat-option *ngFor="let tag of allTags" [value]="tag">
           {{tag.name}}
         </mat-option>
       </mat-autocomplete>
 
-      <mat-chip-list #tagList class="mat-chip-list-stacked" aria-label="Tag selection">
-        <mat-chip *ngFor="let tag of selectedComponent.tags" (removed)="removeTag(tag)">
+      <mat-chip-list #tagList aria-label="Tag selection" class="mat-chip-list-stacked">
+        <mat-chip (removed)="removeTag(tag)" *ngFor="let tag of selectedComponent.tags">
           {{tag.name}}
           <button matChipRemove>
             <mat-icon>cancel</mat-icon>

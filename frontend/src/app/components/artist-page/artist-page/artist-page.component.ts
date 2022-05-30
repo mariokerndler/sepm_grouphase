@@ -8,6 +8,7 @@ import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 import {AuthService} from '../../../services/auth.service';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-artist-page',
@@ -22,16 +23,21 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   isReady = false;
   isArtist = false;
   canEdit = false;
+  tabIndex = 0;
+  // TODO: Fill in the real profile picture
+  artistUrl = 'https://picsum.photos/150/150';
   private routeSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private artistService: ArtistService,
     private userService: UserService,
     private notificationService: NotificationService,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 
   private static navigateToArtistList() {
     console.log('FAILED');
@@ -43,41 +49,25 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
         .subscribe((user) => {
           this.user = user;
 
-          if(this.user.userRole === UserRole.artist) {
+          if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
 
             this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
               .subscribe((artist) => {
                 this.artist = artist;
 
-                if(this.artist.profileSettings) {
+                if (this.artist.profileSettings) {
                   this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
                 }
 
                 this.canEdit = this.authService.getUserAuthEmail() === this.artist.email;
+                this.isReady = true;
               });
           } else if (this.user.userRole === UserRole.user) {
             this.navigateToUserPage();
           }
-
-          this.canEdit = this.authService.getUserAuthEmail() === this.user.email;
-          this.isReady = true;
         })
     );
-
-    /*
-        this.routeSubscription = this.route.params.subscribe(
-      (params) => this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
-        .subscribe((artist) => {
-          this.artist = artist;
-          if(this.artist.profileSettings) {
-            this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
-          }
-          this.isReady = true;
-          this.canEdit = this.authService.getUserAuthEmail() === this.artist.email;
-        })
-    );
-     */
   }
 
   ngOnDestroy() {
@@ -100,5 +90,13 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           this.notificationService.displayErrorSnackbar(error.toString());
         }
       );
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
+  changeIndex($event: any) {
+    this.tabIndex = $event;
   }
 }

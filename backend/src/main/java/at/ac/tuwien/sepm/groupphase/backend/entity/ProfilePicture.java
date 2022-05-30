@@ -1,11 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -13,19 +11,17 @@ import javax.persistence.OneToOne;
 @Setter
 @NoArgsConstructor
 @Entity
-public class ProfilePicture extends Image{
+public class ProfilePicture extends Image {
 
     @OneToOne
     private Artist artist;
 
 
-
-
     @Override
     public String toString() {
-        return "ProfilePicture{" +
-            "artist=" + artist +
-            '}' + super.toString();
+        return "ProfilePicture{"
+            + "artist=" + artist
+            + '}' + super.toString();
     }
 
     @Override
@@ -35,12 +31,17 @@ public class ProfilePicture extends Image{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         ProfilePicture other = (ProfilePicture) obj;
         return this.getId() != null && this.getId().equals(other.getId());
     }

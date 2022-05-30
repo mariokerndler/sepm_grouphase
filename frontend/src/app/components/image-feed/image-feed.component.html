@@ -1,6 +1,10 @@
-<form class="col-12">
+
+
+
+<form   style="padding-left: 1%"   class="col-12">
+  <div >
   <mat-form-field>
-    <mat-label class="primary">Artists</mat-label>
+    <mat-label class="primary" >Artists</mat-label>
     <input [matAutocomplete]="auto" matInput type="text">
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let artist of artists " [value]="artist.id">
@@ -15,8 +19,9 @@
   </mat-form-field>
 
   <mat-label [matMenuTriggerFor]="tagListMenu" class="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>
-  <mat-menu #tagListMenu="matMenu">
+  <mat-menu class="mat-checkbox"  #tagListMenu="matMenu">
     <mat-checkbox #tagMenuItems
+                  class="mat-primary"
                   (change)="onTagSelect($event)"
                   (click)="$event.stopPropagation()"
                   *ngFor="let tag of tags"
@@ -26,7 +31,7 @@
       {{tag.name}}
     </mat-checkbox>
   </mat-menu>
-
+  </div>
   <div class="pagination">
     <button (click)="previousPage()" class="paginationButton" color="accent" mat-button>
       <span class="material-icons">chevron_left</span>
@@ -35,20 +40,22 @@
     <button (click)="nextPage()" class="paginationButton" color="accent" mat-button>
       <span class="material-icons">chevron_right</span>
     </button>
+    <mat-divider></mat-divider>
   </div>
 </form>
+
 
 <mat-divider></mat-divider>
 <div class="container" id="container">
   <div clas="header"><br></div>
   <div class="content">
     <div class="card-img-wrap">
-      <div _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(500px, 1fr))" gdgap="10px"
-           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px;">
+      <div _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(400px, 1fr))" gdgap="10px"
+           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px;">
         <div *ngFor="let artwork of images; let i= index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
              class="image">
 
-          <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" alt="">
+          <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" alt="" >
 
           <div class="card-img-description-layer">
             <p class="card-img-description">

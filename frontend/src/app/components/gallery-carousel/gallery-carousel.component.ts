@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {ArtworkDto} from '../../dtos/artworkDto';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ArtistService} from '../../services/artist.service';
@@ -8,6 +8,7 @@ import {TagService} from '../../services/tag.service';
 import {GlobalFunctions} from '../../global/globalFunctions';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'app-gallery-carousel',
   templateUrl: './gallery-carousel.component.html',
   styleUrls: ['./gallery-carousel.component.scss'],

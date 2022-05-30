@@ -38,9 +38,10 @@ html, body {
 }
 
 .feed {
+  scrollbar-gutter: stable;
    filter:var(--bgFilter);
-
-  max-height: 90rem; //change here
+  max-width: 95%;
+  max-height: 48rem; //change here
   overflow-y: auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -104,11 +105,7 @@ html, body {
 
 }
 
-.example-form {
-  min-width: 150px;
-  max-width: 400px;
 
-}
 
 .scroll-wrapper {
   // width: 1000px;
@@ -161,9 +158,7 @@ md-divider {
   /* transition effect. not necessary */
   transition: opacity 1.4s, visibility 1.8s;
 }
-.feedWrapper{
 
-}
 
 .card-img-wrap:hover .card-img-description-layer {
   visibility: visible;
@@ -207,12 +202,13 @@ mat-menu.content {
 }
 
 .pagination {
+
+  flex-direction: row;
+
+
+
   display: flex;
-  padding-left: 18%;
-  right: 46%;
-  top: 8%;
-  display: inline-block;
-  align-items: center;
+  justify-content: center;
 }
 
 .paginationButton {
@@ -241,3 +237,6 @@ mat-menu.content {
     padding: 0.5rem 1rem;
   }
 }
+
+
+

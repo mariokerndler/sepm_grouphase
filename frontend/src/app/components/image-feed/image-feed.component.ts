@@ -35,6 +35,8 @@ export class ImageFeedComponent implements OnInit {
   isOpen = false;
   tagHidden = false;
   cols = 3;
+  //rename Artwork
+  url = 'assets/';
   images: ArtworkDto[];
   artists: ArtistDto[];
   tags: TagDto[];
@@ -84,7 +86,20 @@ export class ImageFeedComponent implements OnInit {
 
     this.artworkService.search(this.searchParams)
       .subscribe(
+        //temporary solution until be is fixed.
         (artworks) => {
+          artworks.forEach(a =>{
+            try {
+              const img = new URL(a.imageUrl);
+              artworks.forEach(b=>{
+                if(b.imageUrl===a.imageUrl && b !==a){
+                  artworks.splice(artworks.indexOf(b),1);
+                }
+              });
+            } catch (_) {
+              artworks.splice(artworks.indexOf(a),1);
+            }
+          });
           this.images = artworks;
           this.imagesLoaded = true;
         }

@@ -38,6 +38,7 @@ html, body {
 }
 
 .feed {
+   filter:var(--bgFilter);
 
   max-height: 90rem; //change here
   overflow-y: auto;
@@ -179,11 +180,13 @@ md-divider {
 .card-img-description {
   transition: 2s;
 
+
   transform: translateY(1em);
   font-size: 1rem;
   bot:0;
   position: fixed;
   text-align: center;
+  margin-bottom:3px;
 }
 
 .card-img-wrap:hover .card-img-description {
@@ -204,13 +207,13 @@ mat-menu.content {
 }
 
 .pagination {
-  position: fixed;
+  display: flex;
+  padding-left: 18%;
   right: 46%;
   top: 8%;
-  display: flex;
+  display: inline-block;
   align-items: center;
 }
-
 
 .paginationButton {
 
@@ -226,5 +229,15 @@ mat-menu.content {
   float: left;
 
   padding: 14px 5px;
+}
 
+.mat-menu-panel {
+  background: lightgray;
+  margin-top: .3rem;
+
+  .mat-menu-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+  }
 }

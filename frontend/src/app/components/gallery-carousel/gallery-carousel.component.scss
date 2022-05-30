@@ -94,7 +94,42 @@
 
 
   }
+  .image-title{
+    padding-top: 10px;
+    font-size: 1.4em;
 
+
+  }
+  .carousel-artist{
+
+    font-size: 1%;
+    padding: 2px;
+
+    cursor: pointer;
+
+    &:focus, &:hover {
+      border: none;
+      outline: none;
+      color: gray;
+      transform: scale(1.1);
+      transition-duration: 0.3s;
+
+    }
+  }
+  .downloadButton{
+    right:0;
+    float:right;
+    display:inline;
+    color:white;
+    font-size: 0.8rem;
+    &:focus, &:hover {
+      border: none;
+      outline: none;
+      color: gray;
+      transform: scale(1.1);
+      transition-duration: 0.3s;
+    }
+  }
   .carousel-close {
 
     position: absolute;
@@ -110,6 +145,7 @@
       outline: none;
       color: gray;
       transform: scale(1.1);
+      transition-duration: 0.3s;
     }
   }
 }

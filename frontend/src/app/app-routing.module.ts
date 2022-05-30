@@ -15,7 +15,7 @@ import {CommissionFeedComponent} from './components/commission/commission-feed/c
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', redirectTo: 'feed', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
@@ -25,6 +25,7 @@ const routes: Routes = [
   {path: 'user/:id/edit', component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},
   {path: 'artists', component: ArtistFeedComponent},
+  {path: '**', redirectTo: 'feed'},
   {path: 'commissions', component: CommissionFeedComponent},
   {path: 'commissions/:id', component: CommissionDetailsComponent}
 ];

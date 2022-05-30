@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {ArtworkDto} from '../../../dtos/artworkDto';
 import {ArtworkService} from '../../../services/artwork.service';
@@ -17,13 +17,20 @@ export class ArtistFeedCardComponent implements OnInit {
   isReady = false;
   artworks: ArtworkDto[] = [];
   artistPfp = 'https://picsum.photos/150/150';
+  private maxArtworkLoad = 8;
 
   constructor(
     private artworkService: ArtworkService,
     private notificationService: NotificationService,
     private router: Router,
-    public globals: Globals
+    public globals: Globals,
+    {nativeElement}: ElementRef<HTMLImageElement>
   ) {
+    const supports = 'loading' in HTMLImageElement.prototype;
+
+    if(supports) {
+      nativeElement.setAttribute('loading', 'lazy');
+    }
   }
 
   ngOnInit(): void {
@@ -32,7 +39,7 @@ export class ArtistFeedCardComponent implements OnInit {
       () => this.notificationService.displayErrorSnackbar(`Could not load artist with username ${this.artist.userName}.`))
       .subscribe(
         (response) => {
-          this.artworks = response;
+          this.artworks = response.splice(0, this.maxArtworkLoad);
           this.isReady = true;
         }
       );

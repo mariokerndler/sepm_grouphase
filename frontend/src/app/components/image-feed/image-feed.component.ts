@@ -35,6 +35,8 @@ export class ImageFeedComponent implements OnInit {
   isOpen = false;
   tagHidden = false;
   cols = 3;
+  //rename Artwork
+  url = 'assets/';
   images: ArtworkDto[];
   artists: ArtistDto[];
   tags: TagDto[];
@@ -49,14 +51,16 @@ export class ImageFeedComponent implements OnInit {
   };
   public selectedArtwork: number = null;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private artworkService: ArtworkService,
-    private artistService: ArtistService,
-    private tagService: TagService,
-    private notificationService: NotificationService,
-    public globalFunctions: GlobalFunctions,
-    public globals: Globals) {}
+
+  constructor(private formBuilder: FormBuilder, private artworkService: ArtworkService
+    , private artistService: ArtistService, private tagService: TagService,
+              public globalFunctions: GlobalFunctions) {
+    this.globalFunctions = globalFunctions;
+    this.artworkService = artworkService;
+    this.tagService = tagService;
+    this.artistService = artistService;
+    console.log(globalFunctions.artworkNameParser('data\\ap\\tianzi\\artstation_9970348_37433613_Quick painting practice 速涂练习.jpg'));
+  }
 
   ngOnInit(): void {
     this.loadFeed();
@@ -81,14 +85,14 @@ export class ImageFeedComponent implements OnInit {
       this.searchParams.randomSeed = 1;
       this.searchParams.searchOperations = '';
     }
+    this.artworkService.search(this.searchParams).subscribe(
+      data => {
+        this.images = data;
+      }, error => {
+        console.log('no error handling exists so im just here to say hi');
+      }
+    );
 
-    this.artworkService.search(this.searchParams)
-      .subscribe(
-        (artworks) => {
-          this.images = artworks;
-          this.imagesLoaded = true;
-        }
-      );
   }
 
   public nextPage(): void {
@@ -117,18 +121,27 @@ export class ImageFeedComponent implements OnInit {
   }
 
   public loadAllTags() {
-    this.tagService.getAllTags()
-      .subscribe(data => {
+    this.tagService.getAllTags().subscribe(
+      data => {
+        console.log(data);
         this.tags = data;
-        this.tagsLoaded = true;
-      });
+      }, error => {
+        console.log('no error handling exists so im just here to say hi');
+      }
+    );
   }
 
   public loadArtists() {
-    this.artistService.getAllArtists()
-      .subscribe(data => {
+    this.artistService.getAllArtists().subscribe(
+      data => {
+
+        data.forEach(a => {
+
+
+        });
         this.artists = data;
-        this.artistsLoaded = true;
+      }, error => {
+        console.log('no error handling exists so im just here to say hi');
       }
     );
   }
@@ -143,9 +156,10 @@ export class ImageFeedComponent implements OnInit {
   }
 
 
-  setSelectedArtwork(artwork: ArtworkDto) {
-    this.selectedArtwork = artwork.id;
+  setSelectedArtwork(i:number) {
+    this.selectedArtwork=i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+
   }
 
   handlePage(e: any) {

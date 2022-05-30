@@ -9,31 +9,33 @@
     </mat-autocomplete>
   </mat-form-field>
   <mat-form-field>
-    <mat-label  class="primary">Search</mat-label>
-    <input (keydown.enter)="searchParams.pageNr=0; loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"  matInput name="searchForm" placeholder="search">
+    <mat-label class="primary">Search</mat-label>
+    <input (keydown.enter)="searchParams.pageNr=0; loadFeed()" [(ngModel)]=" searchInput" (click)="this.searchInput=''"
+           matInput name="searchForm" placeholder="search" class="primary">
   </mat-form-field>
 
-  <mat-label [matMenuTriggerFor]="tagListMenu"   class="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>
-  <mat-menu #tagListMenu color="primary" name="tagListMenu">
-
-    <mat-checkbox #tagMenuItems (change)="onTagSelect($event)" (click)="$event.stopPropagation()" *ngFor="let tag of tags;let i= index "
+  <mat-label [matMenuTriggerFor]="tagListMenu" class="primary">Tags selected {{searchParams.tagIds.length}}</mat-label>
+  <mat-menu #tagListMenu="matMenu">
+    <mat-checkbox #tagMenuItems
+                  (change)="onTagSelect($event)"
+                  (click)="$event.stopPropagation()"
+                  *ngFor="let tag of tags"
                   [(ngModel)]="tag.selected"
-                  [value]="tag.id"
+                  [value]="tag.name"
                   name="tagCheckbox">
-      <span> {{tag.name}}</span>
+      {{tag.name}}
     </mat-checkbox>
-
-
   </mat-menu>
 
   <div class="pagination">
-    <button (click)="previousPage()" class="paginationButton" color="accent" mat-button><span class="material-icons">chevron_left</span></button>
+    <button (click)="previousPage()" class="paginationButton" color="accent" mat-button>
+      <span class="material-icons">chevron_left</span>
+    </button>
     <mat-label class="paginationText" color="accent" style="width: 20px">{{searchParams.pageNr}}</mat-label>
-    <button (click)="nextPage()" class="paginationButton" color="accent" mat-button><span class="material-icons">chevron_right</span></button>
-
-
+    <button (click)="nextPage()" class="paginationButton" color="accent" mat-button>
+      <span class="material-icons">chevron_right</span>
+    </button>
   </div>
-
 </form>
 
 <mat-divider></mat-divider>
@@ -46,8 +48,7 @@
         <div *ngFor="let artwork of images; let i= index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
              class="image">
 
-          <img (click)="setSelectedArtwork(i) " [src]="url+artwork.imageUrl" alt="">
-
+          <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" alt="">
 
           <div class="card-img-description-layer">
             <p class="card-img-description">
@@ -61,8 +62,12 @@
   </div>
 </div>
 
+<div *ngIf="imagesLoaded">
+  <app-gallery-carousel
+    (closeCarousel)="selectedArtwork=null"
+    *ngIf="selectedArtwork!== null"
+    [artworks]="images"
+    [selectedArtworkId]="selectedArtwork">
+  </app-gallery-carousel>
+</div>
 
-  <app-gallery-carousel (closeCarousel)="selectedArtwork=null" *ngIf="selectedArtwork!== null" [artworks]="images"
-                      [selectedArtworkId]="selectedArtwork">
-
-</app-gallery-carousel>

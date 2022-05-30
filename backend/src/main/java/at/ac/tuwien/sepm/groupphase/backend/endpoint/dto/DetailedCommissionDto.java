@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,21 +20,41 @@ import java.util.List;
 public class DetailedCommissionDto {
 
     private Long id;
+
     private ArtistDto artistDto;
+
+    @NotNull
     private ApplicationUserDto customerDto;
+
+    @Min(0)
     private int sketchesShown;
+
+    @Min(0)
     private int feedbackSent;
+
+    @Min(0)
     private double price;
+
+    @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime issueDate;
+
+    @Future
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadlineDate;
+
     private String instructions;
-    private List<ReferenceDto> referencesDtos;
-    private List<ReceiptDto> receiptsDtos;
+
+    private List<@Valid ReferenceDto> referencesDtos;
+
+    private List<@Valid ReceiptDto> receiptsDtos;
+
+    @Valid
     private ReviewDto reviewDto;
+
+    @Valid
     private ArtworkDto artworkDto;
 
     public DetailedCommissionDto(ArtistDto artistDto,

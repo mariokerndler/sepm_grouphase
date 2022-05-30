@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
+import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ public class CommissionServiceImpl implements CommissionService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final CommissionRepository commissionRepo;
+    private final CommissionValidator commissionValidator;
     private final ImageFileManager ifm;
 
     @Autowired
-    public CommissionServiceImpl(CommissionRepository commissionRepo, ImageFileManager ifm) {
+    public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm) {
         this.commissionRepo = commissionRepo;
+        this.commissionValidator = commissionValidator;
         this.ifm = ifm;
     }
 
@@ -49,6 +52,9 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void saveCommission(Commission c) {
         LOGGER.info("Save commission " + c);
+
+        commissionValidator.checkIfCommissionAlreadyExists(c);
+
         //TODO: writeReference in imageFileManager
         /*
         if (c.getReferences() != null) {
@@ -59,11 +65,15 @@ public class CommissionServiceImpl implements CommissionService {
         }
          */
         this.commissionRepo.save(c);
+
     }
 
     @Override
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
+
+        commissionValidator.checkIfCommissionExists(c);
+
         this.commissionRepo.save(c);
     }
 

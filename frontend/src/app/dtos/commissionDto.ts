@@ -1,15 +1,13 @@
 export class CommissionDto {
   id: number;
   artistId: number;
-  userId: number;
+  customerId: number;
   title: string;
-  description: string;
+  instructions: string;
   sketchesShown: number;
   feedbackSend: number;
-  comArtworkId: number;
-  feedback: string[];
   price: number;
-  startDate: Date;
-  endDate: Date;
+  issueDate: Date;
+  deadlineDate: Date;
   referenceImageIds: number[];
 }

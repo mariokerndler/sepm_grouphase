@@ -17,7 +17,7 @@ export class CommissionCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchUser(this.commission.userId);
+    this.fetchUser(this.commission.customerId);
   }
 
   private fetchUser(userId: number) {

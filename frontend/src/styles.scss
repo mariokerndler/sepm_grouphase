@@ -28,6 +28,9 @@ $background: #434F6A;
     background-color: mat-color($accent);
     color: mat-color($primary);
   }
+  .secondary{
+    color: #2f3a51;
+  }
 
 }
 
@@ -40,7 +43,7 @@ body {
   background-color: $background;
 }
 
-// TODO: Idk if that is a good idea
+
 * {
   font-family: 'Didact Gothic', sans-serif;
 }

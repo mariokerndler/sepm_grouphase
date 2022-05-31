@@ -1,0 +1,68 @@
+<div fxLayoutAlign="center center" fxLayout="column">
+<mat-stepper class="comm_stepper" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Commission Details</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-label  color="accent-color" class="accent-color">Title</mat-label>
+        <input matInput placeholder="Title" [(ngModel)]=commission.title formControlName="firstCtrl" required>
+      </mat-form-field> <br>
+
+      <mat-form-field appearance="fill">
+        <mat-label   color="accent-color" class="accent-color" >Describe your the Artwork you envision</mat-label>
+        <textarea matInput placeholder="Descrription" [(ngModel)]=commission.description formControlName="firstCtrl" required>
+        </textarea>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext><mat-icon>keyboard_arrow_right</mat-icon></button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step  [stepControl]="secondFormGroup" label="Organisation">
+    <form [formGroup]="secondFormGroup">
+      <mat-form-field appearance="fill">
+        <mat-label color="accent-color" class="accent-color">Delivery Date</mat-label>
+        <input matInput formControlName="secondCtrl"  type="date"  [(ngModel)]=commission.endDate placeholder=" "
+               required>
+      </mat-form-field><br>
+      <mat-form-field appearance="fill">
+        <mat-label color="accent-color" class="accent-color">Your offer</mat-label>
+
+        <input matInput formControlName="secondCtrl" [(ngModel)]=commission.price type="text" placeholder="Price"
+               required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
+        <button mat-button matStepperNext><mat-icon>keyboard_arrow_right</mat-icon></button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" label="References">
+    <form [formGroup]="secondFormGroup">
+      <mat-form-field appearance="fill">
+        <span  color="accent-color" class="accent-color"  >If possible provide reference pictures for your artwork</span>
+
+
+
+        <ngx-mat-file-input (change)="uploadReference()" >
+        </ngx-mat-file-input>
+        <mat-hint>You can selected multiple Pictures</mat-hint>
+      </mat-form-field><br>
+
+      <div>
+        <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
+        <button mat-button matStepperNext><mat-icon>keyboard_arrow_right</mat-icon></button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p  color="accent-color" class="accent-color">You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
+      <button mat-button matStepperNext> Post Commission </button>
+
+    </div>
+  </mat-step>
+</mat-stepper>
+</div>

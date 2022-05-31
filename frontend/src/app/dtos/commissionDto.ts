@@ -1,3 +1,5 @@
+import {ReferenceDto} from './referenceDto';
+
 export class CommissionDto {
   id: number;
   artistId: number;
@@ -12,4 +14,5 @@ export class CommissionDto {
   startDate: Date;
   endDate: Date;
   referenceImageIds: number[];
+  references: ReferenceDto [];
 }

@@ -58,7 +58,7 @@ public class ImageFileManager {
     }
     public  String writeArtworkImage(Commission c, Artwork aw){
         String relPath=   ImageDataPaths.commissionLocation +    c.getId() + "\\" +ImageDataPaths.awhIdentifier+aw.getId() ;
-        try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation+relPath)) {
+        try (FileOutputStream outputStream = new FileOutputStream(relPath)) {
             outputStream.write(aw.getImageData());
             return relPath;
         } catch (IOException e) {

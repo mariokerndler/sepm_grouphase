@@ -42,7 +42,7 @@ public class TagEndpoint {
     @Operation(summary = "Load Tags for Image")
     public List<TagDto> findTagsForImage(@PathVariable Long id) {
         log.debug("Get /Image Tags");
-        return tagService.loadTagsByImage(id).stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
+        return tagService.loadTagsOfArtwork(id).stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
     }
 
 }

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         log.debug("Load all user by email");
         try {
 
-            ApplicationUser applicationUser = findApplicationUserByEmail(email);
+            ApplicationUser applicationUser = findUserByEmail(email);
 
             List<GrantedAuthority> grantedAuthorities;
             if (applicationUser.getAdmin()) {
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApplicationUser findApplicationUserByEmail(String email) {
+    public ApplicationUser findUserByEmail(String email) {
         log.debug("Find application user by email");
         ApplicationUser applicationUser = userRepo.findApplicationUserByEmail(email);
         if (applicationUser != null) {

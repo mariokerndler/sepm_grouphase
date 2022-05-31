@@ -154,8 +154,8 @@ public class ArtistEndpointTest {
 
         Long artistId = artists2.get(0).getId();
 
-        Artist modifiedObject = new Artist(artistId, "testArtist2Modified", "bobbyMod", "tester", "test2Mod@test.com", "testStraße 2", passwordEncoder.encode("tester2")
-            , false, UserRole.Artist, null, "TestDescription",null, 2.0, null, null, null, null, null);
+        Artist modifiedObject = new Artist(artistId, "testArtist", "bobMod", "test", "testMod@test.com", "test", passwordEncoder.encode("test")
+            , false, UserRole.Artist, null, "TestModDescription", null, 1.0, null, null, null, null, null);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(modifiedObject);

@@ -202,7 +202,7 @@ public class ArtworkEndpointTest {
                 .content(requestJson3))
             .andExpect(status().isOk()).andReturn();
 
-        Artwork anotherArtwork = getArtwork1(artistIdForArtwork, image1);
+        /*Artwork anotherArtwork = getArtwork1(artistIdForArtwork, image1);
         ArtworkDto anotherDto = artworkMapper.artworkToArtworkDto(anotherArtwork);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow4 = objectMapper.writer().withDefaultPrettyPrinter();
@@ -211,7 +211,7 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson4))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isOk()).andReturn();*/
 
         mockMvc.perform(get("/api/v1/artworks/" + artistIdForArtwork).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andReturn();

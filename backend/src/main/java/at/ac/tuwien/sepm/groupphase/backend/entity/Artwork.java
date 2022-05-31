@@ -2,16 +2,20 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Artwork extends Image implements HasId {
 
@@ -64,8 +68,8 @@ public class Artwork extends Image implements HasId {
             + ", name='" + name + '\''
             + ", description='" + description + '\''
             + ", artist=" + artist.getId()
-           // + ", sketches=" + sketches.stream().map(Sketch::getId).toList()
-           // + ", commission=" + commission.getId()
+            + ", sketches=" + (sketches == null ? null : sketches.stream().map(Sketch::getId).toList())
+            + ", commission=" + (commission == null ? null : commission.getId())
             + '}' + super.toString();
     }
 

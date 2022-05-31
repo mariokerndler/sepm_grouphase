@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class ArtworkServiceImpl implements ArtworkService {
+
     private final ArtworkRepository artworkRepo;
     private final ImageFileManager ifm;
 
@@ -30,6 +32,17 @@ public class ArtworkServiceImpl implements ArtworkService {
     @Override
     public List<Artwork> findArtworksByArtist(Long id) {
         return artworkRepo.findArtworkByArtistId(id);
+    }
+
+    @Override
+    public Artwork findById(Long id) {
+        Optional<Artwork> artwork = artworkRepo.findById(id);
+
+        if (artwork.isPresent()) {
+            return artwork.get();
+        } else {
+            throw new NotFoundException(String.format("Could not find Artwork with id %s", id));
+        }
     }
 
     @Override
@@ -55,7 +68,6 @@ public class ArtworkServiceImpl implements ArtworkService {
     public List<Artwork> searchArtworks(Specification<Artwork> spec) {
         return artworkRepo.findAll(spec);
     }
-
 
     @Override
     public List<Artwork> searchArtworks(Specification<Artwork> spec, Pageable page, int randomSeed) {

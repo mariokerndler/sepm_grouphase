@@ -1,16 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class ChatMessage {
 
@@ -25,7 +25,7 @@ public class ChatMessage {
     private LocalDateTime sentDate;
 
     @ManyToOne
-    @JoinColumn(name = "chat")
+    @JoinColumn(nullable = false, name = "chat")
     private Chat chat;
 
     public ChatMessage(String text, LocalDateTime sentDate) {

@@ -34,7 +34,7 @@ public class UserEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    @Operation(summary = "Get Detailed information's about a specific user")
+    @Operation(summary = "Get a user by id")
     public ApplicationUserDto findById(@PathVariable Long id) {
         log.debug("Get /User/{}", id);
 
@@ -43,20 +43,8 @@ public class UserEndpoint {
         ApplicationUserDto audto = userMapper.userToUserDto(applicationUser);
         log.info(audto.toString());
         return audto;
-
     }
 
-    /**
-     * @PermitAll
-     * @ResponseStatus(HttpStatus.OK)
-     * @GetMapping
-     * @Operation(summary = "Get Detailed information's about a specific user")
-     * public List<ApplicationUserDto> getAllUsers() {
-     * log.debug("Get /User");
-     * <p>
-     * return userService.getAllUsers().stream().map(userMapper::userToUserDto).collect(Collectors.toList());
-     * }
-     **/
     @PermitAll
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -80,7 +68,7 @@ public class UserEndpoint {
     @PermitAll
     @GetMapping("/email")
     @Transactional
-    @Operation(summary = "find user by email")
+    @Operation(summary = "Find user by email")
     public ApplicationUserDto searchUsersByEmail(
         @RequestParam(name = "email", defaultValue = "") String email) {
         log.info(email);
@@ -90,7 +78,7 @@ public class UserEndpoint {
     @PermitAll
     @GetMapping()
     @Transactional
-    @Operation(summary = "find users by criteria")
+    @Operation(summary = "Get users by criteria")
     public List<ApplicationUserDto> searchUsers(
         @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
 
@@ -119,4 +107,3 @@ public class UserEndpoint {
         return userService.searchUser(spec).stream().map(userMapper::userToUserDto).collect(Collectors.toList());
     }
 }
-

@@ -20,7 +20,6 @@ public class ArtistDto {
     @Size(max = 50)
     private String userName;
 
-    // TODO: Should we allow more than one first name?
     @ValidAlphaNumeric
     @Size(max = 50)
     private String name;
@@ -48,11 +47,13 @@ public class ArtistDto {
     @NotNull
     private UserRole userRole;
 
+    private String description;
+
     @Min(0)
     @Max(5)
     private double reviewScore;
 
-    private long galleryId;
+    private Long galleryId;
 
     private List<Long> artworksIds;
 
@@ -63,9 +64,19 @@ public class ArtistDto {
     @Size(max = 255)
     private String profileSettings;
 
-    public ArtistDto(String userName, String name, String surname, String email, String address,
-                     String password, Boolean admin, UserRole userRole, double reviewScore, long galleryId,
-                     List<Long> artworksIds, List<Long> commissions, List<Long> reviews,
+    public ArtistDto(String userName,
+                     String name,
+                     String surname,
+                     String email,
+                     String address,
+                     String password,
+                     Boolean admin,
+                     UserRole userRole,
+                     double reviewScore,
+                     Long galleryId,
+                     List<Long> artworksIds,
+                     List<Long> commissions,
+                     List<Long> reviews,
                      String profileSettings) {
         this.userName = userName;
         this.name = name;
@@ -83,12 +94,24 @@ public class ArtistDto {
         this.profileSettings = profileSettings;
     }
 
-    public void addArtworkId(Long i) {
-        if (artworksIds == null) {
-            return;
-        }
-
-        this.artworksIds.add(i);
+    @Override
+    public String toString() {
+        return "ArtistDto{"
+            + "id=" + id
+            + ", userName='" + userName + '\''
+            + ", name='" + name + '\''
+            + ", surname='" + surname + '\''
+            + ", email='" + email + '\''
+            + ", address='" + address + '\''
+            + ", password='" + password + '\''
+            + ", admin=" + admin
+            + ", userRole=" + userRole
+            + ", reviewScore=" + reviewScore
+            + ", galleryId=" + galleryId
+            + ", artworksIds=" + artworksIds
+            + ", commissionsIds=" + commissionsIds
+            + ", reviewsIds=" + reviewsIds
+            + ", profileSettings='" + profileSettings + '\'' + '}';
     }
 
     @Override

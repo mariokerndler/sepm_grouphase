@@ -1,9 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,7 +13,9 @@ import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Reference extends Image {
 

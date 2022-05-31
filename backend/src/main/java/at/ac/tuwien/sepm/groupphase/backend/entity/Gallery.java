@@ -1,16 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
-@Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Gallery {
 
     @Id
@@ -26,8 +26,7 @@ public class Gallery {
     @JoinColumn(name = "gallery_id", referencedColumnName = "id")
     private List<Artwork> artworks;
 
-    public Gallery(Long id, Artist artist, List<Artwork> artworks) {
-        this.id = id;
+    public Gallery(Artist artist, List<Artwork> artworks) {
         this.artist = artist;
         this.artworks = artworks;
     }
@@ -35,8 +34,9 @@ public class Gallery {
     @Override
     public String toString() {
         return "Gallery{"
-            + "id=" + id + ", artist=" + artist.getId()
-            + ", artworks=" + artworks.stream().map(Artwork::getId).toList()
+            + "id=" + id
+            + ", artist=" + artist.getId()
+            + ", artworks=" + (artworks == null ? null : artworks.stream().map(Artwork::getId).toList())
             + '}';
     }
 

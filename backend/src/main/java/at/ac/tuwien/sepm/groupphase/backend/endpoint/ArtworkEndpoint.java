@@ -39,6 +39,7 @@ public class ArtworkEndpoint {
         this.artworkMapper = artworkMapper;
     }
 
+    //TODO: implementation arguably belongs to service class
     //see https://www.baeldung.com/rest-api-query-search-language-more-operations
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
@@ -117,7 +118,7 @@ public class ArtworkEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
-    @Operation(summary = "Delete Artwork")
+    @Operation(summary = "Delete artwork")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
         log.info("Delete Artwork " + artworkDto.getName());
         try {
@@ -133,7 +134,7 @@ public class ArtworkEndpoint {
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Post an Artwork")
+    @Operation(summary = "Post artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());
         try {

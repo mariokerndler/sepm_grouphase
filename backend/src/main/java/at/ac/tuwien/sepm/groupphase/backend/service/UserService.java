@@ -73,5 +73,4 @@ public interface UserService extends UserDetailsService {
      */
     List<ApplicationUser> searchUser(Specification<ApplicationUser> spec);
 
-    ApplicationUser searchUserByEmail(String email);
 }

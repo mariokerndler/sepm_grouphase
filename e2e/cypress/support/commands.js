@@ -1,3 +1,5 @@
+import 'cypress-file-upload';
+
 Cypress.Commands.add('loginAdmin', () => {
     cy.fixture('settings').then(settings => {
         cy.visit(settings.baseUrl);
@@ -30,4 +32,21 @@ Cypress.Commands.add('registerUser', () => {
         cy.get('input[name="password"]').type(settings.adminPw);
         cy.get('button[name="submit-button"]').click();
     })
-})
+});
+
+/* Not working at the moment, because no artist in database during pipeline
+Cypress.Commands.add('uploadImage', () => {
+    cy.fixture('settings').then(settings => {
+            const fixtureFile = 'image4.png';
+            cy.visit(settings.baseUrl+'/#/artist/5');
+            cy.contains('button', 'See More').click();
+            cy.contains('button', 'Upload new picture').click();
+            cy.get('input[name="artworkName"]').type(settings.lastName);
+            cy.get('input[name="artworkName"]').type(settings.lastName);
+            cy.get('input[type="file"]').attachFile(fixtureFile); 
+            cy.get('button[name="upload-button"]').click();
+      
+    }); 
+});
+
+*/

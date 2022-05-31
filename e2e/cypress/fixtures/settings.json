@@ -1,5 +1,10 @@
 {
   "adminUser": "admin@email.com",
   "adminPw": "password",
-  "baseUrl": "localhost:4200"
+  "baseUrl": "localhost:4200",
+  "firstName":"first",
+  "lastName":"last",
+  "email":"new12346238@email.com",
+  "address":"address",
+  "username":"new1234567"
 }

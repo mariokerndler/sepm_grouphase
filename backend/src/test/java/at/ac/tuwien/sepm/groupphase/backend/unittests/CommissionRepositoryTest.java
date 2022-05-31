@@ -34,7 +34,7 @@ public class CommissionRepositoryTest {
     ArtistRepository artistRepository;
 
     @AfterEach
-    public void beforeEach() {
+    public void afterEach() {
         commissionRepository.deleteAll();
         artistRepository.deleteAll();
         userRepository.deleteAll();

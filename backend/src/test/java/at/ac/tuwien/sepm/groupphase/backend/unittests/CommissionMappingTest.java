@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,101 @@ public class CommissionMappingTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    CommissionRepository commissionRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ArtistRepository artistRepository;
+
+    @Autowired
+    ArtworkRepository artworkRepository;
+
+    @Autowired
+    ReviewRepository reviewRepository;
+
+    private Artist artist;
+    private ApplicationUser user;
+    private Artwork artwork;
+    private Commission commission;
+    private Review review;
+
+    @BeforeEach
+    public void beforeEach() {
+        artworkRepository.deleteAll();
+        commissionRepository.deleteAll();
+        artistRepository.deleteAll();
+        userRepository.deleteAll();
+
+        this.user = ApplicationUser.builder()
+            .userName("doubleMouse09")
+            .name("Henry")
+            .surname("Dipper")
+            .email("hd@gmx.at")
+            .address("Großgmainer Hauptstraße 38")
+            .password(passwordEncoder.encode("thisMyPa$$w0rd"))
+            .admin(false)
+            .userRole(UserRole.User)
+            .build();
+
+        this.artist = Artist.builder()
+            .userName("justAnArtist")
+            .name("Carl")
+            .surname("Zuckmayer")
+            .email("cz@gmail.cz")
+            .address("Zuckmayerstraße 13a")
+            .password("passuwurdXC%&(5")
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("Description of new artist")
+            .profileSettings("profSettings: colour blue, no bad reviews shown")
+            .build();
+
+
+        userRepository.save(user);
+        artistRepository.save(artist);
+
+
+        this.commission = Commission.builder()
+            .artist(artist)
+            .customer(user)
+            .sketchesShown(3)
+            .feedbackSent(0)
+            .price(2000.45)
+            .issueDate(LocalDateTime.now())
+            .deadlineDate(LocalDateTime.now().plusHours(24))
+            .instructions("please draw me a small green snail with a cowboy's hat")
+            .build();
+
+        commissionRepository.save(commission);
+
+        this.artwork = Artwork.builder()
+            .name("small green snail with a cowboy's hat")
+            .description("this is a tiny snail wearing a funky hat")
+            .imageUrl("just/some/url")
+            .fileType(FileType.PNG)
+            .artist(artist)
+            .commission(commission)
+            .build();
+
+        artworkRepository.save(artwork);
+
+
+        this.review = Review.builder()
+            .artist(artist)
+            .customer(user)
+            .text("I really enjoyed working with Carl. He drew me a nice smol snail:)")
+            .commission(commission)
+            .starRating(5)
+            .build();
+
+        reviewRepository.save(review);
+
+
+    }
 
 
     @Test

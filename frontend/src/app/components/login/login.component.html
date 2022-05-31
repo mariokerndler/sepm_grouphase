@@ -1,3 +1,4 @@
+<div class="total">
 <button class="close-button" mat-dialog-close mat-icon-button>
   <mat-icon>close</mat-icon>
 </button>
@@ -39,11 +40,12 @@
         long!</small>
     </mat-error>
   </mat-form-field>
-  <button (click)="loginUser()" cdkFocusInitial class="submit-button" color="primary" class="mat-primary" mat-flat-button
+  <button (click)="loginUser()" cdkFocusInitial class="submit-button" color="primary" mat-flat-button
           name="submit-button">Login
   </button>
   <div fxLayout="column">
     <span style="text-align: center">Not a member?</span>
-    <button (click)="openDialog()" class="submit-button" mat-flat-button color="primary" class="mat-primary">Create Account</button>
+    <button (click)="openDialog()" class="submit-button" color="primary" mat-flat-button >Create Account</button>
   </div>
+</div>
 </div>

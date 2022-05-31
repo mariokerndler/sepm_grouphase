@@ -47,6 +47,8 @@ public class ArtistDto {
     @NotNull
     private UserRole userRole;
 
+    private String description;
+
     @Min(0)
     @Max(5)
     private double reviewScore;

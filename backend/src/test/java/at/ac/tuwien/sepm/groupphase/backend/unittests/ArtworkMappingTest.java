@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -62,6 +63,7 @@ public class ArtworkMappingTest implements TestData {
 
 
     @Test
+    @Transactional
     public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
 
@@ -71,7 +73,7 @@ public class ArtworkMappingTest implements TestData {
         Artwork artwork = getArtwork(id, image);
         ArtworkDto artworkDto = artworkMapper.artworkToArtworkDto(artwork);
         assertAll(
-            () -> assertEquals(0, artworkDto.getId()),
+            () -> assertEquals(null, artworkDto.getId()),
             () -> assertEquals("okay dog pls", artworkDto.getDescription()),
             () -> assertEquals("./data/image0", artworkDto.getImageUrl()),
             () -> assertEquals(FileType.PNG, artworkDto.getFileType()),

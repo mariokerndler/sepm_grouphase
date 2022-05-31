@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "ApplicationUser")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "Usertype")

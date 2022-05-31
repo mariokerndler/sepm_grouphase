@@ -59,6 +59,6 @@ public class TagMappingTest {
         TagDto tagDto = tagMapper.tagToTagDto(tag);
 
         assertEquals("aTag", tagDto.getName());
-        assertEquals(0, tagDto.getId());
+        assertEquals(null, tagDto.getId());
     }
 }

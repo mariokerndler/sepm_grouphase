@@ -1,10 +1,7 @@
-import {ArtistDto} from './artistDto';
-import {ApplicationUserDto} from './applicationUserDto';
-
-export class CommissionDto {
+export class SimpleCommissionDto {
   id: number;
-  artistDto: ArtistDto;
-  customerDto: ApplicationUserDto;
+  artistId: number;
+  customerId: number;
   title: string;
   instructions: string;
   sketchesShown: number;

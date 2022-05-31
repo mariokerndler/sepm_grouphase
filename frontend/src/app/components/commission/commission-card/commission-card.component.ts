@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
+import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 
 @Component({
   selector: 'app-commission-card',
@@ -9,7 +10,7 @@ import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
   styleUrls: ['./commission-card.component.scss']
 })
 export class CommissionCardComponent implements OnInit {
-  @Input() commission: CommissionDto;
+  @Input() commission: SimpleCommissionDto;
   userProfilePicture = 'https://picsum.photos/150/150';
   user: ApplicationUserDto;
 

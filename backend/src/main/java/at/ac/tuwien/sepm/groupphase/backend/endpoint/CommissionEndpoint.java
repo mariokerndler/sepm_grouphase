@@ -18,6 +18,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @RestController
 @RequestMapping("api/v1/commissions")
 public class CommissionEndpoint {

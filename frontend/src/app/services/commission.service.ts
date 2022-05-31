@@ -7,6 +7,7 @@ import {Globals} from '../global/globals';
 import {ArtworkDto} from '../dtos/artworkDto';
 import {ApplicationUserDto} from '../dtos/applicationUserDto';
 import {tap} from 'rxjs/operators';
+import {SimpleCommissionDto} from '../dtos/simpleCommissionDto';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,10 @@ export class CommissionService {
  *
  * @return observable list of found commissions.
  */
-  getAllCommissions(): Observable<CommissionDto[]> {
-  return this.http.get<CommissionDto[]>(this.commissionBaseUri, this.options)
+  getAllCommissions(): Observable<SimpleCommissionDto[]> {
+  return this.http.get<SimpleCommissionDto[]>(this.commissionBaseUri, this.options)
     .pipe(
-      catchError(this.notificationService.notifyUserAboutFailedOperation<CommissionDto[]>('Fetching all commissions'))
+      catchError(this.notificationService.notifyUserAboutFailedOperation<SimpleCommissionDto[]>('Fetching all commissions'))
     );
   }
 

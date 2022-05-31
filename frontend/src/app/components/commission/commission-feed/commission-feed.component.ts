@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {CommissionService} from '../../../services/commission.service';
+import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 
 @Component({
   selector: 'app-commission-feed',
@@ -17,7 +18,7 @@ export class CommissionFeedComponent implements OnInit {
     deadlineDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
   } as CommissionDto; */
 
-  commissions: CommissionDto[];
+  commissions: SimpleCommissionDto[];
   hasLoaded = false;
 
   constructor(private commissionService: CommissionService) {
@@ -31,6 +32,7 @@ export class CommissionFeedComponent implements OnInit {
     this.commissionService.getAllCommissions().subscribe({
       next: (loadedCommissions) => {
         this.commissions = loadedCommissions;
+        console.log(this.commissions);
         this.hasLoaded = true;
       }
     });

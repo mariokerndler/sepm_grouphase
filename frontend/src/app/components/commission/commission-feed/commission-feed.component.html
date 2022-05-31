@@ -8,7 +8,7 @@
   </form>
   <div class="content">
     <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="8px grid">
-      <div *ngFor="let n of numSequence(20)">
+      <div *ngFor="let commission of commissions">
         <app-commission-card [commission]="commission"></app-commission-card>
       </div>
     </div>

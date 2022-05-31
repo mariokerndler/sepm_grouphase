@@ -2,7 +2,8 @@ package at.ac.tuwien.sepm.groupphase.backend.unittests;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.repository.*;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +33,8 @@ public class CommissionMappingTest {
 
 
     @Test
-    public void givenNothing_whenMapDetailedCommissionDtoToEntity_thenEntityHasAllProperties() throws Exception {
+    @Transactional
+    public void givenNothing_whenMapDetailedCommissionDtoToEntity_thenEntityHasAllProperties() {
 
         ApplicationUserDto userDto = new ApplicationUserDto("doubleMouse09",
             "Henry",
@@ -42,7 +45,7 @@ public class CommissionMappingTest {
             false,
             UserRole.User);
 
-        userDto.setId(1L);
+        userDto.setId(user.getId());
 
         ArtistDto artistDto = new ArtistDto("justAnArtist",
             "Carl",
@@ -59,7 +62,11 @@ public class CommissionMappingTest {
             null,
             "profSettings: colour blue, no bad reviews shown");
 
-        artistDto.setId(2L);
+        artistDto.setId(artist.getId());
+
+        ReviewDto reviewDto = new ReviewDto(artistDto, userDto, "I really enjoyed working with Carl. He drew me a nice smol snail:)", null, 5);
+        ArtworkDto artworkDto = new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", "just/some/url", FileType.PNG, artist.getId());
+
 
         DetailedCommissionDto commissionDto = new DetailedCommissionDto(artistDto,
             userDto,
@@ -71,10 +78,12 @@ public class CommissionMappingTest {
             "please draw me a small green snail with a cowboy's hat",
             null,
             null,
-            new ReviewDto(),
-            new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", "just/some/url", FileType.PNG, 2L));
+            reviewDto,
+            artworkDto
+        );
 
-        commissionDto.setId(1L);
+        commissionDto.setId(commission.getId());
+        reviewDto.setCommissionId(commission.getId());
 
         Commission commission = commissionMapper.detailedCommissionDtoToCommission(commissionDto);
         assertAll(
@@ -96,5 +105,29 @@ public class CommissionMappingTest {
         );
     }
 
+
+    @Test
+    @Transactional
+    public void whenMapEntityToDetailedCommissionDto_thenDetailedCommissionDtoHasAllProperties() {
+
+        DetailedCommissionDto commissionDto = commissionMapper.commissionToDetailedCommissionDto(this.commission);
+        assertAll(
+            () -> assertEquals(commission.getId(), commissionDto.getId()),
+            () -> assertEquals(artist.getId(), commissionDto.getArtistDto().getId()),
+            () -> assertEquals(artist.getUserName(), commissionDto.getArtistDto().getUserName()),
+            () -> assertEquals(user.getId(), commissionDto.getCustomerDto().getId()),
+            () -> assertEquals(user.getUserName(), commissionDto.getCustomerDto().getUserName()),
+            () -> assertEquals(commission.getSketchesShown(), commissionDto.getSketchesShown()),
+            () -> assertEquals(commission.getFeedbackSent(), commissionDto.getFeedbackSent()),
+            () -> assertEquals(commission.getPrice(), commissionDto.getPrice()),
+            () -> assertEquals(commission.getIssueDate(), commissionDto.getIssueDate()),
+            () -> assertEquals(commission.getDeadlineDate(), commissionDto.getDeadlineDate()),
+            () -> assertEquals(commission.getInstructions(), commissionDto.getInstructions()),
+            () -> assertEquals((commission.getReferences() == null ? null : commission.getReferences().size()), (commissionDto.getReferencesDtos() == null ? null : commissionDto.getReferencesDtos().size())),
+            () -> assertEquals((commission.getReceipts() == null ? null : commission.getReceipts().size()), (commissionDto.getReceiptsDtos() == null ? null : commissionDto.getReceiptsDtos().size())),
+            () -> assertEquals((commission.getReview() == null ? null : commission.getReview().getId()), (commissionDto.getReviewDto() == null ? null : commissionDto.getReviewDto().getId())),
+            () -> assertEquals((commission.getArtwork() == null ? null : commission.getArtwork().getId()), (commissionDto.getArtworkDto() == null ? null : commissionDto.getArtworkDto().getId()))
+        );
+    }
 }
 

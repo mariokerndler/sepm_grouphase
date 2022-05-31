@@ -55,7 +55,7 @@ public class ApplicationUserMappingTest {
     }
 
     @Test
-    public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
+    public void givenNothing_whenMapDetailedApplicationUserDtoToEntity_thenEntityHasAllProperties() throws Exception {
         ApplicationUser applicationUser = getApplicationUser();
         ApplicationUserDto applicationUserDto = userMapper.userToUserDto(applicationUser);
 

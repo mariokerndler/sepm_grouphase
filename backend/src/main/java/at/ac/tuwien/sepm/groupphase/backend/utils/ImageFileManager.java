@@ -97,6 +97,6 @@ public class ImageFileManager {
 
     public void renameArtistFolder(Artist artist, String oldUserName) throws IOException {
         File oldImageFile = new File(ImageDataPaths.artistProfileLocation + oldUserName);
-        Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(ImageDataPaths.artistProfileLocation + artist.getUserName()));
+        Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(artist.getUserName()));
     }
 }

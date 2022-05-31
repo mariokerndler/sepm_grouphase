@@ -81,9 +81,10 @@ public class ArtistEndpoint {
     @Transactional
     public void updateArtist(@RequestBody ArtistDto artistDto) {
         try {
+            log.debug("put artist " + artistDto);
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {
-            log.error(e.getMessage() + artistDto.toString());
+            log.error(e.getMessage()+ " : " + artistDto.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }

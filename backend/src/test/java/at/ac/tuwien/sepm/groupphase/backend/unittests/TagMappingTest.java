@@ -54,7 +54,7 @@ public class TagMappingTest {
     }
 
     @Test
-    public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
+    public void givenNothing_whenMapDetailedTagDtoToEntity_thenEntityHasAllProperties() throws Exception {
         Tag tag = getTag();
         TagDto tagDto = tagMapper.tagToTagDto(tag);
 

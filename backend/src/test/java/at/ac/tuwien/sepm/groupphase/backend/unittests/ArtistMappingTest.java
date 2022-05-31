@@ -54,7 +54,7 @@ public class ArtistMappingTest {
     }
 
     @Test
-    public void givenNothing_whenMapDetailedArtworkDtoToEntity_thenEntityHasAllProperties() throws Exception {
+    public void givenNothing_whenMapDetailedArtistDtoToEntity_thenEntityHasAllProperties() throws Exception {
         Artist artist = getTestArtist1();
         ArtistDto artistDto = artistMapper.artistToArtistDto(artist);
 

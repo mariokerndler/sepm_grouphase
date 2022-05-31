@@ -160,10 +160,9 @@ public class ArtistEndpointTest {
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(modifiedObject);
 
-        /*mockMvc.perform(put("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))
-            .andExpect(status().isOk()).andReturn();*/
-
+            .andExpect(status().isOk()).andReturn();
     }
 
     public List<ArtistDto> allArtists() throws Exception {

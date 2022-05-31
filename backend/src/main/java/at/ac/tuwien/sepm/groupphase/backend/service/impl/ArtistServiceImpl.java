@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +47,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public void updateArtist(Artist artist) throws IOException {
+    public void updateArtist(Artist artist) {
         Artist oldArtist = findArtistById(artist.getId());
 
         if (!oldArtist.getUserName().equals(artist.getUserName())) {

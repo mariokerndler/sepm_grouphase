@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface ArtworkService {
@@ -32,9 +31,8 @@ public interface ArtworkService {
      *
      * @param artwork: the artwork being saved
      * @return the saved entity
-     * //TODO: delete throws
      */
-    void saveArtwork(Artwork artwork) throws IOException;
+    void saveArtwork(Artwork artwork);
 
     //TODO: update artwork
 

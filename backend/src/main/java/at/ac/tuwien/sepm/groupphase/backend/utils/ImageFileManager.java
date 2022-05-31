@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.utils;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import at.ac.tuwien.sepm.groupphase.backend.exception.FileManagerException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -65,11 +66,16 @@ public class ImageFileManager {
         imageFile.delete();
     }
 
-    public String writeAndReplaceArtistProfileImage(Artist a) throws IOException {
+    public String writeAndReplaceArtistProfileImage(Artist a) {
 
         File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfilePictureLocation + a.getUserName());
         if (!f.isDirectory() || !f.exists()) {
-            Files.createDirectories(f.toPath());
+            try {
+                Files.createDirectories(f.toPath());
+            } catch (IOException e) {
+                log.info(e.getMessage());
+                throw new FileManagerException(e.getMessage());
+            }
         }
         File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfilePictureLocation + a.getUserName() + "/"
             + ImageDataPaths.artistProfilePictureIdentifier);
@@ -96,8 +102,14 @@ public class ImageFileManager {
         return null;
     }
 
-    public void renameArtistFolder(Artist artist, String oldUserName) throws IOException {
+    public void renameArtistFolder(Artist artist, String oldUserName) {
         File oldImageFile = new File(ImageDataPaths.artistProfileLocation + oldUserName);
-        Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(artist.getUserName()));
+        try {
+            Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(artist.getUserName()));
+        } catch (IOException e) {
+            log.info(e.getMessage());
+            throw new FileManagerException(e.getMessage());
+        }
+
     }
 }

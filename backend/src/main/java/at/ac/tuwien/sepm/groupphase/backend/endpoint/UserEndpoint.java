@@ -45,18 +45,6 @@ public class UserEndpoint {
         return audto;
     }
 
-    /**
-     * @PermitAll
-     * @ResponseStatus(HttpStatus.OK)
-     * @GetMapping
-     * @Operation(summary = "Get all users")
-     * public List<ApplicationUserDto> getAllUsers() {
-     * log.debug("Get /User");
-     * <p>
-     * return userService.getAllUsers().stream().map(userMapper::userToUserDto).collect(Collectors.toList());
-     * }
-     **/
-
     @PermitAll
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)

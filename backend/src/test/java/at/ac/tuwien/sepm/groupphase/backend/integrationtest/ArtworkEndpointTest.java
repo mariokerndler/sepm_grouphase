@@ -136,7 +136,7 @@ public class ArtworkEndpointTest {
     @Test
     @WithMockUser
     public void isDataBaseEmptyBeforeTests() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/artist")).andDo(print()).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/artists")).andDo(print()).andReturn();
         MockHttpServletResponse response = mvcResult.getResponse();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -151,7 +151,7 @@ public class ArtworkEndpointTest {
     @Test
     @Transactional
     @WithMockUser
-    public void addArtistAndAddArtworks() throws Exception {
+    public void addArtistAndAddArtworksThenDeleteOneArtwork() throws Exception {
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
 
@@ -162,7 +162,7 @@ public class ArtworkEndpointTest {
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(anObject );
 
-        mockMvc.perform(post("/artist").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
             .andExpect(status().isOk()).andReturn();
 
@@ -175,7 +175,7 @@ public class ArtworkEndpointTest {
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson2 = ow2.writeValueAsString(anotherObject);
 
-        mockMvc.perform(post("/artist").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
             .andExpect(status().isOk()).andReturn();
 
@@ -190,56 +190,63 @@ public class ArtworkEndpointTest {
         assertThat(artists2.contains("description"));
         assertThat(artists2.contains(2.0));
 
-        Long artistIdForArtwork = artists.get(0).getId();
-        System.out.println("artworkArtist: " + artistIdForArtwork);
+        Long artistIdForArtwork = artists2.get(0).getId();
 
         Artwork anArtwork = getArtwork(artistIdForArtwork, image);
         ArtworkDto aDto = artworkMapper.artworkToArtworkDto(anArtwork);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(aDto);
-        System.out.println(aDto);
 
-
-        mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))
             .andExpect(status().isOk()).andReturn();
 
-        /*Artwork anotherArtwork = getArtwork1(artistIdForArtwork, image1);
+        Artwork anotherArtwork = getArtwork1(artistIdForArtwork, image1);
         ArtworkDto anotherDto = artworkMapper.artworkToArtworkDto(anotherArtwork);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow4 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson4 = ow4.writeValueAsString(anotherDto);
-        System.out.println(anotherDto);
 
 
-        mockMvc.perform(post("/artwork").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson4))
             .andExpect(status().isOk()).andReturn();
 
-        mockMvc.perform(get("/artwork/1").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/artworks/" + artistIdForArtwork).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andReturn();
 
-        Artwork anotherArtwork1 = getArtwork1(2L, null);
-        ArtworkDto anotherDto1 = artworkMapper.artworkToArtworkDto(anotherArtwork1);
+        List<ArtworkDto> artworkDtos = allArtworksByArtist(artistIdForArtwork);
+        ArtworkDto anotherDto1 = artworkDtos.get(0);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow5 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson5 = ow5.writeValueAsString(anotherDto1);
 
-        /*mockMvc.perform(delete("/artwork").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(delete("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson5))
-            .andExpect(status().isOk()).andReturn();*/
+            .andExpect(status().isOk()).andReturn();
 
     }
 
     public List<ArtistDto> allArtists() throws Exception {
         byte[] body = mockMvc
             .perform(MockMvcRequestBuilders
-                .get("/artist/")
+                .get("/api/v1/artists")
                 .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andReturn().getResponse().getContentAsByteArray();
         List<ArtistDto> artistResult = objectMapper.readerFor(ArtistDto.class).<ArtistDto>readValues(body).readAll();
         return artistResult;
+    }
+
+    public List<ArtworkDto> allArtworksByArtist(Long id) throws Exception {
+        byte[] body = mockMvc
+            .perform(MockMvcRequestBuilders
+                .get("/api/v1/artworks/"+id)
+                .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsByteArray();
+        List<ArtworkDto> artworkResult = objectMapper.readerFor(ArtworkDto.class).<ArtworkDto>readValues(body).readAll();
+        return artworkResult;
     }
 }

@@ -112,7 +112,7 @@ public class ApplicationUserEndpointTest {
     @Test
     @WithMockUser
     public void isDataBaseEmptyBeforeTests() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/user")).andDo(print()).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users")).andDo(print()).andReturn();
         MockHttpServletResponse response = mvcResult.getResponse();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -126,13 +126,13 @@ public class ApplicationUserEndpointTest {
 
     @Test
     @WithMockUser()
-    public void addUsers() throws Exception {
+    public void addTwoUsersAndModifyOne() throws Exception {
         ApplicationUser anObject = getTestUser1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson=ow.writeValueAsString(anObject );
 
-        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
             .andExpect(status().isCreated()).andReturn();
 
@@ -144,12 +144,11 @@ public class ApplicationUserEndpointTest {
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson2 = ow2.writeValueAsString(anotherObject);
 
-        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
             .andExpect(status().isCreated()).andReturn();
 
         List<ApplicationUserDto> users2 = allUsers();
-        System.out.println(users2);
         assertEquals(2, users2.size());
 
         assertThat(users2.contains("bob"));
@@ -157,22 +156,28 @@ public class ApplicationUserEndpointTest {
         assertThat(users2.contains("test@atest.com"));
         assertThat(users2.contains("testStraße 2"));
 
-        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(String.format("testUser2"), "bobbyName", "aSecondTest",
+        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), "bobbyName", "aSecondTest",
             "testmodify@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(modifiedObject);
 
-        /*mockMvc.perform(put("/user/2").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))
-            .andExpect(status().isOk()).andReturn();*/
+            .andExpect(status().isOk()).andReturn();
+
+        List<ApplicationUserDto> users3 = allUsers();
+        assertEquals(2, users3.size());
+        assertThat(users3.contains("testmodify@atest.com"));
+        assertThat(!users3.contains("test2@atest.com"));
+
 
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {
         byte[] body = mockMvc
             .perform(MockMvcRequestBuilders
-                .get("/user/")
+                .get("/api/v1/users/")
                 .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andReturn().getResponse().getContentAsByteArray();

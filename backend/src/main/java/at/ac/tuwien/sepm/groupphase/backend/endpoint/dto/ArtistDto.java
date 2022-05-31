@@ -90,4 +90,19 @@ public class ArtistDto {
 
         this.artworksIds.add(i);
     }
+
+    @Override
+    public String toString() {
+        return "ArtistDto{"
+            + "userName='" + userName + '\''
+            + ", name='" + name + '\''
+            + ", surname='" + surname + '\''
+            + ", email='" + email + '\''
+            + ", address='" + address + '\''
+            + ", password='" + password + '\''
+            + ", admin=" + admin
+            + ", userRole=" + userRole
+            + ", id=" + id
+            + '}';
+    }
 }

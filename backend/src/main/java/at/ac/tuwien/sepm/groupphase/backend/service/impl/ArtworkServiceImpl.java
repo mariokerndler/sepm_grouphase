@@ -43,6 +43,7 @@ public class ArtworkServiceImpl implements ArtworkService {
     @Override
     public void deleteArtwork(Artwork a) {
         try {
+            System.out.println(a.toString());
             this.artworkRepo.deleteById(a.getId());
             this.ifm.deleteArtistImage(a);
         } catch (EmptyResultDataAccessException e) {

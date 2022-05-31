@@ -59,7 +59,7 @@ public class UserEndpoint {
      **/
     @PermitAll
     @PutMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update user")
     public void updateUser(@Valid @RequestBody ApplicationUserDto userDto) {
         log.debug("Post /User/{}", userDto.getUserName());

@@ -57,6 +57,19 @@ public class ApplicationUser {
         this.userRole = userRole;
     }
 
+    public ApplicationUser(Long id, String userName, String name, String surname, String email, String address,
+                           String password, Boolean admin, UserRole userRole) {
+        this.id = id;
+        this.userName = userName;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+        this.admin = admin;
+        this.userRole = userRole;
+    }
+
     @Override
     public String toString() {
         return "ApplicationUser{"

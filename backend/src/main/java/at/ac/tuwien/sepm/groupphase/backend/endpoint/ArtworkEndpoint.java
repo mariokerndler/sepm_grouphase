@@ -117,9 +117,9 @@ public class ArtworkEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
-    @Operation(summary = "getAllArtworksByArtist")
+    @Operation(summary = "Delete Artwork")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
-        log.info("Delete Artwork" + artworkDto.getName());
+        log.info("Delete Artwork " + artworkDto.getName());
         try {
 
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
@@ -133,7 +133,7 @@ public class ArtworkEndpoint {
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get Detailed informations about a specific user")
+    @Operation(summary = "Post an Artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());
         try {

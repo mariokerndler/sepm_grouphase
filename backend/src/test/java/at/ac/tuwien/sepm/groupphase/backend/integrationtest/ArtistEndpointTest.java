@@ -104,7 +104,7 @@ public class ArtistEndpointTest {
     @Test
     @WithMockUser
     public void isDataBaseEmptyBeforeTests() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/artist")).andDo(print()).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/artists")).andDo(print()).andReturn();
         MockHttpServletResponse response = mvcResult.getResponse();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -119,24 +119,24 @@ public class ArtistEndpointTest {
     @Test
     @WithMockUser()
     public void addArtists() throws Exception {
-        ApplicationUser anObject = getTestArtist1();
+        Artist anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(anObject );
 
-        mockMvc.perform(post("/artist").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
             .andExpect(status().isOk()).andReturn();
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
 
-        ApplicationUser anotherObject = getTestArtist2();
+        Artist anotherObject = getTestArtist2();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson2 = ow2.writeValueAsString(anotherObject);
 
-        mockMvc.perform(post("/artist").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
             .andExpect(status().isOk()).andReturn();
 
@@ -152,17 +152,28 @@ public class ArtistEndpointTest {
         assertThat(artists2.contains("description"));
         assertThat(artists2.contains(2.0));
 
+        Long artistId = artists2.get(0).getId();
+
+        Artist modifiedObject = new Artist(artistId, "testArtist2Modified", "bobbyMod", "tester", "test2Mod@test.com", "testStraße 2", passwordEncoder.encode("tester2")
+            , false, UserRole.Artist, null, "TestDescription",null, 2.0, null, null, null, null, null);
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson3 = ow3.writeValueAsString(modifiedObject);
+
+        /*mockMvc.perform(put("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson3))
+            .andExpect(status().isOk()).andReturn();*/
 
     }
 
     public List<ArtistDto> allArtists() throws Exception {
         byte[] body = mockMvc
             .perform(MockMvcRequestBuilders
-                .get("/artist/")
+                .get("/api/v1/artists")
                 .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andReturn().getResponse().getContentAsByteArray();
-        List<ArtistDto> artistResult = objectMapper.readerFor(ApplicationUserDto.class).<ArtistDto>readValues(body).readAll();
+        List<ArtistDto> artistResult = objectMapper.readerFor(ArtistDto.class).<ArtistDto>readValues(body).readAll();
         return artistResult;
     }
 }

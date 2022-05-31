@@ -40,6 +40,11 @@ public interface TestData {
      * imageUrl2: "https://i.ibb.co/cDT8JHg/image2.jpg"
      * imageUrl3: "https://i.ibb.co/wy4PbD4/image3.jpg"
      *
+     * imageSketch1Url: "https://i.ibb.co/jfQR7W9/sketch1.jpg"
+     * imageSketch2Url: "https://i.ibb.co/JRcbTDk/sketch2.jpg"
+     * imageSketch3Url: "https://i.ibb.co/pdtMdcJ/sketch3.jpg"
+     * imageSketch4Url: "https://i.ibb.co/09Fk1PB/sketch4.jpg"
+     * imageSketchGifUrl: "https://i.ibb.co/pf63fMd/sketch.gif"
      */
 
 }

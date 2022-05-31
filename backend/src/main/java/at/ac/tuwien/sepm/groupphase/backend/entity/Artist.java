@@ -65,6 +65,21 @@ public class Artist extends ApplicationUser implements HasId {
         this.tags = tags;
     }
 
+    public Artist(Long id,String userName, String name, String surname, String email, String address, String password,
+                  Boolean admin, UserRole userRole, ProfilePicture profilePicture, String description, String profileSettings, double reviewScore,
+                  Gallery gallery, List<Artwork> artworks, List<Commission> commissions, List<Review> reviews, List<Tag> tags) {
+        super(id, userName, name, surname, email, address, password, admin, userRole);
+        this.profilePicture = profilePicture;
+        this.description = description;
+        this.profileSettings = profileSettings;
+        this.reviewScore = reviewScore;
+        this.gallery = gallery;
+        this.artworks = artworks;
+        this.commissions = commissions;
+        this.reviews = reviews;
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "Artist{"

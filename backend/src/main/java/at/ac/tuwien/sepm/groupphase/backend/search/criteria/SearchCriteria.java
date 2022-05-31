@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.search.criteria;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,20 +27,19 @@ public class SearchCriteria {
         this.operation = operation;
         this.value = value;
         this.predicateType = predicateType;
-        if(operation.equals("~")){
+        if (operation.equals("~")) {
 
-            this.key="lower("+key+')';
+            this.key = "lower(" + key + ')';
         }
         log.info(this.toString());
     }
 
     @Override
     public String toString() {
-        return "SearchCriteria{" +
-            "key='" + key + '\'' +
-            ", operation='" + operation + '\'' +
-            ", value=" + value +
-            ", predicateType='" + predicateType + '\'' +
-            '}';
+        return "SearchCriteria{"
+            + "key='" + key + '\''
+            + ", operation='" + operation + '\''
+            + ", value=" + value
+            + ", predicateType='" + predicateType + '\'' + '}';
     }
 }

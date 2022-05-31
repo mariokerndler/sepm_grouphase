@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -30,23 +31,29 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Profile("generateData")
 @Component
-@Slf4j
 public class UserDataGenerator {
+
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
 
 
     private final ArtistRepository artistRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
 
-    public UserDataGenerator(ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo,
+    public UserDataGenerator(ArtistRepository artistRepository,
+                             UserRepository userRepository,
+                             PasswordEncoder passwordEncoder,
+                             ArtworkRepository artworkRepo,
                              TagRepository tagRepository) {
         this.artistRepository = artistRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
@@ -58,6 +65,7 @@ public class UserDataGenerator {
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
 
         generateArtistTestAccount("testArtist", "12345678");
+        generateUserTestAccount("testUser", "12345678");
     }
 
     private void loadTags(int numberOftags) throws FileNotFoundException {
@@ -161,11 +169,32 @@ public class UserDataGenerator {
         return artist;
     }
 
+    private ApplicationUser generateUserProfile(String username) {
+        Faker faker = new Faker();
+        ApplicationUser user = new ApplicationUser();
+        user.setAdmin(false);
+        user.setUserName(username);
+        user.setName(faker.name().firstName());
+        user.setSurname(faker.name().lastName());
+        user.setAddress(faker.address().fullAddress());
+        user.setEmail(faker.internet().emailAddress());
+        user.setPassword(passwordEncoder.encode(faker.internet().password(8, 15)));
+        user.setUserRole(UserRole.User);
+        return user;
+    }
+
     private void generateArtistTestAccount(String username, String password) {
         Artist artist = generateArtistProfile(username);
         artist.setEmail(username + "@test.com");
         artist.setPassword(passwordEncoder.encode(password));
         artistRepository.save(artist);
+    }
+
+    private void generateUserTestAccount(String username, String password) {
+        ApplicationUser user = generateUserProfile(username);
+        user.setEmail(username + "@test.com");
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     //old approach not working, issues with cloudflare protection 403 error.

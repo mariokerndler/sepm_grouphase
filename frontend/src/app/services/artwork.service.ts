@@ -5,22 +5,21 @@ import {ArtworkDto} from '../dtos/artworkDto';
 import {tap} from 'rxjs/operators';
 import {TagSearch} from '../dtos/tag-search';
 import {NotificationService} from './notification/notification.service';
-
-const backendUrl = 'http://localhost:8080';
-const baseUri = backendUrl + '/artwork';
-
+import {Globals} from '../global/globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArtworkService {
-  headers = new HttpHeaders({
+
+  private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  options = {headers: this.headers};
-
+  private options = {headers: this.headers};
+  private artworkBaseUri: string = this.globals.backendUri + '/artworks';
 
   constructor(private http: HttpClient,
+              private globals: Globals,
               private notificationService: NotificationService) {
   }
 
@@ -48,7 +47,7 @@ export class ArtworkService {
       headers: this.headers,
       params
     };
-    return this.http.get<ArtworkDto[]>(baseUri, searchOptions)
+    return this.http.get<ArtworkDto[]>(this.artworkBaseUri, searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
@@ -68,7 +67,7 @@ export class ArtworkService {
    * @return Observable containing the fetched list of {@link ArtworkDto}.
    */
   getArtworksByArtist(id: number, errorAction?: () => void): Observable<ArtworkDto[]> {
-    return this.http.get<ArtworkDto[]>(`${baseUri}/${id}`, this.options)
+    return this.http.get<ArtworkDto[]>(`${this.artworkBaseUri}/${id}`, this.options)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
@@ -89,7 +88,7 @@ export class ArtworkService {
    */
   deleteArtist(id: number, artwork: ArtworkDto): Observable<void> {
     const deleteOptions = {headers: this.headers, body: artwork};
-    return this.http.delete<void>(`${baseUri}/${id}`, deleteOptions);
+    return this.http.delete<void>(`${this.artworkBaseUri}/${id}`, deleteOptions);
   }
 
   /**
@@ -101,7 +100,7 @@ export class ArtworkService {
    * @return observable containing the newly created {@link ArtworkDto}.
    */
   createArtwork(artwork: ArtworkDto, errorAction?: () => void, successAction?: () => void): Observable<ArtworkDto> {
-    return this.http.post<ArtworkDto>(baseUri, artwork, this.options)
+    return this.http.post<ArtworkDto>(this.artworkBaseUri, artwork, this.options)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {

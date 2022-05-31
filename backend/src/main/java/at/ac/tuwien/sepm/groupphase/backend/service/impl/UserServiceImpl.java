@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -8,8 +7,6 @@ import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,15 +17,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Slf4j
+@Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final UserRepository userRepo;
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
@@ -42,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        LOGGER.debug("Load all user by email");
+        log.debug("Load all user by email");
         try {
 
             ApplicationUser applicationUser = findApplicationUserByEmail(email);
@@ -62,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApplicationUser findApplicationUserByEmail(String email) {
-        LOGGER.debug("Find application user by email");
+        log.debug("Find application user by email");
         ApplicationUser applicationUser = userRepo.findApplicationUserByEmail(email);
         if (applicationUser != null) {
             return applicationUser;
@@ -75,7 +70,7 @@ public class UserServiceImpl implements UserService {
         log.info(ImageDataPaths.assetAbsoluteLocation);
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
-            LOGGER.info(user.get().getUserName());
+            log.info(user.get().getUserName());
             return user.get();
         } else {
             throw new NotFoundException(String.format("Could not find User with id %s", id));
@@ -84,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(ApplicationUser user) {
-        LOGGER.debug("Service: Update User ", user.toString());
+        log.debug("Service: Update User ", user.toString());
         userValidator.validateUser(user);
         userRepo.save(user);
 
@@ -92,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(ApplicationUser user) {
-        LOGGER.debug("Service: Register User ", user.toString());
+        log.debug("Service: Register User ", user.toString());
         userValidator.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);

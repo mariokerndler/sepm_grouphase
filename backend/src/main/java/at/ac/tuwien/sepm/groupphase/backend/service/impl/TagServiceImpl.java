@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
@@ -27,6 +27,6 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> loadTagsByImage(Long id) {
-      return  this.tagRepository.findArtworkTags(id);
+        return this.tagRepository.findArtworkTags(id);
     }
 }

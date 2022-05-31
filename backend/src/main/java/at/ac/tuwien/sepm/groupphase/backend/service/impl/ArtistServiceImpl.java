@@ -41,6 +41,7 @@ public class ArtistServiceImpl implements ArtistService {
         throw new NotFoundException(String.format("Could not find Artist with id %s", id));
     }
 
+    // Todo: Also save profile picture as image with file manager
     @Override
     public Artist saveArtist(Artist artist) {
         return artistRepo.save(artist);
@@ -48,15 +49,15 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public void updateArtist(Artist artist) throws IOException {
-        Artist oldArtist = findArtistById(artist.getId()); {
-            if (!oldArtist.getUserName().equals(artist.getUserName())) {
-                ifm.renameArtistFolder(artist, oldArtist.getUserName());
-            }
+        Artist oldArtist = findArtistById(artist.getId());
 
-            if (oldArtist.getProfilePicture() != null && artist.getProfilePicture() != null) {
-                if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
-                    ifm.writeAndReplaceArtistProfileImage(artist);
-                }
+        if (!oldArtist.getUserName().equals(artist.getUserName())) {
+            ifm.renameArtistFolder(artist, oldArtist.getUserName());
+        }
+
+        if (oldArtist.getProfilePicture() != null && artist.getProfilePicture() != null) {
+            if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
+                ifm.writeAndReplaceArtistProfileImage(artist);
             }
         }
 

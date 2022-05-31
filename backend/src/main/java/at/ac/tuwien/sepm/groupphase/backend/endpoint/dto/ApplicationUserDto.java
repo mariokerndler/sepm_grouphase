@@ -92,7 +92,8 @@ public class ApplicationUserDto {
     @Override
     public String toString() {
         return "ApplicationUserDto{"
-            + "userName='" + userName + '\''
+            + "id=" + id
+            + ", userName='" + userName + '\''
             + ", name='" + name + '\''
             + ", surname='" + surname + '\''
             + ", email='" + email + '\''
@@ -100,7 +101,6 @@ public class ApplicationUserDto {
             + ", password='" + password + '\''
             + ", admin=" + admin
             + ", userRole=" + userRole
-            + ", id=" + id
             + '}';
     }
 }

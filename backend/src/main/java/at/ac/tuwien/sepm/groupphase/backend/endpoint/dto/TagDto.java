@@ -7,14 +7,25 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class TagDto {
 
-    private long id;
+    private Long id;
 
     @NotBlank
     @Size(max = 35)
     private String name;
+
+    public TagDto(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "TagDto{"
+            + "id=" + id
+            + ", name='" + name + '\'' + '}';
+    }
 }

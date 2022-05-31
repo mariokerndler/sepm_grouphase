@@ -1,16 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Review implements HasId {
 
@@ -26,10 +26,12 @@ public class Review implements HasId {
     @JoinColumn(nullable = false)
     private ApplicationUser customer;
 
+    //TODO: why length gone??
     @Column(nullable = false)
     private String text;
 
     @OneToOne
+    @JoinColumn(nullable = false)
     private Commission commission;
 
     @Column(nullable = false, name = "star_rating")

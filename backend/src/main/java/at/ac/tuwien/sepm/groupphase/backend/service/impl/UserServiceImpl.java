@@ -99,8 +99,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public  ApplicationUser searchUserByEmail(String email) {
-        return  this.userRepo.findApplicationUserByEmail(email);
+    public ApplicationUser searchUserByEmail(String email) {
+        return this.userRepo.findApplicationUserByEmail(email);
     }
 
     @Override

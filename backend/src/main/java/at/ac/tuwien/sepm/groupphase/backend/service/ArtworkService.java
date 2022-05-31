@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ArtworkService {
+
+    Artwork findById(Long id);
+
     List<Artwork> findArtworksByArtist(Long id);
 
     void saveArtwork(Artwork a) throws IOException;
@@ -15,7 +18,6 @@ public interface ArtworkService {
     void deleteArtwork(Artwork a);
 
     List<Artwork> searchArtworks(Specification<Artwork> spec);
-
 
     List<Artwork> searchArtworks(Specification<Artwork> spec, Pageable page, int randomSeed);
 }

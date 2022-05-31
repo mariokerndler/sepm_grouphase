@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/commission")
+@RequestMapping("/api/v1/commissions")
 public class CommissionEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -54,7 +54,7 @@ public class CommissionEndpoint {
 
     @PermitAll
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post commission")
     public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Post commission " + commissionDto);

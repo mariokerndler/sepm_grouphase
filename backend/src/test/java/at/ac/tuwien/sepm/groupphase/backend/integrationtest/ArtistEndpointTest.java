@@ -126,7 +126,7 @@ public class ArtistEndpointTest {
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
@@ -138,19 +138,18 @@ public class ArtistEndpointTest {
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
         List<ArtistDto> artists2 = allArtists();
-        System.out.println(artists2);
         assertEquals(2, artists2.size());
 
-        assertThat(artists2.contains("bob"));
-        assertThat(artists2.contains("bobby"));
-        assertThat(artists2.contains("test2@test.com"));
-        assertThat(artists2.contains("testStraße 2"));
-        assertThat(artists2.contains("testArtist2"));
-        assertThat(artists2.contains("description"));
-        assertThat(artists2.contains(2.0));
+        assertTrue(artists2.toString().contains("bob"));
+        assertTrue(artists2.toString().contains("bobby"));
+        assertTrue(artists2.toString().contains("test2@test.com"));
+        assertTrue(artists2.toString().contains("testStraße 2"));
+        assertTrue(artists2.toString().contains("testArtist2"));
+        assertTrue(artists2.toString().contains("Artist"));
+        assertTrue(artists2.toString().contains("2.0"));
 
         Long artistId = artists2.get(0).getId();
 
@@ -163,6 +162,15 @@ public class ArtistEndpointTest {
         mockMvc.perform(put("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))
             .andExpect(status().isOk()).andReturn();
+
+        List<ArtistDto> artists3 = allArtists();
+        assertEquals(2, artists3.size());
+
+        assertTrue(artists3.toString().contains("bobMod"));
+        assertTrue(artists3.toString().contains("bobby"));
+        assertTrue(artists3.toString().contains("test2@test.com"));
+        assertTrue(artists3.toString().contains("testMod@test.com"));
+        assertFalse(artists3.toString().contains("test@test.com"));
     }
 
     public List<ArtistDto> allArtists() throws Exception {

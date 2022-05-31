@@ -1,46 +1,29 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
-import at.ac.tuwien.sepm.groupphase.backend.config.LanguageConfig;
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedMessageDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.MessageInquiryDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.MessageMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
-import at.ac.tuwien.sepm.groupphase.backend.repository.MessageRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
-import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import lombok.extern.java.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContext;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -49,7 +32,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,15 +60,6 @@ public class ApplicationUserEndpointTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private JwtTokenizer jwtTokenizer;
-
-    @Autowired
-    private SecurityProperties securityProperties;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -130,7 +103,7 @@ public class ApplicationUserEndpointTest {
         ApplicationUser anObject = getTestUser1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(anObject );
+        String requestJson=ow.writeValueAsString(anObject);
 
         mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
@@ -151,10 +124,10 @@ public class ApplicationUserEndpointTest {
         List<ApplicationUserDto> users2 = allUsers();
         assertEquals(2, users2.size());
 
-        assertThat(users2.contains("bob"));
-        assertThat(users2.contains("bobby"));
-        assertThat(users2.contains("test@atest.com"));
-        assertThat(users2.contains("testStraße 2"));
+        assertTrue(users2.toString().contains("bob"));
+        assertTrue(users2.toString().contains("bobby"));
+        assertTrue(users2.toString().contains("test@atest.com"));
+        assertTrue(users2.toString().contains("testStraße 2"));
 
         ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), "bobbyName", "aSecondTest",
             "testmodify@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
@@ -168,10 +141,8 @@ public class ApplicationUserEndpointTest {
 
         List<ApplicationUserDto> users3 = allUsers();
         assertEquals(2, users3.size());
-        assertThat(users3.contains("testmodify@atest.com"));
-        assertThat(!users3.contains("test2@atest.com"));
-
-
+        assertTrue(users3.toString().contains("testmodify@atest.com"));
+        assertTrue(!users3.toString().contains("test2@atest.com"));
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {

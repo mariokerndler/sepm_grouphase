@@ -12,6 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -92,8 +93,8 @@ public class DetailedCommissionDto {
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent
             + ", price=" + price
-            + ", issueDate=" + issueDate
-            + ", deadlineDate=" + deadlineDate
+            + ", issueDate=" + issueDate.format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+            + ", deadlineDate=" + deadlineDate.format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
             + ", instructions='" + instructions + '\''
             + ", referencesDtosIds=" + (referencesDtos == null ? null : referencesDtos.stream().map(ReferenceDto::getId).toList())
             + ", receiptsDtosIds=" + (receiptsDtos == null ? null : receiptsDtos.stream().map(ReceiptDto::getId).toList())

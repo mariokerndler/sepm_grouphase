@@ -1,9 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +9,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Commission implements HasId {
 
@@ -20,7 +20,6 @@ public class Commission implements HasId {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Artist artist;
 
     @ManyToOne
@@ -39,37 +38,36 @@ public class Commission implements HasId {
     @Column(nullable = false, name = "issue_date")
     private LocalDateTime issueDate;
 
-    @Column(nullable = false, name = "deadline_date")
+    @Column(name = "deadline_date")
     private LocalDateTime deadlineDate;
 
     @Column(nullable = false)
     private String instructions;
 
-    @OneToMany(mappedBy = "commission")
+    @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)
     private List<Reference> references;
 
-    @OneToMany(mappedBy = "commission")
+    @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)
     private List<Receipt> receipts;
 
-    @OneToOne(mappedBy = "commission")
+    @OneToOne(mappedBy = "commission", cascade = CascadeType.ALL)
     private Review review;
 
-    @OneToOne(mappedBy = "commission")
+    @OneToOne(mappedBy = "commission", cascade = CascadeType.ALL)
     private Artwork artwork;
 
-    public Commission(
-        Artist artist,
-        ApplicationUser customer,
-        int sketchesShown,
-        int feedbackSent,
-        double price,
-        LocalDateTime issueDate,
-        LocalDateTime deadlineDate,
-        String instructions,
-        List<Reference> references,
-        List<Receipt> receipts,
-        Review review,
-        Artwork artwork) {
+    public Commission(Artist artist,
+                      ApplicationUser customer,
+                      int sketchesShown,
+                      int feedbackSent,
+                      double price,
+                      LocalDateTime issueDate,
+                      LocalDateTime deadlineDate,
+                      String instructions,
+                      List<Reference> references,
+                      List<Receipt> receipts,
+                      Review review,
+                      Artwork artwork) {
         this.artist = artist;
         this.customer = customer;
         this.sketchesShown = sketchesShown;
@@ -87,7 +85,8 @@ public class Commission implements HasId {
     @Override
     public String toString() {
         return "Commission{"
-            + "id=" + id + ", artist=" + artist.getId()
+            + "id=" + id
+            + ", artist=" + (artist == null ? null : artist.getId())
             + ", customer=" + customer.getId()
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent
@@ -95,10 +94,9 @@ public class Commission implements HasId {
             + ", issueDate=" + issueDate
             + ", deadlineDate=" + deadlineDate
             + ", instructions='" + instructions + '\''
-            + ", receipts=" + receipts.stream().map(Receipt::getId).toList()
-            + ", review=" + review.getId()
-            + ", artwork=" + artwork.getId()
-            + '}';
+            + (receipts == null ? "" : ", receipts=" + receipts.stream().map(Receipt::getId).toList())
+            + (review == null ? "" : ", review=" + review.getId())
+            + (artwork == null ? "" : ", artwork=" + artwork.getId()) + '}';
     }
 
     @Override

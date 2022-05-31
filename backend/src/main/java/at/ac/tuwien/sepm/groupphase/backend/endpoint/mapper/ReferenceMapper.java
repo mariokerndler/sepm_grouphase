@@ -1,21 +1,18 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReceiptDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReferenceDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
-import org.mapstruct.AfterMapping;
+import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CommissionService.class})
 public abstract class ReferenceMapper {
 
+    @Mapping(source = "commission.id", target = "commissionId")
     public abstract ReferenceDto referenceToReferenceDto(Reference reference);
 
-    public abstract Reference referenceDtoToReference(ReceiptDto receiptDto);
+    @Mapping(source = "commissionId", target = "commission")
+    public abstract Reference referenceDtoToReference(ReferenceDto referenceDto);
 
-    @AfterMapping
-    protected void addCommissionId(Reference reference, @MappingTarget ReferenceDto referenceDto) {
-        referenceDto.setCommissionId(reference.getCommission().getId());
-    }
 }

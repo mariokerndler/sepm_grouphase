@@ -6,7 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class, ReferenceMapper.class, ReceiptMapper.class, ReviewMapper.class, ArtworkMapper.class})
 public abstract class CommissionMapper {
 
     @Mapping(source = "artist.id", target = "artistId")
@@ -19,10 +19,18 @@ public abstract class CommissionMapper {
 
     @Mapping(source = "artist", target = "artistDto")
     @Mapping(source = "customer", target = "customerDto")
+    @Mapping(source = "references", target = "referencesDtos")
+    @Mapping(source = "receipts", target = "receiptsDtos")
+    @Mapping(source = "review", target = "reviewDto")
+    @Mapping(source = "artwork", target = "artworkDto")
     public abstract DetailedCommissionDto commissionToDetailedCommissionDto(Commission commission);
 
     @Mapping(source = "artistDto", target = "artist")
     @Mapping(source = "customerDto", target = "customer")
+    @Mapping(source = "referencesDtos", target = "references")
+    @Mapping(source = "receiptsDtos", target = "receipts")
+    @Mapping(source = "reviewDto", target = "review")
+    @Mapping(source = "artworkDto", target = "artwork")
     public abstract Commission detailedCommissionDtoToCommission(DetailedCommissionDto detailedCommissionDto);
 
 }

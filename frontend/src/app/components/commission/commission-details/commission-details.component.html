@@ -18,8 +18,10 @@
     <div class="description">
       <strong>Description:</strong>
       <br><br>
+      <div class="description-section">
       <p>{{commission.instructions.substring(0, 240)}}</p>
       <p>{{commission.instructions.substring(240, 800)}}</p>
+      </div>
       <br>
       <div *ngIf="commission.referenceImageIds">
       <strong class="referenceImages">Reference Images:</strong>

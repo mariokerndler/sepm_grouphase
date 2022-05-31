@@ -20,7 +20,6 @@
 }
 
 .commission:hover {
-  border: none;
   border: 4px #fb9fa4 solid;
   background: #fb9fa4;
   color:#434F6A;
@@ -34,7 +33,12 @@ mat-card-title {
   text-align: center;
 }
 
+.mat-card-content {
+  height: 180px;
+}
+
 mat-card-actions {
   text-align: center;
 }
+
 

@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ArtworkService} from '../../../services/artwork.service';
-import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
+import {UploadComponent} from '../../upload/upload.component';
+import {MatDialog} from '@angular/material/dialog';
+import {ArtworkDto} from '../../../dtos/artworkDto';
 
 @Component({
   selector: 'app-artist-gallery',
@@ -10,34 +12,35 @@ import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 export class ArtistGalleryComponent implements OnInit {
 
   @Input() artist;
+  artworks: ArtworkDto[] = [];
+  isReady = false;
   artistProfilePicture: string;
 
-
-  constructor(private artworkService: ArtworkService) {
+  constructor(
+    private artworkService: ArtworkService,
+    public dialog: MatDialog
+  ) {
   }
-
 
   ngOnInit(): void {
     this.artistProfilePicture = 'https://picsum.photos/100/100';
+
+    this.artworkService.getArtworksByArtist(this.artist.id)
+      .subscribe(
+        (artworks) => {
+          this.artworks = artworks;
+          this.isReady = true;
+        }
+      );
   }
 
-  onFileChanged(file: any) {
-    if (file.target.files && file.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = (_) => {
-          const imageData = new Uint8Array([0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xff, 0xc0, 0xf3, 0xc0, 0xff, 0xc0, 0xff, 0xc0,
-            0xf7, 0xc0, 0xff, 0xc0]);
-          const artwork = {
-            name: 'test', description: 'test', imageData, imageUrl: '/data/ap/aaronjoshuaaa/test.jpg',
-            fileType: FileType.jpg, artistId: this.artist.id
-          } as ArtworkDto;
-          this.artworkService.createArtwork(artwork).subscribe();
-        };
-      };
-      reader.readAsDataURL(file.target.files[0]);
-    }
+  openDialog() {
+    this.dialog.open(UploadComponent, {
+      data: {
+        artist: this.artist,
+      }
+    });
   }
+
+
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 
@@ -10,11 +10,12 @@ import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 export class ArtistInformationComponent implements OnInit {
 
   @Input() artist: ArtistDto;
+  @Output() tabIndexEvent = new EventEmitter<number>();
   profileSettings: ArtistProfileSettings;
 
   // TODO: Fill in the real profile picture
   artistUrl = 'https://picsum.photos/150/150';
-  tabIndex = 0;
+
 
   constructor() {
   }
@@ -25,8 +26,8 @@ export class ArtistInformationComponent implements OnInit {
     }
   }
 
-  switchTab(index: number) {
-    this.tabIndex = index;
-
+  switchTab(index) {
+    this.tabIndexEvent.emit(index);
   }
+
 }

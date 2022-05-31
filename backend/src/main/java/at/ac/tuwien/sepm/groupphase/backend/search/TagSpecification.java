@@ -9,5 +9,4 @@ public class TagSpecification {
             criteriaBuilder.equal(artwork.join("tags").get("id"), tagId);
     }
 
-
 }

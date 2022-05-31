@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepo;

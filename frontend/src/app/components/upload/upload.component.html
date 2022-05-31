@@ -1,0 +1,39 @@
+<button class="close-button" mat-dialog-close mat-icon-button>
+  <mat-icon>close</mat-icon>
+</button>
+<h1 mat-dialog-title>Upload</h1>
+<div [formGroup]="uploadForm" fxLayout="column">
+  <mat-form-field appearance="fill" class="form-group">
+    <mat-label>Name</mat-label>
+    <input aria-describedby="artworkNameHelp" class="form-control" formControlName="artworkName" id="inputArtworkName" matInput
+           name="artworkName"
+           type="text">
+    <mat-error *ngIf="uploadForm.controls.artworkName.errors">
+      <small *ngIf="uploadForm.controls.artworkName.errors.required">An artwork name is required! </small>
+    </mat-error>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill" class="form-group">
+    <mat-label>Description</mat-label>
+    <textarea #autosize="cdkTextareaAutosize"
+              cdkAutosizeMaxRows="5"
+              cdkAutosizeMinRows="1"
+              cdkTextareaAutosize
+              class="form-control"
+              formControlName="description"
+              matInput
+    ></textarea>
+  </mat-form-field>
+  <input #fileInput
+         (change)="fileSelected($event)"
+         accept="image/png, image/jpeg, image/gif" style="display: none;" type="file">
+  <img *ngIf="file" [src]="selectedImage" alt="" class="preview-image">
+  <button (click)="fileInput.click()" class="upload-button" mat-button>
+    <span *ngIf="!file">Select File</span>
+    <span *ngIf="file">Change Picture</span>
+  </button>
+
+
+  <button (click)="onFileChanged()" *ngIf="file" cdkFocusInitial class="upload-button" mat-button>Upload</button>
+
+</div>

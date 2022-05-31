@@ -23,4 +23,30 @@ export class GlobalFunctions {
       return null;
     };
   }
+
+  public artworkNameParser(oldName: string) {
+    let result = oldName;
+    if (result.includes('.')) {
+      result = oldName.substring(0, oldName.lastIndexOf('.'));
+    }
+    if (result.includes('_')) {
+      result = result.substring(result.lastIndexOf('_') + 1, result.length);
+    }
+    return result;
+  }
+
+  public shuffleArray(array: any[]): any[] {
+    let currentIndex = array.length;
+    let randomIndex;
+
+    while (currentIndex >= 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+
+  }
 }

@@ -1,13 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.search.criteria;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class SearchCriteria {
     private String key;
@@ -20,6 +20,18 @@ public class SearchCriteria {
             return true;
         }
         return false;
+    }
+
+    public SearchCriteria(String key, String operation, Object value, String predicateType) {
+        this.key = key;
+        this.operation = operation;
+        this.value = value;
+        this.predicateType = predicateType;
+        if (operation.equals("~")) {
+
+            this.key = "lower(" + key + ')';
+        }
+        log.info(this.toString());
     }
 
     @Override

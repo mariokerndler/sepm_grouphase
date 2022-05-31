@@ -5,8 +5,6 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,15 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/artist")
+@RequestMapping(value = "api/v1/artists")
 public class ArtistEndpoint {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     private final ArtistService artistService;
     private final ArtistMapper artistMapper;
 
@@ -58,7 +55,7 @@ public class ArtistEndpoint {
     @Operation(summary = "Get all artists")
     @Transactional
     public List<ArtistDto> getAllArtists() {
-        LOGGER.debug("Get /Artist");
+        log.debug("Get /Artist");
         return artistService.getAllArtists().stream().map(artistMapper::artistToArtistDto).collect(Collectors.toList());
     }
 
@@ -71,7 +68,7 @@ public class ArtistEndpoint {
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage() + artistDto.toString());
+            log.error(e.getMessage() + artistDto.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -86,7 +83,7 @@ public class ArtistEndpoint {
         try {
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage() + artistDto.toString());
+            log.error(e.getMessage() + artistDto.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -102,7 +99,7 @@ public class ArtistEndpoint {
             log.info(String.valueOf(id));
             return artistMapper.artistToArtistDto(artistService.findArtistById(id));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage() + id.toString());
+            log.error(e.getMessage() + id.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }

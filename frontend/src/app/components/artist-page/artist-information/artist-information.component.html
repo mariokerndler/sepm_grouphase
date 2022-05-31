@@ -1,39 +1,26 @@
-<div class="information-container">
-  <div fxFill fxLayout="column">
-    <div fxLayout="row">
-      <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
-        <div fxLayoutAlign="center center">
-          <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
-        </div>
-        <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
-          <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-                class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
-          <span [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" class="accent-color artist-role">Artist</span>
-        </div>
-      </div>
-    </div>
-    <div class="artist-middle-menu">
-      <div class="artist-middle-menu-container" fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px">
-        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
-                routerLink="/artist/{{artist.id}}">Home
-        </button>
-        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
-                routerLink="/artist/{{artist.id}}/{{artist.galleryId}}">Gallery
-        </button>
-        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
-                routerLink="/artist/{{artist.id}}/reviews">Reviews
-        </button>
-        <button [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" color="accent" mat-button
-                routerLink="/artist/{{artist.id}}/contact">Contact
-        </button>
-      </div>
-    </div>
-    <div>
-      <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}" class="accent-color artist-about-header">About</span>
-      <p class="accent-color artist-about-description">
-        {{artist.description}}
-      </p>
-    </div>
+<div>
+  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
+        class="accent-color artist-about-header">About</span>
+  <p class="accent-color artist-about-description">
+    {{artist.description}}
+  </p>
+</div>
+<br>
+<div>
+  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
+        class="accent-color artist-about-header">Gallery</span>
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
   </div>
 </div>
-
+<br>
+<div>
+  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
+        class="accent-color artist-about-header">Reviews</span>
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
+  </div>
+  <p class="accent-color artist-about-description">
+    {{artist.description}}
+  </p>
+</div>

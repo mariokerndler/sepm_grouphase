@@ -5,9 +5,39 @@
     fxLayout="column"
     fxLayoutAlign="start space-evenly"
     fxLayoutGap="0.5rem">
-    <app-artist-information *ngIf="artist" [artist]="artist"></app-artist-information>
-
-    <!--<app-midsection *ngIf="artist" [artistId]="artist.id"></app-midsection>-->
+    <div class="information-container">
+      <div fxFill fxLayout="column">
+        <div fxLayout="row">
+          <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
+            <div fxLayoutAlign="center center">
+              <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
+            </div>
+            <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+          <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
+                class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
+              <span [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" class="accent-color artist-role">Artist</span>
+            </div>
+          </div>
+        </div>
+        <div class="artist-middle-menu">
+          <mat-tab-group [(selectedIndex)]="tabIndex" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
+                         backgroundColor="primary" dynamicHeight>
+            <mat-tab label="Home">
+              <br>
+              <app-artist-information (tabIndexEvent)="changeIndex($event)" [artist]="artist"></app-artist-information>
+            </mat-tab>
+            <mat-tab label="Gallery">
+              <br>
+              <app-artist-gallery [artist]="artist"></app-artist-gallery>
+            </mat-tab>
+            <mat-tab label="Reviews">
+            </mat-tab>
+            <mat-tab label="Contact">
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="canEdit" class="edit-button">
@@ -15,6 +45,14 @@
       <mat-icon color="accent">edit</mat-icon>
       <span [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}"
             class="edit-text">Edit your page</span>
+    </button>
+  </div>
+
+  <div *ngIf="!canEdit" class="edit-button">
+    <button (click)="goBack()" color="accent" mat-button>
+      <mat-icon color="accent">arrow_back</mat-icon>
+      <span [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}"
+            class="edit-text">Go Back</span>
     </button>
   </div>
 </div>

@@ -1,0 +1,69 @@
+.artist-feed-card-container {
+  max-height: 300px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+// Artist feed profile information
+.artist-feed-card-pfp {
+  border-radius: 10px;
+  max-width: 200px;
+}
+
+.artist-feed-card-fullName {
+  font-weight: bold;
+}
+
+.artist-feed-card-userName {
+}
+
+.artist-feed-card-image-preview {
+  max-height: 300px;
+}
+
+.artist-feed-card-image-container {
+  overflow: hidden;
+  width: 100%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding-left: 10px;
+}
+
+.artist-feed-card-image-wrap {
+  position: relative;
+}
+
+.artist-feed-card-image-description-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+
+.artist-feed-card-image-wrap:hover .artist-feed-card-image-description-layer {
+  visibility: visible;
+  opacity: 1;
+}
+
+.artist-feed-card-image-description {
+  transition: .2s;
+  transform: translateY(1em);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.artist-feed-card-image-wrap:hover .artist-feed-card-image-description {
+  transform: translateY(0);
+}

@@ -1,0 +1,41 @@
+mat-paginator {
+  //background-color: rgba(255, 255, 255, .5);
+}
+
+app-artist-feed-card {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.artist-feed-container {
+  width: 90%;
+  margin: auto;
+}
+
+@media screen and (max-width: 959px) {
+  .artist-feed-container {
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+mat-header-row {
+  border-bottom: 0;
+  visibility: hidden;
+  min-height: 0 !important;
+}
+
+.mat-row {
+  border: 0;
+}
+
+.mat-cell {
+  padding: 0;
+}
+
+mat-paginator {
+  background:rgba(0, 0, 0, 0.1);
+  color: #fb9fa4;
+  margin-bottom: 10px;
+}

@@ -46,7 +46,11 @@ public class Artist extends ApplicationUser implements HasId {
     private List<Review> reviews;
 
     @ManyToMany
-    @JoinTable(name = "artist_tag", joinColumns = @JoinColumn(name = "artist_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JoinTable(
+        name = "artist_tag",
+        joinColumns = @JoinColumn(name = "artist_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id"),
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"artist_id", "tag_id"})})
     private List<Tag> tags;
 
 

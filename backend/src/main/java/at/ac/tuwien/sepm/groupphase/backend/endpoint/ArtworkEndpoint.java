@@ -10,8 +10,6 @@ import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,17 +20,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping(value = "/artwork")
 @Slf4j
+@RestController
+@RequestMapping(value = "api/v1/artworks")
 public class ArtworkEndpoint {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     private final ArtworkService artworkService;
     private final ArtworkMapper artworkMapper;
 
@@ -54,9 +51,9 @@ public class ArtworkEndpoint {
                                    @RequestParam(name = "tagIds", required = false) List<String> tagIds,
                                    @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
                                    @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
-
-        TagSearchDto tagSearchDto = new TagSearchDto(tagIds, searchOperations, pageNr, randomSeed);
-        LOGGER.info("Search artworks by criteria " + tagSearchDto);
+        ;
+        TagSearchDto tagSearchDto = new TagSearchDto(tagIds, searchOperations.toLowerCase(), pageNr, randomSeed);
+        log.info(tagSearchDto.toString());
         String search = tagSearchDto.getSearchOperations();
 
         Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
@@ -87,9 +84,10 @@ public class ArtworkEndpoint {
                     spec = TagSpecification.filterByTags(tagSearchDto.getTagIds().get(0));
                 }
                 for (String tag : tagSearchDto.getTagIds()) {
-                    spec.and(TagSpecification.filterByTags(tag));
+                    spec = spec.and(TagSpecification.filterByTags(tag).and(spec));
+                    log.info("filtering by:" + tag);
                 }
-                log.info(tagSearchDto.getSearchOperations());
+
             }
         }
         return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
@@ -102,7 +100,7 @@ public class ArtworkEndpoint {
     @GetMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
-        LOGGER.info("Get artworks by artist with id " + id);
+        log.info("Get /Artist");
         try {
             List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
@@ -111,7 +109,7 @@ public class ArtworkEndpoint {
 
             return artworksDto;
         } catch (Exception n) {
-            LOGGER.error(n.getMessage());
+            log.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
@@ -121,13 +119,13 @@ public class ArtworkEndpoint {
     @DeleteMapping()
     @Operation(summary = "Delete artwork")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
-        LOGGER.info("Delete artwork " + artworkDto.getName());
+        log.info("Delete Artwork" + artworkDto.getName());
         try {
 
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
 
         } catch (Exception n) {
-            LOGGER.error(n.getMessage());
+            log.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
@@ -137,11 +135,11 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Post artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
-        LOGGER.info("Post artwork " + artworkDto.getName());
+        log.debug("Post /Artwork/{}", artworkDto.toString());
         try {
             artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
         } catch (Exception v) {
-            LOGGER.error(v.getMessage());
+            log.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
         }
 

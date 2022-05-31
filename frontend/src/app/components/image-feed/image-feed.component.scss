@@ -1,6 +1,6 @@
 html, body {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   height: 100%;
 }
 
@@ -38,8 +38,10 @@ html, body {
 }
 
 .feed {
-
-  max-height: 90rem; //change here
+  scrollbar-gutter: stable;
+  filter: var(--bgFilter);
+  max-width: 95%;
+  max-height: 48rem; //change here
   overflow-y: auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -103,11 +105,6 @@ html, body {
 
 }
 
-.example-form {
-  min-width: 150px;
-  max-width: 400px;
-
-}
 
 .scroll-wrapper {
   // width: 1000px;
@@ -117,10 +114,6 @@ html, body {
 
 }
 
-
-::ng-deep input.mat-input-element {
-  color: white;
-}
 
 md-divider {
   border-width: 1px;
@@ -148,7 +141,7 @@ md-divider {
 
 .card-img-description-layer {
   position: absolute;
-  top: 90%;
+  top: 91%;
   bottom: 0;
   left: 0;
   right: 0;
@@ -161,19 +154,35 @@ md-divider {
   justify-content: center;
 
   /* transition effect. not necessary */
-  transition: opacity .1s, visibility .1s;
+  transition: opacity 1.4s, visibility 1.8s;
 }
+
 
 .card-img-wrap:hover .card-img-description-layer {
   visibility: visible;
   opacity: 0.7;
 }
 
+#carousel:not(:active) {
+
+  visibility: visible;
+  filter: blur(5px);
+}
+
+#carousel:active {
+  filter: blur(5px);
+}
+
 .card-img-description {
-  transition: 1s;
+  transition: 2s;
+
+
   transform: translateY(1em);
   font-size: 1rem;
+  bot: 0;
+  position: fixed;
   text-align: center;
+  margin-bottom: 3px;
 }
 
 .card-img-wrap:hover .card-img-description {
@@ -184,3 +193,50 @@ md-divider {
   width: 100%;
   height: auto;
 }
+
+mat-menu.content {
+  color: gray;
+}
+
+#tagMenuItems {
+  color: #536281;
+}
+
+.pagination {
+
+  flex-direction: row;
+
+
+  display: flex;
+  justify-content: center;
+}
+
+.paginationButton {
+
+  display: inline-block;
+  float: left;
+  padding: 8px 16px;
+
+}
+
+.paginationText {
+
+  display: inline-block;
+  float: left;
+
+  padding: 14px 5px;
+}
+
+.mat-menu-panel {
+  background: lightgray;
+  margin-top: .3rem;
+
+  .mat-menu-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+  }
+}
+
+
+

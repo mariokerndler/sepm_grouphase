@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,4 +39,8 @@ public interface UserService extends UserDetailsService {
 
 
     void registerUser(ApplicationUser userDtoToUser);
+
+    List<ApplicationUser> searchUser(Specification<ApplicationUser> spec);
+
+    ApplicationUser searchUserByEmail(String email);
 }

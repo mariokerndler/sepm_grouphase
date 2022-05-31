@@ -16,11 +16,12 @@
 <div (ngSubmit)="loginUser()" [formGroup]="loginForm" fxLayout="column" mat-dialog-content>
   <p *ngIf="!error">Welcome Back!</p>
   <mat-form-field appearance="fill" class="form-group">
-    <mat-label>E-Mail</mat-label>
-    <input aria-describedby="usernameHelp" class="form-control" formControlName="username" id="inputUsername" matInput
-           name="username" type="email">
-    <mat-error *ngIf="loginForm.controls.username.errors">
-      <small *ngIf="loginForm.controls.username.errors.required">Your E-Mail is required! </small>
+    <mat-label>E-mail</mat-label>
+    <input aria-describedby="emailHelp" class="form-control" formControlName="email" id="inputEmail" matInput
+           name="email">
+    <mat-error *ngIf="loginForm.controls.email.errors">
+      <small *ngIf="loginForm.controls.email.errors.required">Your email is required! </small>
+      <small *ngIf="loginForm.controls.email.errors.email">The email you entered is invalid! </small>
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form-group">
@@ -38,11 +39,11 @@
         long!</small>
     </mat-error>
   </mat-form-field>
-  <button (click)="loginUser()" cdkFocusInitial class="submit-button" color="primary" mat-flat-button
+  <button (click)="loginUser()" cdkFocusInitial class="submit-button" color="primary" class="mat-primary" mat-flat-button
           name="submit-button">Login
   </button>
   <div fxLayout="column">
     <span style="text-align: center">Not a member?</span>
-    <button (click)="openDialog()" class="submit-button" mat-button>Create Account</button>
+    <button (click)="openDialog()" class="submit-button" mat-flat-button color="primary" class="mat-primary">Create Account</button>
   </div>
 </div>

@@ -25,9 +25,12 @@ public class ImageFileManager {
 
     public String writeArtistImage(Artwork a) {
 
-        try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName())) {
+        try (
+            FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName())) {
             outputStream.write(a.getImageData());
+
             return ImageDataPaths.artistProfilePictureLocation + "/" + a.getName();
+            //return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();

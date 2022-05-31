@@ -1,4 +1,4 @@
-<mat-toolbar *ngIf="isReady" class="toolbar" color="primary">
+<mat-toolbar class="toolbar" color="primary">
   <div fxFlex fxLayout>
     <button class="menu-icon" mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
@@ -6,11 +6,10 @@
   </div>
   <span class="title" routerLink="/">{{globals.projectName}}</span>
   <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
-    <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button> Login</button>
-    <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button> Register</button>
-    <!--<button mat-button *ngIf="authService.isLoggedIn()" routerLink="/artist/{{user.id}}">Profile</button>-->
-    <button (click)="authService.logoutUser()" *ngIf="authService.isLoggedIn()" mat-button routerLink="/">Logout
-    </button>
+    <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button>Login</button>
+    <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button>Register</button>
+    <button (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()" mat-button>Profile</button>
+    <button (click)="logoutUser()" *ngIf="authService.isLoggedIn()" mat-button>Logout</button>
   </div>
 </mat-toolbar>
 
@@ -19,10 +18,18 @@
     <button class="close-menu-icon" mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">close</mat-icon>
     </button>
-    <mat-selection-list [multiple]="false" class="sidenav">
-      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Login
+    <mat-selection-list (click)="sidenav.toggle()" [multiple]="false" class="sidenav">
+      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">
+        Login
       </mat-list-option>
-      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active"> Register
+      <mat-list-option *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">
+        Register
+      </mat-list-option>
+      <mat-list-option *ngIf="authService.isLoggedIn()" routerLink="/artists" routerLinkActive="active">
+        Artists
+      </mat-list-option>
+      <mat-list-option routerLink="/feed" routerLinkActive="active">
+        Explore
       </mat-list-option>
     </mat-selection-list>
 

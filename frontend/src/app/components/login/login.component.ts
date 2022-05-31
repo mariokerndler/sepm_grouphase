@@ -5,6 +5,8 @@ import {AuthService} from '../../services/auth.service';
 import {AuthRequest} from '../../dtos/auth-request';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {RegistrationComponent} from '../registration/registration.component';
+import {UserService} from '../../services/user.service';
+import {NotificationService} from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -26,9 +28,11 @@ export class LoginComponent implements OnInit {
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private userService: UserService,
+    private notificationService: NotificationService,
     private router: Router) {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
@@ -39,7 +43,7 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this.submitted = true;
     if (this.loginForm.valid) {
-      const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+      const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
       this.authenticateUser(authRequest);
     } else {
       console.log('Invalid input');
@@ -53,24 +57,26 @@ export class LoginComponent implements OnInit {
    */
   authenticateUser(authRequest: AuthRequest) {
     console.log('Try to authenticate user: ' + authRequest.email);
-    this.authService.loginUser(authRequest).subscribe({
-      next: () => {
-        console.log('Successfully logged in user: ' + authRequest.email);
-        this.onNoClick();
-        this.router.navigate(['/message'])
-          .catch((err) => console.log(err));
-      }/*,
-      error: error => {
-        console.log('Could not log in due to:');
-        console.log(error);
-        this.error = true;
-        if (typeof error.error === 'object') {
-          this.errorMessage = error.error.error;
-        } else {
-          this.errorMessage = error.error;
+
+    // Fetch user from email
+    this.userService.getUserByEmail(authRequest.email).subscribe(
+      (foundUser) => {
+        if (!foundUser) {
+          this.notificationService.displayErrorSnackbar('Could not authenticate user with e-mail: ' + authRequest.email);
+          return;
         }
-      } */
-    });
+
+        // Auth user
+        this.authService.loginUser(authRequest, foundUser).subscribe({
+          next: () => {
+            console.log('Successfully logged in user: ' + authRequest.email);
+            this.onNoClick();
+            this.router.navigate(['/feed'])
+              .catch((err) => console.log(err));
+          }
+        });
+      }
+    );
   }
 
   /**

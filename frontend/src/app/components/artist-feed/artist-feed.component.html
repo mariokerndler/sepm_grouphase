@@ -1,0 +1,39 @@
+<div *ngIf="isReady" class="artist-feed-container">
+  <div class="artist-feed-search">
+    <form class="artist-feed-form">
+      <mat-form-field>
+        <mat-label class="primary">Search artist</mat-label>
+        <input [formControl]="searchFormControl"
+               [matAutocomplete]="searchAuto"
+               aria-label="Search"
+               class="primary"
+               matInput
+               placeholder="Search artist"
+               type="text">
+        <mat-autocomplete #searchAuto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.userName">
+            {{option.userName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <mat-table [dataSource]="dataSource" matSort style="background: transparent;">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <app-artist-feed-card [artist]="row"></app-artist-feed-card>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['id']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['id'];"></mat-row>
+  </mat-table>
+</div>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+<div *ngIf="!isReady" class="artist-feed-container">
+  <mat-spinner></mat-spinner>
+</div>

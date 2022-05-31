@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Slf4j
+@Service
 public class ArtworkServiceImpl implements ArtworkService {
 
     private final ArtworkRepository artworkRepo;

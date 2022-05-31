@@ -26,3 +26,48 @@
 .edit-text {
   margin-left: 10px;
 }
+
+.information-container {
+  height: 300px;
+}
+
+.artist-profile-picture {
+  max-width: 100px;
+  height: auto;
+  border-radius: 10%;
+}
+
+.artist-full-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.artist-full-name-container {
+  padding-top: 5px;
+}
+
+.artist-role {
+  font-size: 1rem;
+}
+
+.artist-middle-menu {
+  height: 100px;
+}
+
+
+.artist-middle-menu > div > a {
+  text-decoration: none;
+}
+
+
+@media screen and (max-width: 959px) {
+  .artist-full-name {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .artist-about-header {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+}

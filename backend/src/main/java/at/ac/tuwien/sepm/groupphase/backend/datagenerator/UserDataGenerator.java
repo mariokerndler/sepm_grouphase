@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
@@ -25,42 +26,45 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Profile("generateData")
 @Component
-@Slf4j
 public class UserDataGenerator {
+
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
 
 
     private final ArtistRepository artistRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
 
-    public UserDataGenerator(ArtistRepository artistRepository, PasswordEncoder passwordEncoder, ArtworkRepository artworkRepo,
+    public UserDataGenerator(ArtistRepository artistRepository,
+                             UserRepository userRepository,
+                             PasswordEncoder passwordEncoder,
+                             ArtworkRepository artworkRepo,
                              TagRepository tagRepository) {
-
         this.artistRepository = artistRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
-
     }
 
     @PostConstruct
     private void generateUser() throws IOException {
-
         loadTags(NUMBER_OF_TAGS_TO_GENERATE);
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
 
+        generateArtistTestAccount("testArtist", "12345678");
+        generateUserTestAccount("testUser", "12345678");
     }
 
     private void loadTags(int numberOftags) throws FileNotFoundException {
@@ -100,8 +104,7 @@ public class UserDataGenerator {
                     if (artistProfileDirectoryListing != null) {
                         for (File artworkFile : artistProfileDirectoryListing) {
                             if (artworkFile.isFile()) {
-                                Faker f = new Faker();
-                                String description = new Faker().rickAndMorty().quote();
+                                String description = new Faker().harryPotter().quote();
                                 if (description.length() > 50) {
                                     description = description.substring(0, 50);
                                 }
@@ -113,8 +116,18 @@ public class UserDataGenerator {
 
                                 List<Tag> selectedTags = new LinkedList<>();
 
+                                // Generate random sequence of numbers from 0 to tags.size()-1
+                                ArrayList numbers = new ArrayList();
+                                for (int i = 0; i < tags.size(); i++) {
+                                    numbers.add(i);
+                                }
+
+                                Collections.shuffle(numbers);
+
+                                // Add a random number of tags to list by selecting the first few
+                                Faker f = new Faker();
                                 for (int j = 0; j < f.random().nextInt(0, 10); j++) {
-                                    selectedTags.add(tags.get(f.random().nextInt(0, tags.size() - 1)));
+                                    selectedTags.add(tags.get(j));
                                 }
 
                                 Artwork artwork = new Artwork();
@@ -137,7 +150,6 @@ public class UserDataGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private Artist generateArtistProfile(String username) {
@@ -154,6 +166,34 @@ public class UserDataGenerator {
         artist.setPassword(passwordEncoder.encode(faker.internet().password(8, 15)));
         artist.setUserRole(UserRole.Artist);
         return artist;
+    }
+
+    private ApplicationUser generateUserProfile(String username) {
+        Faker faker = new Faker();
+        ApplicationUser user = new ApplicationUser();
+        user.setAdmin(false);
+        user.setUserName(username);
+        user.setName(faker.name().firstName());
+        user.setSurname(faker.name().lastName());
+        user.setAddress(faker.address().fullAddress());
+        user.setEmail(faker.internet().emailAddress());
+        user.setPassword(passwordEncoder.encode(faker.internet().password(8, 15)));
+        user.setUserRole(UserRole.User);
+        return user;
+    }
+
+    private void generateArtistTestAccount(String username, String password) {
+        Artist artist = generateArtistProfile(username);
+        artist.setEmail(username + "@test.com");
+        artist.setPassword(passwordEncoder.encode(password));
+        artistRepository.save(artist);
+    }
+
+    private void generateUserTestAccount(String username, String password) {
+        ApplicationUser user = generateUserProfile(username);
+        user.setEmail(username + "@test.com");
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     //old approach not working, issues with cloudflare protection 403 error.

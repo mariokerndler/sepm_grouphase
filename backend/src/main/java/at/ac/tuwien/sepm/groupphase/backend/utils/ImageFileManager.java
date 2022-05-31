@@ -102,12 +102,13 @@ public class ImageFileManager {
 
 
 
-    public String writeArtistImage(Artwork a) throws IOException {
+    public String writeArtistImage(Artwork a) {
+
         try (
-            FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName() + "." + a.getFileType())) {
+            FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName())) {
             outputStream.write(a.getImageData());
 
-            return ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName() + "." + a.getFileType();
+            return ImageDataPaths.artistProfilePictureLocation + "/" + a.getName();
             //return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
             log.info(e.getMessage());

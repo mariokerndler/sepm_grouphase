@@ -13,20 +13,20 @@ import java.util.List;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private final TagRepository tagRepository;
+    private final TagRepository tagRepo;
 
     @Autowired
-    public TagServiceImpl(TagRepository tagRepository) {
-        this.tagRepository = tagRepository;
+    public TagServiceImpl(TagRepository tagRepo) {
+        this.tagRepo = tagRepo;
     }
 
     @Override
     public List<Tag> loadAllTags() {
-        return tagRepository.findAll();
+        return tagRepo.findAll();
     }
 
     @Override
     public List<Tag> loadTagsByImage(Long id) {
-        return this.tagRepository.findArtworkTags(id);
+        return this.tagRepo.findArtworkTags(id);
     }
 }

@@ -39,6 +39,7 @@ public class ArtworkEndpoint {
         this.artworkMapper = artworkMapper;
     }
 
+    //TODO: implementation arguably belongs to service class
     //see https://www.baeldung.com/rest-api-query-search-language-more-operations
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
@@ -76,7 +77,6 @@ public class ArtworkEndpoint {
         }
 
         Specification<Artwork> spec = builder.build();
-
 
         if (tagSearchDto.getTagIds() != null) {
             if (tagSearchDto.getTagIds().size() > 0) {
@@ -117,7 +117,7 @@ public class ArtworkEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
-    @Operation(summary = "getAllArtworksByArtist")
+    @Operation(summary = "Delete artwork")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
         log.info("Delete Artwork" + artworkDto.getName());
         try {
@@ -133,7 +133,7 @@ public class ArtworkEndpoint {
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get Detailed informations about a specific user")
+    @Operation(summary = "Post artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());
         try {

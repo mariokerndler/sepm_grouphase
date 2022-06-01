@@ -54,7 +54,7 @@ public class CommissionServiceImpl implements CommissionService {
     public void saveCommission(Commission c) {
         LOGGER.info("Save commission " + c);
 
-        commissionValidator.checkIfCommissionAlreadyExists(c);
+        commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
 
         //TODO: writeReference in imageFileManager
 
@@ -73,7 +73,7 @@ public class CommissionServiceImpl implements CommissionService {
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
 
-        commissionValidator.checkIfCommissionExists(c);
+        commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
 
         this.commissionRepo.save(c);
     }

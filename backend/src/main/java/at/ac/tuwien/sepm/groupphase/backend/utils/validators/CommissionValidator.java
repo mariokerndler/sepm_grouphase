@@ -17,7 +17,7 @@ public class CommissionValidator {
         this.commissionRepository = commissionRepository;
     }
 
-    public void checkIfCommissionAlreadyExists(Commission commission) {
+    public void throwExceptionIfCommissionAlreadyExists(Commission commission) {
         Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
 
         if (commission1.isPresent()) {
@@ -25,10 +25,10 @@ public class CommissionValidator {
         }
     }
 
-    public void checkIfCommissionExists(Commission commission) {
+    public void throwExceptionIfCommissionDoesNotExist(Commission commission) {
         Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
 
-        if (commission1.isPresent()) {
+        if (!commission1.isPresent()) {
             throw new NotFoundException(String.format("There is no Commission with id %s", commission.getId()));
         }
     }

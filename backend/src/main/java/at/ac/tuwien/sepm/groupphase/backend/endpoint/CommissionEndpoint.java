@@ -58,7 +58,7 @@ public class CommissionEndpoint {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post commission")
     public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
-        LOGGER.info("Post commission " + commissionDto);
+        LOGGER.info("Post commission " + commissionDto.toString());
         try {
             commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception v) {

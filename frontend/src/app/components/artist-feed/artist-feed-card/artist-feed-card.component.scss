@@ -35,7 +35,7 @@
 
 .artist-feed-card-image-description-layer {
   position: absolute;
-  top: 0;
+  top: 90%;
   bottom: 0;
   left: 0;
   right: 0;
@@ -48,17 +48,17 @@
   justify-content: center;
 
   /* transition effect. not necessary */
-  transition: opacity .2s, visibility .2s;
+  transition: opacity 1.4s, visibility 1.8s;
 }
 
 
 .artist-feed-card-image-wrap:hover .artist-feed-card-image-description-layer {
   visibility: visible;
-  opacity: 1;
+  opacity: 0.7;
 }
 
 .artist-feed-card-image-description {
-  transition: .2s;
+  transition: 2s;
   transform: translateY(1em);
   font-size: 1rem;
   text-align: center;

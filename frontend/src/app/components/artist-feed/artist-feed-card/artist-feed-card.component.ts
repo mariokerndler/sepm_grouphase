@@ -1,15 +1,17 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {ArtworkDto} from '../../../dtos/artworkDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {Globals} from '../../../global/globals';
 import {Router} from '@angular/router';
+import {GlobalFunctions} from '../../../global/globalFunctions';
 
 @Component({
   selector: 'app-artist-feed-card',
   templateUrl: './artist-feed-card.component.html',
-  styleUrls: ['./artist-feed-card.component.scss']
+  styleUrls: ['./artist-feed-card.component.scss'],
+
 })
 export class ArtistFeedCardComponent implements OnInit {
 
@@ -24,6 +26,7 @@ export class ArtistFeedCardComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     public globals: Globals,
+    public globalsFunctions: GlobalFunctions,
     {nativeElement}: ElementRef<HTMLImageElement>
   ) {
     const supports = 'loading' in HTMLImageElement.prototype;

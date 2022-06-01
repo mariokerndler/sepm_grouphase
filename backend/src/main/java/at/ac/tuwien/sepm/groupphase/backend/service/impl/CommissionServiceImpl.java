@@ -24,6 +24,7 @@ public class CommissionServiceImpl implements CommissionService {
     private final CommissionRepository commissionRepo;
     private final CommissionValidator commissionValidator;
     private final ImageFileManager ifm;
+    private int tmpUrlCount;
 
     @Autowired
     public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm) {
@@ -61,7 +62,9 @@ public class CommissionServiceImpl implements CommissionService {
         if (c.getReferences() != null) {
             List<Reference> references = c.getReferences();
             for (Reference r : references) {
-                 r.setImageUrl(this.ifm.writeReferenceImage(c,r));
+                // Todo: This is temporary until issue #89 has been solved
+                //r.setImageUrl(this.ifm.writeReferenceImage(c,r));
+                r.setImageUrl("url " + tmpUrlCount++);
             }
         }
 

@@ -88,4 +88,12 @@ public interface UserService extends UserDetailsService {
      * @param password the new password of the given user.
      */
     void changeUserPassword(ApplicationUser user, String password);
+
+    /**
+     * This method deletes the user with the specified id, if there is a user with this id saved in the database.
+     *
+     * @param id: the id of the user to be deleted
+     */
+    void deleteUserById(Long id);
+
 }

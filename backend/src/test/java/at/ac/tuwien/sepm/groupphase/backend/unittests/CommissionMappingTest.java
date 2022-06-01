@@ -92,6 +92,7 @@ public class CommissionMappingTest {
         this.commission = Commission.builder()
             .artist(artist)
             .customer(user)
+            .title("Cowboy Snail")
             .sketchesShown(3)
             .feedbackSent(0)
             .price(2000.45)
@@ -171,6 +172,7 @@ public class CommissionMappingTest {
             2000.45,
             LocalDateTime.now(),
             LocalDateTime.now().plusHours(24),
+            "Commission Title",
             "please draw me a small green snail with a cowboy's hat",
             null,
             null,

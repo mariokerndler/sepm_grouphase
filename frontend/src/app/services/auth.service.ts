@@ -51,6 +51,7 @@ export class AuthService {
       .pipe(
         catchError(this.notificationService.notifyUserAboutFailedOperation('Login')),
         tap((authResponse: string) => {
+          console.log(authResponse);
           AuthService.setToken(authResponse);
           AuthService.setUserId(authorizedUser.id);
         })

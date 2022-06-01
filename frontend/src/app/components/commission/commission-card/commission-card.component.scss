@@ -15,12 +15,11 @@
   border-radius: 5%;
   margin: 0.5rem;
   transition: all 0.5s;
-  width: 220px;
+  width: 230px;
   height: 300px;
 }
 
 .commission:hover {
-  border: none;
   border: 4px #fb9fa4 solid;
   background: #fb9fa4;
   color:#434F6A;
@@ -32,9 +31,15 @@
 mat-card-title {
   font-size: 1rem;
   text-align: center;
+  height: 22px;
+}
+
+.mat-card-content {
+  height: 180px;
 }
 
 mat-card-actions {
   text-align: center;
 }
+
 

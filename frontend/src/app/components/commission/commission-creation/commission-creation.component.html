@@ -52,9 +52,9 @@
         <div class="container" id="container">
           <div class="content">
             <div class="card-img-wrap">
-              <div *ngIf="this.commission.references" _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(400px, 1fr))" gdgap="10px"
+              <div *ngIf="this.commission.referencesDtos" _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(400px, 1fr))" gdgap="10px"
                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px;">
-                <div  *ngFor="let ref of this.commission.references; let i= index"
+                <div  *ngFor="let ref of this.commission.referencesDtos; let i= index"
                      class="image">
                   <div>
               <button mat-flat-button (click)="removeReference(i)"><mat-icon>delete</mat-icon></button>

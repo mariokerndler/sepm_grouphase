@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidOldPasswordException;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
@@ -105,5 +106,26 @@ public class UserEndpoint {
         Specification<ApplicationUser> spec = builder.build();
 
         return userService.searchUser(spec).stream().map(userMapper::userToUserDto).collect(Collectors.toList());
+    }
+
+
+    @PermitAll
+    @PostMapping("/{id}/updatePassword")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update user password")
+    @Transactional
+    public void updateUserPassword(@PathVariable Long id,
+                                   @RequestParam("password") String password,
+                                   @RequestParam("oldPassword") String oldPassword) {
+        log.debug("Post /User/{}/updatePassword", id);
+
+        ApplicationUser applicationUser = userService.findUserById(id);
+        log.info(applicationUser.getUserName());
+
+        if (!userService.checkIfValidOldPassword(applicationUser, oldPassword.trim())) {
+            throw new InvalidOldPasswordException("Old password: '" + oldPassword.trim() + "' does not match with current password.");
+        }
+
+        userService.changeUserPassword(applicationUser, password);
     }
 }

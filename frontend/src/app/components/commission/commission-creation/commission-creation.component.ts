@@ -12,6 +12,8 @@ import {FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 
 import {ReferenceDto} from '../../../dtos/referenceDto';
+import {CommissionService} from '../../../services/commission.service';
+import {UserRole} from '../../../dtos/artistDto';
 
 
 @Component({
@@ -20,8 +22,6 @@ import {ReferenceDto} from '../../../dtos/referenceDto';
   styleUrls: ['./commission-creation.component.scss']
 })
 export class CommissionCreationComponent implements OnInit {
-  isLinear = false;
-
   selectedImage;
   previewImages: any[]=[];
   selectedReferences = [];
@@ -36,25 +36,32 @@ export class CommissionCreationComponent implements OnInit {
   secondFormGroup: FormGroup;
   stepperOrientation: Observable<StepperOrientation>;
   commission: CommissionDto = {
-    artistId: 0,
-    comArtworkId: 0,
-    description: '',
-    endDate: undefined,
-    feedback: [],
+    artistDto: undefined,
+    customerDto: {
+      id:1,
+      userName: 'admin',
+      name: '',
+      surname: '',
+      email: '',
+      address: '',
+      password: 'string',
+      admin: true,
+      userRole:  UserRole.admin
+    },
+    deadlineDate: '',
     feedbackSend: 0,
     id: 0,
+    instructions: '',
+    issueDate: '',
     price: 0,
-    referenceImageIds: [],
-    references: [],
+    referencesDtos: [],
     sketchesShown: 0,
-    startDate: undefined,
-    title: '',
-    userId: 0
+    title: ''
   };
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
               private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
-              public globalFunctions: GlobalFunctions) {
+              public globalFunctions: GlobalFunctions, private commissionService: CommissionService) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
@@ -104,7 +111,7 @@ export class CommissionCreationComponent implements OnInit {
             r.name = ref.name;
             r.fileType=filetype;
             console.log(r);
-            this.commission.references.push(r);
+            this.commission.referencesDtos.push(r);
           };
         });
 
@@ -116,13 +123,17 @@ export class CommissionCreationComponent implements OnInit {
   submitCommission() {
     console.log(this.commissionForm.value.references);
     this.commission.title=this.commissionForm.value.title;
-    this.commission.description=this.commissionForm.value.description;
+    this.commission.instructions=this.commissionForm.value.description;
     this.commission.price=this.commissionForm.value.price;
-    this.commission.endDate=this.commissionForm.value.date;
+    this.commission.deadlineDate=this.commissionForm.value.date+' 01:01:01';
+    console.log(this.commission);
+
+    this.commissionService.createCommission(this.commission).subscribe({
+    });
   }
 
   removeReference(i) {
-    this.commission.references.splice(i,1);
+    this.commission.referencesDtos.splice(i,1);
     this.commissionForm.value.references.remove(i);
 
   }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 import {newArray} from '@angular/compiler/src/util';
@@ -6,10 +6,12 @@ import {ArtworkService} from '../../../services/artwork.service';
 import {ArtworkDto} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 
+
 @Component({
   selector: 'app-artist-information',
   templateUrl: './artist-information.component.html',
-  styleUrls: ['./artist-information.component.scss']
+  styleUrls: ['./artist-information.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ArtistInformationComponent implements OnInit {
 
@@ -18,6 +20,7 @@ export class ArtistInformationComponent implements OnInit {
   profileSettings: ArtistProfileSettings;
   artworks: ArtworkDto[];
   isReady = false;
+  public selectedArtwork: number = null;
 
 
 
@@ -34,6 +37,11 @@ export class ArtistInformationComponent implements OnInit {
     }
     this.fetchArtworksFromUser(this.artist.id);
 
+  }
+
+  setSelectedArtwork(i: number) {
+    this.selectedArtwork = i;
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
   switchTab(index) {

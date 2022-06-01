@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Transactional
 @Slf4j
 @RestController
 @RequestMapping(value = "api/v1/artworks")

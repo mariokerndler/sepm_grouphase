@@ -2,7 +2,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {ArtistDto, UserRole} from '../../../dtos/artistDto';
-import {Subscription} from 'rxjs';
+import {map, Observable, startWith, Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {LayoutComponent} from './layoutComponent';
@@ -18,6 +18,7 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 import {AuthService} from '../../../services/auth.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {UserService} from '../../../services/user.service';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -57,6 +58,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagForm = new FormControl();
   allTags: TagDto[] = [];
+  filteredTags: Observable<TagDto[]>;
 
   private routeSubscription: Subscription;
   private tempArtistUrl = 'https://picsum.photos/150/150';
@@ -74,6 +76,11 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     private authService: AuthService
   ) {
     this.fillFormValidators();
+
+    this.filteredTags = this.tagForm.valueChanges.pipe(
+      startWith(null),
+      map((tag: TagDto | null) => (tag ? this.filterTags(tag) : this.allTags.slice()))
+    );
   }
 
   private static updateArtist(
@@ -83,7 +90,8 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     surname?: string,
     email?: string,
     address?: string,
-    profileSettings?: string
+    profileSettings?: string,
+    description?: string
   ): ArtistDto {
     const updatedArtist: ArtistDto = oldArtist;
 
@@ -109,6 +117,10 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
 
     if (profileSettings) {
       updatedArtist.profileSettings = profileSettings.valueOf().replace(/"/g, '\'');
+    }
+
+    if(description) {
+      updatedArtist.description = description;
     }
 
     return updatedArtist;
@@ -172,6 +184,9 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
                 if (this.artist.profileSettings) {
                   this.artist.profileSettings = this.artist.profileSettings.replace(/'/g, '\"');
                 }
+
+                this.setFormValues();
+                this.isReady = true;
               });
           }
 
@@ -210,6 +225,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     const username = this.editForm.controls.username.value;
     const email = this.editForm.controls.email.value;
     const address = this.editForm.controls.address.value;
+    const description = this.editForm.controls.description.value;
 
     // TODO: Description is missing
 
@@ -220,7 +236,10 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
         name,
         surname,
         email,
-        address)
+        address,
+        null,
+        description
+        )
       ).subscribe();
     } else {
       this.userService.updateUser(ArtistPageEditComponent.updateUser(
@@ -241,6 +260,10 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const confirmPassword = this.passwordForm.controls.confirm.value;
 
       // TODO: Update password for user and artist
+      if(this.isArtist) {
+        console.log(this.artist.password);
+      }
+
       console.log(oldPassword + ' ' + newPassword + ' ' + confirmPassword);
     }
   }
@@ -271,8 +294,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       if (headerColor) {
         artistProfileSetting.headerColor = headerColor;
       }
-
-      console.log(artistProfileSetting);
 
       this.artistService.updateArtist(ArtistPageEditComponent.updateArtist(
         this.artist,
@@ -361,6 +382,39 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     this.selectedComponent.tags.push(value);
     this.tagInput.nativeElement.value = '';
     this.tagForm.setValue(null);
+  }
+
+  /**
+   * Add a tag via text input
+   *
+   * @param event Add a tag via text input
+   */
+  addTag(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if(value) {
+      // Find tag
+      const result = this.allTags.filter(tag => tag.name.includes(value));
+      if(result.length !== 0) {
+        return;
+      } else {
+       this.selectedComponent.tags.push(result[0]);
+      }
+    }
+
+    event.chipInput?.clear();
+
+    this.tagForm.setValue(null);
+  }
+
+  private filterTags(value: TagDto): TagDto[] {
+    let filterValue;
+    if(typeof value == 'string') {
+      filterValue = String(value).toLowerCase();
+    } else {
+      filterValue = value.name.toLowerCase();
+    }
+
+    return this.allTags.filter(tag => tag.name.toLowerCase().includes(filterValue));
   }
 
   private navigateToArtistList() {

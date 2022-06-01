@@ -73,4 +73,19 @@ public interface UserService extends UserDetailsService {
      */
     List<ApplicationUser> searchUser(Specification<ApplicationUser> spec);
 
+    /**
+     * This method returns true/false if the old password is equal to the user's password.
+     *
+     * @param user: the user, which password will be checked
+     * @param oldPassword: the old password which will be compared to
+     * @return returns true if the password matches, false if not.
+     */
+    boolean checkIfValidOldPassword(ApplicationUser user, String oldPassword);
+
+    /**
+     * Change the password of the given user.
+     * @param user the user, which password will be updated.
+     * @param password the new password of the given user.
+     */
+    void changeUserPassword(ApplicationUser user, String password);
 }

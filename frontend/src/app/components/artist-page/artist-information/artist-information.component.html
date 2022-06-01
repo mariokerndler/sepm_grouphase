@@ -1,31 +1,36 @@
 <div>
-  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-        class="accent-color artist-about-header">About</span>
+  <span class="accent-color artist-about-header">About</span>
   <p class="accent-color artist-about-description">
     {{artist.description}}
   </p>
 </div>
 <br>
 <div>
-  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-        class="accent-color artist-about-header">Gallery</span>
+  <span class="accent-color artist-about-header">Gallery</span>
   <div fxFlex fxLayout fxLayoutAlign="end">
     <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
   </div>
 </div>
-<div *ngIf="isReady" fxLayout="row wrap"  class="content" fxLayoutAlign="start" fxLayoutGap="8px grid">
-    <div *ngFor="let artwork of artworks" class="image-container">
-      <img (click)="switchTab(1)" [src]="'assets/' + artwork.imageUrl" alt="{{artwork.name}}" class="gallery-pictures">
+
+<div *ngIf="isReady" class="scrolling-container">
+  <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{artworks.length}}" class="viewport">
+    <div *ngFor="let artwork of artworks, let i = index" class="image-container">
+      <img (click)="setSelectedArtwork(i)" [src]="'assets/' + artwork.imageUrl" alt="{{artwork.name}}" class="gallery-pictures">
     </div>
+  </cdk-virtual-scroll-viewport>
 </div>
+<app-gallery-carousel
+  (closeCarousel)="selectedArtwork=null"
+  *ngIf="selectedArtwork!== null"
+  [artworks]="artworks"
+  [selectedArtworkId]="selectedArtwork">
+</app-gallery-carousel>
 <br><br>
 <div>
-  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-        class="accent-color artist-about-header">Reviews</span>
+  <span class="accent-color artist-about-header">Reviews</span>
   <div fxFlex fxLayout fxLayoutAlign="end">
     <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
   </div>
   <p class="accent-color artist-about-description">
-    {{artist.description}}
   </p>
 </div>

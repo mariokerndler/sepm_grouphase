@@ -233,9 +233,10 @@
         [formControl]="tagForm"
         [matAutocomplete]="auto"
         [matChipInputFor]="tagList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addTag($event)">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
-        <mat-option *ngFor="let tag of allTags" [value]="tag">
+        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
           {{tag.name}}
         </mat-option>
       </mat-autocomplete>

@@ -47,7 +47,10 @@ public class Commission implements HasId {
     @Column(name = "deadline_date")
     private LocalDateTime deadlineDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
+    private String title;
+
+    @Column(nullable = false , length = 512)
     private String instructions;
 
     @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)
@@ -69,6 +72,7 @@ public class Commission implements HasId {
                       double price,
                       LocalDateTime issueDate,
                       LocalDateTime deadlineDate,
+                      String title,
                       String instructions,
                       List<Reference> references,
                       List<Receipt> receipts,
@@ -81,6 +85,7 @@ public class Commission implements HasId {
         this.price = price;
         this.issueDate = issueDate;
         this.deadlineDate = deadlineDate;
+        this.title = title;
         this.instructions = instructions;
         this.references = references;
         this.receipts = receipts;
@@ -99,6 +104,7 @@ public class Commission implements HasId {
             + ", price=" + price
             + ", issueDate=" + issueDate
             + ", deadlineDate=" + deadlineDate
+            + ", title=" + title
             + ", instructions='" + instructions + '\''
             + (receipts == null ? "" : ", receipts=" + receipts.stream().map(Receipt::getId).toList())
             + (review == null ? "" : ", review=" + review.getId())

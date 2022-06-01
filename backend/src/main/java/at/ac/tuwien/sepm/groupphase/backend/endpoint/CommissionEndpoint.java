@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
-import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @RestController
-@RequestMapping("/api/v1/commissions")
+@RequestMapping("api/v1/commissions")
 public class CommissionEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -57,7 +57,7 @@ public class CommissionEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post commission")
-    public void postCommission(@Valid @RequestBody DetailedCommissionDto commissionDto) {
+    public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Post commission " + commissionDto);
         try {
             commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
@@ -73,7 +73,7 @@ public class CommissionEndpoint {
     @PutMapping
     @Operation(summary = "Update commission")
     @Transactional
-    public void updateCommission(@Valid @RequestBody DetailedCommissionDto commissionDto) {
+    public void updateCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Update commission " + commissionDto);
         try {
             commissionService.updateCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
@@ -88,7 +88,7 @@ public class CommissionEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
     @Operation(summary = "Delete commission")
-    public void deleteCommission(@Valid @RequestBody DetailedCommissionDto commissionDto) {
+    public void deleteCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Delete commission " + commissionDto);
         try {
             commissionService.deleteCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));

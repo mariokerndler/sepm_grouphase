@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ArtistService {
@@ -35,7 +36,7 @@ public interface ArtistService {
      *
      * @param artist: the artist being updated
      */
-    void updateArtist(Artist artist);
+    void updateArtist(Artist artist) throws IOException;
 
     //TODO: delete artist
 }

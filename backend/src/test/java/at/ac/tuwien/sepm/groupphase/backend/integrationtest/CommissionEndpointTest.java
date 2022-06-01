@@ -4,13 +4,11 @@ package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleCommissionDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
-import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,6 +69,9 @@ public class CommissionEndpointTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CommissionMapper commissionMapper;
 
     @BeforeEach
     public void beforeEach() {
@@ -136,7 +137,7 @@ public class CommissionEndpointTest {
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson2 = ow2.writeValueAsString(commission);
+        String requestJson2 = ow2.writeValueAsString(commissionMapper.commissionToDetailedCommissionDto(commission));
 
         mockMvc.perform(post("/api/v1/commissions").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))

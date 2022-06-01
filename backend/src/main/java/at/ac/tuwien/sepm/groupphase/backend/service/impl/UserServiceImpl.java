@@ -9,14 +9,18 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(ApplicationUser user) {
-        log.debug("Service: Update User ", user.toString());
+        log.debug("Service: Update User {}", user.toString());
         userValidator.validateUser(user);
         userRepo.save(user);
 
@@ -87,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(ApplicationUser user) {
-        log.debug("Service: Register User ", user.toString());
+        log.debug("Service: Register User {}", user.toString());
         userValidator.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
@@ -101,5 +105,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ApplicationUser> getAllUsers() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public boolean checkIfValidOldPassword(ApplicationUser user, String oldPassword) {
+        log.debug("Service: CheckIfValidOldPassword User {}, Password {}", user.toString(), oldPassword);
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    @Override
+    public void changeUserPassword(ApplicationUser user, String password) {
+        log.debug("Service: changeUserPassword User {}, Password{}", user.toString(), password);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepo.save(user);
     }
 }

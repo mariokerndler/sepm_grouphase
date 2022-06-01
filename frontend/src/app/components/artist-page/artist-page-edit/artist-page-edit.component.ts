@@ -260,6 +260,10 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const confirmPassword = this.passwordForm.controls.confirm.value;
 
       // TODO: Update password for user and artist
+      if(this.isArtist) {
+        console.log(this.artist.password);
+      }
+
       console.log(oldPassword + ' ' + newPassword + ' ' + confirmPassword);
     }
   }
@@ -380,6 +384,11 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     this.tagForm.setValue(null);
   }
 
+  /**
+   * Add a tag via text input
+   *
+   * @param event Add a tag via text input
+   */
   addTag(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if(value) {

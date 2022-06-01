@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.exceptionhandler;
 
 import at.ac.tuwien.sepm.groupphase.backend.exception.FileManagerException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidOldPasswordException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleFileManagerException(RuntimeException ex, WebRequest request) {
         log.warn(ex.getMessage());
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler(value = {InvalidOldPasswordException.class})
+    protected ResponseEntity<Object> handleOldPasswordException(InvalidOldPasswordException ex, WebRequest request) {
+        log.warn(ex.getMessage());
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})

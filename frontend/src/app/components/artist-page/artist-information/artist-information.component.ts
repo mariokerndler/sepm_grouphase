@@ -34,6 +34,7 @@ export class ArtistInformationComponent implements OnInit {
   ngOnInit(): void {
     if (this.artist.profileSettings) {
       this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
+      console.log(this.profileSettings);
     }
     this.fetchArtworksFromUser(this.artist.id);
 

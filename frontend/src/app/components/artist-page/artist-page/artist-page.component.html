@@ -38,19 +38,20 @@
     </div>
   </div>
 
-  <div *ngIf="canEdit" class="edit-button">
+  <div  class="edit-button">
     <button (click)="navigateToEdit()" color="accent" mat-button>
       <mat-icon color="accent">edit</mat-icon>
       <span class="edit-text">Edit your page</span>
     </button>
   </div>
-
+<!--
   <div *ngIf="!canEdit" class="edit-button">
     <button (click)="goBack()" color="accent" mat-button>
       <mat-icon color="accent">arrow_back</mat-icon>
       <span class="edit-text">Go Back</span>
     </button>
   </div>
+  -->
 </div>
 
 

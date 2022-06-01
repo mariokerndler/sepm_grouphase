@@ -83,7 +83,7 @@ public class Artist extends ApplicationUser implements HasId {
         this.tags = tags;
     }
 
-    public Artist(Long id,String userName, String name, String surname, String email, String address, String password,
+    public Artist(Long id, String userName, String name, String surname, String email, String address, String password,
                   Boolean admin, UserRole userRole, ProfilePicture profilePicture, String description, String profileSettings, double reviewScore,
                   Gallery gallery, List<Artwork> artworks, List<Commission> commissions, List<Review> reviews, List<Tag> tags) {
         super(id, userName, name, surname, email, address, password, admin, userRole);

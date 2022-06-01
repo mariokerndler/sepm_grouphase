@@ -1,9 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.basetest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

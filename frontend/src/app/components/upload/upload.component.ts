@@ -2,9 +2,11 @@ import {Component, Inject, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ArtworkDto, FileType} from '../../dtos/artworkDto';
 import {ArtworkService} from '../../services/artwork.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {ArtistDto} from '../../dtos/artistDto';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {take} from 'rxjs';
+import {NotificationService} from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-upload',
@@ -19,12 +21,15 @@ export class UploadComponent implements OnInit {
   selectedImage;
 
 
+
+
   constructor(
     private artworkService: ArtworkService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<UploadComponent>,
-    private _ngZone: NgZone) {
+    private _ngZone: NgZone,
+    private notificationService: NotificationService) {
     this.uploadForm = this.formBuilder.group({
       artworkName: ['', [Validators.required]],
       description: [''],
@@ -40,7 +45,6 @@ export class UploadComponent implements OnInit {
 
   onFileChanged() {
     if (this.file.target.files && this.file.target.files[0]) {
-
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const image = new Image();
@@ -51,7 +55,7 @@ export class UploadComponent implements OnInit {
       };
       reader.readAsDataURL(this.file.target.files[0]);
       reader.onload = () => {
-        if (this.uploadForm.valid) {
+        if(this.uploadForm.valid) {
           const base64result = reader.result.toString().split(',')[1];
           const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
           let filetype = FileType.jpg;
@@ -71,13 +75,13 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  uploadNewImage(name, description, imageData, filetype) {
-    const artwork = {
-      name, description, imageData,
-      imageUrl: '', fileType: filetype, artistId: this.data.artist.id
-    } as ArtworkDto;
-    this.artworkService.createArtwork(artwork).subscribe();
+  uploadNewImage(name, description, imageData, filetype){
+    const artwork = {name, description, imageData,
+      imageUrl:'', fileType: filetype, artistId:this.data.artist.id} as ArtworkDto;
+    this.artworkService.createArtwork(artwork, null,
+      () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new image')).subscribe();
   }
+
 
 
   base64ToBinaryArray(base64: string) {
@@ -96,11 +100,9 @@ export class UploadComponent implements OnInit {
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
-  fileSelected(files: any[]) {
-    this.file = files[0];
-    if (this.file.target.files && this.file.target.files[0]) {
-      console.log(files.length);
-
+  fileSelected(file: any){
+    this.file = file;
+    if (file.target.files && file.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const image = new Image();
@@ -109,9 +111,10 @@ export class UploadComponent implements OnInit {
           this.selectedImage = e.target.result;
         };
       };
-      reader.readAsDataURL(this.file.target.files[0]);
+      reader.readAsDataURL(file.target.files[0]);
     }
   }
+
 
 
 }

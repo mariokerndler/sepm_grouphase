@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -108,10 +109,10 @@ public class ImageFileManager {
     public String writeArtistImage(Artwork a) {
 
         try (
-            FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName())) {
+            FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName()+ '.' + a.getFileType().toString().toLowerCase(Locale.ROOT))) {
             outputStream.write(a.getImageData());
 
-            return ImageDataPaths.artistProfilePictureLocation + "/" + a.getName();
+            return ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName() + '.' + a.getFileType().toString().toLowerCase(Locale.ROOT);
             //return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
             log.info(e.getMessage());

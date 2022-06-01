@@ -12,6 +12,7 @@ import {FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 
 import {ReferenceDto} from '../../../dtos/referenceDto';
+import {CommissionService} from '../../../services/commission.service';
 
 
 @Component({
@@ -51,7 +52,7 @@ export class CommissionCreationComponent implements OnInit {
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
               private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
-              public globalFunctions: GlobalFunctions) {
+              public globalFunctions: GlobalFunctions, private commissionService: CommissionService) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
@@ -116,6 +117,8 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.instructions=this.commissionForm.value.description;
     this.commission.price=this.commissionForm.value.price;
     this.commission.deadlineDate=this.commissionForm.value.date;
+
+    this.commissionService.createCommission(this.commission).subscribe();
   }
 
   removeReference(i) {

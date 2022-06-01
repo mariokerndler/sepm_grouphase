@@ -1,17 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.sepm.groupphase.backend.basetest.GetImageByteArray;
-import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
-import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,8 +37,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,34 +68,20 @@ public class ArtworkEndpointTest {
     private ArtworkMapper artworkMapper;
 
     @Autowired
-    private JwtTokenizer jwtTokenizer;
-
-    @Autowired
-    private SecurityProperties securityProperties;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Artist artist;
-
-    private Artwork artwork;
-
     public Artist getTestArtist1() {
-        return artist = new Artist("testArtist", "bob", "test", "test@test.com", "test", passwordEncoder.encode("test")
+        return new Artist("testArtist", "bob", "test", "test@test.com", "test", passwordEncoder.encode("test")
             , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
     }
 
     public Artist getTestArtist2() {
-        return artist = new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
-            , false, UserRole.Artist, null, "TestDescription", null, 2.0, null, null, null, null, null);
+        return new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
+            , false, UserRole.Artist, null, "TestDescription",null, 2.0, null, null, null, null, null);
     }
 
     public Artwork getArtwork(Long id, byte[] content) {
-        return artwork = new Artwork("artwork1", "okaydogpls", null, FileType.PNG, getArtistById(id), null, null, content);
-    }
-
-    public Artwork getArtwork1(Long id, byte[] content) {
-        return artwork = new Artwork("artwork2", "okayNoNature", null, FileType.PNG, getArtistById(id), null, null, content);
+        return new Artwork("artwork1", "okaydogpls", null, FileType.PNG, getArtistById(id), null, null, content);
     }
 
     public Artist getArtistById(Long id) {
@@ -132,20 +113,18 @@ public class ArtworkEndpointTest {
     @Test
     @Transactional
     @WithMockUser
-    public void addArtistAndAddArtworksThenDeleteOneArtwork() throws Exception {
+    public void addArtistAndAddArtworks_getArtworkAndFindOwner_ThenDeleteOneArtwork() throws Exception {
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
-
-        byte[] image1 = GetImageByteArray.getImageBytes("https://i.ibb.co/7yHp276/image1.jpg");
 
         ApplicationUser anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(anObject);
+        String requestJson = ow.writeValueAsString(anObject );
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
@@ -158,20 +137,19 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
         List<ArtistDto> artists2 = allArtists();
         assertEquals(2, artists2.size());
 
-        assertThat(artists2.contains("bob"));
-        assertThat(artists2.contains("bobby"));
-        assertThat(artists2.contains("test2@test.com"));
-        assertThat(artists2.contains("testStraße 2"));
-        assertThat(artists2.contains("testArtist2"));
-        assertThat(artists2.contains("description"));
-        assertThat(artists2.contains(2.0));
+        assertTrue(artists2.toString().contains("bob"));
+        assertTrue(artists2.toString().contains("bobby"));
+        assertTrue(artists2.toString().contains("test2@test.com"));
+        assertTrue(artists2.toString().contains("testStraße 2"));
+        assertTrue(artists2.toString().contains("testArtist2"));
+        assertTrue(artists2.toString().contains("2.0"));
 
-        Long artistIdForArtwork = artists2.get(0).getId();
+        Long artistIdForArtwork = artists.get(0).getId();
 
         Artwork anArtwork = getArtwork(artistIdForArtwork, image);
         ArtworkDto aDto = artworkMapper.artworkToArtworkDto(anArtwork);
@@ -181,21 +159,17 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
-        /*Artwork anotherArtwork = getArtwork1(artistIdForArtwork, image1);
-        ArtworkDto anotherDto = artworkMapper.artworkToArtworkDto(anotherArtwork);
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow4 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson4 = ow4.writeValueAsString(anotherDto);
-
-
-        mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson4))
-            .andExpect(status().isOk()).andReturn();*/
 
         mockMvc.perform(get("/api/v1/artworks/" + artistIdForArtwork).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andReturn();
+
+        List<ArtworkDto> artworks = allArtworksByArtist(artistIdForArtwork);
+        assertEquals(1, artworks.size());
+
+        assertTrue(artworks.toString().contains("okaydogpls"));
+        assertTrue(artworks.toString().contains("artwork1"));
 
         List<ArtworkDto> artworkDtos = allArtworksByArtist(artistIdForArtwork);
         ArtworkDto anotherDto1 = artworkDtos.get(0);
@@ -206,6 +180,9 @@ public class ArtworkEndpointTest {
         mockMvc.perform(delete("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson5))
             .andExpect(status().isOk()).andReturn();
+
+        List<ArtworkDto> artworks1 = allArtworksByArtist(artistIdForArtwork);
+        assertEquals(0, artworks1.size());
 
     }
 

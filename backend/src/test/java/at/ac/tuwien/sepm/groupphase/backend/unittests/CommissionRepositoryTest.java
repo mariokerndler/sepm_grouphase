@@ -78,6 +78,7 @@ public class CommissionRepositoryTest {
             .price(300)
             .issueDate(LocalDateTime.now())
             .deadlineDate(LocalDateTime.now().plusDays(20))
+            .title("A title for a commission")
             .instructions("do the thing")
             .build();
 
@@ -126,6 +127,7 @@ public class CommissionRepositoryTest {
             .price(300)
             .issueDate(LocalDateTime.now())
             .deadlineDate(LocalDateTime.now().plusWeeks(18))
+            .title("A Statue")
             .instructions("make me a statue")
             .build();
 
@@ -182,6 +184,7 @@ public class CommissionRepositoryTest {
             .price(8000)
             .issueDate(LocalDateTime.now())
             .deadlineDate(LocalDateTime.now().plusWeeks(12))
+            .title("I want to be a french woman")
             .instructions("draw me like one of your french girls")
             .build();
 

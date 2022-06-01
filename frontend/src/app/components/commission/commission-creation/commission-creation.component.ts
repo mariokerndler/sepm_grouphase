@@ -14,6 +14,7 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 import {ReferenceDto} from '../../../dtos/referenceDto';
 import {CommissionService} from '../../../services/commission.service';
 import {UserRole} from '../../../dtos/artistDto';
+import {formatDate} from '@angular/common';
 
 
 @Component({
@@ -50,7 +51,7 @@ export class CommissionCreationComponent implements OnInit {
     },
     deadlineDate: '',
     feedbackSend: 0,
-    id: 0,
+    id: null,
     instructions: '',
     issueDate: '',
     price: 0,
@@ -125,6 +126,7 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.title=this.commissionForm.value.title;
     this.commission.instructions=this.commissionForm.value.description;
     this.commission.price=this.commissionForm.value.price;
+    this.commission.issueDate = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en_US');
     this.commission.deadlineDate=this.commissionForm.value.date+' 01:01:01';
     console.log(this.commission);
 

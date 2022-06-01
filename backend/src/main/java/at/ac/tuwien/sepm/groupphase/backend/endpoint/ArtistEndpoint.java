@@ -60,7 +60,7 @@ public class ArtistEndpoint {
     }
 
     @PermitAll
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     @Operation(summary = "Post new artist")
     @Transactional

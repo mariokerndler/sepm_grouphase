@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,6 @@ public class CommissionServiceImpl implements CommissionService {
     private final CommissionRepository commissionRepo;
     private final CommissionValidator commissionValidator;
     private final ImageFileManager ifm;
-    private int tmpUrlCount;
 
     @Autowired
     public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm) {
@@ -52,23 +52,23 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Override
-    public void saveCommission(Commission c) {
+    public void saveCommission(Commission c) throws IOException {
         LOGGER.info("Save commission " + c);
         if (c.getId() != null) {
             commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
         }
-        //TODO: writeReference in imageFileManager
 
+        this.ifm.createCommission(c);
         if (c.getReferences() != null) {
             List<Reference> references = c.getReferences();
             for (Reference r : references) {
-                // Todo: This is temporary until issue #89 has been solved
-                //r.setImageUrl(this.ifm.writeReferenceImage(c,r));
-                r.setImageUrl("url " + tmpUrlCount++);
+                r.setImageUrl(this.ifm.writeReferenceImage(c,r));
+
             }
         }
-
         this.commissionRepo.save(c);
+
+
 
     }
 
@@ -76,7 +76,7 @@ public class CommissionServiceImpl implements CommissionService {
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
 
-        commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
+        commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
 
         commissionRepo.save(c);
     }
@@ -84,20 +84,14 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void deleteCommission(Commission c) {
         LOGGER.info("Delete commission " + c);
-        //TODO: i want to delete the entire commission here (admin functionality) - including reference pictures, sketches and the finished artwork
+
+
         if (c.getArtwork() != null) {
             this.ifm.deleteArtistImage(c.getArtwork());
         }
         this.ifm.deleteCommission(c);
 
-        //TODO: deleteReference in imageFileManager
-        /*if (c.getReferences() != null) {
-            List<Reference> references = c.getReferences();
-            for (Reference r : references) {
 
-                //this.ifm.deleteReference(r);
-            }
-        }*/
         this.commissionRepo.deleteById(c.getId());
     }
 }

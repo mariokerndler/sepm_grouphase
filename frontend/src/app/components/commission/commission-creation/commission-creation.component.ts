@@ -32,6 +32,7 @@ export class CommissionCreationComponent implements OnInit {
     price: new FormControl(''),
     date: new FormControl(''),
     references: new FormControl(''),
+    feedbackRounds:  new FormControl('')
   });
   imageForm: FormGroup;
   secondFormGroup: FormGroup;
@@ -57,7 +58,8 @@ export class CommissionCreationComponent implements OnInit {
     price: 0,
     referencesDtos: [],
     sketchesShown: 0,
-    title: ''
+    title: '',
+    feedbackRounds:1
   };
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,

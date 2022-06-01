@@ -21,7 +21,6 @@ public class DetailedCommissionDto {
 
     private ArtistDto artistDto;
 
-
     @NotNull
     private ApplicationUserDto customerDto;
 

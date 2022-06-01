@@ -24,6 +24,7 @@ public class CommissionServiceImpl implements CommissionService {
     private final CommissionRepository commissionRepo;
     private final CommissionValidator commissionValidator;
     private final ImageFileManager ifm;
+    private int tmpUrlCount;
 
     @Autowired
     public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm) {
@@ -53,15 +54,17 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void saveCommission(Commission c) {
         LOGGER.info("Save commission " + c);
-
-        commissionValidator.checkIfCommissionAlreadyExists(c);
-
+        if (c.getId() != null) {
+            commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
+        }
         //TODO: writeReference in imageFileManager
 
         if (c.getReferences() != null) {
             List<Reference> references = c.getReferences();
             for (Reference r : references) {
-                 r.setImageUrl(this.ifm.writeReferenceImage(c,r));
+                // Todo: This is temporary until issue #89 has been solved
+                //r.setImageUrl(this.ifm.writeReferenceImage(c,r));
+                r.setImageUrl("url " + tmpUrlCount++);
             }
         }
 
@@ -73,9 +76,9 @@ public class CommissionServiceImpl implements CommissionService {
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
 
-        commissionValidator.checkIfCommissionExists(c);
+        commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
 
-        this.commissionRepo.save(c);
+        commissionRepo.save(c);
     }
 
     @Override

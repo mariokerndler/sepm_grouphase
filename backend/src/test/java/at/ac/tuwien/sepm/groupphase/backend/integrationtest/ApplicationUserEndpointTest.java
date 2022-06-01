@@ -35,8 +35,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -133,10 +132,10 @@ public class ApplicationUserEndpointTest {
         List<ApplicationUserDto> users2 = allUsers();
         assertEquals(2, users2.size());
 
-        assertThat(users2.contains("bob"));
-        assertThat(users2.contains("bobby"));
-        assertThat(users2.contains("test@atest.com"));
-        assertThat(users2.contains("testStraße 2"));
+        assertTrue(users2.toString().contains("bob"));
+        assertTrue(users2.toString().contains("bobby"));
+        assertTrue(users2.toString().contains("test@atest.com"));
+        assertTrue(users2.toString().contains("testStraße 2"));
 
         ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), "bobbyName", "aSecondTest",
             "testmodify@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
@@ -150,10 +149,8 @@ public class ApplicationUserEndpointTest {
 
         List<ApplicationUserDto> users3 = allUsers();
         assertEquals(2, users3.size());
-        assertThat(users3.contains("testmodify@atest.com"));
-        assertThat(!users3.contains("test2@atest.com"));
-
-
+        assertTrue(users3.toString().contains("testmodify@atest.com"));
+        assertTrue(!users3.toString().contains("test2@atest.com"));
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {

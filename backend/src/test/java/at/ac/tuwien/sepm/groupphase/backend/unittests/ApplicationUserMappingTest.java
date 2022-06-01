@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,8 +39,7 @@ public class ApplicationUserMappingTest {
 
     @Test
     public void givenNothing_whenMapDetailedApplicationUserDtoToEntity_thenEntityHasAllProperties() throws Exception {
-        ApplicationUser applicationUser = getApplicationUser();
-        ApplicationUserDto applicationUserDto = userMapper.userToUserDto(applicationUser);
+        ApplicationUserDto applicationUserDto = userMapper.userToUserDto(getApplicationUser());
 
         assertAll(
             () -> assertEquals(null, applicationUserDto.getId()),

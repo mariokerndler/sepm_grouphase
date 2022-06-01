@@ -33,15 +33,23 @@ public class ImageFileManager {
             }
         }
         public void createCommission (Commission c) throws IOException {
-            createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.commissionLocation+c.getId());
+            createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.commissionLocation+c.getCustomer().getId()+c.getTitle());
         }
 
-
+        public  int countFiles(String path){
+            if(new File(path).listFiles()==null){
+                return 0;
+            }
+            return new File(path).listFiles().length ;
+        }
 
         public  String writeReferenceImage(Commission c, Reference r){
-            String relPath=   ImageDataPaths.commissionLocation +    c.getId() + "\\" +ImageDataPaths.refIdentifier+r.getId() ;
+
+            String relPath=   ImageDataPaths.commissionLocation +    c.getCustomer().getId()+c.getTitle() ;
+            relPath+= "\\" +ImageDataPaths.refIdentifier+ countFiles(ImageDataPaths.assetAbsoluteLocation+relPath);
             try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation+relPath)) {
                 outputStream.write(r.getImageData());
+                    log.info(relPath);
                 return relPath;
             } catch (IOException e) {
                 log.info(e.getMessage());

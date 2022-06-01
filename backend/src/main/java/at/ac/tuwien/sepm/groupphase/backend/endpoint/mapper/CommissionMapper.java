@@ -3,8 +3,10 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class, ReferenceMapper.class, ReceiptMapper.class, ReviewMapper.class, ArtworkMapper.class})
 public abstract class CommissionMapper {
@@ -27,10 +29,16 @@ public abstract class CommissionMapper {
 
     @Mapping(source = "artistDto", target = "artist")
     @Mapping(source = "customerDto", target = "customer")
-    @Mapping(source = "referencesDtos", target = "references")
+    @Mapping(source = "referencesDtos", target = "references", qualifiedByName = "ReferenceWithoutCommissionId")
     @Mapping(source = "receiptsDtos", target = "receipts")
     @Mapping(source = "reviewDto", target = "review")
     @Mapping(source = "artworkDto", target = "artwork")
     public abstract Commission detailedCommissionDtoToCommission(DetailedCommissionDto detailedCommissionDto);
+
+    public void setCommissionForChildren(@MappingTarget Commission commission) {
+        for (Reference r : commission.getReferences()) {
+            r.setCommission(commission);
+        }
+    }
 
 }

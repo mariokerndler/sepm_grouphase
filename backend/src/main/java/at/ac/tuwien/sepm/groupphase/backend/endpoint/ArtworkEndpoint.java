@@ -150,7 +150,7 @@ public class ArtworkEndpoint {
 
     @PermitAll
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post artwork")
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());

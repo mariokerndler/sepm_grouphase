@@ -44,6 +44,10 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToProfile() {
+    if (this.authService.isLoggedIn()) {
+      this.userId = this.authService.getUserId();
+    }
+
     this.router.navigate(['/artist', this.userId])
       .catch(_ => this.notificationService.displayErrorSnackbar('Could not navigate to user page.'));
   }

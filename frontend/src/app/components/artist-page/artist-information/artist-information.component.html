@@ -1,14 +1,12 @@
 <div>
-  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-        class="accent-color artist-about-header">About</span>
+  <span class="accent-color artist-about-header">About</span>
   <p class="accent-color artist-about-description">
     {{artist.description}}
   </p>
 </div>
 <br>
 <div>
-  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-        class="accent-color artist-about-header">Gallery</span>
+  <span class="accent-color artist-about-header">Gallery</span>
   <div fxFlex fxLayout fxLayoutAlign="end">
     <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
   </div>
@@ -29,8 +27,7 @@
 </app-gallery-carousel>
 <br><br>
 <div>
-  <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-        class="accent-color artist-about-header">Reviews</span>
+  <span class="accent-color artist-about-header">Reviews</span>
   <div fxFlex fxLayout fxLayoutAlign="end">
     <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
   </div>

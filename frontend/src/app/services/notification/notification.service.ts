@@ -38,7 +38,7 @@ export class NotificationService {
   public displaySuccessSnackbar(message: string) {
     this.snackBar.openFromComponent(SuccessSnackbarComponent, {
       data: message,
-      duration: 500,
+      duration: 2000,
     });
   }
 

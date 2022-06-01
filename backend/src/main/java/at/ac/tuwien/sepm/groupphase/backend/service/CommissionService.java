@@ -8,50 +8,49 @@ import java.util.List;
 public interface CommissionService {
 
     /**
-     * This method returns all commissions saved in the database.
+     * Returns all commissions saved in the database.
      *
-     * @return a list of all commissions
+     * @return A list of all commissions
      */
     List<Commission> getAllCommissions();
 
     /**
-     * This method returns all commissions by the artist with the specified id,
+     * Returns all commissions by the artist with the specified id,
      * if there are commissions with this artist's id saved in the database.
      *
-     * @param id: the artist id to look for
-     * @return a list of all commissions by the artist with the specified id
+     * @param id The artist id to look for.
+     * @return A list of all commissions by the artist with the specified id.
      */
     List<Commission> findCommissionsByArtist(Long id);
 
     /**
-     * This method returns the commission with the specified id, if there is a commission with this id saved in the database.
+     * Returns the commission with the specified id, if there is a commission with this id saved in the database.
      *
-     * @param id: the id to look for
-     * @return the commission with the specified id
+     * @param id The id to look for.
+     * @return The commission with the specified id.
      */
     Commission findById(Long id);
 
     /**
-     * This method saves the given commission in the database.
+     * Saves the given commission in the database.
      * The entity, as saved in the database, is returned - including the newly generated id.
      *
-     * @param commission: the commission being saved
-     * @return the saved entity
+     * @param commission The commission being saved.
      */
     void saveCommission(Commission commission) throws IOException;
 
     /**
-     * This method updates the given commission, if there is a commission with this id saved in the database.
+     * Updates the given commission, if there is a commission with this id saved in the database.
      *
-     * @param commission: the commission being updated
+     * @param commission The commission being updated.
      */
     void updateCommission(Commission commission);
 
     /**
-     * This method deletes the given commission from the database - including all references, receipts, review and artwork.
+     * Deletes the given commission from the database - including all references, receipts, review and artwork.
      * Artist and customer entities remain saved in the database.
      *
-     * @param commission: the commission to be deleted
+     * @param commission The commission to be deleted.
      */
     void deleteCommission(Commission commission);
 

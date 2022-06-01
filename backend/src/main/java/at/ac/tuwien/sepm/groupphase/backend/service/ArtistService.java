@@ -8,42 +8,41 @@ import java.util.List;
 public interface ArtistService {
 
     /**
-     * This method returns all artists saved in the database.
+     * Fetches all artists saved in the database and returns them.
      *
-     * @return a list of all artists
+     * @return The list of found artists.
      */
     List<Artist> getAllArtists();
 
     /**
-     * This method returns the artist with the specified id, if there is an artist with this id saved in the database.
+     * Returns the artist with the specified id, if there is an artist with this id saved in the database.
      *
-     * @param id: the id to look for
-     * @return the artist with the specified id
+     * @param id The id to look for.
+     * @return Found artist with the specified id
      */
     Artist findArtistById(Long id);
 
     /**
-     * This method saves the given artist in the database.
-     * The entity, as saved in the database, is returned - including the newly generated id.
+     * Saves the given artist entity.
+     * The entity, saved in the database, is returned - including the newly generated id.
      *
-     * @param artist: the artist being saved
-     * @return the saved entity
+     * @param artist The artist that will be saved.
+     * @return Saved artist entity.
      */
     Artist saveArtist(Artist artist);
 
     /**
-     * This method updates the given artist, if there is an artist with this id saved in the database.
+     * Updates the given artist, if there is an artist with this id saved in the database.
      *
-     * @param artist: the artist being updated
+     * @param artist The artist that will be updated.
      */
     void updateArtist(Artist artist) throws IOException;
 
     /**
-     * This method deletes the given artist in the database.
+     * Deletes the given artist in the database.
      * The entity, as saved in the database, is returned - including the newly generated id.
      *
-     * @param id: the artist being saved
-     * @return the saved entity
+     * @param id The id of the artist that should be saved.
      */
     void deleteArtistById(Long id);
 }

@@ -17,23 +17,19 @@ public class CommissionValidator {
         this.commissionRepository = commissionRepository;
     }
 
-    public void checkIfCommissionAlreadyExists(Commission commission) {
-        if (commission.getId() != null) {
-            Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
+    public void throwExceptionIfCommissionAlreadyExists(Commission commission) {
+        Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
 
-            if (commission1.isPresent()) {
-                throw new ValidationException(String.format("There is already a Commission with id %s", commission.getId()));
-            }
+        if (commission1.isPresent()) {
+            throw new ValidationException(String.format("There is already a Commission with id %s", commission.getId()));
         }
     }
 
-    public void checkIfCommissionExists(Commission commission) {
-        if (commission.getId() != null) {
-            Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
+    public void throwExceptionIfCommissionDoesNotExist(Commission commission) {
+        Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
 
-            if (commission1.isPresent()) {
-                throw new NotFoundException(String.format("There is no Commission with id %s", commission.getId()));
-            }
+        if (!commission1.isPresent()) {
+            throw new NotFoundException(String.format("There is no Commission with id %s", commission.getId()));
         }
     }
 }

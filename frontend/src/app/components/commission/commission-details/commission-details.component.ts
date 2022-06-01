@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
@@ -39,16 +39,14 @@ export class CommissionDetailsComponent implements OnInit {
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
-
   private getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
-        console.log(commission)
         this.commission = commission;
         this.user = commission.customerDto;
         this.hasLoaded = true;
-        if(this.commission.referencesDtos.length !== 0){
+        if (this.commission.referencesDtos.length !== 0) {
           this.hasReferences = true;
         }
       });

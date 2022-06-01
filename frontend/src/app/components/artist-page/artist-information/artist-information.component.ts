@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
-import {newArray} from '@angular/compiler/src/util';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtworkDto} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
@@ -23,7 +22,6 @@ export class ArtistInformationComponent implements OnInit {
   public selectedArtwork: number = null;
 
 
-
   // TODO: Fill in the real profile picture
   artistUrl = 'https://picsum.photos/150/150';
 
@@ -37,7 +35,6 @@ export class ArtistInformationComponent implements OnInit {
       console.log(this.profileSettings);
     }
   }
-
 
 
   switchTab(index) {

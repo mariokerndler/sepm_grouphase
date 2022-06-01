@@ -2,7 +2,6 @@ import {Component, Inject, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ArtworkDto, FileType} from '../../dtos/artworkDto';
 import {ArtworkService} from '../../services/artwork.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ArtistDto} from '../../dtos/artistDto';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {take} from 'rxjs';
@@ -19,8 +18,6 @@ export class UploadComponent implements OnInit {
   uploadForm: FormGroup;
   file: any;
   selectedImage;
-
-
 
 
   constructor(
@@ -55,7 +52,7 @@ export class UploadComponent implements OnInit {
       };
       reader.readAsDataURL(this.file.target.files[0]);
       reader.onload = () => {
-        if(this.uploadForm.valid) {
+        if (this.uploadForm.valid) {
           const base64result = reader.result.toString().split(',')[1];
           const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
           let filetype = FileType.jpg;
@@ -75,13 +72,14 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  uploadNewImage(name, description, imageData, filetype){
-    const artwork = {name, description, imageData,
-      imageUrl:'', fileType: filetype, artistId:this.data.artist.id} as ArtworkDto;
+  uploadNewImage(name, description, imageData, filetype) {
+    const artwork = {
+      name, description, imageData,
+      imageUrl: '', fileType: filetype, artistId: this.data.artist.id
+    } as ArtworkDto;
     this.artworkService.createArtwork(artwork, null,
       () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new image')).subscribe();
   }
-
 
 
   base64ToBinaryArray(base64: string) {
@@ -100,7 +98,7 @@ export class UploadComponent implements OnInit {
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
-  fileSelected(file: any){
+  fileSelected(file: any) {
     this.file = file;
     if (file.target.files && file.target.files[0]) {
       const reader = new FileReader();
@@ -114,7 +112,6 @@ export class UploadComponent implements OnInit {
       reader.readAsDataURL(file.target.files[0]);
     }
   }
-
 
 
 }

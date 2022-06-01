@@ -50,7 +50,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     {componentName: 'Reviews', disabled: false, tags: []}
   ];
 
-  profileInfoComponent: LayoutComponent =  {componentName: 'Profile information', disabled: true, tags: []};
+  profileInfoComponent: LayoutComponent = {componentName: 'Profile information', disabled: true, tags: []};
   chosenComponents: LayoutComponent[] = [];
 
   selectedComponent: LayoutComponent;
@@ -118,7 +118,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       updatedArtist.profileSettings = profileSettings.valueOf().replace(/"/g, '\'');
     }
 
-    if(description) {
+    if (description) {
       updatedArtist.description = description;
     }
 
@@ -230,14 +230,14 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const description = this.editForm.controls.description.value;
 
       this.artistService.updateArtist(ArtistPageEditComponent.updateArtist(
-        this.artist,
-        username,
-        name,
-        surname,
-        email,
-        address,
-        null,
-        description
+          this.artist,
+          username,
+          name,
+          surname,
+          email,
+          address,
+          null,
+          description
         )
       ).subscribe();
     } else {
@@ -396,13 +396,13 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
    */
   addTag(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-    if(value) {
+    if (value) {
       // Find tag
       const result = this.allTags.filter(tag => tag.name.includes(value));
-      if(result.length !== 0) {
+      if (result.length !== 0) {
         return;
       } else {
-       this.selectedComponent.tags.push(result[0]);
+        this.selectedComponent.tags.push(result[0]);
       }
     }
 
@@ -413,7 +413,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
 
   private filterTags(value: TagDto): TagDto[] {
     let filterValue;
-    if(typeof value == 'string') {
+    if (typeof value == 'string') {
       filterValue = String(value).toLowerCase();
     } else {
       filterValue = value.name.toLowerCase();

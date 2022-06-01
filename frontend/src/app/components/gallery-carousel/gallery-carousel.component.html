@@ -3,7 +3,7 @@
 
     <mat-card-header *ngIf="artworks[animArtwork].name">
 
-      <mat-card-title  class="image-title"
+      <mat-card-title class="image-title"
                       style="text-align: center;  color:#d7bce8"> {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
       <mat-divider></mat-divider>
 
@@ -25,10 +25,11 @@
 
       </div>
     </div>
-    <button *ngIf="artworks[animArtwork].name" (click)="close()" class="carousel-close" tabindex="3" mat-icon-button>
+    <button (click)="close()" *ngIf="artworks[animArtwork].name" class="carousel-close" mat-icon-button tabindex="3">
       <mat-icon>close</mat-icon>
     </button>
-    <button *ngIf="!artworks[animArtwork].name" (click)="close()" class="carousel-close-com" tabindex="3" mat-icon-button>
+    <button (click)="close()" *ngIf="!artworks[animArtwork].name" class="carousel-close-com" mat-icon-button
+            tabindex="3">
       <mat-icon>close</mat-icon>
     </button>
     <mat-card-subtitle

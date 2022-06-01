@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ArtistGallerySubsectionsComponent } from './artist-gallery-subsections.component';
+import {ArtistGallerySubsectionsComponent} from './artist-gallery-subsections.component';
 
 describe('ArtistGallerySubsectionsComponent', () => {
   let component: ArtistGallerySubsectionsComponent;
@@ -8,9 +8,9 @@ describe('ArtistGallerySubsectionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ArtistGallerySubsectionsComponent ]
+      declarations: [ArtistGallerySubsectionsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

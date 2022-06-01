@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtistService} from '../../../services/artist.service';
 import {TagService} from '../../../services/tag.service';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import {BreakpointObserver} from '@angular/cdk/layout';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {StepperOrientation} from '@angular/material/stepper';
 import {Observable} from 'rxjs';

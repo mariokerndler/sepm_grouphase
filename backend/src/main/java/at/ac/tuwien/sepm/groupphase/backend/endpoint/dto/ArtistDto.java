@@ -113,4 +113,5 @@ public class ArtistDto {
             + ", reviewsIds=" + reviewsIds
             + ", profileSettings='" + profileSettings + '\'' + '}';
     }
+
 }

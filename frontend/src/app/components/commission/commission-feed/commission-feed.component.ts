@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
+import {Router} from '@angular/router';
 import {CommissionService} from '../../../services/commission.service';
 import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 
@@ -21,11 +22,15 @@ export class CommissionFeedComponent implements OnInit {
   commissions: SimpleCommissionDto[];
   hasLoaded = false;
 
-  constructor(private commissionService: CommissionService) {
+  constructor(private commissionService: CommissionService, private  router: Router){
   }
 
   ngOnInit(): void {
     this.fetchCommissions();
+  }
+
+  public routeToCommissionCreation(): void{
+    this.router.navigate(['/commisson-create']);
   }
 
   private fetchCommissions() {
@@ -37,5 +42,4 @@ export class CommissionFeedComponent implements OnInit {
       }
     });
   }
-
 }

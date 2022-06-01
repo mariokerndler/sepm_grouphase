@@ -47,7 +47,7 @@ public class UserEndpoint {
 
     @PermitAll
     @PutMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update user")
     public void updateUser(@Valid @RequestBody ApplicationUserDto userDto) {
         log.debug("Post /User/{}", userDto.getUserName());
@@ -72,7 +72,7 @@ public class UserEndpoint {
     public ApplicationUserDto searchUsersByEmail(
         @RequestParam(name = "email", defaultValue = "") String email) {
         log.info(email);
-        return userMapper.userToUserDto(userService.searchUserByEmail(email));
+        return userMapper.userToUserDto(userService.findUserByEmail(email));
     }
 
     @PermitAll

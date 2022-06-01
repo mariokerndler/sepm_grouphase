@@ -12,6 +12,7 @@ import {UserPageEditComponent} from './components/user-page/user-page-edit/user-
 import {ArtistFeedComponent} from './components/artist-feed/artist-feed.component';
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
+import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -26,7 +27,9 @@ const routes: Routes = [
   {path: 'artists', component: ArtistFeedComponent},
   {path: 'commissions', component: CommissionFeedComponent},
   {path: 'commissions/:id', component: CommissionDetailsComponent},
+  {path: 'commission-creation', component: CommissionCreationComponent},
   {path: '**', redirectTo: 'feed'},
+
 ];
 
 @NgModule({

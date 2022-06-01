@@ -119,4 +119,17 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
         userRepo.save(user);
     }
+
+    @Override
+    public void deleteUserById(Long id) {
+        log.info(ImageDataPaths.assetAbsoluteLocation);
+        Optional<ApplicationUser> user = userRepo.findById(id);
+        if (user.isPresent()) {
+            log.info(user.get().getUserName());
+            
+            userRepo.deleteById(id);
+        } else {
+            throw new NotFoundException(String.format("Could not find User with id %s", id));
+        }
+    }
 }

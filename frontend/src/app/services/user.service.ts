@@ -144,7 +144,7 @@ export class UserService {
       params
     };
 
-    return this.http.post(`${this.userBaseUI}/${id}/updatePassword`,null, options)
+    return this.http.post(`${this.userBaseUI}/${id}/updatePassword`, null, options)
       .pipe(
         catchError((error) => this.notificationService.notifyUserAboutFailedOperation('Updating user password')(error)),
         tap(_ => {

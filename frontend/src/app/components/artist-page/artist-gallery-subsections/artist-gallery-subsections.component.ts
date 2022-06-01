@@ -3,7 +3,6 @@ import {ArtworkDto} from '../../../dtos/artworkDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {TagDto} from '../../../dtos/tagDto';
-import {map} from 'rxjs';
 import {TagSearch} from '../../../dtos/tag-search';
 
 @Component({
@@ -21,10 +20,11 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
   selectedArtwork: number = null;
   elementAmount = 12;
 
-  constructor(private artworkService: ArtworkService) { }
+  constructor(private artworkService: ArtworkService) {
+  }
 
   ngOnInit(): void {
-    if(this.tags.length === 0) {
+    if (this.tags.length === 0) {
       this.fetchArtworksFromUser(this.artist.id);
     } else {
       this.fetchArtworksByTags();
@@ -45,14 +45,20 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
     });
   }
 
-  private fetchArtworksByTags(){
+  private fetchArtworksByTags() {
     const tagNames = [];
     this.tags.forEach(item => {
       tagNames.push(item.id.toString());
     });
     this.artworkService.search(
-      {tagIds: tagNames, artistIds:[this.artist.id.toString()], pageNr:0, searchOperations:'', randomSeed:0} as TagSearch
-      ).subscribe({
+      {
+        tagIds: tagNames,
+        artistIds: [this.artist.id.toString()],
+        pageNr: 0,
+        searchOperations: '',
+        randomSeed: 0
+      } as TagSearch
+    ).subscribe({
       next: (loadedArtworks) => {
         this.artworks = loadedArtworks;
         this.isReady = true;

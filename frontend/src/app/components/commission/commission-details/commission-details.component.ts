@@ -44,6 +44,7 @@ export class CommissionDetailsComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
+        console.log(commission)
         this.commission = commission;
         this.user = commission.customerDto;
         this.hasLoaded = true;

@@ -10,12 +10,15 @@
 
       <mat-form-field appearance="fill"   >
         <mat-label   color="accent-color" class="accent-color" >Describe your the Artwork you envision</mat-label>
-        <textarea matInput placeholder="Descrription"   formControlName="description" required>
+        <textarea matInput placeholder="Description"   formControlName="description" required>
         </textarea>
       </mat-form-field>
       <div>
         <button mat-button matStepperNext><mat-icon>keyboard_arrow_right</mat-icon></button>
       </div>
+
+
+
     </form>
   </mat-step>
   <mat-step  [stepControl]="commissionForm" label="Organisation" fxFlex="100"  fxLayout="column">
@@ -35,6 +38,14 @@
         <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
         <button mat-button matStepperNext><mat-icon>keyboard_arrow_right</mat-icon></button>
       </div>
+      <mat-label color="accent-color" class="accent-color">Feed back rounds:</mat-label><br>
+
+      <mat-label>0</mat-label>  <mat-slider thumbLabel [(ngModel)]="commission.feedbackRounds"
+                                            formControlName="feedbackRounds" tickInterval="1" min="0" max="5"></mat-slider>
+      <mat-label>5</mat-label>
+
+
+
     </form>
   </mat-step>
   <mat-step [stepControl]="commissionForm" label="References">
@@ -82,17 +93,25 @@
     </form>
   </mat-step>
   <mat-step  >
+    <div class="com-display">
     <ng-template matStepLabel>Done</ng-template>
     <p  color="accent-color" class="accent-color">Confirm your Order</p>
-
+    <mat-label>Title</mat-label>
   <p  color="accent-color" class="accent-color">{{commissionForm.value.title}} </p>
+    <mat-label>Description</mat-label>
     <p  color="accent-color" class="accent-color">{{commissionForm.value.description}} </p>
-    <p  color="accent-color" class="accent-color">{{commissionForm.value.price}}€ </p>
+    <mat-label>Price in Euro</mat-label>
+    <p *ngIf="commissionForm.value.description" style="display: inline" color="accent-color" class="accent-color">{{commissionForm.value.price}} </p>
+    <br>
+    <mat-label>Feedback Rounds</mat-label>
+    <p  color="accent-color" class="accent-color">{{commission.feedbackRounds}} </p>
+    <mat-label>Delivery Date</mat-label>
     <p  color="accent-color" class="accent-color">{{commissionForm.value.date}} </p>
     <div>
       <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
-      <button mat-button matStepperNext (click)="submitCommission()"> Submit Commission </button>
+      <button color="primary" class="primary" mat-flat-button matStepperNext (click)="submitCommission()"> Submit Commission </button>
 
+    </div>
     </div>
   </mat-step>
   </mat-horizontal-stepper>

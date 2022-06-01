@@ -34,6 +34,9 @@ public class Commission implements HasId {
     @Column(nullable = false, name = "feedback_sent")
     private int feedbackSent;
 
+    @Column(nullable = false, name = "feedback_rounds")
+    private int feedbackRounds;
+
     @Column(nullable = false)
     private double price;
 

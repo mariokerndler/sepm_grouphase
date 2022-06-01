@@ -1,13 +1,13 @@
 .card-title {
   font-size: 40px;
 
-  text-align: center !important;
+  text-align: start !important;
 }
 
 .card-subtitle {
   font-size: 40px;
 
-  text-align: center !important;
+  text-align: start !important;
 }
 
 .tag-view {
@@ -135,15 +135,28 @@
     }
   }
 
-  .carousel-close {
+  .carousel-close{
+    font-size: large;
+    color:#dedae0;
+    position: absolute;
+    top: 1%;
+    right: 1%;
 
+    &:focus, &:hover {
+      border: none;
+      outline: none;
+      color: gray;
+      transform: scale(1.1);
+      transition-duration: 0.3s;
+    }
+  }
+
+  .carousel-close-com{
+    font-size: large;
+    color:#dedae0;
     position: absolute;
     top: 0;
     right: 0;
-    font-size: 1rem;
-    padding: 1rem;
-    margin: 1rem;
-    cursor: pointer;
 
     &:focus, &:hover {
       border: none;

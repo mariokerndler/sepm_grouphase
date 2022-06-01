@@ -9,7 +9,7 @@
 
 
       <mat-card-subtitle (click)="routeToArtist()" class="carousel-artist"
-                         style="text-align: center; font-size: x-large; color:#dedae0">by {{artist.userName}}
+                         style="text-align: left; font-size: x-large; color:#dedae0">by {{artist.userName}}
       </mat-card-subtitle>
       <mat-divider></mat-divider>
     </mat-card-header>
@@ -25,8 +25,12 @@
 
       </div>
     </div>
-    <span (click)="close()" class="carousel-close" style="font-size: large; color:#dedae0;"
-          tabindex="3">Return</span><br>
+    <button *ngIf="artworks[animArtwork].name" (click)="close()" class="carousel-close" tabindex="3" mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+    <button *ngIf="!artworks[animArtwork].name" (click)="close()" class="carousel-close-com" tabindex="3" mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
     <mat-card-subtitle
       style="text-align: center; font-size: x-large;color: #d7bce8;">{{artworks[animArtwork].description}} </mat-card-subtitle>
 

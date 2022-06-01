@@ -51,7 +51,7 @@ public class ArtworkEndpoint {
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
     public List<ArtworkDto> search(@RequestParam(name = "randomSeed", defaultValue = "0") int randomSeed,
                                    @RequestParam(name = "tagIds", required = false) List<String> tagIds,
-                                   @RequestParam(name = "ArtistId", required = false) List<String> artistIds,
+                                   @RequestParam(name = "artistIds", required = false) List<String> artistIds,
                                    @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
                                    @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
         ;

@@ -115,15 +115,15 @@ public class UserEndpoint {
     @Operation(summary = "Update user password")
     @Transactional
     public void updateUserPassword(@PathVariable Long id,
-                                   @RequestParam("password") String password,
-                                   @RequestParam("oldPassword") String oldPassword) {
+                                   @RequestParam(name = "password", defaultValue = "") String password,
+                                   @RequestParam(name = "oldPassword", defaultValue = "") String oldPassword) {
         log.debug("Post /User/{}/updatePassword", id);
 
         ApplicationUser applicationUser = userService.findUserById(id);
         log.info(applicationUser.getUserName());
 
         if (!userService.checkIfValidOldPassword(applicationUser, oldPassword.trim())) {
-            throw new InvalidOldPasswordException("Old password: '" + oldPassword.trim() + "' does not match with current password.");
+            throw new InvalidOldPasswordException("Old password does not match with current password.");
         }
 
         userService.changeUserPassword(applicationUser, password);

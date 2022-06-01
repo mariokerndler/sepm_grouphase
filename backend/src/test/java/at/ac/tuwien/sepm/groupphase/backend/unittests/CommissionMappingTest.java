@@ -92,6 +92,7 @@ public class CommissionMappingTest {
         this.commission = Commission.builder()
             .artist(artist)
             .customer(user)
+            .title("Cowboy Snail")
             .sketchesShown(3)
             .feedbackSent(0)
             .price(2000.45)

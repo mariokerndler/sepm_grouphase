@@ -10,6 +10,9 @@
                matInput
                placeholder="Search artist"
                type="text">
+        <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="this.searchFormControl.value !== null">
+          <mat-icon class="primary">close</mat-icon>
+        </button>
         <mat-autocomplete #searchAuto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option.userName">
             {{option.userName}}

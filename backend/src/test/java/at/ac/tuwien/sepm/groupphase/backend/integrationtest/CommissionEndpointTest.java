@@ -39,9 +39,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,7 +96,7 @@ public class CommissionEndpointTest {
     @Test
     @Transactional
     @WithMockUser
-    public void addCommission() throws Exception {
+    public void addCommission_modifyAndDelete() throws Exception {
         Artist artist = Artist.builder().userName("momo45").name("Millie").surname("Bobbington").email("mil.b@aol.de").address("Mispelstreet").password("passwordhash").admin(false).userRole(UserRole.Artist).description("Description of new artist").profileSettings("settings string").build();
 
         ApplicationUser user = ApplicationUser.builder().userName("sunscreen98").name("Mike").surname("Regen").email("mikey98@gmail.com").address("Greatstreet").password("passwordhash2").admin(false).userRole(UserRole.User).build();
@@ -130,7 +129,8 @@ public class CommissionEndpointTest {
 
         ApplicationUser user1 = ApplicationUser.builder().id(userId).userName("sunscreen98").name("Mike").surname("Regen").email("mikey98@gmail.com").address("Greatstreet").password("passwordhash2").admin(false).userRole(UserRole.User).build();
 
-        Commission commission = Commission.builder().artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).instructions("do the thing").build();
+        Commission commission = Commission.builder().artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).title("its yours").instructions("do the thing").build();
+
 
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/commissions").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
@@ -142,6 +142,37 @@ public class CommissionEndpointTest {
         mockMvc.perform(post("/api/v1/commissions").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
             .andExpect(status().isCreated()).andReturn();
+
+        List<SimpleCommissionDto> commissions = allCommissions();
+        assertEquals(1, commissions.size());
+        assertTrue(commissions.toString().contains("do the thing"));
+
+        Long commissionId = commissions.get(0).getId();
+
+        mockMvc.perform(get("/api/v1/commissions/" + commissionId))
+                        .andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
+
+        Commission modCommission = Commission.builder().id(commissionId).artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(commission.getIssueDate()).deadlineDate(commission.getDeadlineDate()).title("Drawing french").instructions("draw me like one of your french girls").build();
+
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson3 = ow3.writeValueAsString(commissionMapper.commissionToDetailedCommissionDto(modCommission));
+
+        mockMvc.perform(put("/api/v1/commissions").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson3))
+            .andExpect(status().isOk()).andReturn();
+
+        List<SimpleCommissionDto> commissions1 = allCommissions();
+        assertEquals(1, commissions1.size());
+        assertFalse(commissions1.toString().contains("do the thing"));
+        assertTrue(commissions1.toString().contains("draw me like one of your french girls"));
+
+        mockMvc.perform(delete("/api/v1/commissions").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson3))
+            .andExpect(status().isOk()).andReturn();
+
+        List<SimpleCommissionDto> commissions2 = allCommissions();
+        assertEquals(0, commissions2.size());
 
     }
 
@@ -166,6 +197,17 @@ public class CommissionEndpointTest {
             .andReturn().getResponse().getContentAsByteArray();
         List<ApplicationUserDto> userResult = objectMapper.readerFor(ApplicationUserDto.class).<ApplicationUserDto>readValues(body).readAll();
         return userResult;
+    }
+
+    public List<SimpleCommissionDto> allCommissions() throws Exception {
+        byte[] body = mockMvc
+            .perform(MockMvcRequestBuilders
+                .get("/api/v1/commissions")
+                .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsByteArray();
+        List<SimpleCommissionDto> commissionResult = objectMapper.readerFor(SimpleCommissionDto.class).<SimpleCommissionDto>readValues(body).readAll();
+        return commissionResult;
     }
 
 }

@@ -113,7 +113,7 @@ public class ArtworkEndpointTest {
     @Test
     @Transactional
     @WithMockUser
-    public void addArtistAndAddArtworks_getArtworkAndFindOwnerThenDeleteOneArtwork() throws Exception {
+    public void addArtistAndAddArtworks_getArtworkAndFindOwner_ThenDeleteOneArtwork() throws Exception {
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
 

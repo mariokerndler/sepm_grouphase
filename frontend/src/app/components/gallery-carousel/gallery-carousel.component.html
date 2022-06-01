@@ -1,9 +1,9 @@
 <div (click)="close()" class="gallery-carousel">
   <mat-card class="image-Card" style="  background: radial-gradient(#536281, #2f3a51);">
 
-    <mat-card-header>
+    <mat-card-header *ngIf="artworks[animArtwork].name">
 
-      <mat-card-title class="image-title"
+      <mat-card-title  class="image-title"
                       style="text-align: center;  color:#d7bce8"> {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
       <mat-divider></mat-divider>
 
@@ -32,7 +32,7 @@
 
   </mat-card>
   <br>
-  <mat-card-subtitle class="tag-view"
+  <mat-card-subtitle *ngIf="artworks[animArtwork].name" class="tag-view"
                      style=" text-align: center;color: white  ; font-size: x-large"> {{stringifyTags()}}&zwnj;
   </mat-card-subtitle>
 

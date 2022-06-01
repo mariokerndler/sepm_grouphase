@@ -12,29 +12,13 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./commission-details.component.scss']
 })
 export class CommissionDetailsComponent implements OnInit {
-/*
-  commission = {
-    id: 1, artistId: null, customerId: 1, title: 'Commission Title',
-    instructions: 'This is just a random description which describes some of the information within in the commission.' +
-      'This is just a random description which describes some of the information ' +
-      'within in the commission and now shows a more detailed description.\n' +
-      ' Lorem ipsum dolor sit amet, consetetur sadipscing elitr, ' +
-      'sed diam nonumy eirmod tempor invidunt ut labore et dolore ' +
-      'magna aliquyam erat, sed diam voluptua. At vero eos et accusam ' +
-      'et justo duo dolores et ea rebum. Stet clita kasd gubergren, no ' +
-      'sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum ' +
-      'dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ' +
-      'tempor invidunt.',
-    sketchesShown: 0, feedbackSend: 0, comArtworkId: null, feedback: [], price: 300,
-    issueDate: new Date(2022, 1, 1),
-    deadlineDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
-  } as CommissionDto;
-  */
 
   userProfilePicture = 'https://picsum.photos/150/150';
   commission: CommissionDto;
   user: ApplicationUserDto;
   hasLoaded = false;
+
+  public selectedArtwork: number = null;
 
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
@@ -47,13 +31,18 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
 
+  setSelectedArtwork(i: number) {
+    this.selectedArtwork = i;
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+  }
+
 
   private getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
         this.commission = commission;
-        console.log(commission);
+        console.log(commission.referencesDtos);
         this.user = commission.customerDto;
         this.hasLoaded = true;
       });

@@ -23,14 +23,21 @@
       <p>{{commission.instructions.substring(240, 800)}}</p>
       </div>
       <br>
-      <div *ngIf="commission.referenceImageIds">
+      <div *ngIf="commission.referencesDtos">
       <strong class="referenceImages">Reference Images:</strong>
       <br><br>
-      <div class="images" fxLayout="row">
-        <img [src]="userProfilePicture" alt="" class="commission-image">
-        <img [src]="userProfilePicture" alt="" class="commission-image">
-        <img [src]="userProfilePicture" alt="" class="commission-image">
-      </div>
+        <div  fxLayout="row wrap"  class="content" fxLayoutAlign="start" fxLayoutGap="8px grid">
+          <div class="image-container" *ngFor="let reference of commission.referencesDtos; let i = index">
+            <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt="">
+          </div>
+        </div>
+
+        <app-gallery-carousel
+          (closeCarousel)="selectedArtwork=null"
+          *ngIf="selectedArtwork!== null"
+          [artworks]="commission.referencesDtos"
+          [selectedArtworkId]="selectedArtwork">
+        </app-gallery-carousel>
       </div>
       <br><br>
       <strong class="referenceImages">Price: ${{commission.price}}</strong>

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-commission-feed',
@@ -16,10 +17,15 @@ export class CommissionFeedComponent implements OnInit {
     endDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
   } as CommissionDto;
 
-  constructor() {
+  constructor(private  router: Router) {
   }
 
   ngOnInit(): void {
+  }
+
+
+  public routeToCommissionCreation(): void{
+    this.router.navigate(['/commisson-create']);
   }
 
   numSequence(n: number): Array<number> {

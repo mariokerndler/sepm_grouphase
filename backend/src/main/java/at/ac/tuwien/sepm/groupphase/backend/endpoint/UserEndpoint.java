@@ -128,4 +128,14 @@ public class UserEndpoint {
 
         userService.changeUserPassword(applicationUser, password);
     }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "/{id}")
+    @Operation(summary = "Delete a user by id")
+    public void deleteUserById(@PathVariable Long id) {
+        log.debug("Delete /User/{}", id);
+
+        userService.deleteUserById(id);
+    }
 }

@@ -151,6 +151,15 @@ public class ApplicationUserEndpointTest {
         assertEquals(2, users3.size());
         assertTrue(users3.toString().contains("testmodify@atest.com"));
         assertTrue(!users3.toString().contains("test2@atest.com"));
+
+        Long userId = users3.get(0).getId();
+
+        mockMvc.perform(delete("/api/v1/users/" + userId))
+            .andExpect(status().isOk()).andReturn();
+
+        List<ApplicationUserDto> users4 = allUsers();
+        assertEquals(1, users4.size());
+        assertFalse(users4.toString().contains("test@atest.com"));
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {

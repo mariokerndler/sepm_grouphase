@@ -1,7 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.sepm.groupphase.backend.basetest.GetImageByteArray;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
@@ -37,7 +39,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,7 +80,7 @@ public class ArtworkEndpointTest {
 
     public Artist getTestArtist2() {
         return new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
-            , false, UserRole.Artist, null, "TestDescription",null, 2.0, null, null, null, null, null);
+            , false, UserRole.Artist, null, "TestDescription", null, 2.0, null, null, null, null, null);
     }
 
     public Artwork getArtwork(Long id, byte[] content) {
@@ -120,7 +123,7 @@ public class ArtworkEndpointTest {
         ApplicationUser anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(anObject );
+        String requestJson = ow.writeValueAsString(anObject);
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))

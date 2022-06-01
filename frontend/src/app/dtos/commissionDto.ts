@@ -1,6 +1,5 @@
 import {ArtistDto} from './artistDto';
 import {ApplicationUserDto} from './applicationUserDto';
-import {ArtworkDto} from './artworkDto';
 import {ReferenceDto} from './referenceDto';
 
 export class CommissionDto {

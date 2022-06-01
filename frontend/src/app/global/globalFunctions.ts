@@ -45,6 +45,7 @@ export class GlobalFunctions {
     }
     return bytes.buffer;
   }
+
   public shuffleArray(array: any[]): any[] {
     let currentIndex = array.length;
     let randomIndex;

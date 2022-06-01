@@ -105,5 +105,20 @@ public class ArtistEndpoint {
         }
     }
 
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "/{id}")
+    @Operation(summary = "Delete artist by id")
+    @Transactional
+    public void deleteArtistById(@PathVariable Long id) {
+        try {
+            log.info("Delete artist with id: " + String.valueOf(id));
+            artistService.deleteArtistById(id);
+        } catch (Exception e) {
+            log.error(e.getMessage() + id.toString());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        }
+    }
+
 
 }

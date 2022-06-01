@@ -1,4 +1,7 @@
 export class ReferenceDto {
   id: number;
-  image: string;
+  name: string;
+  imageData: number[];
+  fileType: string;
+  imageUrl: string | ArrayBuffer;
 }

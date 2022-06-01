@@ -4,10 +4,15 @@ import {ArtworkService} from '../../../services/artwork.service';
 import {ArtistService} from '../../../services/artist.service';
 import {TagService} from '../../../services/tag.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {StepperOrientation} from '@angular/material/stepper';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {FileType} from '../../../dtos/artworkDto';
+import {GlobalFunctions} from '../../../global/globalFunctions';
+
+import {ReferenceDto} from '../../../dtos/referenceDto';
+
 
 @Component({
   selector: 'app-commission-creation',
@@ -16,10 +21,21 @@ import {map} from 'rxjs/operators';
 })
 export class CommissionCreationComponent implements OnInit {
   isLinear = false;
-  firstFormGroup: FormGroup;
+  file: any;
+  selectedImage;
+  previewImages: any[]=[];
+  selectedReferences = [];
+  commissionForm = new FormGroup({
+    title: new FormControl(''),
+    description: new FormControl(''),
+    price: new FormControl(''),
+    date: new FormControl(''),
+    references: new FormControl(''),
+  });
+  imageForm: FormGroup;
   secondFormGroup: FormGroup;
   stepperOrientation: Observable<StepperOrientation>;
-  commission: CommissionDto={
+  commission: CommissionDto = {
     artistId: 0,
     comArtworkId: 0,
     description: '',
@@ -29,30 +45,81 @@ export class CommissionCreationComponent implements OnInit {
     id: 0,
     price: 0,
     referenceImageIds: [],
-    references:[],
+    references: [],
     sketchesShown: 0,
     startDate: undefined,
     title: '',
     userId: 0
   };
+
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
-    private tagService: TagService,private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver) {
+              private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
+              public globalFunctions: GlobalFunctions) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
 
   ngOnInit(): void {
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required],
-    });
+
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required],
     });
   }
 
-  uploadReference() {
+  onFileChanged() {
 
   }
 
+  fileSelected( ) {
+
+    this.selectedReferences = this.commissionForm.value.references;
+    console.log((this.selectedReferences.length));
+    if (this.selectedReferences != null) {
+      if (this.selectedReferences.length > 0) {
+        this.previewImages=[];
+        const image = new Image();
+
+        this.selectedReferences.forEach(ref => {
+          image.src= ref;
+          this.previewImages.push(image);
+          const reader = new FileReader();
+          reader.readAsDataURL(ref);
+          reader.onload = (event) => {
+            const base64result = reader.result.toString().split(',')[1];
+            const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
+            let filetype = FileType.jpg;
+            if (dataType === 'png') {
+              filetype = FileType.png;
+            }
+            if (dataType === 'gif') {
+              filetype = FileType.gif;
+            }
+            const binary = new Uint8Array(this.globalFunctions.base64ToBinaryArray(base64result));
+            const imageData = Array.from(binary);
+            const r = new ReferenceDto();
+            //TODO: very likley redundant data and URL
+            r.imageData = imageData;
+            r.imageUrl=event.target.result;
+            r.name = ref.name;
+            r.fileType=filetype;
+            console.log(r);
+            this.commission.references.push(r);
+          };
+        });
+
+      }
+    }
+  }
+
+
+  submitCommission() {
+    console.log(this.commissionForm.value.references);
+  }
+
+  removeReference(i) {
+    this.commission.references.splice(i,1);
+    this.commissionForm.value.references.remove(i);
+
+  }
 }

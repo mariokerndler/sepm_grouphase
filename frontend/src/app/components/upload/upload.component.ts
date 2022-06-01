@@ -40,6 +40,7 @@ export class UploadComponent implements OnInit {
 
   onFileChanged() {
     if (this.file.target.files && this.file.target.files[0]) {
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const image = new Image();
@@ -95,9 +96,11 @@ export class UploadComponent implements OnInit {
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
-  fileSelected(file: any) {
-    this.file = file;
-    if (file.target.files && file.target.files[0]) {
+  fileSelected(files: any[]) {
+    this.file = files[0];
+    if (this.file.target.files && this.file.target.files[0]) {
+      console.log(files.length);
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const image = new Image();
@@ -106,7 +109,7 @@ export class UploadComponent implements OnInit {
           this.selectedImage = e.target.result;
         };
       };
-      reader.readAsDataURL(file.target.files[0]);
+      reader.readAsDataURL(this.file.target.files[0]);
     }
   }
 

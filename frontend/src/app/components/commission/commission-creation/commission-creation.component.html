@@ -1,16 +1,16 @@
 <div fxLayoutAlign="center center" fxLayout="column">
 <mat-stepper class="comm_stepper" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
+  <mat-step [stepControl]="commissionForm">
+    <form [formGroup]="commissionForm">
       <ng-template matStepLabel>Commission Details</ng-template>
       <mat-form-field appearance="fill">
         <mat-label  color="accent-color" class="accent-color">Title</mat-label>
-        <input matInput placeholder="Title" [(ngModel)]=commission.title formControlName="firstCtrl" required>
+        <input matInput placeholder="Title"   formControlName="title" required>
       </mat-form-field> <br>
 
       <mat-form-field appearance="fill">
         <mat-label   color="accent-color" class="accent-color" >Describe your the Artwork you envision</mat-label>
-        <textarea matInput placeholder="Descrription" [(ngModel)]=commission.description formControlName="firstCtrl" required>
+        <textarea matInput placeholder="Descrription"   formControlName="description" required>
         </textarea>
       </mat-form-field>
       <div>
@@ -18,17 +18,17 @@
       </div>
     </form>
   </mat-step>
-  <mat-step  [stepControl]="secondFormGroup" label="Organisation">
-    <form [formGroup]="secondFormGroup">
+  <mat-step  [stepControl]="commissionForm" label="Organisation">
+    <form [formGroup]="commissionForm">
       <mat-form-field appearance="fill">
         <mat-label color="accent-color" class="accent-color">Delivery Date</mat-label>
-        <input matInput formControlName="secondCtrl"  type="date"  [(ngModel)]=commission.endDate placeholder=" "
+        <input matInput formControlName="date"  type="date"    placeholder=" "
                required>
       </mat-form-field><br>
       <mat-form-field appearance="fill">
         <mat-label color="accent-color" class="accent-color">Your offer</mat-label>
 
-        <input matInput formControlName="secondCtrl" [(ngModel)]=commission.price type="text" placeholder="Price"
+        <input matInput formControlName="price"   type="text" placeholder="Price"
                required>
       </mat-form-field>
       <div>
@@ -37,17 +37,48 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup" label="References">
-    <form [formGroup]="secondFormGroup">
+  <mat-step [stepControl]="commissionForm" label="References">
+    <form [formGroup]="commissionForm">
       <mat-form-field appearance="fill">
         <span  color="accent-color" class="accent-color"  >If possible provide reference pictures for your artwork</span>
 
 
+        <!-- this is neat as it allows multiple images at once maybe use-->
+        <ngx-mat-file-input formControlName="references" #fileInput [multiple]="true"
+                            accept=".png,.jpg,.gif,.jpeg" (change)="fileSelected()" ></ngx-mat-file-input>
 
-        <ngx-mat-file-input (change)="uploadReference()" >
-        </ngx-mat-file-input>
         <mat-hint>You can selected multiple Pictures</mat-hint>
-      </mat-form-field><br>
+        <button  class="upload-button" mat-button>
+          <span *ngIf="!file">Select File</span>
+          <span *ngIf="file">Change Picture</span>
+        </button>
+        <div class="container" id="container">
+          <div clas="header"><br></div>
+          <div class="content">
+            <div class="card-img-wrap">
+              <div *ngIf="this.commission.references" _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(400px, 1fr))" gdgap="10px"
+                   style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px;">
+                <div  *ngFor="let ref of this.commission.references; let i= index"
+                     class="image">
+                  <div>
+              <button mat-flat-button (click)="removeReference(i)"><mat-icon>delete</mat-icon></button>
+                  <img   [src]="ref.imageUrl  " alt="">
+                  </div>
+                  <div class="card-img-description-layer">
+                    <p class="card-img-description">
+                      {{globalFunctions.artworkNameParser(ref.name)}}
+                    </p>
+                  </div>
+                </div>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+      </mat-form-field>
+
 
       <div>
         <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
@@ -60,7 +91,7 @@
     <p  color="accent-color" class="accent-color">You are now done.</p>
     <div>
       <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
-      <button mat-button matStepperNext> Post Commission </button>
+      <button mat-button matStepperNext (click)="submitCommission()"> Submit Commission </button>
 
     </div>
   </mat-step>

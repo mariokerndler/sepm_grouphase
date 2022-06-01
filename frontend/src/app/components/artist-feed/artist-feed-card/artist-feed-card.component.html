@@ -14,8 +14,7 @@
            loading="lazy">
       <div class="artist-feed-card-image-description-layer">
         <p class="artist-feed-card-image-description">
-          <!-- TODO: Change this to some valuable name -->
-          {{artwork.description}}
+          {{ this.globalsFunctions.artworkNameParser(artwork.name)}}
         </p>
       </div>
     </div>

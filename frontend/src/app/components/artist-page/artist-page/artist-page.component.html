@@ -1,4 +1,4 @@
-<div [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}" class="artist-page-wrapper">
+<div class="artist-page-wrapper">
   <div
     *ngIf="isReady"
     class="artist-page"
@@ -13,15 +13,13 @@
               <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
             </div>
             <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
-          <span [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-                class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
-              <span [ngStyle]="{'color': '#' + profileSettings?.secondaryColor?.hex}" class="accent-color artist-role">Artist</span>
+          <span class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
+              <span class="accent-color artist-role">Artist</span>
             </div>
           </div>
         </div>
         <div class="artist-middle-menu">
-          <mat-tab-group [(selectedIndex)]="tabIndex" [ngStyle]="{'color': '#' + profileSettings?.headerColor?.hex}"
-                         backgroundColor="primary" dynamicHeight>
+          <mat-tab-group [(selectedIndex)]="tabIndex" backgroundColor="primary" dynamicHeight>
             <mat-tab label="Home">
               <br>
               <app-artist-information (tabIndexEvent)="changeIndex($event)" [artist]="artist"></app-artist-information>
@@ -43,16 +41,14 @@
   <div *ngIf="canEdit" class="edit-button">
     <button (click)="navigateToEdit()" color="accent" mat-button>
       <mat-icon color="accent">edit</mat-icon>
-      <span [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}"
-            class="edit-text">Edit your page</span>
+      <span class="edit-text">Edit your page</span>
     </button>
   </div>
 
   <div *ngIf="!canEdit" class="edit-button">
     <button (click)="goBack()" color="accent" mat-button>
       <mat-icon color="accent">arrow_back</mat-icon>
-      <span [ngStyle]="{'background': '#' + profileSettings?.backgroundColor.hex}"
-            class="edit-text">Go Back</span>
+      <span class="edit-text">Go Back</span>
     </button>
   </div>
 </div>

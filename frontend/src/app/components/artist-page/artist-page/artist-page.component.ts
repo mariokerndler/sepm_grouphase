@@ -39,20 +39,16 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  private static navigateToArtistList() {
-    console.log('FAILED');
-  }
-
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(
-      (params) => this.userService.getUserById(params.id, () => ArtistPageComponent.navigateToArtistList())
+      (params) => this.userService.getUserById(params.id, () => this.navigateToArtistList())
         .subscribe((user) => {
           this.user = user;
 
           if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
 
-            this.artistService.getArtistById(params.id, () => ArtistPageComponent.navigateToArtistList())
+            this.artistService.getArtistById(params.id, () => this.navigateToArtistList())
               .subscribe((artist) => {
                 this.artist = artist;
 
@@ -98,5 +94,15 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
 
   changeIndex($event: any) {
     this.tabIndex = $event;
+  }
+
+
+  private navigateToArtistList() {
+    this.router.navigate(['/artists'])
+      .catch(
+        (error) => {
+          this.notificationService.displayErrorSnackbar(error.toString());
+        }
+      );
   }
 }

@@ -1,36 +1,81 @@
-<div>
-  <span class="accent-color artist-about-header">About</span>
-  <p class="accent-color artist-about-description">
-    {{artist.description}}
-  </p>
+<div *ngIf="isReady && !profileSettings">
+  <div>
+    <span class="accent-color artist-about-header">About</span>
+    <p class="accent-color artist-about-description">
+      {{artist.description}}
+    </p>
+  </div>
+  <br>
+  <div>
+    <span class="accent-color artist-about-header">Gallery</span>
+    <div fxFlex fxLayout fxLayoutAlign="end">
+      <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
+    </div>
+  </div>
+
+  <div *ngIf="isReady" class="scrolling-container">
+    <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{artworks.length}}" class="viewport">
+      <div *ngFor="let artwork of artworks, let i = index" class="image-container">
+        <img (click)="setSelectedArtwork(i)" [src]="'assets/' + artwork.imageUrl" alt="{{artwork.name}}" class="gallery-pictures">
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <app-gallery-carousel
+    (closeCarousel)="selectedArtwork=null"
+    *ngIf="selectedArtwork!== null"
+    [artworks]="artworks"
+    [selectedArtworkId]="selectedArtwork">
+  </app-gallery-carousel>
+  <br><br>
+  <div>
+    <span class="accent-color artist-about-header">Reviews</span>
+    <div fxFlex fxLayout fxLayoutAlign="end">
+      <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
+    </div>
+    <p class="accent-color artist-about-description">
+    </p>
+  </div>
 </div>
-<br>
-<div>
-  <span class="accent-color artist-about-header">Gallery</span>
-  <div fxFlex fxLayout fxLayoutAlign="end">
-    <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
+<div *ngIf="isReady && profileSettings">
+  <div *ngFor="let element of profileSettings.layout">
+    <div *ngIf="element.componentName === 'Profile information'">
+      <span class="accent-color artist-about-header">About</span>
+      <p class="accent-color artist-about-description">
+        {{artist.description}}
+      </p>
+    </div>
+    <br>
+    <div *ngIf="element.componentName.substring(0,7) === 'Gallery'">
+      <div>
+        <span class="accent-color artist-about-header">{{element.componentName}}</span>
+        <div fxFlex fxLayout fxLayoutAlign="end">
+          <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
+        </div>
+      </div>
+
+      <div *ngIf="isReady" class="scrolling-container">
+        <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{artworks.length}}" class="viewport">
+          <div *ngFor="let artwork of artworks, let i = index" class="image-container">
+            <img (click)="setSelectedArtwork(i)" [src]="'assets/' + artwork.imageUrl" alt="{{artwork.name}}" class="gallery-pictures">
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+      <app-gallery-carousel
+        (closeCarousel)="selectedArtwork=null"
+        *ngIf="selectedArtwork!== null"
+        [artworks]="artworks"
+        [selectedArtworkId]="selectedArtwork">
+      </app-gallery-carousel>
+      <br>
+    </div>
+    <div *ngIf="element.componentName.substring(0,6) === 'Review'">
+      <span class="accent-color artist-about-header">{{element.componentName}}</span>
+      <div fxFlex fxLayout fxLayoutAlign="end">
+        <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
+      </div>
+      <p class="accent-color artist-about-description">
+      </p>
+    </div>
   </div>
 </div>
 
-<div *ngIf="isReady" class="scrolling-container">
-  <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{artworks.length}}" class="viewport">
-    <div *ngFor="let artwork of artworks, let i = index" class="image-container">
-      <img (click)="setSelectedArtwork(i)" [src]="'assets/' + artwork.imageUrl" alt="{{artwork.name}}" class="gallery-pictures">
-    </div>
-  </cdk-virtual-scroll-viewport>
-</div>
-<app-gallery-carousel
-  (closeCarousel)="selectedArtwork=null"
-  *ngIf="selectedArtwork!== null"
-  [artworks]="artworks"
-  [selectedArtworkId]="selectedArtwork">
-</app-gallery-carousel>
-<br><br>
-<div>
-  <span class="accent-color artist-about-header">Reviews</span>
-  <div fxFlex fxLayout fxLayoutAlign="end">
-    <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
-  </div>
-  <p class="accent-color artist-about-description">
-  </p>
-</div>

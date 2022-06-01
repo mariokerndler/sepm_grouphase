@@ -1,0 +1,32 @@
+.close-button {
+  float: right;
+  top: -24px;
+  right: -24px;
+}
+
+.error-message {
+  color: red;
+}
+
+.warning {
+  color: red;
+}
+
+.submit-button {
+
+  border: 3px #fb9fa4 solid;
+  margin: 0.5rem
+}
+
+.submit-button:hover {
+  color: #434F6A;
+  background: #fb9fa4;
+}
+
+.submit-button:active {
+  transform: scale(0.95);
+}
+
+.form-group {
+  margin: 0.50rem
+}

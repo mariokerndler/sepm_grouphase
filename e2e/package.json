@@ -10,7 +10,9 @@
     "cypress-multi-reporters": "1.5.0",
     "mocha-junit-reporter": "2.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cypress-file-upload": "^5.0.8"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cypress": "cypress run"

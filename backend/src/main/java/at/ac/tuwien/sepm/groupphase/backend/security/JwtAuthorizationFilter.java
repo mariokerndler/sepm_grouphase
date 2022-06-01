@@ -4,8 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,13 +16,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final SecurityProperties securityProperties;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, SecurityProperties securityProperties) {
@@ -34,13 +33,22 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws IOException, ServletException {
+
+        // if a registration is completed, the post-request contains the header auth : Registration
+        // and this filter is disabled.
+        // Todo Maybe there is a better solution than this
+        if (Objects.equals(request.getHeader("auth"), "frontend")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         try {
             UsernamePasswordAuthenticationToken authToken = getAuthToken(request);
             if (authToken != null) {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         } catch (IllegalArgumentException | JwtException e) {
-            LOGGER.debug("Invalid authorization attempt: {}", e.getMessage());
+            log.debug("Invalid authorization attempt: {}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid authorization header or token");
             return;
@@ -50,6 +58,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthToken(HttpServletRequest request)
         throws JwtException, IllegalArgumentException {
+
         String token = request.getHeader(securityProperties.getAuthHeader());
         if (token == null || token.isEmpty()) {
             return null;

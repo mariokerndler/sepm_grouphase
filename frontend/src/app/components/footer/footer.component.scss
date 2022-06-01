@@ -1,0 +1,31 @@
+footer {
+  margin-bottom: 1rem;
+}
+
+.footer-container {
+  width: 700px;
+  margin: auto;
+}
+
+@media screen and (max-width: 959px) {
+  .footer-container {
+    width: 100%;
+  }
+
+  .footer-item {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.footer-item {
+  text-align: center;
+}
+
+.footer-container > div > a {
+  text-decoration: none;
+}
+
+.footer-link {
+  font-size: 1rem;
+}

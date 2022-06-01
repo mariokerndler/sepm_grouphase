@@ -1,0 +1,19 @@
+<mat-card *ngIf="commission && user" [routerLink]="'/commissions/' + commission.id" class="commission"
+          routerLinkActive="active">
+  <mat-card-title><strong>{{commission.title}}</strong></mat-card-title>
+  <img [src]="userProfilePicture" alt="" class="commission-pfp">
+  <mat-card-content>
+    <strong>{{user.userName}}</strong>
+    <br><br>
+    <strong>Feedback Rounds: {{commission.feedbackRounds}}</strong>
+    <br>
+    <strong>Price: €{{commission.price}}</strong>
+    <br>
+    <strong>Date: {{commission.issueDate.substring(0, 10)}} - {{commission.deadlineDate.substring(0, 10)}}</strong>
+    <br><br>
+    <p>{{commission.instructions.substring(0, 100)}}...</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <span> <strong> See More </strong></span>
+  </mat-card-actions>
+</mat-card>

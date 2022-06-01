@@ -6,9 +6,13 @@ declare namespace Cypress{
         loginAdmin();
 
         /**
-         * Creates a message with a given text
-         * @param msg the text of the created message
+         * Navigate to main page and register as user
          */
-        createMessage(msg: string);
+        registerUser();
+
+        /**
+         * Navigate to artist page and upload an image
+         */
+         uploadImage();
     }
 }

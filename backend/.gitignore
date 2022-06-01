@@ -8,6 +8,9 @@ log/
 /database/
 *.mv.db
 
+## Test-Data
+/data/
+
 ### Gradle ###
 .gradle
 build/

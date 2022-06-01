@@ -1,33 +1,27 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserLoginDto {
 
     @NotNull(message = "Email must not be null")
     @Email
+    @Size(max = 50)
     private String email;
 
     @NotNull(message = "Password must not be null")
+    @Size(max = 100)
     private String password;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -54,7 +48,7 @@ public class UserLoginDto {
             + '}';
     }
 
-
+    //TODO: substitute this with @Builder annotation, not sure of dependencies tho
     public static final class UserLoginDtoBuilder {
         private String email;
         private String password;

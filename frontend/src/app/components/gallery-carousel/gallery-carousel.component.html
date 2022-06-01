@@ -1,0 +1,45 @@
+<div (click)="close()" class="gallery-carousel">
+  <mat-card class="image-Card" style="  background: radial-gradient(#536281, #2f3a51);">
+
+    <mat-card-header *ngIf="artworks[animArtwork].name">
+
+      <mat-card-title class="image-title"
+                      style="text-align: center;  color:#d7bce8"> {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
+      <mat-divider></mat-divider>
+
+
+      <mat-card-subtitle (click)="routeToArtist()" class="carousel-artist"
+                         style="text-align: left; font-size: x-large; color:#dedae0">by {{artist.userName}}
+      </mat-card-subtitle>
+      <mat-divider></mat-divider>
+    </mat-card-header>
+
+    <div (click)="onEvent($event)" class="carousel-image">
+      <img (@slide-in.done)="animDone()" [@slide-in]="animState" [src]="url+ artworks[animArtwork].imageUrl">
+      <div class=" carousel-button">
+        <span (click)="previous()" (keyup.delete)="previous()" style="font-size: large" tabindex="1"><mat-icon
+          class="material-icons">chevron_leftt</mat-icon></span>
+        <span></span>
+        <span (click)="next()" (keyup.enter)="next()" style="font-size: large" tabindex="2"><mat-icon
+          class="material-icons">chevron_right</mat-icon> </span>
+
+      </div>
+    </div>
+    <button (click)="close()" *ngIf="artworks[animArtwork].name" class="carousel-close" mat-icon-button tabindex="3">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button (click)="close()" *ngIf="!artworks[animArtwork].name" class="carousel-close-com" mat-icon-button
+            tabindex="3">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-card-subtitle
+      style="text-align: center; font-size: x-large;color: #d7bce8;">{{artworks[animArtwork].description}} </mat-card-subtitle>
+
+  </mat-card>
+  <br>
+  <mat-card-subtitle *ngIf="artworks[animArtwork].name" class="tag-view"
+                     style=" text-align: center;color: white  ; font-size: x-large"> {{stringifyTags()}}&zwnj;
+  </mat-card-subtitle>
+
+
+</div>

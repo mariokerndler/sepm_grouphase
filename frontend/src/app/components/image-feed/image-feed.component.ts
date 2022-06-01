@@ -31,12 +31,10 @@ export class ImageFeedComponent implements OnInit {
   totalSize = 0;
 
   //maybe use as component
-  filterArtistId = null;
   isOpen = false;
   tagHidden = false;
   cols = 3;
   //rename Artwork
-  url = 'assets/';
   images: ArtworkDto[];
   artists: ArtistDto[];
   tags: TagDto[];

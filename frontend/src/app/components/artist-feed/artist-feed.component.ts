@@ -62,6 +62,14 @@ export class ArtistFeedComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue;
   }
 
+  clearSearchField() {
+    this.searchFormControl.patchValue('');
+  }
+
+  searchFieldHasValue(): boolean {
+    return this.searchFormControl.value !== null;
+  }
+
   private _filter(value: string): ArtistDto[] {
     const filterValue = value.toLowerCase();
     this.applyFilter(filterValue);

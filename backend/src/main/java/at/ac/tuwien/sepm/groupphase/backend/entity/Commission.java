@@ -53,7 +53,7 @@ public class Commission implements HasId {
     @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(nullable = false , length = 512)
+    @Column(nullable = false, length = 512)
     private String instructions;
 
     @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)

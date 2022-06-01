@@ -86,12 +86,12 @@ public class ArtistServiceImpl implements ArtistService {
                 }
             }
             if (!artist.get().getArtworks().isEmpty()) {
-            List<Artwork> artworks = artworkService.findArtworksByArtist(artist.get().getId());
-            if (artworks != null) {
-                for (Artwork a : artworks) {
-                    artworkService.deleteArtwork(a);
+                List<Artwork> artworks = artworkService.findArtworksByArtist(artist.get().getId());
+                if (artworks != null) {
+                    for (Artwork a : artworks) {
+                        artworkService.deleteArtwork(a);
+                    }
                 }
-            }
             }
             artistRepo.delete(artist.get());
         } else {

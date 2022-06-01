@@ -132,7 +132,6 @@ public class CommissionEndpointTest {
         Commission commission = Commission.builder().artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).title("its yours").instructions("do the thing").feedbackRounds(2).build();
 
 
-
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/commissions").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -150,7 +149,7 @@ public class CommissionEndpointTest {
         Long commissionId = commissions.get(0).getId();
 
         mockMvc.perform(get("/api/v1/commissions/" + commissionId))
-                        .andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
 
         Commission modCommission = Commission.builder().id(commissionId).feedbackRounds(2).artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(commission.getIssueDate()).deadlineDate(commission.getDeadlineDate()).title("Drawing french").instructions("draw me like one of your french girls").build();
 
@@ -177,7 +176,7 @@ public class CommissionEndpointTest {
     }
 
 
-       public List<ArtistDto> allArtists() throws Exception {
+    public List<ArtistDto> allArtists() throws Exception {
         byte[] body = mockMvc
             .perform(MockMvcRequestBuilders
                 .get("/api/v1/artists")

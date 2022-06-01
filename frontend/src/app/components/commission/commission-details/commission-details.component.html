@@ -5,10 +5,10 @@
         <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
       </button>
     </div>
-    <h2>{{commission.title}}</h2>
+    <h2>Commission: s{{commission.title}}</h2>
     <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end"></div>
   </div>
-  <div class="primary total" fxLayout="row">
+  <div class="primary total">
     <div class="profile" fxLayout="column">
       <img [src]="userProfilePicture" alt="" class="commission-pfp">
       <br>
@@ -40,9 +40,9 @@
         </app-gallery-carousel>
       </div>
       <br><br>
-      <strong class="referenceImages">Price: ${{commission.price}}</strong>
+      <strong >Price: ${{commission.price}}</strong>
       <br><br>
-      <strong class="referenceImages">Date: {{commission.issueDate.substring(0,11)}}
+      <strong >Date: {{commission.issueDate.substring(0,11)}}
         - {{commission.deadlineDate.substring(0,11)}}</strong>
     </div>
     <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Request</button>

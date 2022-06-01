@@ -13,7 +13,6 @@ public class ImageDataPaths {
     public static final String commissionLocation = "data\\com\\";
 
 
-
     public static final String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
 
 }

@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
@@ -61,17 +60,20 @@ public class CommissionServiceImpl implements CommissionService {
         if (c.getReferences() != null) {
             List<Reference> references = c.getReferences();
             for (Reference r : references) {
-                r.setImageUrl(this.ifm.writeReferenceImage(c,r));
+                r.setImageUrl(this.ifm.writeReferenceImage(c, r));
+
             }
         }
         this.commissionRepo.save(c);
+
+
     }
 
     @Override
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
 
-        commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
+        commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
 
         commissionRepo.save(c);
     }

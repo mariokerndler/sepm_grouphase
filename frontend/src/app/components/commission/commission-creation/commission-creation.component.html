@@ -1,5 +1,5 @@
 <div  >
-  <mat-horizontal-stepper class="comm_stepper" fxLayout="column" fxFlex="100" fxLayoutAlign=" stretch" #stepper>
+  <mat-horizontal-stepper  (selectionChange)="setIndex($event)"  class="comm_stepper" fxLayout="column" fxFlex="100" fxLayoutAlign=" stretch" #stepper>
   <mat-step [stepControl]="commissionForm" fxFlex="100"  fxLayout="column">
     <form [formGroup]="commissionForm" fxFlex="80">
       <ng-template matStepLabel>Commission Details</ng-template>
@@ -7,7 +7,6 @@
         <mat-label  color="accent-color" class="accent-color">Title</mat-label>
         <input matInput placeholder="Title"   formControlName="title" required>
       </mat-form-field> <br>
-
       <mat-form-field appearance="fill"   >
         <mat-label   color="accent-color" class="accent-color" >Describe your the Artwork you envision</mat-label>
         <textarea matInput placeholder="Description"   formControlName="description" required>
@@ -16,9 +15,6 @@
       <div>
         <button mat-button matStepperNext><mat-icon>keyboard_arrow_right</mat-icon></button>
       </div>
-
-
-
     </form>
   </mat-step>
   <mat-step  [stepControl]="commissionForm" label="Organisation" fxFlex="100"  fxLayout="column">
@@ -39,12 +35,9 @@
         <button mat-button matStepperNext><mat-icon>keyboard_arrow_right</mat-icon></button>
       </div>
       <mat-label color="accent-color" class="accent-color">Feed back rounds:</mat-label><br>
-
       <mat-label>0</mat-label>  <mat-slider thumbLabel [(ngModel)]="commission.feedbackRounds"
                                             formControlName="feedbackRounds" tickInterval="1" min="0" max="5"></mat-slider>
       <mat-label>5</mat-label>
-
-
 
     </form>
   </mat-step>
@@ -88,16 +81,18 @@
 
       <div>
         <button mat-button matStepperPrevious><mat-icon>keyboard_arrow_left</mat-icon></button>
-        <button mat-button matStepperNext ><mat-icon>keyboard_arrow_right</mat-icon></button>
+        <button mat-button matStepperNext (click)="createDto()"><mat-icon>keyboard_arrow_right</mat-icon></button>
       </div>
     </form>
   </mat-step>
   <mat-step  >
     <div class="com-display">
+
+
     <ng-template matStepLabel>Done</ng-template>
     <p  color="accent-color" class="accent-color">Confirm your Order</p>
     <mat-label>Title</mat-label>
-  <p  color="accent-color" class="accent-color">{{commissionForm.value.title}} </p>
+  <p   color="accent-color" class="accent-color">{{commissionForm.value.title}} </p>
     <mat-label>Description</mat-label>
     <p  color="accent-color" class="accent-color">{{commissionForm.value.description}} </p>
     <mat-label>Price in Euro</mat-label>

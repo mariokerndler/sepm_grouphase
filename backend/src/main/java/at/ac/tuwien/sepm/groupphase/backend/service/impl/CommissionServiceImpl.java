@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
@@ -96,5 +97,10 @@ public class CommissionServiceImpl implements CommissionService {
             }
         }*/
         this.commissionRepo.deleteById(c.getId());
+    }
+
+    @Override
+    public List<Commission> findCommissionsByArtist(Long id) {
+        return commissionRepo.findCommissionsByArtist(id);
     }
 }

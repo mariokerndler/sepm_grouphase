@@ -38,5 +38,12 @@ public interface ArtistService {
      */
     void updateArtist(Artist artist) throws IOException;
 
-    //TODO: delete artist
+    /**
+     * This method deletes the given artist in the database.
+     * The entity, as saved in the database, is returned - including the newly generated id.
+     *
+     * @param id: the artist being saved
+     * @return the saved entity
+     */
+    void deleteArtistById(Long id);
 }

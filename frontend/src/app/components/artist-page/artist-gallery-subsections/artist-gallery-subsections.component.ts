@@ -18,7 +18,8 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
   @Input() tags: TagDto[];
   artworks: ArtworkDto[];
   isReady = false;
-  public selectedArtwork: number = null;
+  selectedArtwork: number = null;
+  elementAmount = 12;
 
   constructor(private artworkService: ArtworkService) { }
 
@@ -38,7 +39,7 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
   private fetchArtworksFromUser(artistId: number) {
     this.artworkService.getArtworksByArtist(artistId).subscribe({
       next: (loadedArtworks) => {
-        this.artworks = loadedArtworks.slice(0,12);
+        this.artworks = loadedArtworks;
         this.isReady = true;
       }
     });
@@ -51,7 +52,7 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
     });
     this.artworkService.search({tagIds: tagNames, pageNr:0, searchOperations:'', randomSeed:0} as TagSearch).subscribe({
       next: (loadedArtworks) => {
-        this.artworks = loadedArtworks.slice(0,12);
+        this.artworks = loadedArtworks;
         this.isReady = true;
       }
     });

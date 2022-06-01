@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 public class TagSearchDto {
     private List<String> tagIds = new LinkedList<>();
+    private List<String> artistIds = new LinkedList<>();
     private String searchOperations = "";
     private int pageNr = 0;
     private int randomSeed = 0;
@@ -22,6 +23,7 @@ public class TagSearchDto {
     public String toString() {
         return "TagSearchDto{"
             + "tagIds=" + tagIds
+            + "artistIds" + artistIds
             + ", searchOperations='" + searchOperations + '\''
             + ", pageNr=" + pageNr
             + ", randomSeed=" + randomSeed

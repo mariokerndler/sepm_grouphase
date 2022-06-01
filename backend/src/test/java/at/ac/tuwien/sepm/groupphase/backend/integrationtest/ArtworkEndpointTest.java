@@ -124,7 +124,7 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
@@ -137,7 +137,7 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
         List<ArtistDto> artists2 = allArtists();
         assertEquals(2, artists2.size());
@@ -159,7 +159,7 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isCreated()).andReturn();
 
 
         mockMvc.perform(get("/api/v1/artworks/" + artistIdForArtwork).contentType(MediaType.APPLICATION_JSON))

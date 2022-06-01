@@ -59,7 +59,6 @@ public class ArtworkEndpoint {
         log.info(tagSearchDto.toString());
         String search = tagSearchDto.getSearchOperations();
 
-        Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
         String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile(
@@ -108,8 +107,8 @@ public class ArtworkEndpoint {
             }
         }
 
+        Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
         return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
-
     }
 
 

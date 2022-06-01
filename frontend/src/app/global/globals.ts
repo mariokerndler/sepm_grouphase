@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 })
 export class Globals {
   readonly backendUri: string = Globals.findBackendUrl();
-  readonly projectName: string = 'Project: Sketchbook';
+  readonly projectName: string = 'Artsperience';
   readonly assetsPath: string = 'assets/';
 
   private static findBackendUrl(): string {
@@ -17,5 +17,4 @@ export class Globals {
     }
   }
 }
-
 

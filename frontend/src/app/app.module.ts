@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
-import { NgxMatFileInputModule } from '@angular-material-components/file-input';
+import {NgxMatFileInputModule} from '@angular-material-components/file-input';
 
 // Plugins
 import {AngularMaterialModule} from './components/angular-material/angular-material.module';
@@ -53,10 +53,11 @@ import {UploadComponent} from './components/upload/upload.component';
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
 import {CommissionCardComponent} from './components/commission/commission-card/commission-card.component';
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
-import { CommissionCreationComponent } from './components/commission/commission-creation/commission-creation.component';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { ArtistGallerySubsectionsComponent } from
-    './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
+import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import {
+  ArtistGallerySubsectionsComponent
+} from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,7 @@ import { ArtistGallerySubsectionsComponent } from
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { displayDefaultIndicatorType: false }
+      useValue: {displayDefaultIndicatorType: false}
     },
     httpInterceptorProviders,
     {

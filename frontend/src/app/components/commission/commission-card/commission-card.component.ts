@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CommissionDto} from '../../../dtos/commissionDto';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
+import {GlobalFunctions} from '../../../global/globalFunctions';
 
 @Component({
   selector: 'app-commission-card',
@@ -14,7 +14,7 @@ export class CommissionCardComponent implements OnInit {
   userProfilePicture = 'https://picsum.photos/150/150';
   user: ApplicationUserDto;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, public  globalFunctions: GlobalFunctions) {
   }
 
   ngOnInit(): void {

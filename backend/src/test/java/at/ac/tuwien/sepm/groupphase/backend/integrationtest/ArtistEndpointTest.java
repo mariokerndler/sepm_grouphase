@@ -152,11 +152,19 @@ public class ArtistEndpointTest {
         List<ArtistDto> artists3 = allArtists();
         assertEquals(2, artists3.size());
 
+        Long id = artists3.get(0).getId();
+
         assertTrue(artists3.toString().contains("bobMod"));
         assertTrue(artists3.toString().contains("bobby"));
         assertTrue(artists3.toString().contains("test2@test.com"));
         assertTrue(artists3.toString().contains("testMod@test.com"));
         assertFalse(artists3.toString().contains("test@test.com"));
+
+        mockMvc.perform(delete("/api/v1/artists/" + id))
+            .andExpect(status().isOk()).andReturn();
+
+        List<ArtistDto> artists4 = allArtists();
+        assertEquals(1, artists4.size());
     }
 
     public List<ArtistDto> allArtists() throws Exception {

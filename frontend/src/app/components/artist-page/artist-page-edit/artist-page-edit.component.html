@@ -204,7 +204,9 @@
                  class="element-box">
               {{item.componentName}}
 
-              <button *ngIf="item.componentName !== 'Profile information'" mat-button (click)="deleteComponent(item)"><mat-icon>close</mat-icon></button>
+              <button (click)="deleteComponent(item)" *ngIf="item.componentName !== 'Profile information'" mat-button>
+                <mat-icon>close</mat-icon>
+              </button>
             </div>
           </div>
         </div>
@@ -242,11 +244,11 @@
       <mat-label class="primary">Tags</mat-label>
       <input
         #tagInput
+        (matChipInputTokenEnd)="addTag($event)"
         [formControl]="tagForm"
         [matAutocomplete]="auto"
         [matChipInputFor]="tagList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="addTag($event)">
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
         <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
           {{tag.name}}

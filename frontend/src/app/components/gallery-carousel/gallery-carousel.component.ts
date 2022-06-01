@@ -88,7 +88,7 @@ export class GalleryCarouselComponent implements OnInit {
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
     //console.log(this.selectedArtworkId);
-    if(this.artworks[this.selectedArtworkId].artistId) {
+    if (this.artworks[this.selectedArtworkId].artistId) {
       this.getImageArtistInfo();
     }
   }
@@ -144,7 +144,7 @@ export class GalleryCarouselComponent implements OnInit {
   public getImageArtistInfo(): void {
     this.loadImageTags();
     const artistId = this.artworks[this.selectedArtworkId].artistId;
-    if(artistId) {
+    if (artistId) {
       this.artistService.getArtistById(artistId).subscribe(
         data => {
           this.artist = data;
@@ -156,7 +156,7 @@ export class GalleryCarouselComponent implements OnInit {
   public routeToArtist(): void {
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(0px)');
     const artistId = this.artworks[this.selectedArtworkId].artistId;
-    if(artistId) {
+    if (artistId) {
       this.router.navigate(['/artist/' + artistId.toString()]);
     }
   }

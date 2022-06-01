@@ -9,5 +9,6 @@ export class SimpleCommissionDto {
   price: number;
   issueDate: string;
   deadlineDate: string;
+  feedbackRounds: number;
   referenceImageIds: number[];
 }

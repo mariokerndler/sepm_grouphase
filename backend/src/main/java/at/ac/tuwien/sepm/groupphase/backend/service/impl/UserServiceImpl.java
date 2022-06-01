@@ -9,18 +9,14 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,5 +114,18 @@ public class UserServiceImpl implements UserService {
         log.debug("Service: changeUserPassword User {}, Password{}", user.toString(), password);
         user.setPassword(passwordEncoder.encode(password));
         userRepo.save(user);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        log.info(ImageDataPaths.assetAbsoluteLocation);
+        Optional<ApplicationUser> user = userRepo.findById(id);
+        if (user.isPresent()) {
+            log.info(user.get().getUserName());
+
+            userRepo.deleteById(id);
+        } else {
+            throw new NotFoundException(String.format("Could not find User with id %s", id));
+        }
     }
 }

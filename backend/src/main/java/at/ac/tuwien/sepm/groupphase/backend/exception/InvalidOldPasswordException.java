@@ -6,5 +6,6 @@ public class InvalidOldPasswordException extends RuntimeException {
         super(e);
     }
 
-    public InvalidOldPasswordException() {}
+    public InvalidOldPasswordException() {
+    }
 }

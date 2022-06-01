@@ -186,14 +186,26 @@
         <div class="element-container" fxFlex="33%">
           <h3 class="primary">Layout arrangement</h3>
 
+          <div class="element-list">
+            <div class="element-box-disabled">
+              {{profileInfoComponent.componentName}}
+            </div>
+          </div>
+
           <div
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="chosenComponents"
             cdkDropList
             class="element-list">
-            <div (click)="componentClick(item)" *ngFor="let item of chosenComponents" [cdkDragDisabled]="item.disabled"
+            <div (click)="componentClick(item)"
+                 *ngFor="let item of chosenComponents"
+                 [cdkDragDisabled]="item.disabled"
                  cdkDrag
-                 class="element-box">{{item.componentName}}</div>
+                 class="element-box">
+              {{item.componentName}}
+
+              <button *ngIf="item.componentName !== 'Profile information'" mat-button (click)="deleteComponent(item)"><mat-icon>close</mat-icon></button>
+            </div>
           </div>
         </div>
         <div class="gallery-settings" fxFlex="33%">
@@ -250,6 +262,5 @@
         </mat-chip>
       </mat-chip-list>
     </mat-form-field>
-
   </div>
 </ng-template>

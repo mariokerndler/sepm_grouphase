@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", uses = {CommissionService.class})
 public abstract class ReferenceMapper {
@@ -14,5 +15,8 @@ public abstract class ReferenceMapper {
 
     @Mapping(source = "commissionId", target = "commission")
     public abstract Reference referenceDtoToReference(ReferenceDto referenceDto);
+
+    @Named("ReferenceWithoutCommissionId")
+    public abstract Reference referenceDtoWithoutCommissionIdToReference(ReferenceDto referenceDto);
 
 }

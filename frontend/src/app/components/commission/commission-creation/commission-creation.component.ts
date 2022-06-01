@@ -12,8 +12,8 @@ import {FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 
 import {ReferenceDto} from '../../../dtos/referenceDto';
-import {CommissionService} from "../../../services/commission.service";
-import {UserRole} from "../../../dtos/artistDto";
+import {CommissionService} from '../../../services/commission.service';
+import {UserRole} from '../../../dtos/artistDto';
 
 
 @Component({

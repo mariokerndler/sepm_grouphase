@@ -13,10 +13,18 @@
 }
 
 .submit-button {
-  color: black;
-  background: white;
-  border: 2px black solid;
+
+  border: 3px #fb9fa4 solid;
   margin: 0.5rem
+}
+
+.submit-button:hover{
+  color: #434F6A;
+  background: #fb9fa4;
+}
+
+.submit-button:active {
+  transform: scale(0.95);
 }
 
 .form-group {

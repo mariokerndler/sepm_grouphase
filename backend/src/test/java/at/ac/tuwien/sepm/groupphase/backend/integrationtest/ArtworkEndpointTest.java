@@ -200,7 +200,7 @@ public class ArtworkEndpointTest {
     public List<ArtworkDto> allArtworksByArtist(Long id) throws Exception {
         byte[] body = mockMvc
             .perform(MockMvcRequestBuilders
-                .get("/api/v1/artworks/"+id)
+                .get("/api/v1/artworks/" + id)
                 .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andReturn().getResponse().getContentAsByteArray();

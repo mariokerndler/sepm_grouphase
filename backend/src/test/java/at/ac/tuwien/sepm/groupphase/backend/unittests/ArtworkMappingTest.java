@@ -1,11 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.unittests;
+
 import at.ac.tuwien.sepm.groupphase.backend.basetest.GetImageByteArray;
 import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Image;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
@@ -19,17 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -53,7 +44,7 @@ public class ArtworkMappingTest implements TestData {
     private Artist artist;
 
     public Artwork getArtwork(Long id, byte[] content) {
-        return artwork = new Artwork("artwork1", "okay dog pls", "./data/image0", FileType.PNG,  artistService.findArtistById(id), null, null, content);
+        return artwork = new Artwork("artwork1", "okay dog pls", "./data/image0", FileType.PNG, artistService.findArtistById(id), null, null, content);
     }
 
     public Artist getTestArtist1() {

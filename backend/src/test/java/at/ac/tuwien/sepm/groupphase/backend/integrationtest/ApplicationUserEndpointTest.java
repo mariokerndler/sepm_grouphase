@@ -35,8 +35,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,6 +60,15 @@ public class ApplicationUserEndpointTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private JwtTokenizer jwtTokenizer;
+
+    @Autowired
+    private SecurityProperties securityProperties;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -103,7 +112,7 @@ public class ApplicationUserEndpointTest {
         ApplicationUser anObject = getTestUser1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(anObject);
+        String requestJson = ow.writeValueAsString(anObject);
 
         mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))

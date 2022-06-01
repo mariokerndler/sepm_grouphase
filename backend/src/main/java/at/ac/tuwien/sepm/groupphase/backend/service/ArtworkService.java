@@ -18,7 +18,7 @@ public interface ArtworkService {
 
     /**
      * This method returns all artworks by the artist with the specified id,
-     * if there are artworks with by this artist saved in the database.
+     * if there are artworks with this artist's id saved in the database.
      *
      * @param id: the artist id to look for
      * @return a list of all artworks by the artist with the specified id

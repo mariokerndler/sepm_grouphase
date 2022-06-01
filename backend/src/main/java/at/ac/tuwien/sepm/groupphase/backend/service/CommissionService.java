@@ -14,6 +14,15 @@ public interface CommissionService {
     List<Commission> getAllCommissions();
 
     /**
+     * This method returns all commissions by the artist with the specified id,
+     * if there are commissions with this artist's id saved in the database.
+     *
+     * @param id: the artist id to look for
+     * @return a list of all commissions by the artist with the specified id
+     */
+    List<Commission> findCommissionsByArtist(Long id);
+
+    /**
      * This method returns the commission with the specified id, if there is a commission with this id saved in the database.
      *
      * @param id: the id to look for

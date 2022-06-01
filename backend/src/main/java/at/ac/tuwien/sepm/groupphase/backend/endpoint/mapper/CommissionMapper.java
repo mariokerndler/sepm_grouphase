@@ -39,8 +39,10 @@ public abstract class CommissionMapper {
     @AfterMapping
     public Commission setCommissionForChildren(@MappingTarget Commission.CommissionBuilder commissionBuilder) {
         Commission commission = commissionBuilder.build();
-        for (Reference r : commission.getReferences()) {
-            r.setCommission(commission);
+        if (commission.getReferences() != null) {
+            for (Reference r : commission.getReferences()) {
+                r.setCommission(commission);
+            }
         }
         return commission;
     }

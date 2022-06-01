@@ -55,29 +55,23 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void saveCommission(Commission c) throws IOException {
         LOGGER.info("Save commission " + c);
-        if (c.getId() != null) {
-            commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
-        }
+        commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
 
         this.ifm.createCommission(c);
         if (c.getReferences() != null) {
             List<Reference> references = c.getReferences();
             for (Reference r : references) {
                 r.setImageUrl(this.ifm.writeReferenceImage(c,r));
-
             }
         }
         this.commissionRepo.save(c);
-
-
-
     }
 
     @Override
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
 
-        commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
+        commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
 
         commissionRepo.save(c);
     }

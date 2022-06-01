@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TagSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
+import at.ac.tuwien.sepm.groupphase.backend.search.ArtistSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
@@ -50,10 +51,11 @@ public class ArtworkEndpoint {
     @Operation(summary = "searchArtworks with searchDto searchOperations:id>12,name=*a etc, tagIds as List")
     public List<ArtworkDto> search(@RequestParam(name = "randomSeed", defaultValue = "0") int randomSeed,
                                    @RequestParam(name = "tagIds", required = false) List<String> tagIds,
+                                   @RequestParam(name = "ArtistId", required = false) List<String> artistIds,
                                    @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
                                    @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
         ;
-        TagSearchDto tagSearchDto = new TagSearchDto(tagIds, searchOperations.toLowerCase(), pageNr, randomSeed);
+        TagSearchDto tagSearchDto = new TagSearchDto(tagIds, artistIds, searchOperations.toLowerCase(), pageNr, randomSeed);
         log.info(tagSearchDto.toString());
         String search = tagSearchDto.getSearchOperations();
 
@@ -92,6 +94,20 @@ public class ArtworkEndpoint {
 
             }
         }
+
+        if (tagSearchDto.getArtistIds() != null) {
+            if (tagSearchDto.getArtistIds().size() > 0) {
+                if (spec == null) {
+                    spec = ArtistSpecification.filterBy(tagSearchDto.getArtistIds().get(0));
+                }
+                for (String artist : tagSearchDto.getArtistIds()) {
+                    spec = spec.and(ArtistSpecification.filterBy(artist).and(spec));
+                    log.info("filtering by:" + artist);
+                }
+
+            }
+        }
+
         return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
 
     }

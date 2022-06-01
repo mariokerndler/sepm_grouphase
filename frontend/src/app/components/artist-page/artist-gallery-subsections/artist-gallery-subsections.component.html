@@ -1,6 +1,6 @@
 <div *ngIf="isReady"   class="scrolling-container">
-  <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{artworks.length}}" class="viewport">
-    <div *ngFor="let artwork of artworks, let i = index" class="image-container">
+  <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{elementAmount}}" class="viewport">
+    <div *ngFor="let artwork of artworks.slice(0, elementAmount), let i = index" class="image-container">
       <img (click)="setSelectedArtwork(i)" [src]="'assets/' + artwork.imageUrl" alt="{{artwork.name}}" class="gallery-pictures">
     </div>
   </cdk-virtual-scroll-viewport>

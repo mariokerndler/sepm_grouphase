@@ -22,8 +22,8 @@
       <p>{{commission.instructions}}</p>
       </div>
       <br>
-      <div *ngIf="commission.referencesDtos">
-      <strong class="referenceImages">Reference Images:</strong>
+      <div *ngIf="hasReferences">
+        <strong class="referenceImages">Reference Images:</strong>
       <br><br>
         <div class="scrolling-container">
           <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.referencesDtos.length}}" class="viewport">

@@ -54,9 +54,9 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void saveCommission(Commission c) {
         LOGGER.info("Save commission " + c);
-
-        commissionValidator.checkIfCommissionAlreadyExists(c);
-
+        if (c.getId() != null) {
+            commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
+        }
         //TODO: writeReference in imageFileManager
 
         if (c.getReferences() != null) {
@@ -76,9 +76,9 @@ public class CommissionServiceImpl implements CommissionService {
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
 
-        commissionValidator.checkIfCommissionExists(c);
+        commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
 
-        this.commissionRepo.save(c);
+        commissionRepo.save(c);
     }
 
     @Override

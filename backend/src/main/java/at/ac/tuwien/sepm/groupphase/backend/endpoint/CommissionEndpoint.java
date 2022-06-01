@@ -55,7 +55,7 @@ public class CommissionEndpoint {
 
     @PermitAll
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post commission")
     public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
         LOGGER.info("Post commission " + commissionDto);

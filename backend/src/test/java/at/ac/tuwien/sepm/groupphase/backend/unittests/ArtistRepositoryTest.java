@@ -26,6 +26,7 @@ public class ArtistRepositoryTest {
             , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
     }
 
+
     @Test
     public void givenNothing_whenSaveArtist_thenFindListWithOneElementAndArtistById() {
         Artist artist = getTestArtist1();

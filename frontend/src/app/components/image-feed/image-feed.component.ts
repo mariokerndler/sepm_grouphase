@@ -45,7 +45,8 @@ export class ImageFeedComponent implements OnInit {
     pageNr: 0,
     randomSeed: 1,
     searchOperations: '',
-    tagIds: []
+    tagIds: [],
+    artistIds: []
   };
   public selectedArtwork: number = null;
 

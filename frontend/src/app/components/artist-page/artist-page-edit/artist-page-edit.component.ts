@@ -165,6 +165,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
         .subscribe((user) => {
           this.user = user;
 
+
           // Check if the user can edit this page
           if (this.user.email !== this.authService.getUserAuthEmail()) {
             this.goBack();

@@ -34,27 +34,14 @@ export class ArtistInformationComponent implements OnInit {
   ngOnInit(): void {
     if (this.artist.profileSettings) {
       this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
+      console.log(this.profileSettings);
     }
-    this.fetchArtworksFromUser(this.artist.id);
-
   }
 
-  setSelectedArtwork(i: number) {
-    this.selectedArtwork = i;
-    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
-  }
+
 
   switchTab(index) {
     this.tabIndexEvent.emit(index);
-  }
-
-  private fetchArtworksFromUser(artistId: number) {
-    this.artworkService.getArtworksByArtist(artistId).subscribe({
-      next: (loadedArtworks) => {
-        this.artworks = loadedArtworks.slice(0,12);
-        this.isReady = true;
-      }
-    });
   }
 
 }

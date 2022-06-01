@@ -31,7 +31,9 @@ public class SimpleCommissionDto {
 
     @Min(0)
     private double price;
-
+    @Min(0)
+    @Max(5)
+    private int feedbackRounds;
     @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

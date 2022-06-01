@@ -21,7 +21,7 @@ public class Reference extends Image {
 
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "commission_id")
     private Commission commission;
 
     public Reference(String imageUrl, FileType fileType, Commission commission) {

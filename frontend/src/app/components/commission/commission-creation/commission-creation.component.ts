@@ -14,6 +14,8 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 import {ReferenceDto} from '../../../dtos/referenceDto';
 import {CommissionService} from '../../../services/commission.service';
 import {UserRole} from '../../../dtos/artistDto';
+import {formatDate} from '@angular/common';
+import {StepperSelectionEvent} from '@angular/cdk/stepper';
 
 
 @Component({
@@ -23,7 +25,7 @@ import {UserRole} from '../../../dtos/artistDto';
 })
 export class CommissionCreationComponent implements OnInit {
   selectedImage;
-  previewImages: any[]=[];
+  previewImages: any[] = [];
   selectedReferences = [];
   commissionForm = new FormGroup({
     title: new FormControl(''),
@@ -31,6 +33,7 @@ export class CommissionCreationComponent implements OnInit {
     price: new FormControl(''),
     date: new FormControl(''),
     references: new FormControl(''),
+    feedbackRounds: new FormControl('')
   });
   imageForm: FormGroup;
   secondFormGroup: FormGroup;
@@ -38,7 +41,7 @@ export class CommissionCreationComponent implements OnInit {
   commission: CommissionDto = {
     artistDto: undefined,
     customerDto: {
-      id:1,
+      id: 1,
       userName: 'admin',
       name: '',
       surname: '',
@@ -46,17 +49,18 @@ export class CommissionCreationComponent implements OnInit {
       address: '',
       password: 'string',
       admin: true,
-      userRole:  UserRole.admin
+      userRole: UserRole.admin
     },
     deadlineDate: '',
     feedbackSend: 0,
-    id: 0,
+    id: null,
     instructions: '',
     issueDate: '',
     price: 0,
     referencesDtos: [],
     sketchesShown: 0,
-    title: ''
+    title: '',
+    feedbackRounds: 1
   };
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
@@ -78,17 +82,17 @@ export class CommissionCreationComponent implements OnInit {
 
   }
 
-  fileSelected( ) {
+  fileSelected() {
 
     this.selectedReferences = this.commissionForm.value.references;
     console.log((this.selectedReferences.length));
     if (this.selectedReferences != null) {
       if (this.selectedReferences.length > 0) {
-        this.previewImages=[];
+        this.previewImages = [];
         const image = new Image();
 
         this.selectedReferences.forEach(ref => {
-          image.src= ref;
+          image.src = ref;
           this.previewImages.push(image);
           const reader = new FileReader();
           reader.readAsDataURL(ref);
@@ -107,9 +111,9 @@ export class CommissionCreationComponent implements OnInit {
             const r = new ReferenceDto();
             //TODO: very likley redundant data and URL
             r.imageData = imageData;
-            r.imageUrl=event.target.result;
+            r.imageUrl = event.target.result;
             r.name = ref.name;
-            r.fileType=filetype;
+            r.fileType = filetype;
             console.log(r);
             this.commission.referencesDtos.push(r);
           };
@@ -122,21 +126,34 @@ export class CommissionCreationComponent implements OnInit {
 
   submitCommission() {
     console.log(this.commissionForm.value.references);
-    this.commission.title=this.commissionForm.value.title;
-    this.commission.instructions=this.commissionForm.value.description;
-    this.commission.price=this.commissionForm.value.price;
-    this.commission.deadlineDate=this.commissionForm.value.date+' 01:01:01';
+    this.commission.title = this.commissionForm.value.title;
+    this.commission.instructions = this.commissionForm.value.description;
+    this.commission.price = this.commissionForm.value.price;
+    this.commission.issueDate = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en_US');
+    this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
     console.log(this.commission);
 
-    this.commissionService.createCommission(this.commission).subscribe({
-    });
+    this.commissionService.createCommission(this.commission).subscribe({});
   }
 
   removeReference(i) {
-    this.commission.referencesDtos.splice(i,1);
+    this.commission.referencesDtos.splice(i, 1);
     this.commissionForm.value.references.remove(i);
 
   }
 
 
+  createDto() {
+    this.commission.title = this.commissionForm.value.title;
+    this.commission.instructions = this.commissionForm.value.description;
+    this.commission.price = this.commissionForm.value.price;
+    this.commission.issueDate = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en_US');
+    this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
+  }
+
+  setIndex($event: StepperSelectionEvent) {
+    if ($event.selectedIndex === 3) {
+      this.createDto();
+    }
+  }
 }

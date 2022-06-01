@@ -55,6 +55,8 @@ import {CommissionCardComponent} from './components/commission/commission-card/c
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 import { CommissionCreationComponent } from './components/commission/commission-creation/commission-creation.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { ArtistGallerySubsectionsComponent } from
+    './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +89,8 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
     CommissionFeedComponent,
     CommissionCardComponent,
     CommissionDetailsComponent,
-    CommissionCreationComponent
+    CommissionCreationComponent,
+    ArtistGallerySubsectionsComponent
   ],
   imports: [
     BrowserModule,

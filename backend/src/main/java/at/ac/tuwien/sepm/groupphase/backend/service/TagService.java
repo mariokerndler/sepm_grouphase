@@ -7,16 +7,16 @@ import java.util.List;
 public interface TagService {
 
     /**
-     * This method returns all tags saved in the database.
+     * Returns all tags saved in the database.
      *
-     * @return a list of all tags
+     * @return A list of all tags.
      */
     List<Tag> loadAllTags();
 
     /**
-     * This method returns a list of all tags of the artwork with the specified id.
+     * Returns a list of all tags of the artwork with the specified id.
      *
-     * @return a list of all tags of the artwork with the specified id
+     * @return A list of all tags of the artwork with the specified id.
      */
     List<Tag> loadTagsOfArtwork(Long id);
 }

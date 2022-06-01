@@ -18,6 +18,7 @@ export class CommissionDetailsComponent implements OnInit {
   commission: CommissionDto;
   user: ApplicationUserDto;
   hasLoaded = false;
+  hasReferences = false;
   items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
 
   public selectedArtwork: number = null;
@@ -44,9 +45,11 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
         this.commission = commission;
-        console.log(commission.referencesDtos);
         this.user = commission.customerDto;
         this.hasLoaded = true;
+        if(this.commission.referencesDtos.length !== 0){
+          this.hasReferences = true;
+        }
       });
   }
 }

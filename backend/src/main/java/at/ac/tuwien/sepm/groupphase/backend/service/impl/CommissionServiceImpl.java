@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
@@ -56,14 +57,14 @@ public class CommissionServiceImpl implements CommissionService {
         commissionValidator.checkIfCommissionAlreadyExists(c);
 
         //TODO: writeReference in imageFileManager
-        /*
+
         if (c.getReferences() != null) {
             List<Reference> references = c.getReferences();
             for (Reference r : references) {
-                //r.setImageUrl(this.ifm.writeReference(r));
+                 r.setImageUrl(this.ifm.writeReferenceImage(c,r));
             }
         }
-         */
+
         this.commissionRepo.save(c);
 
     }
@@ -84,6 +85,7 @@ public class CommissionServiceImpl implements CommissionService {
         if (c.getArtwork() != null) {
             this.ifm.deleteArtistImage(c.getArtwork());
         }
+        this.ifm.deleteCommission(c);
 
         //TODO: deleteReference in imageFileManager
         /*if (c.getReferences() != null) {

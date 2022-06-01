@@ -41,10 +41,10 @@ public class Commission implements HasId {
     @Column(name = "deadline_date")
     private LocalDateTime deadlineDate;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false , length = 512)
     private String instructions;
 
     @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)

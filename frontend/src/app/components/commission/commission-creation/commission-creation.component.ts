@@ -21,7 +21,7 @@ import {ReferenceDto} from '../../../dtos/referenceDto';
 })
 export class CommissionCreationComponent implements OnInit {
   isLinear = false;
-  file: any;
+
   selectedImage;
   previewImages: any[]=[];
   selectedReferences = [];
@@ -115,6 +115,10 @@ export class CommissionCreationComponent implements OnInit {
 
   submitCommission() {
     console.log(this.commissionForm.value.references);
+    this.commission.title=this.commissionForm.value.title;
+    this.commission.description=this.commissionForm.value.description;
+    this.commission.price=this.commissionForm.value.price;
+    this.commission.endDate=this.commissionForm.value.date;
   }
 
   removeReference(i) {
@@ -122,4 +126,6 @@ export class CommissionCreationComponent implements OnInit {
     this.commissionForm.value.references.remove(i);
 
   }
+
+
 }

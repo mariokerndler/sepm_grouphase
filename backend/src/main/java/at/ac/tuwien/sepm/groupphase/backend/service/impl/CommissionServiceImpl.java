@@ -73,7 +73,7 @@ public class CommissionServiceImpl implements CommissionService {
     public void updateCommission(Commission c) {
         LOGGER.info("Update commission " + c);
 
-        commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
+        commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
 
         commissionRepo.save(c);
     }

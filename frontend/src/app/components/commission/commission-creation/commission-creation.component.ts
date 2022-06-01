@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtistService} from '../../../services/artist.service';
 import {TagService} from '../../../services/tag.service';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import {BreakpointObserver} from '@angular/cdk/layout';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {StepperOrientation} from '@angular/material/stepper';
 import {Observable} from 'rxjs';
@@ -13,6 +13,7 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 
 import {ReferenceDto} from '../../../dtos/referenceDto';
 import {CommissionService} from "../../../services/commission.service";
+import {UserRole} from "../../../dtos/artistDto";
 
 
 @Component({
@@ -21,8 +22,6 @@ import {CommissionService} from "../../../services/commission.service";
   styleUrls: ['./commission-creation.component.scss']
 })
 export class CommissionCreationComponent implements OnInit {
-  isLinear = false;
-
   selectedImage;
   previewImages: any[]=[];
   selectedReferences = [];
@@ -38,7 +37,17 @@ export class CommissionCreationComponent implements OnInit {
   stepperOrientation: Observable<StepperOrientation>;
   commission: CommissionDto = {
     artistDto: undefined,
-    customerDto: undefined,
+    customerDto: {
+      id:1,
+      userName: 'admin',
+      name: '',
+      surname: '',
+      email: '',
+      address: '',
+      password: 'string',
+      admin: true,
+      userRole:  UserRole.admin
+    },
     deadlineDate: '',
     feedbackSend: 0,
     id: 0,
@@ -116,7 +125,7 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.title=this.commissionForm.value.title;
     this.commission.instructions=this.commissionForm.value.description;
     this.commission.price=this.commissionForm.value.price;
-    this.commission.deadlineDate=this.commissionForm.value.date;
+    this.commission.deadlineDate=this.commissionForm.value.date+' 01:01:01';
     console.log(this.commission);
 
     this.commissionService.createCommission(this.commission).subscribe({

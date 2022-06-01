@@ -35,6 +35,16 @@ export class GlobalFunctions {
     return result;
   }
 
+  base64ToBinaryArray(base64: string) {
+
+    const binary = window.atob(base64);
+    const length = binary.length;
+    const bytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
   public shuffleArray(array: any[]): any[] {
     let currentIndex = array.length;
     let randomIndex;

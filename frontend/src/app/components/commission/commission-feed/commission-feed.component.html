@@ -4,11 +4,14 @@
       <mat-label class="primary">Search Commissions</mat-label>
       <input matInput placeholder="search">
       <mat-icon matSuffix>search</mat-icon>
+
     </mat-form-field>
+    <button style="float:right" mat-flat-button color="primary" class="primary" [routerLink]="'/commission-creation'"  >Create Commission</button>
   </form>
+
   <div class="content">
     <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="8px grid">
-      <div *ngFor="let n of numSequence(20)">
+      <div *ngFor="let commission of commissions">
         <app-commission-card [commission]="commission"></app-commission-card>
       </div>
     </div>

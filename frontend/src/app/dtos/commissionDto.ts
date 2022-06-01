@@ -1,15 +1,18 @@
+import {ArtistDto} from './artistDto';
+import {ApplicationUserDto} from './applicationUserDto';
+import {ArtworkDto} from './artworkDto';
+import {ReferenceDto} from './referenceDto';
+
 export class CommissionDto {
   id: number;
-  artistId: number;
-  userId: number;
+  artistDto: ArtistDto;
+  customerDto: ApplicationUserDto;
   title: string;
-  description: string;
+  instructions: string;
   sketchesShown: number;
   feedbackSend: number;
-  comArtworkId: number;
-  feedback: string[];
   price: number;
-  startDate: Date;
-  endDate: Date;
-  referenceImageIds: number[];
+  issueDate: string;
+  deadlineDate: string;
+  referencesDtos: ReferenceDto[];
 }

@@ -171,6 +171,7 @@ public class CommissionMappingTest {
             2000.45,
             LocalDateTime.now(),
             LocalDateTime.now().plusHours(24),
+            "Commission Title",
             "please draw me a small green snail with a cowboy's hat",
             null,
             null,

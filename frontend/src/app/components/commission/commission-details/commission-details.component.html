@@ -1,37 +1,50 @@
-<div class="primary title">
-  <div fxFlex fxLayout>
-    <button class="back-arrow" mat-icon-button routerLink="/commissions">
-      <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
-    </button>
-  </div>
-  <h2>{{commission.title}}</h2>
-  <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end"></div>
-</div>
-<div *ngIf="user" class="primary total" fxLayout="row">
-  <div class="profile" fxLayout="column">
-    <img [src]="userProfilePicture" alt="" class="commission-pfp">
-    <br>
-    <strong class="userName">{{user.userName}}</strong>
-  </div>
-
-  <div class="description">
-    <strong>Description:</strong>
-    <br><br>
-    <p>{{commission.description.substring(0, 240)}}</p>
-    <p>{{commission.description.substring(240, 800)}}</p>
-    <br>
-    <strong class="referenceImages">Reference Images:</strong>
-    <br><br>
-    <div class="images" fxLayout="row">
-      <img [src]="userProfilePicture" alt="" class="commission-image">
-      <img [src]="userProfilePicture" alt="" class="commission-image">
-      <img [src]="userProfilePicture" alt="" class="commission-image">
+<div *ngIf="hasLoaded">
+  <div class="primary title">
+    <div fxFlex fxLayout>
+      <button class="back-arrow" mat-icon-button routerLink="/commissions">
+        <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
+      </button>
     </div>
-    <br><br>
-    <strong class="referenceImages">Price: ${{commission.price}}</strong>
-    <br><br>
-    <strong class="referenceImages">Date: {{commission.startDate.toLocaleDateString()}}
-      - {{commission.endDate.toLocaleDateString()}}</strong>
+    <h2>{{commission.title}}</h2>
+    <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end"></div>
   </div>
-  <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Accept</button>
+  <div class="primary total" fxLayout="row">
+    <div class="profile" fxLayout="column">
+      <img [src]="userProfilePicture" alt="" class="commission-pfp">
+      <br>
+      <strong class="userName">{{user.userName}}</strong>
+    </div>
+
+    <div class="description">
+      <strong>Description:</strong>
+      <br><br>
+      <div class="description-section">
+      <p>{{commission.instructions}}</p>
+      </div>
+      <br>
+      <div *ngIf="commission.referencesDtos">
+      <strong class="referenceImages">Reference Images:</strong>
+      <br><br>
+        <div class="scrolling-container">
+          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.referencesDtos.length}}" class="viewport">
+            <div class="image-container" *ngFor="let reference of commission.referencesDtos; let i = index">
+              <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt="">
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </div>
+        <app-gallery-carousel
+          (closeCarousel)="selectedArtwork=null"
+          *ngIf="selectedArtwork!== null"
+          [artworks]="commission.referencesDtos"
+          [selectedArtworkId]="selectedArtwork">
+        </app-gallery-carousel>
+      </div>
+      <br><br>
+      <strong class="referenceImages">Price: ${{commission.price}}</strong>
+      <br><br>
+      <strong class="referenceImages">Date: {{commission.issueDate.substring(0,11)}}
+        - {{commission.deadlineDate.substring(0,11)}}</strong>
+    </div>
+    <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Request</button>
+  </div>
 </div>

@@ -86,7 +86,7 @@ export class ArtworkService {
    *
    * @return Observable containing the fetched list of {@link ArtworkDto}.
    */
-  deleteArtist(id: number, artwork: ArtworkDto): Observable<void> {
+  deleteArtwork(id: number, artwork: ArtworkDto): Observable<void> {
     const deleteOptions = {headers: this.headers, body: artwork};
     return this.http.delete<void>(`${this.artworkBaseUri}/${id}`, deleteOptions);
   }

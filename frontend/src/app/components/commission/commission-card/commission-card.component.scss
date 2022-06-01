@@ -1,3 +1,5 @@
+
+
 .commission-pfp {
   border-radius: 10%;
   height: 50px;
@@ -5,8 +7,11 @@
 }
 
 .commission {
-  background-color: #fb9fa4;
+  /*background: rgb(255,182,186);
+  background: linear-gradient(90deg, rgba(255,182,186,1) 0%, rgba(251,159,164,1) 35%, rgba(255,130,136,1) 100%); */
+  background: darkgray;
   color: #434F6A;
+  border: 4px lightgray solid;
   border-radius: 5%;
   margin: 0.5rem;
   transition: all 0.5s;
@@ -15,6 +20,9 @@
 }
 
 .commission:hover {
+  border: 4px #fb9fa4 solid;
+  background: #fb9fa4;
+  color:#434F6A;
   cursor: pointer;
   transform: scale(1.05);
 
@@ -25,7 +33,12 @@ mat-card-title {
   text-align: center;
 }
 
+.mat-card-content {
+  height: 180px;
+}
+
 mat-card-actions {
   text-align: center;
 }
+
 

@@ -88,7 +88,9 @@ export class GalleryCarouselComponent implements OnInit {
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
     //console.log(this.selectedArtworkId);
-    this.getImageArtistInfo();
+    if(this.artworks[this.selectedArtworkId].artistId) {
+      this.getImageArtistInfo();
+    }
   }
 
   public onEvent(event: Event): void {
@@ -141,17 +143,22 @@ export class GalleryCarouselComponent implements OnInit {
 
   public getImageArtistInfo(): void {
     this.loadImageTags();
-    this.artistService.getArtistById(this.artworks[this.selectedArtworkId].artistId).subscribe(
-      data => {
-        this.artist = data;
-      }
-    );
+    const artistId = this.artworks[this.selectedArtworkId].artistId;
+    if(artistId) {
+      this.artistService.getArtistById(artistId).subscribe(
+        data => {
+          this.artist = data;
+        }
+      );
+    }
   }
 
   public routeToArtist(): void {
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(0px)');
-    this.router.navigate(['/artist/' + this.artworks[this.selectedArtworkId].artistId.toString()]);
-
+    const artistId = this.artworks[this.selectedArtworkId].artistId;
+    if(artistId) {
+      this.router.navigate(['/artist/' + artistId.toString()]);
+    }
   }
 
   public stringifyTags(): string {

@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class DetailedCommissionDto {
     private Long id;
 
     private ArtistDto artistDto;
+
 
     @NotNull
     private ApplicationUserDto customerDto;
@@ -45,6 +44,11 @@ public class DetailedCommissionDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadlineDate;
 
+    @Size(max = 50)
+    @ValidAlphaNumeric
+    private String title;
+
+
     private String instructions;
 
     private List<@Valid ReferenceDto> referencesDtos;
@@ -64,6 +68,7 @@ public class DetailedCommissionDto {
                                  double price,
                                  LocalDateTime issueDate,
                                  LocalDateTime deadlineDate,
+                                 String title,
                                  String instructions,
                                  List<ReferenceDto> referencesDtos,
                                  List<ReceiptDto> receiptsDtos,
@@ -76,6 +81,7 @@ public class DetailedCommissionDto {
         this.price = price;
         this.issueDate = issueDate;
         this.deadlineDate = deadlineDate;
+        this.title = title;
         this.instructions = instructions;
         this.referencesDtos = referencesDtos;
         this.receiptsDtos = receiptsDtos;
@@ -94,6 +100,7 @@ public class DetailedCommissionDto {
             + ", price=" + price
             + ", issueDate=" + issueDate
             + ", deadlineDate=" + deadlineDate
+            + ", title=" + title
             + ", instructions='" + instructions + '\''
             + ", referencesDtosIds=" + (referencesDtos == null ? null : referencesDtos.stream().map(ReferenceDto::getId).toList())
             + ", receiptsDtosIds=" + (receiptsDtos == null ? null : receiptsDtos.stream().map(ReceiptDto::getId).toList())

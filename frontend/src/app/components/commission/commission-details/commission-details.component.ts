@@ -1,75 +1,52 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
+import {CommissionService} from '../../../services/commission.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-commission-details',
   templateUrl: './commission-details.component.html',
-  styleUrls: ['./commission-details.component.scss']
+  styleUrls: ['./commission-details.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CommissionDetailsComponent implements OnInit {
 
-  commission = {
-    id: 1, artistId: null, userId: 1, title: 'Commission Title',
-    description: 'This is just a random description which describes some of the information within in the commission.' +
-      'This is just a random description which describes some of the information ' +
-      'within in the commission and now shows a more detailed description.\n' +
-      ' Lorem ipsum dolor sit amet, consetetur sadipscing elitr, ' +
-      'sed diam nonumy eirmod tempor invidunt ut labore et dolore ' +
-      'magna aliquyam erat, sed diam voluptua. At vero eos et accusam ' +
-      'et justo duo dolores et ea rebum. Stet clita kasd gubergren, no ' +
-      'sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum ' +
-      'dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ' +
-      'tempor invidunt.',
-    sketchesShown: 0, feedbackSend: 0, comArtworkId: null, feedback: [], price: 300,
-    startDate: new Date(2022, 1, 1),
-    endDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
-  } as CommissionDto;
-
   userProfilePicture = 'https://picsum.photos/150/150';
+  commission: CommissionDto;
   user: ApplicationUserDto;
-  artworks;
+  hasLoaded = false;
+  items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
 
-  constructor(private userService: UserService, private artworkService: ArtworkService) {
+  public selectedArtwork: number = null;
+
+  constructor(private userService: UserService,
+              private artworkService: ArtworkService,
+              private commissionService: CommissionService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.fetchUser(this.commission.id);
+    this.getCommission();
   }
 
 
-  /*
+  setSelectedArtwork(i: number) {
+    this.selectedArtwork = i;
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+  }
+
+
   private getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.commissionService.getCommissionById(id)
-      .subscribe(commission => this.commission = commission);
-  }
-  */
-
-  private fetchUser(userId: number) {
-    this.userService.getUserById(userId).subscribe({
-      next: (loadedUser) => {
-        this.user = loadedUser;
-      }
-    });
-  }
-
-
-  private fetchArtworks(userId: number) {
-    this.artworks = Array(3);
-    /*
-    const ids = this.commission.referenceImageIds;
-    for (let i = 0; i < ids.length; i++) {
-      this.artworkService.getA(ids[i]).subscribe({
-        next: (loadedUser) => {
-          this.artworks[i] = loadedUser;
-        }
+      .subscribe((commission) => {
+        this.commission = commission;
+        console.log(commission.referencesDtos);
+        this.user = commission.customerDto;
+        this.hasLoaded = true;
       });
-    }
-    */
   }
-
-
 }

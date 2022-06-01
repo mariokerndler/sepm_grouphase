@@ -1,13 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
-import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.repository.*;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -27,6 +21,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,6 +34,7 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
+    private static final int NUMBER_OF_COMMISSIONS_TO_GENERATE = 20;
 
 
     private final ArtistRepository artistRepository;
@@ -46,17 +42,20 @@ public class UserDataGenerator {
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
+    private final CommissionRepository commissionRepository;
 
     public UserDataGenerator(ArtistRepository artistRepository,
                              UserRepository userRepository,
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
-                             TagRepository tagRepository) {
+                             TagRepository tagRepository,
+                             CommissionRepository commissionRepository) {
         this.artistRepository = artistRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
+        this.commissionRepository = commissionRepository;
     }
 
     @PostConstruct
@@ -64,8 +63,10 @@ public class UserDataGenerator {
         loadTags(NUMBER_OF_TAGS_TO_GENERATE);
         loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
 
+
         generateArtistTestAccount("testArtist", "12345678");
         generateUserTestAccount("testUser", "12345678");
+        generateCommissionsTestAccount(NUMBER_OF_COMMISSIONS_TO_GENERATE, NUMBER_OF_USERS_TO_GENERATE);
     }
 
     private void loadTags(int numberOftags) throws FileNotFoundException {
@@ -195,6 +196,36 @@ public class UserDataGenerator {
         user.setEmail(username + "@test.com");
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    private void generateCommissionsTestAccount(int number, int number1) {
+        for (int i = 0; i < number1; i++) {
+            Faker faker = new Faker();
+            ApplicationUser user = generateUserProfile(faker.starTrek().toString());
+            userRepository.save(user);
+        }
+        List<ApplicationUser> users = userRepository.findAll();
+        List<Artist> artists = artistRepository.findAll();
+        for (int i = 0; i < users.size() && i < artists.size() && i < number; i++) {
+            Commission c = generateCommissions(artists.get(i), users.get(i));
+            commissionRepository.save(c);
+        }
+    }
+
+    private Commission generateCommissions(Artist artist, ApplicationUser user) {
+        Faker faker = new Faker();
+        Commission commission = new Commission();
+        commission.setArtist(artist);
+        commission.setCustomer(user);
+        commission.setTitle(faker.princessBride().toString() + " " + faker.programmingLanguage().toString());
+        commission.setSketchesShown((int) (Math.random() * 10));
+        commission.setFeedbackSent((int) (Math.random() * 6));
+        commission.setPrice((int) (Math.random() * 10000));
+        commission.setIssueDate(LocalDateTime.now());
+        commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setInstructions(faker.relationships().toString() + " " + faker.animal().toString() + faker.funnyName().toString() + " " + faker.beer().toString() + " " + faker.shakespeare().toString());
+        commission.setTitle(faker.university().toString() + faker.aquaTeenHungerForce());
+        return commission;
     }
 
     //old approach not working, issues with cloudflare protection 403 error.

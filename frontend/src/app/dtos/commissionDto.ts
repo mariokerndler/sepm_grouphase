@@ -1,7 +1,7 @@
 import {ArtistDto} from './artistDto';
 import {ApplicationUserDto} from './applicationUserDto';
-import {ReferenceImageDto} from './referenceImageDto';
 import {ArtworkDto} from './artworkDto';
+import {ReferenceDto} from './referenceDto';
 
 export class CommissionDto {
   id: number;
@@ -14,5 +14,5 @@ export class CommissionDto {
   price: number;
   issueDate: string;
   deadlineDate: string;
-  referencesDtos: ArtworkDto[];
+  referencesDtos: ReferenceDto[];
 }

@@ -36,20 +36,17 @@ export class CommissionCreationComponent implements OnInit {
   secondFormGroup: FormGroup;
   stepperOrientation: Observable<StepperOrientation>;
   commission: CommissionDto = {
-    artistId: 0,
-    comArtworkId: 0,
-    description: '',
-    endDate: undefined,
-    feedback: [],
+    artistDto: undefined,
+    customerDto: undefined,
+    deadlineDate: '',
     feedbackSend: 0,
     id: 0,
+    instructions: '',
+    issueDate: '',
     price: 0,
-    referenceImageIds: [],
-    references: [],
+    referencesDtos: [],
     sketchesShown: 0,
-    startDate: undefined,
-    title: '',
-    userId: 0
+    title: ''
   };
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
@@ -104,7 +101,7 @@ export class CommissionCreationComponent implements OnInit {
             r.name = ref.name;
             r.fileType=filetype;
             console.log(r);
-            this.commission.references.push(r);
+            this.commission.referencesDtos.push(r);
           };
         });
 
@@ -116,13 +113,13 @@ export class CommissionCreationComponent implements OnInit {
   submitCommission() {
     console.log(this.commissionForm.value.references);
     this.commission.title=this.commissionForm.value.title;
-    this.commission.description=this.commissionForm.value.description;
+    this.commission.instructions=this.commissionForm.value.description;
     this.commission.price=this.commissionForm.value.price;
-    this.commission.endDate=this.commissionForm.value.date;
+    this.commission.deadlineDate=this.commissionForm.value.date;
   }
 
   removeReference(i) {
-    this.commission.references.splice(i,1);
+    this.commission.referencesDtos.splice(i,1);
     this.commissionForm.value.references.remove(i);
 
   }

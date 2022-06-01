@@ -9,15 +9,44 @@
 .com-display {
 
 
-  align-content: center;
+  min-width: 70rem;
+
+
+  justify-content: center;
 }
 
 .comm_stepper {
 
-
+  margin: auto;
   background-color: #2f3a51;
+  width: 80%;
+
+}
+.max-width{
+
+  max-width: 1750px;
+}
+.stepper_button{
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
+.mat-form-field-flex{
+
+
+}
+.mat-form-field{
+  display: flex;
+  min-width: 70rem;
+
+
+  justify-content: center;
+
+}
+.button{
+
+}
 .mat-stepper-horizontal {
   width: 80rem
 }

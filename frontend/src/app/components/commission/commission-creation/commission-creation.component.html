@@ -1,20 +1,22 @@
 <div>
-  <mat-horizontal-stepper #stepper (selectionChange)="setIndex($event)" class="comm_stepper" fxFlex="100"
-                          fxLayout="column" fxLayoutAlign=" stretch">
-    <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column">
-      <form [formGroup]="commissionForm" fxFlex="80">
+  <mat-horizontal-stepper #stepper (selectionChange)="setIndex($event)" class="comm_stepper"
+                          fxLayout="column"  >
+    <mat-step [stepControl]="commissionForm"   fxLayout="column">
+      <form [formGroup]="commissionForm" >
         <ng-template matStepLabel>Commission Details</ng-template>
-        <mat-form-field appearance="fill">
+
+        <mat-form-field  appearance="fill" >
           <mat-label class="accent-color" color="accent-color">Title</mat-label>
           <input formControlName="title" matInput placeholder="Title" required>
         </mat-form-field>
+
         <br>
         <mat-form-field appearance="fill">
           <mat-label class="accent-color" color="accent-color">Describe your the Artwork you envision</mat-label>
           <textarea formControlName="description" matInput placeholder="Description" required>
         </textarea>
         </mat-form-field>
-        <div>
+        <div class="stepper_button">
           <button mat-button matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
@@ -35,7 +37,7 @@
           <input formControlName="price" matInput placeholder="Price" required
                  type="text">
         </mat-form-field>
-        <div>
+        <div class="stepper_button">
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
@@ -93,7 +95,7 @@
         </mat-form-field>
 
 
-        <div>
+        <div  class="stepper_button">
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
@@ -113,7 +115,7 @@
         <p class="accent-color" color="accent-color">{{commissionForm.value.title}} </p>
         <mat-label>Description</mat-label>
         <p class="accent-color" color="accent-color">{{commissionForm.value.description}} </p>
-        <mat-label>Price in Euro</mat-label>
+        <mat-label>Price in Euro</mat-label>    <br>
         <p *ngIf="commissionForm.value.description" class="accent-color" color="accent-color"
            style="display: inline">{{commissionForm.value.price}} </p>
         <br>
@@ -121,7 +123,7 @@
         <p class="accent-color" color="accent-color">{{commission.feedbackRounds}} </p>
         <mat-label>Delivery Date</mat-label>
         <p class="accent-color" color="accent-color">{{commissionForm.value.date}} </p>
-        <div>
+        <div  class="stepper_button">
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>

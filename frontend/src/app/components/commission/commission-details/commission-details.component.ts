@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
@@ -9,7 +9,8 @@ import {ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-commission-details',
   templateUrl: './commission-details.component.html',
-  styleUrls: ['./commission-details.component.scss']
+  styleUrls: ['./commission-details.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CommissionDetailsComponent implements OnInit {
 
@@ -17,6 +18,7 @@ export class CommissionDetailsComponent implements OnInit {
   commission: CommissionDto;
   user: ApplicationUserDto;
   hasLoaded = false;
+  items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
 
   public selectedArtwork: number = null;
 

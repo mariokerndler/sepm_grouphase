@@ -71,8 +71,6 @@
 }
 
 .image-container{
-  max-width: 300px;
-  overflow: hidden;
   margin: 8px;
 }
 
@@ -95,9 +93,31 @@
 }
 
 
-.content{
-  max-height: 400px;
-  overflow: hidden;
+.scrolling-container .viewport {
+  height: 240px;
+  width: 100%;
+}
+
+.scrolling-container .viewport .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+/* width */
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #fb9fa4;
+  border-radius: 10px;
 }
 
 

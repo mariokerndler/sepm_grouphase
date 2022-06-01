@@ -39,6 +39,7 @@ export class ArtworkService {
     }
     const params = new HttpParams()
       .set('tagIds', tagSearch.tagIds.toString())
+      .set('artistIds', tagSearch.artistIds.toString())
       .set('searchOperations', searchOperations)
       .set('pageNr', tagSearch.pageNr == null ? '0' : tagSearch.pageNr)
       .set('randomSeed', tagSearch.randomSeed);

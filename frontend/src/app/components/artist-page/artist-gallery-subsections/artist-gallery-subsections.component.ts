@@ -50,7 +50,9 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
     this.tags.forEach(item => {
       tagNames.push(item.id.toString());
     });
-    this.artworkService.search({tagIds: tagNames, pageNr:0, searchOperations:'', randomSeed:0} as TagSearch).subscribe({
+    this.artworkService.search(
+      {tagIds: tagNames, artistIds:[this.artist.id.toString()], pageNr:0, searchOperations:'', randomSeed:0} as TagSearch
+      ).subscribe({
       next: (loadedArtworks) => {
         this.artworks = loadedArtworks;
         this.isReady = true;

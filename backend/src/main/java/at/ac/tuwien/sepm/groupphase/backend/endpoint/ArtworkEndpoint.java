@@ -78,6 +78,7 @@ public class ArtworkEndpoint {
 
         Specification<Artwork> spec = builder.build();
 
+
         if (tagSearchDto.getTagIds() != null) {
             if (tagSearchDto.getTagIds().size() > 0) {
                 if (spec == null) {
@@ -119,7 +120,7 @@ public class ArtworkEndpoint {
     @DeleteMapping()
     @Operation(summary = "Delete artwork")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
-        log.info("Delete Artwork" + artworkDto.getName());
+        log.info("Delete Artwork " + artworkDto.getName());
         try {
 
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));

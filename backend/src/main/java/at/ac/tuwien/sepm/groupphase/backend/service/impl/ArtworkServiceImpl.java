@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +45,7 @@ public class ArtworkServiceImpl implements ArtworkService {
     }
 
     @Override
-    public void saveArtwork(Artwork a) throws IOException {
+    public void saveArtwork(Artwork a) {
 
         a.setImageUrl(this.ifm.writeArtistImage(a));
         log.info(a.toString());
@@ -56,6 +55,7 @@ public class ArtworkServiceImpl implements ArtworkService {
     @Override
     public void deleteArtwork(Artwork a) {
         try {
+            System.out.println(a.toString());
             this.artworkRepo.deleteById(a.getId());
             this.ifm.deleteArtistImage(a);
         } catch (EmptyResultDataAccessException e) {

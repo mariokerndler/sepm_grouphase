@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
@@ -14,6 +15,7 @@ public class LanguageConfig {
      * Create LocaleResolver Bean
      */
     @Bean
+    @Profile({"!test"})
     public LocaleResolver localeResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
         resolver.setDefaultLocale(new Locale("en")); // your default locale

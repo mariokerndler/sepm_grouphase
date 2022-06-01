@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,6 @@ import javax.persistence.*;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "ApplicationUser")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "Usertype")
@@ -50,6 +48,19 @@ public class ApplicationUser {
 
     public ApplicationUser(String userName, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {
+        this.userName = userName;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+        this.admin = admin;
+        this.userRole = userRole;
+    }
+
+    public ApplicationUser(Long id, String userName, String name, String surname, String email, String address,
+                           String password, Boolean admin, UserRole userRole) {
+        this.id = id;
         this.userName = userName;
         this.name = name;
         this.surname = surname;

@@ -71,6 +71,19 @@
   font-size: 14px;
 }
 
+.element-box-disabled {
+  padding: 20px 10px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  background: #ccc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
 .element-list {
   border: solid 1px #ccc;
   min-height: 60px;

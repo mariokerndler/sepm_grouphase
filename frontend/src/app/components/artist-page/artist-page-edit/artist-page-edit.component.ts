@@ -50,9 +50,8 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     {componentName: 'Reviews', disabled: false, tags: []}
   ];
 
-  chosenComponents: LayoutComponent[] = [
-    {componentName: 'Profile information', disabled: true, tags: []}
-  ];
+  profileInfoComponent: LayoutComponent =  {componentName: 'Profile information', disabled: true, tags: []};
+  chosenComponents: LayoutComponent[] = [];
 
   selectedComponent: LayoutComponent;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -225,11 +224,10 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     const username = this.editForm.controls.username.value;
     const email = this.editForm.controls.email.value;
     const address = this.editForm.controls.address.value;
-    const description = this.editForm.controls.description.value;
-
-    // TODO: Description is missing
 
     if (this.artist) {
+      const description = this.editForm.controls.description.value;
+
       this.artistService.updateArtist(ArtistPageEditComponent.updateArtist(
         this.artist,
         username,
@@ -257,14 +255,11 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     if (this.passwordForm.valid) {
       const oldPassword = this.passwordForm.controls.oldPassword.value;
       const newPassword = this.passwordForm.controls.password.value;
-      const confirmPassword = this.passwordForm.controls.confirm.value;
 
-      // TODO: Update password for user and artist
-      if(this.isArtist) {
-        console.log(this.artist.password);
-      }
+      const id = this.isArtist ? this.artist.id : this.user.id;
+      console.log(newPassword + ' ' + oldPassword);
 
-      console.log(oldPassword + ' ' + newPassword + ' ' + confirmPassword);
+      this.userService.updateUserPassword(id, newPassword, oldPassword).subscribe();
     }
   }
 
@@ -338,6 +333,15 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     } else {
       return;
     }
+  }
+
+  /**
+   *
+   * @param item
+   */
+  deleteComponent(item: LayoutComponent) {
+    const index = this.chosenComponents.indexOf(item);
+    this.chosenComponents.splice(index, 1);
   }
 
   /**

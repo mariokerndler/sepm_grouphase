@@ -25,14 +25,14 @@
   </div>
 </div>
 <div *ngIf="profileSettings">
+  <div>
+    <span class="accent-color artist-about-header">About</span>
+    <p class="accent-color artist-about-description">
+      {{artist.description}}
+    </p>
+  </div>
+  <br>
   <div *ngFor="let element of profileSettings.layout; let i = index">
-    <div *ngIf="element.componentName === 'Profile information'">
-      <span class="accent-color artist-about-header">About</span>
-      <p class="accent-color artist-about-description">
-        {{artist.description}}
-      </p>
-    </div>
-    <br>
     <div *ngIf="element.componentName.substring(0,7) === 'Gallery'">
       <div>
         <span class="accent-color artist-about-header">{{element.componentName}}</span>

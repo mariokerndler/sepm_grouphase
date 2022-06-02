@@ -36,6 +36,18 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
     private static final int NUMBER_OF_COMMISSIONS_TO_GENERATE = 20;
 
+    private String[] urls= new String[]{
+        "https://i.ibb.co/HTT7Ym3/image0.jpg",
+        "https://i.ibb.co/7yHp276/image1.jpg",
+        "https://i.ibb.co/cDT8JHg/image2.jpg",
+        "https://i.ibb.co/wy4PbD4/image3.jpg",
+        "https://i.ibb.co/jfQR7W9/sketch1.jpg",
+        "https://i.ibb.co/JRcbTDk/sketch2.jpg",
+        "https://i.ibb.co/pdtMdcJ/sketch3.jpg",
+        "https://i.ibb.co/09Fk1PB/sketch4.jpg",
+        "https://i.ibb.co/pf63fMd/sketch.gif"
+    };
+
 
     private final ArtistRepository artistRepository;
     private final UserRepository userRepository;
@@ -67,6 +79,7 @@ public class UserDataGenerator {
         generateArtistTestAccount("testArtist", "12345678");
         generateUserTestAccount("testUser", "12345678");
         generateCommissionsTestAccount(NUMBER_OF_COMMISSIONS_TO_GENERATE, NUMBER_OF_USERS_TO_GENERATE);
+
     }
 
     private void loadTags(int numberOftags) throws FileNotFoundException {
@@ -206,25 +219,82 @@ public class UserDataGenerator {
         }
         List<ApplicationUser> users = userRepository.findAll();
         List<Artist> artists = artistRepository.findAll();
-        for (int i = 0; i < users.size() && i < artists.size() && i < number; i++) {
-            Commission c = generateCommissions(artists.get(i), users.get(i));
-            commissionRepository.save(c);
-        }
+
+            Commission c =  generateCommission2(artists.get(0), users.get(0));
+        commissionRepository.save(c);
+        Commission d =  generateCommission1(artists.get(1), users.get(1));
+            commissionRepository.save(d);
+
     }
 
-    private Commission generateCommissions(Artist artist, ApplicationUser user) {
+    private Commission generateCommission1(Artist artist, ApplicationUser user) {
+
         Faker faker = new Faker();
         Commission commission = new Commission();
         commission.setArtist(artist);
         commission.setCustomer(user);
-        commission.setTitle(faker.princessBride().toString() + " " + faker.programmingLanguage().toString());
+        commission.setTitle("Sample Commission");
         commission.setSketchesShown((int) (Math.random() * 10));
         commission.setFeedbackSent((int) (Math.random() * 6));
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setInstructions(faker.relationships().toString() + " " + faker.animal().toString() + faker.funnyName().toString() + " " + faker.beer().toString() + " " + faker.shakespeare().toString());
-        commission.setTitle(faker.university().toString() + faker.aquaTeenHungerForce());
+        commission.setInstructions(faker.shakespeare().toString());
+        Artwork a = new Artwork();
+        List<Sketch> sketches= new LinkedList<Sketch>();
+        for(int i =4; i>1;i--){
+            if(i==4){
+                a.setArtist(artist);
+                a.setName("Sample Commission Art");
+                a.setDescription(faker.harryPotter().toString());
+                a.setImageUrl("data\\com\\adminSample Commission\\sketch"+i);
+                a.setFileType(FileType.JPG);
+            }
+            else{
+                Sketch k = new Sketch();
+                k.setDescription("Sketch "+i);
+                k.setImageUrl("data\\com\\adminSample Commission\\sketch"+i);
+                sketches.add(k);
+
+            }
+        }
+        a.setSketches(sketches);
+        commission.setArtwork(a);
+        return commission;
+    }
+    private Commission generateCommission2(Artist artist, ApplicationUser user) {
+
+        Faker faker = new Faker();
+        Commission commission = new Commission();
+        commission.setArtist(artist);
+        commission.setCustomer(user);
+        commission.setTitle("Sample Commission");
+        commission.setSketchesShown((int) (Math.random() * 10));
+        commission.setFeedbackSent((int) (Math.random() * 6));
+        commission.setPrice((int) (Math.random() * 10000));
+        commission.setIssueDate(LocalDateTime.now());
+        commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setInstructions(faker.shakespeare().toString());
+        Artwork a = new Artwork();
+        List<Sketch> sketches= new LinkedList<Sketch>();
+        for(int i =5; i>1;i--){
+            if(i==4){
+                a.setArtist(artist);
+                a.setName("Sample Commission Art");
+                a.setDescription(faker.harryPotter().toString());
+                a.setImageUrl("data\\com\\adminSample Commission2\\b"+i);
+                a.setFileType(FileType.JPG);
+            }
+            else{
+                Sketch k = new Sketch();
+                k.setDescription("Sketch "+i);
+                k.setImageUrl("data\\com\\adminSample Commission2\\b"+i);
+                sketches.add(k);
+
+            }
+        }
+        a.setSketches(sketches);
+        commission.setArtwork(a);
         return commission;
     }
 

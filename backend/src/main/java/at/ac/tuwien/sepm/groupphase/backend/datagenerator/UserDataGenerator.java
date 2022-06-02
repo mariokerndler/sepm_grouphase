@@ -239,14 +239,18 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setInstructions(faker.shakespeare().toString());
+        String desc =faker.shakespeare().hamletQuote().toString();
+        if(desc.length()>50){
+            desc=desc.substring(0,49);
+        }
+        commission.setInstructions(desc);
         Artwork a = new Artwork();
         List<Sketch> sketches= new LinkedList<Sketch>();
         for(int i =4; i>1;i--){
             if(i==4){
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-                a.setDescription(faker.harryPotter().toString());
+                a.setDescription(faker.harryPotter().quote().toString());
                 a.setImageUrl("data\\com\\adminSample Commission\\sketch"+i);
                 a.setFileType(FileType.JPG);
             }
@@ -274,14 +278,22 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setInstructions(faker.shakespeare().toString());
+        String desc =faker.shakespeare().hamletQuote().toString();
+        if(desc.length()>50){
+            desc=desc.substring(0,49);
+        }
+        commission.setInstructions(desc);
         Artwork a = new Artwork();
         List<Sketch> sketches= new LinkedList<Sketch>();
         for(int i =5; i>1;i--){
             if(i==4){
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-                a.setDescription(faker.harryPotter().toString());
+               desc =faker.shakespeare().hamletQuote().toString();
+                if(desc.length()>50){
+                    desc=desc.substring(0,49);
+                }
+                a.setDescription(desc);
                 a.setImageUrl("data\\com\\adminSample Commission2\\b"+i);
                 a.setFileType(FileType.JPG);
             }

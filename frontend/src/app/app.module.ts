@@ -8,6 +8,7 @@ import {NgxMatFileInputModule} from '@angular-material-components/file-input';
 
 // Plugins
 import {AngularMaterialModule} from './components/angular-material/angular-material.module';
+import {MatSliderModule} from '@angular/material/slider';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
@@ -105,7 +106,8 @@ import {
     AngularMaterialModule,
     FlexLayoutModule,
     NgxMatColorPickerModule,
-    DragDropModule
+    DragDropModule,
+    MatSliderModule
   ],
   providers: [
     {

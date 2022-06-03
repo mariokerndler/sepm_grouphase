@@ -26,8 +26,6 @@ import {FooterComponent} from './components/footer/footer.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
 import {MessageComponent} from './components/message/message.component';
-import {MidsectionComponent} from './components/midsection/midsection/midsection.component';
-import {CardViewComponent} from './components/midsection/card-view/card-view.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistInformationComponent} from './components/artist-page/artist-information/artist-information.component';
 import {
@@ -67,8 +65,6 @@ import {
     HomeComponent,
     LoginComponent,
     MessageComponent,
-    MidsectionComponent,
-    CardViewComponent,
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,

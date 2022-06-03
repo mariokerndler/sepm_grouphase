@@ -113,11 +113,9 @@ public class UserDataGenerator {
                     log.info(folder.toString());
                     File fldr = new File(folder);
                     Artist a = generateArtistProfile(fldr.getName());
-                    try {
-                        artistService.saveArtist(a);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+                    artistService.saveArtist(a);
+
                     log.info("Saved artist: " + a.getUserName());
                     File artistProfileDir = new File(folder);
                     File[] artistProfileDirectoryListing = artistProfileDir.listFiles();

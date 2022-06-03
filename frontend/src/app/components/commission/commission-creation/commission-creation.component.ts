@@ -16,9 +16,8 @@ import {CommissionService} from '../../../services/commission.service';
 import {UserRole} from '../../../dtos/artistDto';
 import {formatDate} from '@angular/common';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
-import {result} from "lodash";
-import {HttpErrorResponse} from "@angular/common/http";
-import {NotificationService} from "../../../services/notification/notification.service";
+import {HttpErrorResponse} from '@angular/common/http';
+import {NotificationService} from '../../../services/notification/notification.service';
 
 
 @Component({
@@ -69,7 +68,8 @@ export class CommissionCreationComponent implements OnInit {
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
               private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
-              public globalFunctions: GlobalFunctions, private commissionService: CommissionService, private notificationService: NotificationService,) {
+              public globalFunctions: GlobalFunctions,
+              private commissionService: CommissionService, private notificationService: NotificationService,) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));

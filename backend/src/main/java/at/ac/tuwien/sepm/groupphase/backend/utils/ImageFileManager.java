@@ -23,10 +23,15 @@ import java.util.stream.Stream;
 @Component
 public class ImageFileManager {
 
-    private void createFolderIfNotExists(String url) throws IOException {
+    public void createFolderIfNotExists(String url)   {
         File f = new File(url);
-        if (!f.isDirectory() || !f.exists()) {
-            Files.createDirectories(f.toPath());
+        if (!f.isDirectory() && !f.exists()) {
+            try {
+                Files.createDirectories(f.toPath());
+            } catch (IOException e) {
+                throw  new FileManagerException("Error when creating user Folder");
+            }
+            log.info("Created"+ url);
         }
     }
 
@@ -153,40 +158,9 @@ public class ImageFileManager {
 
     }
 
-    public byte[] readArtistProfileImageData(Artist a) {
-        try {
-            byte[] imageData = Files.readAllBytes(Path.of(ImageDataPaths.artistProfilePictureLocation + a.getUserName() + "/"
-                + ImageDataPaths.artistProfilePictureIdentifier));
-            return imageData;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    public List<byte[]> readArtistImages(Artist artist) {
-        List<byte[]> images = new ArrayList<>();
-        try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.artistProfileLocation + ""), 1)) {
-            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
-
-            result.forEach(
-                file -> {
-                    try {
-                        byte[] imageData = Files.readAllBytes(Path.of(file));
-                        images.add(imageData);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return images;
-    }
-
-    public void renameArtistFolder(Artist artist, String oldUserName) throws IOException {
-        File oldImageFile = new File(ImageDataPaths.artistProfileLocation + oldUserName);
+    public void renameArtistFolder(Artist artist, String oldUserName)   {
+        File oldImageFile = new File(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation + oldUserName);
         try {
             Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(artist.getUserName()));
         } catch (IOException e) {

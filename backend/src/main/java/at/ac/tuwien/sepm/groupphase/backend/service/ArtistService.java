@@ -36,7 +36,7 @@ public interface ArtistService {
      *
      * @param artist The artist that will be updated.
      */
-    void updateArtist(Artist artist) throws IOException;
+    void updateArtist(Artist artist);
 
     /**
      * Deletes the given artist in the database.

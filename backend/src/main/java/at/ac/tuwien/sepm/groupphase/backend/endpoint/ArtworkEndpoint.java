@@ -41,7 +41,7 @@ public class ArtworkEndpoint {
         this.artworkMapper = artworkMapper;
     }
 
-    //TODO: implementation arguably belongs to service class
+    //TODO: implementation arguably belongs to service class (feel free to move it :))
     //see https://www.baeldung.com/rest-api-query-search-language-more-operations
     @PermitAll
     @ResponseStatus(HttpStatus.OK)

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtistService} from '../../../services/artist.service';
@@ -21,7 +21,8 @@ import {StepperSelectionEvent} from '@angular/cdk/stepper';
 @Component({
   selector: 'app-commission-creation',
   templateUrl: './commission-creation.component.html',
-  styleUrls: ['./commission-creation.component.scss']
+  styleUrls: ['./commission-creation.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CommissionCreationComponent implements OnInit {
   selectedImage;

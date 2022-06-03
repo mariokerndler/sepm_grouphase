@@ -1,5 +1,5 @@
 <div>
-  <mat-horizontal-stepper #stepper (selectionChange)="setIndex($event)" class="comm_stepper"
+  <mat-horizontal-stepper fxLayoutAlign="center stretch"  #stepper (selectionChange)="setIndex($event)" class="comm_stepper"
                           fxLayout="column"  >
     <mat-step [stepControl]="commissionForm"   fxLayout="column">
       <form [formGroup]="commissionForm" >
@@ -54,9 +54,9 @@
 
       </form>
     </mat-step>
-    <mat-step [stepControl]="commissionForm" label="References">
-      <form [formGroup]="commissionForm">
-        <mat-form-field appearance="fill">
+    <mat-step  [stepControl]="commissionForm" label="References">
+      <form [formGroup]="commissionForm"  >
+        <mat-form-field appearance="fill"  >
           <span class="accent-color" color="accent-color">If possible provide reference pictures for your artwork</span>
 
 
@@ -65,28 +65,32 @@
                               accept=".png,.jpg,.gif,.jpeg" formControlName="references"></ngx-mat-file-input>
 
           <mat-hint>You can selected multiple Pictures</mat-hint>
+          <br>
 
-          <div class="container" id="container">
-            <div class="content">
+            <strong class="referenceImages">Reference Images:</strong><br>
+
+
+
+
+
               <div class="card-img-wrap">
                 <div *ngIf="this.commission.referencesDtos" _ngcontent-c6="" class="feed"
                      gdcolumns="repeat(auto-fill, minmax(400px, 1fr))" gdgap="10px"
                      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px;">
-                  <div *ngFor="let ref of this.commission.referencesDtos; let i= index"
-                       class="image">
-                    <div>
-                      <button (click)="removeReference(i)" mat-flat-button>
+                  <div fxLayout="row" fxLayoutAlign="stretch"   *ngFor="let ref of this.commission.referencesDtos; let i= index"
+                       >
+
+                      <button   color="accent" class="close-button"(click)="removeReference(i)" mat-flat-button>
                         <mat-icon>delete</mat-icon>
                       </button>
-                      <img [src]="ref.imageUrl  " alt="">
-                    </div>
+                    <div class="image">
+                      <img [src]="ref.imageUrl  " alt="" >
+
                     <div class="card-img-description-layer">
-                      <p class="card-img-description">
-                        {{globalFunctions.artworkNameParser(ref.name)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+
+                        <span class="accent-color" color="accent-color" style="font-size: large">
+                          {{globalFunctions.artworkNameParser(ref.name)}}</span>
+                     </div> </div>
               </div>
             </div>
           </div>

@@ -23,10 +23,14 @@ import java.util.stream.Stream;
 @Component
 public class ImageFileManager {
 
-    public void createFolderIfNotExists(String url) throws IOException {
+    public void createFolderIfNotExists(String url)   {
         File f = new File(url);
         if (!f.isDirectory() && !f.exists()) {
-            Files.createDirectories(f.toPath());
+            try {
+                Files.createDirectories(f.toPath());
+            } catch (IOException e) {
+                throw  new FileManagerException("Error when creating user Folder");
+            }
             log.info("Created"+ url);
         }
     }
@@ -155,7 +159,7 @@ public class ImageFileManager {
     }
 
 
-    public void renameArtistFolder(Artist artist, String oldUserName) throws IOException {
+    public void renameArtistFolder(Artist artist, String oldUserName)   {
         File oldImageFile = new File(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation + oldUserName);
         try {
             Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(artist.getUserName()));

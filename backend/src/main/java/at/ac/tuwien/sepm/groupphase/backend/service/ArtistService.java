@@ -29,7 +29,7 @@ public interface ArtistService {
      * @param artist The artist that will be saved.
      * @return Saved artist entity.
      */
-    Artist saveArtist(Artist artist);
+    Artist saveArtist(Artist artist) throws IOException;
 
     /**
      * Updates the given artist, if there is an artist with this id saved in the database.

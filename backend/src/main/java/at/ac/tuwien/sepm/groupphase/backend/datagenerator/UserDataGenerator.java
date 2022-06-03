@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
+import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -49,20 +50,20 @@ public class UserDataGenerator {
     };
 
 
-    private final ArtistRepository artistRepository;
+    private final ArtistService artistService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
     private final CommissionRepository commissionRepository;
 
-    public UserDataGenerator(ArtistRepository artistRepository,
+    public UserDataGenerator(ArtistService artistService,
                              UserRepository userRepository,
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
                              CommissionRepository commissionRepository) {
-        this.artistRepository = artistRepository;
+        this.artistService = artistService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
@@ -112,7 +113,11 @@ public class UserDataGenerator {
                     log.info(folder.toString());
                     File fldr = new File(folder);
                     Artist a = generateArtistProfile(fldr.getName());
-                    artistRepository.save(a);
+                    try {
+                        artistService.saveArtist(a);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     log.info("Saved artist: " + a.getUserName());
                     File artistProfileDir = new File(folder);
                     File[] artistProfileDirectoryListing = artistProfileDir.listFiles();
@@ -197,11 +202,11 @@ public class UserDataGenerator {
         return user;
     }
 
-    private void generateArtistTestAccount(String username, String password) {
+    private void generateArtistTestAccount(String username, String password) throws IOException {
         Artist artist = generateArtistProfile(username);
         artist.setEmail(username + "@test.com");
         artist.setPassword(passwordEncoder.encode(password));
-        artistRepository.save(artist);
+        artistService.saveArtist(artist);
     }
 
     private void generateUserTestAccount(String username, String password) {
@@ -218,7 +223,7 @@ public class UserDataGenerator {
             userRepository.save(user);
         }
         List<ApplicationUser> users = userRepository.findAll();
-        List<Artist> artists = artistRepository.findAll();
+        List<Artist> artists = artistService.getAllArtists();
 
             Commission c =  generateCommission2(artists.get(0), users.get(0));
         commissionRepository.save(c);

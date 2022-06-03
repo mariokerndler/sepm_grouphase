@@ -11,7 +11,7 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
   selector: 'app-artist-feed-card',
   templateUrl: './artist-feed-card.component.html',
   styleUrls: ['./artist-feed-card.component.scss'],
-
+  encapsulation: ViewEncapsulation.None
 })
 export class ArtistFeedCardComponent implements OnInit {
 
@@ -19,14 +19,14 @@ export class ArtistFeedCardComponent implements OnInit {
   isReady = false;
   artworks: ArtworkDto[] = [];
   artistPfp = 'https://picsum.photos/150/150';
-  private maxArtworkLoad = 8;
+  selectedArtwork: number = null;
 
   constructor(
     private artworkService: ArtworkService,
     private notificationService: NotificationService,
     private router: Router,
     public globals: Globals,
-    public globalsFunctions: GlobalFunctions,
+    public globalFunctions: GlobalFunctions,
     {nativeElement}: ElementRef<HTMLImageElement>
   ) {
     const supports = 'loading' in HTMLImageElement.prototype;
@@ -42,7 +42,7 @@ export class ArtistFeedCardComponent implements OnInit {
       () => this.notificationService.displayErrorSnackbar(`Could not load artist with username ${this.artist.userName}.`))
       .subscribe(
         (response) => {
-          this.artworks = response.splice(0, this.maxArtworkLoad);
+          this.artworks = response;
           this.isReady = true;
         }
       );
@@ -51,6 +51,11 @@ export class ArtistFeedCardComponent implements OnInit {
   navigateToArtist(artist: ArtistDto) {
     this.router.navigate(['/artist', artist.id])
       .catch((_) => this.notificationService.displayErrorSnackbar(`Could not navigate to the artist with username ${artist.userName}.`));
+  }
+
+  setSelectedArtwork(i: number) {
+    this.selectedArtwork = i;
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
 }

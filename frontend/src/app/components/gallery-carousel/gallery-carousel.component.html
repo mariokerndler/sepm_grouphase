@@ -15,7 +15,7 @@
     </mat-card-header>
 
     <div (click)="onEvent($event)" class="carousel-image">
-      <img (@slide-in.done)="animDone()" [@slide-in]="animState" [src]="url+ artworks[animArtwork].imageUrl">
+      <img (@slide-in.done)="animDone()" [@slide-in]="animState" [src]="url+ artworks[this.animArtwork].imageUrl">
       <div class=" carousel-button">
         <span (click)="previous()" (keyup.delete)="previous()" style="font-size: large" tabindex="1"><mat-icon
           class="material-icons">chevron_leftt</mat-icon></span>

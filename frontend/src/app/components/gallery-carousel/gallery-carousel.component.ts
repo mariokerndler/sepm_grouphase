@@ -103,23 +103,23 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public previous(): void {
-    this.getImageArtistInfo();
+
     this.animState = 'left';
     this.selectedArtworkId = this.selectedArtworkId > 0 ? this.selectedArtworkId - 1 : this.artworks.length - 1;
-
     this.blur();
   }
 
   public next(): void {
-    this.getImageArtistInfo();
+
     this.animState = 'right';
     this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 2 ? 0 : this.selectedArtworkId + 1;
-
   }
 
   public animDone(): void {
     this.animArtwork = this.selectedArtworkId;
     this.animState = 'middle';
+    this.getImageArtistInfo();
+
   }
 
   public blur(): void {
@@ -142,11 +142,12 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public getImageArtistInfo(): void {
-    this.loadImageTags();
+
     const artistId = this.artworks[this.selectedArtworkId].artistId;
     if (artistId) {
       this.artistService.getArtistById(artistId).subscribe(
         data => {
+          this.loadImageTags();
           this.artist = data;
         }
       );

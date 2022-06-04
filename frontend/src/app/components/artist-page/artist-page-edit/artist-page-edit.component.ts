@@ -258,7 +258,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const newPassword = this.passwordForm.controls.password.value;
 
       const id = this.isArtist ? this.artist.id : this.user.id;
-      console.log(newPassword + ' ' + oldPassword);
 
       this.userService.updateUserPassword(id, newPassword, oldPassword).subscribe();
     }

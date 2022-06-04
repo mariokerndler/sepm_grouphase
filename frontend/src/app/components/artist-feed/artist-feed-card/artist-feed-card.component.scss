@@ -2,6 +2,12 @@
   max-height: 300px;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  width: 100%;
+}
+
+.viewport {
+  max-height: 300px;
+  width: 100%;
 }
 
 // Artist feed profile information
@@ -18,7 +24,8 @@
 }
 
 .artist-feed-card-image-preview {
-  max-height: 300px;
+  max-height: 270px;
+  object-fit: cover;
 }
 
 .artist-feed-card-image-container {
@@ -29,13 +36,21 @@
   padding-left: 10px;
 }
 
-.artist-feed-card-image-wrap {
+.artist-feed-card-image-wrap:first-child {
+  margin: 8px 8px 0 0;
   position: relative;
+}
+
+.artist-feed-card-image-wrap {
+  margin: 8px 8px 0 8px;
+  position: relative;
+  cursor: pointer;
 }
 
 .artist-feed-card-image-description-layer {
   position: absolute;
-  top: 90%;
+  height: 270px;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -66,4 +81,49 @@
 
 .artist-feed-card-image-wrap:hover .artist-feed-card-image-description {
   transform: translateY(0);
+}
+
+
+.artist-feed-card-image-preview:hover {
+  filter: brightness(0.9) drop-shadow(2px 4px 6px black);
+
+  img {
+    transform: scale(1.1) !important;
+    transition-duration: 3s;
+  }
+
+  span {
+    opacity: 1;
+  }
+}
+
+.artist-feed-card-image-container {
+  width: 100%;
+}
+
+.artist-feed-card-image-container .viewport {
+  height: 300px;
+  width: 100%;
+}
+
+.artist-feed-card-image-container .viewport .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+/* width */
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #fb9fa4;
+  border-radius: 10px;
 }

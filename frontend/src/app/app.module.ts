@@ -53,12 +53,14 @@ import {UploadComponent} from './components/upload/upload.component';
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
 import {CommissionCardComponent} from './components/commission/commission-card/commission-card.component';
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
+import {MatSliderModule} from '@angular/material/slider';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {
   ArtistGallerySubsectionsComponent
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
 
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 @NgModule({
   declarations: [
     AppComponent,
@@ -91,7 +93,7 @@ import {
     CommissionCardComponent,
     CommissionDetailsComponent,
     CommissionCreationComponent,
-    ArtistGallerySubsectionsComponent
+    ArtistGallerySubsectionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,7 +107,9 @@ import {
     AngularMaterialModule,
     FlexLayoutModule,
     NgxMatColorPickerModule,
-    DragDropModule
+    DragDropModule,
+    MatSliderModule,
+    NgxSliderModule
   ],
   providers: [
     {

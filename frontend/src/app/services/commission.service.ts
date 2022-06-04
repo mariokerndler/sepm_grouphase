@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {catchError, Observable} from 'rxjs';
 import {CommissionDto} from '../dtos/commissionDto';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
 import {tap} from 'rxjs/operators';
 import {SimpleCommissionDto} from '../dtos/simpleCommissionDto';
+import {CommissionSearchDto} from "../dtos/commissionSearchDto";
+import {ArtworkDto} from "../dtos/artworkDto";
 
 
 
@@ -97,4 +99,25 @@ export class CommissionService {
   }
 
 
+  filterCommissions(searchCom: CommissionSearchDto, errorAction?: () => void): Observable<SimpleCommissionDto[]> {
+    const params = new HttpParams()
+      .set('priceRange', searchCom.priceRange.toString())
+      .set('dateSearch', searchCom.date.toString())
+      .set('name', searchCom.name)
+      .set('pageNr', searchCom.pageNr == null ? '0' : searchCom.pageNr)
+      .set('artistId', searchCom.artistId);
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+    return this.http.get<SimpleCommissionDto[]>(this.commissionBaseUri, searchOptions)
+      .pipe(
+        catchError((err) => {
+          if (errorAction != null) {
+            errorAction();
+          }
+          return this.notificationService.notifyUserAboutFailedOperation<SimpleCommissionDto[]>('Searching Commissions')(err);
+        })
+      );
+  }
 }

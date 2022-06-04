@@ -13,7 +13,7 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 
 import {ReferenceDto} from '../../../dtos/referenceDto';
 import {CommissionService} from '../../../services/commission.service';
-import {UserRole} from '../../../dtos/artistDto';
+import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {formatDate} from '@angular/common';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -28,8 +28,10 @@ import {NotificationService} from '../../../services/notification/notification.s
 })
 export class CommissionCreationComponent implements OnInit {
   selectedImage;
+  artists: ArtistDto[];
   previewImages: any[] = [];
   selectedReferences = [];
+
   commissionForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
@@ -81,12 +83,7 @@ export class CommissionCreationComponent implements OnInit {
       secondCtrl: ['', Validators.required],
     });
   }
-
-  onFileChanged() {
-
-  }
-
-  fileSelected() {
+   fileSelected() {
 
     this.selectedReferences = this.commissionForm.value.references;
     console.log((this.selectedReferences.length));

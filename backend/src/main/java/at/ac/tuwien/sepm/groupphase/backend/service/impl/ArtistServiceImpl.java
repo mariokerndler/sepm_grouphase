@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,18 +51,18 @@ public class ArtistServiceImpl implements ArtistService {
 
     // Todo: why does this return an artist?
     @Override
-    public Artist saveArtist(Artist artist)   {
+    public Artist saveArtist(Artist artist) {
 
 
-        ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation+ artist.getUserName());
-        if(artist.getProfilePicture()!=null){
+        ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
+        if (artist.getProfilePicture() != null) {
             ifm.writeAndReplaceArtistProfileImage(artist);
         }
         return artistRepo.save(artist);
     }
 
     @Override
-    public void updateArtist(Artist artist)  {
+    public void updateArtist(Artist artist) {
         Artist oldArtist = findArtistById(artist.getId());
 
         if (!oldArtist.getUserName().equals(artist.getUserName())) {

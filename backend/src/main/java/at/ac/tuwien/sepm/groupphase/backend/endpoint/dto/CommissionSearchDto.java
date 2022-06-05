@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class commissionSearchDto {
+public class CommissionSearchDto {
 
     private  String priceAsc;
     private  String priceDesc;

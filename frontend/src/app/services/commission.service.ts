@@ -6,9 +6,7 @@ import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
 import {tap} from 'rxjs/operators';
 import {SimpleCommissionDto} from '../dtos/simpleCommissionDto';
-import {CommissionSearchDto} from "../dtos/commissionSearchDto";
-import {ArtworkDto} from "../dtos/artworkDto";
-
+import {CommissionSearchDto} from '../dtos/commissionSearchDto';
 
 
 @Injectable({

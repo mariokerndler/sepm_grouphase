@@ -26,8 +26,6 @@ import {FooterComponent} from './components/footer/footer.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
 import {MessageComponent} from './components/message/message.component';
-import {MidsectionComponent} from './components/midsection/midsection/midsection.component';
-import {CardViewComponent} from './components/midsection/card-view/card-view.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistInformationComponent} from './components/artist-page/artist-information/artist-information.component';
 import {
@@ -53,12 +51,14 @@ import {UploadComponent} from './components/upload/upload.component';
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
 import {CommissionCardComponent} from './components/commission/commission-card/commission-card.component';
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
+import {MatSliderModule} from '@angular/material/slider';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {
   ArtistGallerySubsectionsComponent
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
 
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,8 +67,6 @@ import {
     HomeComponent,
     LoginComponent,
     MessageComponent,
-    MidsectionComponent,
-    CardViewComponent,
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,
@@ -91,7 +89,7 @@ import {
     CommissionCardComponent,
     CommissionDetailsComponent,
     CommissionCreationComponent,
-    ArtistGallerySubsectionsComponent
+    ArtistGallerySubsectionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,7 +103,9 @@ import {
     AngularMaterialModule,
     FlexLayoutModule,
     NgxMatColorPickerModule,
-    DragDropModule
+    DragDropModule,
+    MatSliderModule,
+    NgxSliderModule
   ],
   providers: [
     {

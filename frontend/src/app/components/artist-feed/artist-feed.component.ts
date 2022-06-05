@@ -31,6 +31,7 @@ export class ArtistFeedComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // Test
     this.artistService.getAllArtists()
       .subscribe((artists) => {
         this.artists = artists;

@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
+import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
@@ -36,21 +37,33 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
     private static final int NUMBER_OF_COMMISSIONS_TO_GENERATE = 20;
 
+    private String[] urls= new String[]{
+        "https://i.ibb.co/HTT7Ym3/image0.jpg",
+        "https://i.ibb.co/7yHp276/image1.jpg",
+        "https://i.ibb.co/cDT8JHg/image2.jpg",
+        "https://i.ibb.co/wy4PbD4/image3.jpg",
+        "https://i.ibb.co/jfQR7W9/sketch1.jpg",
+        "https://i.ibb.co/JRcbTDk/sketch2.jpg",
+        "https://i.ibb.co/pdtMdcJ/sketch3.jpg",
+        "https://i.ibb.co/09Fk1PB/sketch4.jpg",
+        "https://i.ibb.co/pf63fMd/sketch.gif"
+    };
 
-    private final ArtistRepository artistRepository;
+
+    private final ArtistService artistService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
     private final CommissionRepository commissionRepository;
 
-    public UserDataGenerator(ArtistRepository artistRepository,
+    public UserDataGenerator(ArtistService artistService,
                              UserRepository userRepository,
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
                              CommissionRepository commissionRepository) {
-        this.artistRepository = artistRepository;
+        this.artistService = artistService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
@@ -67,6 +80,7 @@ public class UserDataGenerator {
         generateArtistTestAccount("testArtist", "12345678");
         generateUserTestAccount("testUser", "12345678");
         generateCommissionsTestAccount(NUMBER_OF_COMMISSIONS_TO_GENERATE, NUMBER_OF_USERS_TO_GENERATE);
+
     }
 
     private void loadTags(int numberOftags) throws FileNotFoundException {
@@ -99,7 +113,9 @@ public class UserDataGenerator {
                     log.info(folder.toString());
                     File fldr = new File(folder);
                     Artist a = generateArtistProfile(fldr.getName());
-                    artistRepository.save(a);
+
+                    artistService.saveArtist(a);
+
                     log.info("Saved artist: " + a.getUserName());
                     File artistProfileDir = new File(folder);
                     File[] artistProfileDirectoryListing = artistProfileDir.listFiles();
@@ -184,11 +200,11 @@ public class UserDataGenerator {
         return user;
     }
 
-    private void generateArtistTestAccount(String username, String password) {
+    private void generateArtistTestAccount(String username, String password) throws IOException {
         Artist artist = generateArtistProfile(username);
         artist.setEmail(username + "@test.com");
         artist.setPassword(passwordEncoder.encode(password));
-        artistRepository.save(artist);
+        artistService.saveArtist(artist);
     }
 
     private void generateUserTestAccount(String username, String password) {
@@ -205,26 +221,95 @@ public class UserDataGenerator {
             userRepository.save(user);
         }
         List<ApplicationUser> users = userRepository.findAll();
-        List<Artist> artists = artistRepository.findAll();
-        for (int i = 0; i < users.size() && i < artists.size() && i < number; i++) {
-            Commission c = generateCommissions(artists.get(i), users.get(i));
-            commissionRepository.save(c);
-        }
+        List<Artist> artists = artistService.getAllArtists();
+
+            Commission c =  generateCommission2(artists.get(0), users.get(0));
+        commissionRepository.save(c);
+        Commission d =  generateCommission1(artists.get(1), users.get(1));
+            commissionRepository.save(d);
+
     }
 
-    private Commission generateCommissions(Artist artist, ApplicationUser user) {
+    private Commission generateCommission1(Artist artist, ApplicationUser user) {
+
         Faker faker = new Faker();
         Commission commission = new Commission();
         commission.setArtist(artist);
         commission.setCustomer(user);
-        commission.setTitle(faker.princessBride().toString() + " " + faker.programmingLanguage().toString());
+        commission.setTitle("Sample Commission");
         commission.setSketchesShown((int) (Math.random() * 10));
         commission.setFeedbackSent((int) (Math.random() * 6));
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setInstructions(faker.relationships().toString() + " " + faker.animal().toString() + faker.funnyName().toString() + " " + faker.beer().toString() + " " + faker.shakespeare().toString());
-        commission.setTitle(faker.university().toString() + faker.aquaTeenHungerForce());
+        String desc =faker.shakespeare().hamletQuote().toString();
+        if(desc.length()>50){
+            desc=desc.substring(0,49);
+        }
+        commission.setInstructions(desc);
+        Artwork a = new Artwork();
+        List<Sketch> sketches= new LinkedList<Sketch>();
+        for(int i =4; i>1;i--){
+            if(i==4){
+                a.setArtist(artist);
+                a.setName("Sample Commission Art");
+                a.setDescription(faker.harryPotter().quote().toString());
+                a.setImageUrl("data\\com\\adminSample Commission\\sketch"+i);
+                a.setFileType(FileType.JPG);
+            }
+            else{
+                Sketch k = new Sketch();
+                k.setDescription("Sketch "+i);
+                k.setImageUrl("data\\com\\adminSample Commission\\sketch"+i);
+                sketches.add(k);
+
+            }
+        }
+        a.setSketches(sketches);
+        commission.setArtwork(a);
+        return commission;
+    }
+    private Commission generateCommission2(Artist artist, ApplicationUser user) {
+
+        Faker faker = new Faker();
+        Commission commission = new Commission();
+        commission.setArtist(artist);
+        commission.setCustomer(user);
+        commission.setTitle("Sample Commission");
+        commission.setSketchesShown((int) (Math.random() * 10));
+        commission.setFeedbackSent((int) (Math.random() * 6));
+        commission.setPrice((int) (Math.random() * 10000));
+        commission.setIssueDate(LocalDateTime.now());
+        commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        String desc =faker.shakespeare().hamletQuote().toString();
+        if(desc.length()>50){
+            desc=desc.substring(0,49);
+        }
+        commission.setInstructions(desc);
+        Artwork a = new Artwork();
+        List<Sketch> sketches= new LinkedList<Sketch>();
+        for(int i =5; i>1;i--){
+            if(i==4){
+                a.setArtist(artist);
+                a.setName("Sample Commission Art");
+               desc =faker.shakespeare().hamletQuote().toString();
+                if(desc.length()>50){
+                    desc=desc.substring(0,49);
+                }
+                a.setDescription(desc);
+                a.setImageUrl("data\\com\\adminSample Commission2\\b"+i);
+                a.setFileType(FileType.JPG);
+            }
+            else{
+                Sketch k = new Sketch();
+                k.setDescription("Sketch "+i);
+                k.setImageUrl("data\\com\\adminSample Commission2\\b"+i);
+                sketches.add(k);
+
+            }
+        }
+        a.setSketches(sketches);
+        commission.setArtwork(a);
         return commission;
     }
 

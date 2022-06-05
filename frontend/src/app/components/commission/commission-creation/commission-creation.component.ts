@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtistService} from '../../../services/artist.service';
@@ -13,20 +13,25 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 
 import {ReferenceDto} from '../../../dtos/referenceDto';
 import {CommissionService} from '../../../services/commission.service';
-import {UserRole} from '../../../dtos/artistDto';
+import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {formatDate} from '@angular/common';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
+import {HttpErrorResponse} from '@angular/common/http';
+import {NotificationService} from '../../../services/notification/notification.service';
 
 
 @Component({
   selector: 'app-commission-creation',
   templateUrl: './commission-creation.component.html',
-  styleUrls: ['./commission-creation.component.scss']
+  styleUrls: ['./commission-creation.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CommissionCreationComponent implements OnInit {
   selectedImage;
+  artists: ArtistDto[];
   previewImages: any[] = [];
   selectedReferences = [];
+
   commissionForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
@@ -65,7 +70,8 @@ export class CommissionCreationComponent implements OnInit {
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
               private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
-              public globalFunctions: GlobalFunctions, private commissionService: CommissionService) {
+              public globalFunctions: GlobalFunctions,
+              private commissionService: CommissionService, private notificationService: NotificationService,) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
@@ -77,12 +83,7 @@ export class CommissionCreationComponent implements OnInit {
       secondCtrl: ['', Validators.required],
     });
   }
-
-  onFileChanged() {
-
-  }
-
-  fileSelected() {
+   fileSelected() {
 
     this.selectedReferences = this.commissionForm.value.references;
     console.log((this.selectedReferences.length));
@@ -125,16 +126,24 @@ export class CommissionCreationComponent implements OnInit {
 
 
   submitCommission() {
-    console.log(this.commissionForm.value.references);
+
     this.commission.title = this.commissionForm.value.title;
     this.commission.instructions = this.commissionForm.value.description;
     this.commission.price = this.commissionForm.value.price;
     this.commission.issueDate = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en_US');
     this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
-    console.log(this.commission);
 
-    this.commissionService.createCommission(this.commission).subscribe({});
+    this.commissionService.createCommission(this.commission).subscribe(ret => {
+
+      }, (error: HttpErrorResponse) => {
+      this.notificationService.displayErrorSnackbar(error.error);
+      }, () => {
+      this.notificationService.displaySuccessSnackbar('Commission created successfully');
+
+      }
+    );
   }
+
 
   removeReference(i) {
     this.commission.referencesDtos.splice(i, 1);

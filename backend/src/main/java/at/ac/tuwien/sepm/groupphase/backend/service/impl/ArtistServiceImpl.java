@@ -8,6 +8,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,14 +50,20 @@ public class ArtistServiceImpl implements ArtistService {
         throw new NotFoundException(String.format("Could not find Artist with id %s", id));
     }
 
-    // Todo: Also save profile picture as image with file manager
+    // Todo: why does this return an artist?
     @Override
-    public Artist saveArtist(Artist artist) {
+    public Artist saveArtist(Artist artist)   {
+
+
+        ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation+ artist.getUserName());
+        if(artist.getProfilePicture()!=null){
+            ifm.writeAndReplaceArtistProfileImage(artist);
+        }
         return artistRepo.save(artist);
     }
 
     @Override
-    public void updateArtist(Artist artist) throws IOException {
+    public void updateArtist(Artist artist)  {
         Artist oldArtist = findArtistById(artist.getId());
 
         if (!oldArtist.getUserName().equals(artist.getUserName())) {

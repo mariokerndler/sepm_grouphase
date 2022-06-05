@@ -1,7 +1,7 @@
 <mat-toolbar class="toolbar" color="primary">
   <div fxFlex fxLayout>
-    <button class="menu-icon" mat-icon-button>
-      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    <button (click)="sidenav.toggle()" class="menu-icon" mat-icon-button>
+      <mat-icon >menu</mat-icon>
     </button>
   </div>
   <span class="title" routerLink="/">{{globals.projectName}}</span>

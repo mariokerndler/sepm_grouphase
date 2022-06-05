@@ -58,6 +58,7 @@ public class ArtistEndpoint {
         log.debug("Get /Artist");
         return artistService.getAllArtists().stream().map(artistMapper::artistToArtistDto).collect(Collectors.toList());
     }
+    //TODO: why does this return an artist o.^
 
     @PermitAll
     @ResponseStatus(HttpStatus.CREATED)

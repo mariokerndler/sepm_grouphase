@@ -40,7 +40,7 @@ export class CommissionFeedComponent implements OnInit {
 
 
   searchCom: CommissionSearchDto= {
-    date: SearchConstraint.none, name: '', priceRange:[0,5000], artistId:'',pageNr:0
+    date: SearchConstraint.none, name: '', priceRange:[0,5000], artistId:'',userId:'',pageNr:0
   };
   commissions: SimpleCommissionDto[];
   hasLoaded = false;

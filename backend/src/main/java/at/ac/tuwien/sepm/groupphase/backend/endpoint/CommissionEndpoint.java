@@ -58,6 +58,7 @@ public class CommissionEndpoint {
                                                        @RequestParam(defaultValue = "50000",name="priceRangeUpper")String priceRangeUpper,
                                                        @RequestParam(defaultValue = "0",name="priceRangeLower")String priceRangeLower,
                                                        @RequestParam(defaultValue = "",name="artistId")String artistId,
+                                                       @RequestParam(defaultValue = "",name="userId")String userId,
                                                        @RequestParam(defaultValue = "None",name="date")String dateConstraint
                                                        ) {
         LOGGER.info("Get search commissions");
@@ -76,6 +77,7 @@ public class CommissionEndpoint {
           cs.setPriceRangeLower(priceRangeLower);
         cs.setPriceRangeUpper(priceRangeUpper);
         cs.setPageNr(pageNr);
+        cs.setUserId(userId);
         log.info(cs.toString());
         return commissionService.searchCommissions(cs).stream().map(u -> commissionMapper.commissionToSimpleCommissionDto(u)).collect(Collectors.toList());
     }

@@ -17,6 +17,7 @@ public class CommissionSearchDto {
     private  String priceRangeUpper;
     private  String priceRangeLower;
     private  String artistId;
+    private  String userId;
     private SearchConstraint searchConstraint;
     private  String name;
 
@@ -39,6 +40,9 @@ public class CommissionSearchDto {
     }
     public void setArtistId(String artistId) {
         this.artistId = "%" + artistId + "%";
+    }
+    public void setUserId(String userId) {
+        this.userId = "%" + userId + "%";
     }
 
 

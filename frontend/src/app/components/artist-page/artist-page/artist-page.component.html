@@ -1,3 +1,4 @@
+
 <div class="artist-page-wrapper">
   <div
     *ngIf="isReady"
@@ -31,6 +32,9 @@
             <mat-tab label="Reviews">
             </mat-tab>
             <mat-tab label="Contact">
+            </mat-tab>
+            <mat-tab label="My Commissions">
+              <app-commission-page [user]="artist"></app-commission-page>
             </mat-tab>
           </mat-tab-group>
         </div>

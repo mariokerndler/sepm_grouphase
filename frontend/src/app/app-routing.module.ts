@@ -13,6 +13,7 @@ import {ArtistFeedComponent} from './components/artist-feed/artist-feed.componen
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
+import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
   {path: 'artist/:id', component: ArtistPageComponent},
   {path: 'artist/:id/edit', component: ArtistPageEditComponent},
+  {path: 'user/:id/commissions', component: CommissionPageComponent},
   {path: 'user/:id', component: UserPageComponent},
   {path: 'user/:id/edit', component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},

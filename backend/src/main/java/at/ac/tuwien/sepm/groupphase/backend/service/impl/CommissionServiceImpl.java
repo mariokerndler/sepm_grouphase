@@ -12,7 +12,6 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -95,14 +94,14 @@ public class CommissionServiceImpl implements CommissionService {
         this.commissionRepo.deleteById(c.getId());
     }
 
+    //TODO: in feed, only view open commissions
+
     @Override
     public List<Commission> searchCommissions(CommissionSearchDto cs) {
-        if(cs.getSearchConstraint()== SearchConstraint.None) {
-            return this.commissionRepo.searchCommissions(cs.getName(), cs.getPriceRangeLower(),cs.getPriceRangeUpper(), cs.getArtistId());
-        }
-
-        else{
-            return this.commissionRepo.searchCommissionsDate(cs.getName(), cs.getPriceRangeLower(),cs.getPriceRangeUpper(),cs.getArtistId(),cs.getSearchConstraint().toString());
+        if (cs.getSearchConstraint() == SearchConstraint.None) {
+            return this.commissionRepo.searchCommissions(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId());
+        } else {
+            return this.commissionRepo.searchCommissionsDate(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId(), cs.getSearchConstraint().toString());
         }
     }
 

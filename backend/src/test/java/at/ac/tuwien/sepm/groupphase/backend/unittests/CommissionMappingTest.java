@@ -4,8 +4,9 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
-import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -92,6 +93,7 @@ public class CommissionMappingTest {
         this.commission = Commission.builder()
             .artist(artist)
             .customer(user)
+            .status(CommissionStatus.OPEN)
             .title("Cowboy Snail")
             .sketchesShown(3)
             .feedbackSent(0)
@@ -167,6 +169,7 @@ public class CommissionMappingTest {
 
         DetailedCommissionDto commissionDto = new DetailedCommissionDto(artistDto,
             userDto,
+            CommissionStatus.OPEN,
             3,
             0,
             2000.45,
@@ -190,6 +193,7 @@ public class CommissionMappingTest {
             () -> assertEquals(artistDto.getUserName(), commission.getArtist().getUserName()),
             () -> assertEquals(userDto.getId(), commission.getCustomer().getId()),
             () -> assertEquals(userDto.getUserName(), commission.getCustomer().getUserName()),
+            () -> assertEquals(commissionDto.getStatus(), commission.getStatus()),
             () -> assertEquals(commissionDto.getSketchesShown(), commission.getSketchesShown()),
             () -> assertEquals(commissionDto.getFeedbackSent(), commission.getFeedbackSent()),
             () -> assertEquals(commissionDto.getPrice(), commission.getPrice()),
@@ -215,6 +219,7 @@ public class CommissionMappingTest {
             () -> assertEquals(artist.getUserName(), commissionDto.getArtistDto().getUserName()),
             () -> assertEquals(user.getId(), commissionDto.getCustomerDto().getId()),
             () -> assertEquals(user.getUserName(), commissionDto.getCustomerDto().getUserName()),
+            () -> assertEquals(commission.getStatus(), commissionDto.getStatus()),
             () -> assertEquals(commission.getSketchesShown(), commissionDto.getSketchesShown()),
             () -> assertEquals(commission.getFeedbackSent(), commissionDto.getFeedbackSent()),
             () -> assertEquals(commission.getPrice(), commissionDto.getPrice()),

@@ -10,6 +10,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
+import at.ac.tuwien.sepm.groupphase.backend.utils.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -129,7 +130,7 @@ public class CommissionEndpointTest {
 
         ApplicationUser user1 = ApplicationUser.builder().id(userId).userName("sunscreen98").name("Mike").surname("Regen").email("mikey98@gmail.com").address("Greatstreet").password("passwordhash2").admin(false).userRole(UserRole.User).build();
 
-        Commission commission = Commission.builder().artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).title("its yours").instructions("do the thing").feedbackRounds(2).build();
+        Commission commission = Commission.builder().artist(artist1).customer(user1).status(CommissionStatus.OPEN).sketchesShown(3).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).title("its yours").instructions("do the thing").feedbackRounds(2).build();
 
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/commissions").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
@@ -151,7 +152,7 @@ public class CommissionEndpointTest {
         mockMvc.perform(get("/api/v1/commissions/" + commissionId))
             .andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
 
-        Commission modCommission = Commission.builder().id(commissionId).feedbackRounds(2).artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(commission.getIssueDate()).deadlineDate(commission.getDeadlineDate()).title("Drawing french").instructions("draw me like one of your french girls").build();
+        Commission modCommission = Commission.builder().id(commissionId).feedbackRounds(2).artist(artist1).customer(user1).status(CommissionStatus.OPEN).sketchesShown(3).feedbackSent(0).price(300).issueDate(commission.getIssueDate()).deadlineDate(commission.getDeadlineDate()).title("Drawing french").instructions("draw me like one of your french girls").build();
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();

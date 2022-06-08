@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -23,6 +24,9 @@ public class DetailedCommissionDto {
 
     @NotNull
     private ApplicationUserDto customerDto;
+
+    @NotNull
+    private CommissionStatus status;
 
     @Min(0)
     private int sketchesShown;
@@ -64,6 +68,7 @@ public class DetailedCommissionDto {
 
     public DetailedCommissionDto(ArtistDto artistDto,
                                  ApplicationUserDto customerDto,
+                                 CommissionStatus status,
                                  int sketchesShown,
                                  int feedbackSent,
                                  double price,
@@ -77,6 +82,7 @@ public class DetailedCommissionDto {
                                  ArtworkDto artworkDto) {
         this.artistDto = artistDto;
         this.customerDto = customerDto;
+        this.status = status;
         this.sketchesShown = sketchesShown;
         this.feedbackSent = feedbackSent;
         this.price = price;
@@ -96,6 +102,7 @@ public class DetailedCommissionDto {
             + "id=" + id
             + ", artistDtoId=" + (artistDto == null ? null : artistDto.getId())
             + ", customerDtoId=" + (customerDto == null ? null : customerDto.getId())
+            + ", status=" + status
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent
             + ", price=" + price

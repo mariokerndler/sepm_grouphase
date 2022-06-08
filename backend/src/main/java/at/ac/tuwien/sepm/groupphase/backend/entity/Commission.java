@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -27,6 +28,9 @@ public class Commission implements HasId {
     @ManyToOne
     @JoinColumn(nullable = false)
     private ApplicationUser customer;
+
+    @Column(nullable = false)
+    private CommissionStatus status;
 
     @Column(nullable = false, name = "sketches_shown")
     private int sketchesShown;
@@ -70,6 +74,7 @@ public class Commission implements HasId {
 
     public Commission(Artist artist,
                       ApplicationUser customer,
+                      CommissionStatus status,
                       int sketchesShown,
                       int feedbackSent,
                       double price,
@@ -83,6 +88,7 @@ public class Commission implements HasId {
                       Artwork artwork) {
         this.artist = artist;
         this.customer = customer;
+        this.status = status;
         this.sketchesShown = sketchesShown;
         this.feedbackSent = feedbackSent;
         this.price = price;
@@ -102,6 +108,7 @@ public class Commission implements HasId {
             + "id=" + id
             + ", artist=" + (artist == null ? null : artist.getId())
             + ", customer=" + customer.getId()
+            + ", status=" + status
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent
             + ", price=" + price

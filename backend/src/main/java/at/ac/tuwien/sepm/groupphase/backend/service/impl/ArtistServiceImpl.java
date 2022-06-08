@@ -56,7 +56,8 @@ public class ArtistServiceImpl implements ArtistService {
 
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
         if (artist.getProfilePicture() != null) {
-            ifm.writeAndReplaceArtistProfileImage(artist);
+            String imageUrl = ifm.writeAndReplaceArtistProfileImage(artist);
+            artist.getProfilePicture().setImageUrl(imageUrl);
         }
         return artistRepo.save(artist);
     }
@@ -69,10 +70,17 @@ public class ArtistServiceImpl implements ArtistService {
             ifm.renameArtistFolder(artist, oldArtist.getUserName());
         }
 
-        if (oldArtist.getProfilePicture() != null && artist.getProfilePicture() != null) {
-            if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
-                ifm.writeAndReplaceArtistProfileImage(artist);
+        // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
+        if (artist.getProfilePicture() != null) {
+            String imageUrl = "";
+            if (oldArtist.getProfilePicture() != null) {
+                if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
+                    imageUrl = ifm.writeAndReplaceArtistProfileImage(artist);
+                }
+            } else {
+                imageUrl = ifm.writeAndReplaceArtistProfileImage(artist);
             }
+            artist.getProfilePicture().setImageUrl(imageUrl);
         }
 
         artistRepo.save(artist);
@@ -99,6 +107,7 @@ public class ArtistServiceImpl implements ArtistService {
                     }
                 }
             }
+            // TODO: Ifm delete files of artist
             artistRepo.delete(artist.get());
         } else {
             throw new NotFoundException(String.format("Could not find Artist with id %s", id));

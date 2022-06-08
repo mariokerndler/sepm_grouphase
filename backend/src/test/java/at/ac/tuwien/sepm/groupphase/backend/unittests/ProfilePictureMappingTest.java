@@ -112,7 +112,7 @@ public class ProfilePictureMappingTest implements TestData {
 
     @Test
     @Transactional
-    public void givenSavedArtist_whenMapProfilePictureToDto_thenDtoHasAllProperties() throws Exception {
+    public void givenSavedArtist_whenMapProfilePictureToDto_thenDtoHasAllPropertiesExceptImageData() throws Exception {
         byte[] image = GetImageByteArray.getImageBytes(IMAGE_URLS[0]);
 
         ProfilePicture profilePicture = getProfilePicture(artist, image);
@@ -120,7 +120,7 @@ public class ProfilePictureMappingTest implements TestData {
         assertAll(
             () -> assertEquals(null, profilePictureDto.getId()),
             () -> assertEquals("./data/image0", profilePictureDto.getImageUrl()),
-            () -> assertTrue(Arrays.equals(image, profilePictureDto.getImageData())),
+            () -> assertEquals(null, profilePictureDto.getImageData()),
             () -> assertEquals(FileType.PNG, profilePictureDto.getFileType()),
             () -> assertEquals(artist.getId(), profilePictureDto.getArtistId())
         );

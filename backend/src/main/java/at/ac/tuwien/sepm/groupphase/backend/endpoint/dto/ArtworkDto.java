@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -35,7 +37,8 @@ public class ArtworkDto {
     @NotNull
     private Long artistId;
 
-    //todo sketch reference
+    private List<@Valid SketchDto> sketchesDtos;
+
     //TODO: make simple and detailed artwork dto (put this in while merging so I don't forget
 
     public ArtworkDto(String name, String description, String imageUrl, FileType fileType, Long artistId) {

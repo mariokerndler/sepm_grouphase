@@ -8,13 +8,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = ArtistService.class)
+@Mapper(componentModel = "spring", uses = {ArtistService.class, SketchMapper.class})
 public abstract class ArtworkMapper {
 
     @Mapping(source = "artist.id", target = "artistId")
+    @Mapping(source = "sketches", target = "sketchesDtos")
     public abstract ArtworkDto artworkToArtworkDto(Artwork a);
 
     @Mapping(source = "artistId", target = "artist")
+    @Mapping(source = "sketchesDtos", target = "sketches")
     public abstract Artwork artworkDtoToArtwork(ArtworkDto artworkDto);
 
     // TODO: Ask Daniel why this is necessary

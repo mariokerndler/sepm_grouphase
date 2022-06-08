@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -63,6 +64,9 @@ public class ArtistDto {
 
     @Size(max = 255)
     private String profileSettings;
+
+    @Valid
+    private ProfilePictureDto profilePictureDto;
 
     public ArtistDto(String userName,
                      String name,

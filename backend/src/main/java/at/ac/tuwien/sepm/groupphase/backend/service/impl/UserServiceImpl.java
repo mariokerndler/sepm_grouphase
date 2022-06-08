@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             log.info(user.get().getUserName());
-
+            // TODO: Ifm delete files of artist
             userRepo.deleteById(id);
         } else {
             throw new NotFoundException(String.format("Could not find User with id %s", id));

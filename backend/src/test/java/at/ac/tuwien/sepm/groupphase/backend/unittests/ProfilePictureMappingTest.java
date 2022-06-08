@@ -64,7 +64,7 @@ public class ProfilePictureMappingTest implements TestData {
             .imageUrl("./data/image0")
             .imageData(imageData)
             .fileType(FileType.PNG)
-            .artist(artist)
+            .applicationUser(artist)
             .build();
     }
 
@@ -73,7 +73,7 @@ public class ProfilePictureMappingTest implements TestData {
         profilePictureDto.setImageUrl("./data/image0");
         profilePictureDto.setImageData(imageData);
         profilePictureDto.setFileType(FileType.PNG);
-        profilePictureDto.setArtistId(artistId);
+        profilePictureDto.setApplicationUserId(artistId);
         return profilePictureDto;
     }
 
@@ -90,7 +90,7 @@ public class ProfilePictureMappingTest implements TestData {
             () -> assertEquals("./data/image0", profilePicture.getImageUrl()),
             () -> assertTrue(Arrays.equals(image, profilePicture.getImageData())),
             () -> assertEquals(FileType.PNG, profilePicture.getFileType()),
-            () -> assertEquals(artist.getId(), profilePicture.getArtist() == null ? null : profilePicture.getArtist().getId())
+            () -> assertEquals(artist.getId(), profilePicture.getApplicationUser() == null ? null : profilePicture.getApplicationUser().getId())
         );
     }
 
@@ -106,7 +106,7 @@ public class ProfilePictureMappingTest implements TestData {
             () -> assertEquals("./data/image0", profilePicture.getImageUrl()),
             () -> assertTrue(Arrays.equals(image, profilePicture.getImageData())),
             () -> assertEquals(FileType.PNG, profilePicture.getFileType()),
-            () -> assertEquals(null, profilePicture.getArtist() == null ? null : profilePicture.getArtist().getId())
+            () -> assertEquals(null, profilePicture.getApplicationUser() == null ? null : profilePicture.getApplicationUser().getId())
         );
     }
 
@@ -122,7 +122,7 @@ public class ProfilePictureMappingTest implements TestData {
             () -> assertEquals("./data/image0", profilePictureDto.getImageUrl()),
             () -> assertEquals(null, profilePictureDto.getImageData()),
             () -> assertEquals(FileType.PNG, profilePictureDto.getFileType()),
-            () -> assertEquals(artist.getId(), profilePictureDto.getArtistId())
+            () -> assertEquals(artist.getId(), profilePictureDto.getApplicationUserId())
         );
     }
 

@@ -52,6 +52,7 @@ public class Artist extends ApplicationUser implements HasId {
 
 
     public Artist(String userName,
+                  ProfilePicture profilePicture,
                   String name,
                   String surname,
                   String email,
@@ -59,7 +60,6 @@ public class Artist extends ApplicationUser implements HasId {
                   String password,
                   Boolean admin,
                   UserRole userRole,
-                  ProfilePicture profilePicture,
                   String description,
                   String profileSettings,
                   double reviewScore,

@@ -8,8 +8,8 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +48,18 @@ public class ArtworkMappingTest implements TestData {
     }
 
     public Artist getTestArtist1() {
-        return artist = new Artist("testArtist", "bob", "test", "test", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
+        return artist = Artist.builder()
+            .userName("testArtist")
+            .name("bob")
+            .surname("test")
+            .email("test@test.com")
+            .address("test")
+            .password(passwordEncoder.encode("test"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(1.0)
+            .build();
     }
 
 

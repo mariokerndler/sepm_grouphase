@@ -10,10 +10,11 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = {ArtistService.class})
 public abstract class ProfilePictureMapper {
 
-    @Mapping(source = "artist.id", target = "artistId")
+    @Mapping(source = "applicationUser.id", target = "applicationUserId")
+    @Mapping(target = "imageData", ignore = true)
     public abstract ProfilePictureDto profilePictureToProfilePictureDto(ProfilePicture profilePicture);
 
-    @Mapping(source = "artistId", target = "artist")
+    @Mapping(source = "applicationUserId", target = "applicationUser")
     public abstract ProfilePicture profilePictureDtoToProfilePicture(ProfilePictureDto profilePictureDto);
 
     @Named("ProfilePictureWithoutArtistId")

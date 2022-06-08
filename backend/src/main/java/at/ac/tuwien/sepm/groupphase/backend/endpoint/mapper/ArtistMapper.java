@@ -33,9 +33,11 @@ public abstract class ArtistMapper {
     }
 
     @AfterMapping
-    public Artist setArtistForChildren(@MappingTarget Artist.ArtistBuilder<?, ?> artistBuilder) {
+    public Artist setUserForChildren(@MappingTarget Artist.ArtistBuilder<?, ?> artistBuilder) {
         Artist artist = artistBuilder.build();
-        artist.getProfilePicture().setArtist(artist);
+        if (artist.getProfilePicture() != null) {
+            artist.getProfilePicture().setApplicationUser(artist);
+        }
         return artist;
     }
 

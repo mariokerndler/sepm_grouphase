@@ -75,12 +75,12 @@ public class ApplicationUserEndpointTest {
     private ApplicationUser applicationUser;
 
     public ApplicationUser getTestUser1() {
-        return applicationUser = new ApplicationUser(String.format("testUser"), "bob", "atest",
+        return applicationUser = new ApplicationUser(String.format("testUser"), null, "bob", "atest",
             "test@atest.com", "testStraße 3", passwordEncoder.encode("atest"), false, UserRole.User);
     }
 
     public ApplicationUser getTestUser2() {
-        return applicationUser = new ApplicationUser(String.format("testUser2"), "bobby", "aSecondTest",
+        return applicationUser = new ApplicationUser(String.format("testUser2"), null, "bobby", "aSecondTest",
             "test2@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
     }
 
@@ -137,7 +137,7 @@ public class ApplicationUserEndpointTest {
         assertTrue(users2.toString().contains("test@atest.com"));
         assertTrue(users2.toString().contains("testStraße 2"));
 
-        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), "bobbyName", "aSecondTest",
+        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), null, "bobbyName", "aSecondTest",
             "testmodify@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();

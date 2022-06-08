@@ -23,5 +23,5 @@ public class ProfilePictureDto {
 
     private byte[] imageData;
 
-    private Long artistId;
+    private Long applicationUserId;
 }

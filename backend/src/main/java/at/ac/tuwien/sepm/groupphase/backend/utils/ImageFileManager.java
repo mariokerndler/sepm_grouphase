@@ -128,9 +128,9 @@ public class ImageFileManager {
         imageFile.delete();
     }
 
-    public String writeAndReplaceArtistProfileImage(Artist a) {
+    public String writeAndReplaceUserProfileImage(ApplicationUser a) {
 
-        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfilePictureLocation + a.getUserName());
+        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
         if (!f.isDirectory() || !f.exists()) {
             try {
                 Files.createDirectories(f.toPath());
@@ -139,12 +139,12 @@ public class ImageFileManager {
                 throw new FileManagerException(e.getMessage());
             }
         }
-        File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfilePictureLocation + a.getUserName() + "/"
-            + ImageDataPaths.artistProfilePictureIdentifier);
+        File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+            + ImageDataPaths.userProfilePictureIdentifier);
         try (FileOutputStream outputStream = new FileOutputStream(profilePicture)) {
             outputStream.write(a.getProfilePicture().getImageData());
-            return ImageDataPaths.artistProfilePictureLocation + a.getUserName() + "/"
-                + ImageDataPaths.artistProfilePictureIdentifier;
+            return ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+                + ImageDataPaths.userProfilePictureIdentifier;
         } catch (IOException e) {
             log.info(e.getMessage());
             e.printStackTrace();

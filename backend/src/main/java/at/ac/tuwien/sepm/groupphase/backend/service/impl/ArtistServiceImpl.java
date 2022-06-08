@@ -56,7 +56,7 @@ public class ArtistServiceImpl implements ArtistService {
 
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
         if (artist.getProfilePicture() != null) {
-            String imageUrl = ifm.writeAndReplaceArtistProfileImage(artist);
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
         }
         return artistRepo.save(artist);
@@ -75,10 +75,10 @@ public class ArtistServiceImpl implements ArtistService {
             String imageUrl = "";
             if (oldArtist.getProfilePicture() != null) {
                 if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
-                    imageUrl = ifm.writeAndReplaceArtistProfileImage(artist);
+                    imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
                 }
             } else {
-                imageUrl = ifm.writeAndReplaceArtistProfileImage(artist);
+                imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             }
             artist.getProfilePicture().setImageUrl(imageUrl);
         }

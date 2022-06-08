@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
+    private final ImageFileManager ifm;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder, ImageFileManager ifm) {
         this.userRepo = userRepository;
         this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
+        this.ifm = ifm;
     }
 
     @Override
@@ -81,6 +84,21 @@ public class UserServiceImpl implements UserService {
     public void updateUser(ApplicationUser user) {
         log.debug("Service: Update User {}", user.toString());
         userValidator.validateUser(user);
+
+        ApplicationUser oldUser = findUserById(user.getId());
+
+        // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
+        if (user.getProfilePicture() != null) {
+            String imageUrl = "";
+            if (oldUser.getProfilePicture() != null) {
+                if (oldUser.getProfilePicture().getId() != user.getProfilePicture().getId()) {
+                    imageUrl = ifm.writeAndReplaceUserProfileImage(user);
+                }
+            } else {
+                imageUrl = ifm.writeAndReplaceUserProfileImage(user);
+            }
+            user.getProfilePicture().setImageUrl(imageUrl);
+        }
         userRepo.save(user);
 
     }
@@ -88,8 +106,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(ApplicationUser user) {
         log.debug("Service: Register User {}", user.toString());
+
         userValidator.validateUser(user);
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (user.getProfilePicture() != null) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
+            user.getProfilePicture().setImageUrl(imageUrl);
+        }
+
         userRepo.save(user);
     }
 

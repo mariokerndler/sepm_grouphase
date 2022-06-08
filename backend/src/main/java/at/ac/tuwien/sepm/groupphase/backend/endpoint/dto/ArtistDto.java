@@ -21,6 +21,9 @@ public class ArtistDto {
     @Size(max = 50)
     private String userName;
 
+    @Valid
+    private ProfilePictureDto profilePictureDto;
+
     @ValidAlphaNumeric
     @Size(max = 50)
     private String name;
@@ -64,9 +67,6 @@ public class ArtistDto {
 
     @Size(max = 255)
     private String profileSettings;
-
-    @Valid
-    private ProfilePictureDto profilePictureDto;
 
     public ArtistDto(String userName,
                      String name,

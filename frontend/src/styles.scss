@@ -8,27 +8,27 @@ $background: #434F6A;
   $accent: map-get($theme, accent);
 
   .primary-background {
-    background-color: mat-color($primary);
+    background-color: mat-color($primary) !important;
   }
   .accent-background {
-    background-color: mat-color($accent);
+    background-color: mat-color($accent) !important;
   }
   .primary-color {
-    color: mat-color($primary);
+    color: mat-color($primary) !important;
   }
   .accent-color {
-    color: mat-color($accent);
+    color: mat-color($accent) !important;
   }
   .primary {
-    background-color: mat-color($primary);
-    color: mat-color($accent);
+    background-color: mat-color($primary) !important;
+    color: mat-color($accent) !important;
   }
   .accent {
-    background-color: mat-color($accent);
-    color: mat-color($primary);
+    background-color: mat-color($accent) !important;
+    color: mat-color($primary) !important;
   }
   .secondary {
-    color: #2f3a51;
+    color: #2f3a51 !important;
   }
 
 }
@@ -45,7 +45,7 @@ body {
 
 * {
   font-family: 'Didact Gothic', sans-serif;
-  font-size: 20px;
+  font-size: 1rem;
 }
 
 html, body {

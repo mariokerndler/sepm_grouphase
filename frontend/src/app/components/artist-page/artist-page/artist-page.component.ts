@@ -64,11 +64,22 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           }
         })
     );
+
+    window.onload = () => {
+      const reloading = sessionStorage.getItem('reloading');
+      if (reloading) {
+        sessionStorage.removeItem('reloading');
+        this.changeIndex(1);
+        this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork');
+      }
+    };
   }
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
   }
+
+
 
   navigateToEdit() {
     this.router.navigate(['/artist', this.artist.id, 'edit'])

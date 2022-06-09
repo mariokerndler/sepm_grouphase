@@ -1,3 +1,5 @@
+import {TagDto} from './tagDto';
+
 export class ArtworkDto {
   id: number;
   name: string;
@@ -8,6 +10,7 @@ export class ArtworkDto {
   artistId: number;
   row: string;
   col: string;
+  tags: TagDto[];
 }
 
 export enum FileType {

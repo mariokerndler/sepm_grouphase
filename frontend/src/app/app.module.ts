@@ -59,6 +59,7 @@ import {
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
 
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { DeleteArtworkComponent } from './components/delete-artwork/delete-artwork.component';
 import { CommissionPageComponent } from './components/artist-page/commission-page/commission-page.component';
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { CommissionPageComponent } from './components/artist-page/commission-pag
     CommissionDetailsComponent,
     CommissionCreationComponent,
     ArtistGallerySubsectionsComponent,
+    DeleteArtworkComponent,
     CommissionPageComponent,
   ],
   imports: [

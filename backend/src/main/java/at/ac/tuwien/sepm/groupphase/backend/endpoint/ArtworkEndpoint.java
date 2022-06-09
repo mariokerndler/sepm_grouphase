@@ -8,7 +8,7 @@ import at.ac.tuwien.sepm.groupphase.backend.search.ArtistSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,7 +154,9 @@ public class ArtworkEndpoint {
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());
         try {
-            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+            Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
+            artwork.setTags(artworkDto.getTags());
+            artworkService.saveArtwork(artwork);
         } catch (Exception v) {
             log.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());

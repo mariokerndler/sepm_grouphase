@@ -6,8 +6,8 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.SearchConstraint;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchConstraint;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,8 +95,14 @@ public class CommissionServiceImpl implements CommissionService {
         this.commissionRepo.deleteById(c.getId());
     }
 
+    //TODO: in feed, only view open commissions
+
     @Override
     public List<Commission> searchCommissions(CommissionSearchDto cs) {
+        if (cs.getSearchConstraint() == SearchConstraint.None) {
+            return this.commissionRepo.searchCommissions(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId());
+        } else {
+            return this.commissionRepo.searchCommissionsDate(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId(), cs.getSearchConstraint().toString());
         if(cs.getSearchConstraint()== SearchConstraint.None) {
             return this.commissionRepo.searchCommissions(cs.getName(), cs.getPriceRangeLower(),cs.getPriceRangeUpper(), cs.getArtistId(),cs.getUserId());
         }

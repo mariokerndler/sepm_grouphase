@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -76,6 +76,7 @@ public class ArtistDto {
                      String password,
                      Boolean admin,
                      UserRole userRole,
+                     String description,
                      double reviewScore,
                      Long galleryId,
                      List<Long> artworksIds,
@@ -90,6 +91,7 @@ public class ArtistDto {
         this.password = password;
         this.admin = admin;
         this.userRole = userRole;
+        this.description = description;
         this.reviewScore = reviewScore;
         this.galleryId = galleryId;
         this.artworksIds = artworksIds;

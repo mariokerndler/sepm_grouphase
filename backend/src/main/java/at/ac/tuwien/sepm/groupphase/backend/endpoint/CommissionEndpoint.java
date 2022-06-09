@@ -5,7 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.SearchConstraint;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchConstraint;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.annotation.security.PermitAll;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,39 +47,38 @@ public class CommissionEndpoint {
         LOGGER.info("Get all commissions");
         return commissionService.getAllCommissions().stream().map(u -> commissionMapper.commissionToSimpleCommissionDto(u)).collect(Collectors.toList());
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search")
     @Operation(summary = "Get all commissions filterd")
     @Transactional
-    public List<SimpleCommissionDto> searchCommissions(@RequestParam(defaultValue = "",name="name")String name,
-                                                       @RequestParam(defaultValue = "0",name="pageNr")String pageNr,
-                                                       @RequestParam(defaultValue = "50000",name="priceRangeUpper")String priceRangeUpper,
-                                                       @RequestParam(defaultValue = "0",name="priceRangeLower")String priceRangeLower,
-                                                       @RequestParam(defaultValue = "",name="artistId")String artistId,
-                                                       @RequestParam(defaultValue = "",name="userId")String userId,
-                                                       @RequestParam(defaultValue = "None",name="date")String dateConstraint
-                                                       ) {
+    public List<SimpleCommissionDto> searchCommissions(@RequestParam(defaultValue = "", name = "name") String name,
+                                                       @RequestParam(defaultValue = "0", name = "pageNr") String pageNr,
+                                                       @RequestParam(defaultValue = "50000", name = "priceRangeUpper") String priceRangeUpper,
+                                                       @RequestParam(defaultValue = "0", name = "priceRangeLower") String priceRangeLower,
+                                                       @RequestParam(defaultValue = "", name = "artistId") String artistId,
+                                                       @RequestParam(defaultValue = "None", name = "date") String dateConstraint
+    ) {
         LOGGER.info("Get search commissions");
-        CommissionSearchDto cs= new CommissionSearchDto();
+        CommissionSearchDto cs = new CommissionSearchDto();
         cs.setName(name.toLowerCase());
         cs.setArtistId(artistId);
-        if(dateConstraint.toLowerCase().contains(SearchConstraint.ASC.toString().toLowerCase())){
+        if (dateConstraint.toLowerCase().contains(SearchConstraint.ASC.toString().toLowerCase())) {
             cs.setSearchConstraint(SearchConstraint.ASC);
-        }
-        else if(dateConstraint.toLowerCase().contains(SearchConstraint.DESC.toString().toLowerCase())){
+        } else if (dateConstraint.toLowerCase().contains(SearchConstraint.DESC.toString().toLowerCase())) {
             cs.setSearchConstraint(SearchConstraint.DESC);
-        }
-        else{
+        } else {
             cs.setSearchConstraint(SearchConstraint.None);
         }
-          cs.setPriceRangeLower(priceRangeLower);
+        cs.setPriceRangeLower(priceRangeLower);
         cs.setPriceRangeUpper(priceRangeUpper);
         cs.setPageNr(pageNr);
         cs.setUserId(userId);
         log.info(cs.toString());
         return commissionService.searchCommissions(cs).stream().map(u -> commissionMapper.commissionToSimpleCommissionDto(u)).collect(Collectors.toList());
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")

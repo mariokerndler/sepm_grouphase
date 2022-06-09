@@ -9,5 +9,5 @@
   </button>
 </div>
 <div class="content">
-  <app-image-feed *ngIf="isReady" [artworks]="artworks"></app-image-feed>
+  <app-image-feed *ngIf="isReady" [artworks]="artworks" [isUser]="isSameUser()"></app-image-feed>
 </div>

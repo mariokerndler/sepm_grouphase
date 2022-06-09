@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ProfilePicture;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
@@ -53,9 +54,11 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Artist saveArtist(Artist artist) {
 
-
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
-        if (artist.getProfilePicture() != null) {
+
+        if (artist.getProfilePicture() == null) {
+            artist.setProfilePicture(ProfilePicture.getDefaultProfilePicture(artist));
+        } else {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
         }
@@ -71,15 +74,10 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
-        if (artist.getProfilePicture() != null) {
-            String imageUrl = "";
-            if (oldArtist.getProfilePicture() != null) {
-                if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
-                    imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
-                }
-            } else {
-                imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
-            }
+        if (artist.getProfilePicture() == null) {
+            artist.setProfilePicture(ProfilePicture.getDefaultProfilePicture(artist));
+        } else if ((oldArtist.getProfilePicture() == null) || oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
         }
 

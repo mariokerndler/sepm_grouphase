@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ProfilePicture;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
@@ -88,17 +89,13 @@ public class UserServiceImpl implements UserService {
         ApplicationUser oldUser = findUserById(user.getId());
 
         // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
-        if (user.getProfilePicture() != null) {
-            String imageUrl = "";
-            if (oldUser.getProfilePicture() != null) {
-                if (oldUser.getProfilePicture().getId() != user.getProfilePicture().getId()) {
-                    imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-                }
-            } else {
-                imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-            }
+        if (user.getProfilePicture() == null) {
+            user.setProfilePicture(ProfilePicture.getDefaultProfilePicture(user));
+        } else if ((oldUser.getProfilePicture() == null) || oldUser.getProfilePicture().getId() != oldUser.getProfilePicture().getId()) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
         }
+
         userRepo.save(user);
 
     }
@@ -111,7 +108,9 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (user.getProfilePicture() != null) {
+        if (user.getProfilePicture() == null) {
+            user.setProfilePicture(ProfilePicture.getDefaultProfilePicture(user));
+        } else {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
         }

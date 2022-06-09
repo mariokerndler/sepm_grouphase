@@ -4,7 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
-import at.ac.tuwien.sepm.groupphase.backend.utils.CommissionStatus;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;

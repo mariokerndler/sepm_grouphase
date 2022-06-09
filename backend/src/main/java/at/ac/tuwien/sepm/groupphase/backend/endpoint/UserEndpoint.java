@@ -6,7 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidOldPasswordException;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

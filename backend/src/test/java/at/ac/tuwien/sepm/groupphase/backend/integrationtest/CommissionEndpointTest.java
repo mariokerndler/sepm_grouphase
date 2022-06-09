@@ -10,7 +10,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
-import at.ac.tuwien.sepm.groupphase.backend.utils.CommissionStatus;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;

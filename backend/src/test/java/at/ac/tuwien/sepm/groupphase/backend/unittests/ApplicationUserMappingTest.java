@@ -33,7 +33,7 @@ public class ApplicationUserMappingTest {
     private ApplicationUser applicationUser;
 
     public ApplicationUser getApplicationUser() {
-        return applicationUser = new ApplicationUser("aUser", "aName", "aSurname", "aMail@mail.com", "testStraße 1", passwordEncoder.encode("tester"), false, UserRole.User);
+        return applicationUser = new ApplicationUser("aUser", null, "aName", "aSurname", "aMail@mail.com", "testStraße 1", passwordEncoder.encode("tester"), false, UserRole.User);
     }
 
     @Test

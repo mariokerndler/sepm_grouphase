@@ -25,6 +25,9 @@ public class Commission implements HasId {
     @ManyToOne
     private Artist artist;
 
+    @ManyToMany
+    private List<Artist> artistCandidates;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private ApplicationUser customer;
@@ -73,6 +76,7 @@ public class Commission implements HasId {
     private Artwork artwork;
 
     public Commission(Artist artist,
+                      List<Artist> artistCandidates,
                       ApplicationUser customer,
                       CommissionStatus status,
                       int sketchesShown,
@@ -87,6 +91,7 @@ public class Commission implements HasId {
                       Review review,
                       Artwork artwork) {
         this.artist = artist;
+        this.artistCandidates = artistCandidates;
         this.customer = customer;
         this.status = status;
         this.sketchesShown = sketchesShown;
@@ -106,8 +111,9 @@ public class Commission implements HasId {
     public String toString() {
         return "Commission{"
             + "id=" + id
-            + ", artist=" + (artist == null ? null : artist.getId())
-            + ", customer=" + customer.getId()
+            + ", artistId=" + (artist == null ? null : artist.getId())
+            + ", artistCandidatesIds=" + (artistCandidates == null ? null : artistCandidates.stream().map(Artist::getId).toList())
+            + ", customerId=" + customer.getId()
             + ", status=" + status
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent
@@ -116,9 +122,10 @@ public class Commission implements HasId {
             + ", deadlineDate=" + deadlineDate
             + ", title=" + title
             + ", instructions='" + instructions + '\''
-            + (receipts == null ? "" : ", receipts=" + receipts.stream().map(Receipt::getId).toList())
-            + (review == null ? "" : ", review=" + review.getId())
-            + (artwork == null ? "" : ", artwork=" + artwork.getId()) + '}';
+            + ", referencesIds=" + (references == null ? null : references.stream().map(Reference::getId).toList())
+            + ", receiptsIds=" + (receipts == null ? null : receipts.stream().map(Receipt::getId).toList())
+            + ", review=" + review
+            + ", artworkId=" + (artwork == null ? null : artwork.getId()) + '}';
     }
 
     @Override

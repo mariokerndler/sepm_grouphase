@@ -22,6 +22,8 @@ public class DetailedCommissionDto {
 
     private ArtistDto artistDto;
 
+    private List<ArtistDto> artistCandidatesDtos;
+
     @NotNull
     private ApplicationUserDto customerDto;
 
@@ -67,6 +69,7 @@ public class DetailedCommissionDto {
     private ArtworkDto artworkDto;
 
     public DetailedCommissionDto(ArtistDto artistDto,
+                                 List<ArtistDto> artistCandidatesDtos,
                                  ApplicationUserDto customerDto,
                                  CommissionStatus status,
                                  int sketchesShown,
@@ -81,6 +84,7 @@ public class DetailedCommissionDto {
                                  ReviewDto reviewDto,
                                  ArtworkDto artworkDto) {
         this.artistDto = artistDto;
+        this.artistCandidatesDtos = artistCandidatesDtos;
         this.customerDto = customerDto;
         this.status = status;
         this.sketchesShown = sketchesShown;
@@ -101,6 +105,7 @@ public class DetailedCommissionDto {
         return "DetailedCommissionDto{"
             + "id=" + id
             + ", artistDtoId=" + (artistDto == null ? null : artistDto.getId())
+            + ", artistCandidatesDtosIds=" + (artistCandidatesDtos == null ? null : artistCandidatesDtos.stream().map(ArtistDto::getId).toList())
             + ", customerDtoId=" + (customerDto == null ? null : customerDto.getId())
             + ", status=" + status
             + ", sketchesShown=" + sketchesShown

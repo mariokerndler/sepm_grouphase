@@ -72,6 +72,7 @@ public class ArtistDto {
                      String password,
                      Boolean admin,
                      UserRole userRole,
+                     String description,
                      double reviewScore,
                      Long galleryId,
                      List<Long> artworksIds,
@@ -86,6 +87,7 @@ public class ArtistDto {
         this.password = password;
         this.admin = admin;
         this.userRole = userRole;
+        this.description = description;
         this.reviewScore = reviewScore;
         this.galleryId = galleryId;
         this.artworksIds = artworksIds;

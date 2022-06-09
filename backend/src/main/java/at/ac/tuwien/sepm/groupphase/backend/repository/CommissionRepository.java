@@ -10,12 +10,21 @@ import java.util.List;
 public interface CommissionRepository extends JpaRepository<Commission, Long> {
     List<Commission> findCommissionsByArtist(Long id);
 
-    @Query(nativeQuery = true, value = "SELECT  * FROM COMMISSION WHERE LOWER(TITLE) LIKE :searchName AND  (ARTIST_ID LIKE :artistId OR (ARTIST_ID IS NULL AND LENGTH(:artistId)<3 )) AND PRICE > :priceLower AND PRICE <:priceUpper")
+    @Query(nativeQuery = true, value = "SELECT  * FROM COMMISSION"
+        + "WHERE LOWER(TITLE) LIKE :searchName"
+        + "AND  (ARTIST_ID LIKE :artistId OR (ARTIST_ID IS NULL AND LENGTH(:artistId)<3 ))"
+        + "AND PRICE > :priceLower"
+        + "AND PRICE <:priceUpper")
     List<Commission> searchCommissions(@Param("searchName") String searchName, @Param("priceLower") String priceLower,
                                        @Param("priceUpper") String artistId,
                                        @Param("artistId") String priceUpper);
 
-    @Query(nativeQuery = true, value = "SELECT  * FROM COMMISSION WHERE LOWER(TITLE) LIKE :searchName AAND  (ARTIST_ID LIKE :artistId OR (ARTIST_ID IS NULL AND LENGTH(:artistId)<3 )) AND PRICE > :priceLower AND PRICE <:priceUpper ORDER BY :date")
+    @Query(nativeQuery = true, value = "SELECT  * FROM COMMISSION"
+        + "WHERE LOWER(TITLE) LIKE :searchName"
+        + "AND  (ARTIST_ID LIKE :artistId OR (ARTIST_ID IS NULL AND LENGTH(:artistId)<3 ))"
+        + "AND PRICE > :priceLower"
+        + "AND PRICE <:priceUpper"
+        + "ORDER BY :date")
     List<Commission> searchCommissionsDate(@Param("searchName") String searchName, @Param("priceLower") String priceLower,
                                            @Param("priceUpper") String priceUpper,
                                            @Param("artistId") String artistId,

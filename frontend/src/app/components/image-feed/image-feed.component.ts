@@ -176,8 +176,7 @@ export class ImageFeedComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(
       data => {
-        this.artworks.filter(() => data === artwork);
-        console.log(this.artworks);
+        this.artworks = this.artworks.filter(d => d !== data);
         this.loadFeed();
       }
     );

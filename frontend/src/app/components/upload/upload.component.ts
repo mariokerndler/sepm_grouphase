@@ -96,9 +96,10 @@ export class UploadComponent implements OnInit {
   }
 
   uploadNewImage(name, description, imageData, filetype) {
+    console.log(this.selectedTags);
     const artwork = {
       name, description, imageData,
-      imageUrl: '', fileType: filetype, artistId: this.data.artist.id
+      imageUrl: '', fileType: filetype, artistId: this.data.artist.id, tags: this.selectedTags
     } as ArtworkDto;
     this.artworkService.createArtwork(artwork, null,
       () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new image')).subscribe();

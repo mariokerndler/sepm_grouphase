@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import com.github.javafaker.Faker;
@@ -237,6 +238,7 @@ public class UserDataGenerator {
 
         Faker faker = new Faker();
         Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.IN_PROGRESS);
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");
@@ -276,6 +278,7 @@ public class UserDataGenerator {
 
         Faker faker = new Faker();
         Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.IN_PROGRESS);
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");

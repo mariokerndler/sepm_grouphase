@@ -44,9 +44,10 @@ public class ArtworkDto {
 
     //TODO: make simple and detailed artwork dto (put this in while merging so I don't forget
 
-    public ArtworkDto(String name, String description, String imageUrl, FileType fileType, Long artistId, List<SketchDto> sketchesDtos, List<Tag> tags) {
+    public ArtworkDto(String name, String description, byte[] imageData, String imageUrl, FileType fileType, Long artistId, List<SketchDto> sketchesDtos, List<Tag> tags) {
         this.name = name;
         this.description = description;
+        this.imageData = imageData;
         this.imageUrl = imageUrl;
         this.fileType = fileType;
         this.artistId = artistId;

@@ -3,12 +3,17 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TagSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.search.ArtistSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
+import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
+import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +39,15 @@ public class ArtworkEndpoint {
 
     private final ArtworkService artworkService;
     private final ArtworkMapper artworkMapper;
+    private final ArtistService artistService;
+    private final UserService userService;
 
     @Autowired
-    public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper) {
+    public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper, ArtistService artistService, UserService userService) {
         this.artworkService = artworkService;
         this.artworkMapper = artworkMapper;
+        this.artistService = artistService;
+        this.userService = userService;
     }
 
     //TODO: implementation arguably belongs to service class (feel free to move it :))
@@ -154,6 +163,11 @@ public class ArtworkEndpoint {
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());
         try {
+            //TODO: how bad practice is this?
+            ApplicationUser user = userService.findUserById(artworkDto.getArtistId());
+            if (user != null && user.getUserRole() != UserRole.Artist) {
+                artistService.saveArtist(new Artist(user));
+            }
             Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
             artwork.setTags(artworkDto.getTags());
             artworkService.saveArtwork(artwork);

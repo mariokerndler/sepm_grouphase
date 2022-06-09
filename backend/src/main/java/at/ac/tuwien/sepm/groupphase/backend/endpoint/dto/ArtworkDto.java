@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -35,15 +37,18 @@ public class ArtworkDto {
     @NotNull
     private Long artistId;
 
+    private List<Tag> tags;
+
     //todo sketch reference
     //TODO: make simple and detailed artwork dto (put this in while merging so I don't forget
 
-    public ArtworkDto(String name, String description, String imageUrl, FileType fileType, Long artistId) {
+    public ArtworkDto(String name, String description, String imageUrl, FileType fileType, Long artistId, List<Tag> tags) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.fileType = fileType;
         this.artistId = artistId;
+        this.tags = tags;
     }
 
     @Override
@@ -55,6 +60,7 @@ public class ArtworkDto {
             + ", imageUrl='" + imageUrl + '\''
             + ", fileType=" + fileType
             + ", artistId=" + artistId
+            + ", tags=" + tags
             + '}';
     }
 

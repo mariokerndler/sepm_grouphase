@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class ArtistDto {
     @ValidAlphaNumeric
     @Size(max = 50)
     private String userName;
+
+    @Valid
+    private ProfilePictureDto profilePictureDto;
 
     @ValidAlphaNumeric
     @Size(max = 50)

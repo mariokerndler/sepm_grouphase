@@ -1,12 +1,10 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
-import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
 import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -61,24 +59,36 @@ public class ArtistEndpointTest {
     private ArtistMapper artistMapper;
 
     @Autowired
-    private JwtTokenizer jwtTokenizer;
-
-    @Autowired
-    private SecurityProperties securityProperties;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Artist artist;
-
     public Artist getTestArtist1() {
-        return artist = new Artist("testArtist", "bob", "test", "test@test.com", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
+        return Artist.builder()
+            .userName("testArtist")
+            .name("bob")
+            .surname("test")
+            .email("test@test.com")
+            .address("test")
+            .password(passwordEncoder.encode("test"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(1.0)
+            .build();
     }
 
     public Artist getTestArtist2() {
-        return artist = new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
-            , false, UserRole.Artist, null, "TestDescription", null, 2.0, null, null, null, null, null);
+        return Artist.builder()
+            .userName("testArtist2")
+            .name("bobby")
+            .surname("tester")
+            .email("test2@test.com")
+            .address("testStraße 2")
+            .password(passwordEncoder.encode("tester2"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(2.0)
+            .build();
     }
 
     @BeforeEach
@@ -108,7 +118,7 @@ public class ArtistEndpointTest {
         Artist anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(anObject);
+        String requestJson = ow.writeValueAsString(artistMapper.artistToArtistDto(anObject));
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
@@ -120,7 +130,7 @@ public class ArtistEndpointTest {
         Artist anotherObject = getTestArtist2();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson2 = ow2.writeValueAsString(anotherObject);
+        String requestJson2 = ow2.writeValueAsString(artistMapper.artistToArtistDto(anotherObject));
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
@@ -139,11 +149,23 @@ public class ArtistEndpointTest {
 
         Long artistId = artists2.get(0).getId();
 
-        Artist modifiedObject = new Artist(artistId, "testArtist", "bobMod", "test", "testMod@test.com", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestModDescription", null, 1.0, null, null, null, null, null);
+        Artist modifiedObject = Artist.builder()
+            .id(artistId)
+            .userName("testArtist")
+            .name("bobMod")
+            .surname("test")
+            .email("testMod@test.com")
+            .password(passwordEncoder.encode("test"))
+            .address("test")
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestModDescription")
+            .reviewScore(1.0)
+            .build();
+
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson3 = ow3.writeValueAsString(modifiedObject);
+        String requestJson3 = ow3.writeValueAsString(artistMapper.artistToArtistDto(modifiedObject));
 
         mockMvc.perform(put("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson3))

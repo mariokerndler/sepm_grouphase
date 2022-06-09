@@ -3,6 +3,7 @@ import {ArtworkService} from '../../../services/artwork.service';
 import {UploadComponent} from '../../upload/upload.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ArtworkDto} from '../../../dtos/artworkDto';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-artist-gallery',
@@ -16,9 +17,12 @@ export class ArtistGalleryComponent implements OnInit {
   isReady = false;
   artistProfilePicture: string;
 
+  private authId: number;
+
   constructor(
     private artworkService: ArtworkService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) {
   }
 
@@ -32,6 +36,8 @@ export class ArtistGalleryComponent implements OnInit {
           this.isReady = true;
         }
       );
+
+    this.authId = this.authService.getUserId();
   }
 
   openDialog() {
@@ -42,5 +48,7 @@ export class ArtistGalleryComponent implements OnInit {
     });
   }
 
-
+  isSameUser(): boolean {
+    return this.authId === this.artist.id;
+  }
 }

@@ -89,20 +89,19 @@ export class UploadComponent implements OnInit {
           const image = Array.from(binary);
           this.uploadNewImage(this.uploadForm.controls.artworkName.value, this.uploadForm.controls.description.value, image, filetype);
           this.dialogRef.close();
-          //window.location.reload();
         }
       };
     }
   }
 
   uploadNewImage(name, description, imageData, filetype) {
-    console.log(this.selectedTags);
     const artwork = {
       name, description, imageData,
-      imageUrl: '', fileType: filetype, artistId: this.data.artist.id, tags: this.selectedTags
+      imageUrl: '',
+      fileType: filetype, artistId: this.data.artist.id, tags: this.selectedTags
     } as ArtworkDto;
     this.artworkService.createArtwork(artwork, null,
-      () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new image')).subscribe();
+      () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork')).subscribe();
   }
 
 

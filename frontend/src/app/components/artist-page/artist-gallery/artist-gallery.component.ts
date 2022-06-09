@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ArtworkService} from '../../../services/artwork.service';
 import {UploadComponent} from '../../upload/upload.component';
 import {MatDialog} from '@angular/material/dialog';
@@ -41,14 +41,22 @@ export class ArtistGalleryComponent implements OnInit {
   }
 
   openDialog() {
-    this.dialog.open(UploadComponent, {
+    const dialogRef = this.dialog.open(UploadComponent, {
       data: {
         artist: this.artist,
       }
     });
+    dialogRef.afterClosed().subscribe(
+      () => this.switchTab()
+    );
   }
 
   isSameUser(): boolean {
     return this.authId === this.artist.id;
+  }
+
+  switchTab() {
+    sessionStorage.setItem('reloading', 'true');
+    document.location.reload();
   }
 }

@@ -13,28 +13,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Objects;
 
 @Slf4j
 @NoArgsConstructor
 @Component
 public class ImageFileManager {
 
-    public void createFolderIfNotExists(String url)   {
+    public void createFolderIfNotExists(String url) {
         File f = new File(url);
         if (!f.isDirectory() && !f.exists()) {
             try {
                 Files.createDirectories(f.toPath());
             } catch (IOException e) {
-                throw  new FileManagerException("Error when creating user Folder");
+                throw new FileManagerException("Error when creating user Folder");
             }
-            log.info("Created"+ url);
+            log.info("Created" + url);
         }
     }
 
@@ -46,7 +41,7 @@ public class ImageFileManager {
         if (new File(path).listFiles() == null) {
             return 0;
         }
-        return new File(path).listFiles().length;
+        return Objects.requireNonNull(new File(path).listFiles()).length;
     }
 
     public String writeReferenceImage(Commission c, Reference r) {
@@ -175,8 +170,8 @@ public class ImageFileManager {
     }
 
 
-    public void renameArtistFolder(Artist artist, String oldUserName)   {
-        File oldImageFile = new File(ImageDataPaths.assetAbsoluteLocation+ImageDataPaths.artistProfileLocation + oldUserName);
+    public void renameArtistFolder(Artist artist, String oldUserName) {
+        File oldImageFile = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + oldUserName);
         try {
             Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(artist.getUserName()));
         } catch (IOException e) {

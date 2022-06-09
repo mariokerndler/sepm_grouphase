@@ -1,11 +1,14 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
-import at.ac.tuwien.sepm.groupphase.backend.repository.*;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
-import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -37,7 +40,7 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
     private static final int NUMBER_OF_COMMISSIONS_TO_GENERATE = 20;
 
-    private String[] urls= new String[]{
+    private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
         "https://i.ibb.co/7yHp276/image1.jpg",
         "https://i.ibb.co/cDT8JHg/image2.jpg",
@@ -108,7 +111,7 @@ public class UserDataGenerator {
             if (numberOfProfiles > result.size() - 1) {
                 limit = result.size() - 1;
             }
-            result.subList(0, limit).forEach(
+            result.subList(1, limit).forEach(
                 folder -> {
                     log.info(folder.toString());
                     File fldr = new File(folder);
@@ -223,10 +226,10 @@ public class UserDataGenerator {
         List<ApplicationUser> users = userRepository.findAll();
         List<Artist> artists = artistService.getAllArtists();
 
-            Commission c =  generateCommission2(artists.get(0), users.get(0));
+        Commission c = generateCommission2(artists.get(0), users.get(0));
         commissionRepository.save(c);
-        Commission d =  generateCommission1(artists.get(1), users.get(1));
-            commissionRepository.save(d);
+        Commission d = generateCommission1(artists.get(1), users.get(1));
+        commissionRepository.save(d);
 
     }
 
@@ -242,25 +245,24 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        String desc =faker.shakespeare().hamletQuote().toString();
-        if(desc.length()>50){
-            desc=desc.substring(0,49);
+        String desc = faker.shakespeare().hamletQuote().toString();
+        if (desc.length() > 50) {
+            desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
         Artwork a = new Artwork();
-        List<Sketch> sketches= new LinkedList<Sketch>();
-        for(int i =4; i>1;i--){
-            if(i==4){
+        List<Sketch> sketches = new LinkedList<Sketch>();
+        for (int i = 4; i > 1; i--) {
+            if (i == 4) {
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
                 a.setDescription(faker.harryPotter().quote().toString());
-                a.setImageUrl("data\\com\\adminSample Commission\\sketch"+i);
+                a.setImageUrl("data\\com\\adminSample Commission\\sketch" + i);
                 a.setFileType(FileType.JPG);
-            }
-            else{
+            } else {
                 Sketch k = new Sketch();
-                k.setDescription("Sketch "+i);
-                k.setImageUrl("data\\com\\adminSample Commission\\sketch"+i);
+                k.setDescription("Sketch " + i);
+                k.setImageUrl("data\\com\\adminSample Commission\\sketch" + i);
                 sketches.add(k);
 
             }
@@ -269,6 +271,7 @@ public class UserDataGenerator {
         commission.setArtwork(a);
         return commission;
     }
+
     private Commission generateCommission2(Artist artist, ApplicationUser user) {
 
         Faker faker = new Faker();
@@ -281,29 +284,28 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        String desc =faker.shakespeare().hamletQuote().toString();
-        if(desc.length()>50){
-            desc=desc.substring(0,49);
+        String desc = faker.shakespeare().hamletQuote().toString();
+        if (desc.length() > 50) {
+            desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
         Artwork a = new Artwork();
-        List<Sketch> sketches= new LinkedList<Sketch>();
-        for(int i =5; i>1;i--){
-            if(i==4){
+        List<Sketch> sketches = new LinkedList<Sketch>();
+        for (int i = 5; i > 1; i--) {
+            if (i == 4) {
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-               desc =faker.shakespeare().hamletQuote().toString();
-                if(desc.length()>50){
-                    desc=desc.substring(0,49);
+                desc = faker.shakespeare().hamletQuote().toString();
+                if (desc.length() > 50) {
+                    desc = desc.substring(0, 49);
                 }
                 a.setDescription(desc);
-                a.setImageUrl("data\\com\\adminSample Commission2\\b"+i);
+                a.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
                 a.setFileType(FileType.JPG);
-            }
-            else{
+            } else {
                 Sketch k = new Sketch();
-                k.setDescription("Sketch "+i);
-                k.setImageUrl("data\\com\\adminSample Commission2\\b"+i);
+                k.setDescription("Sketch " + i);
+                k.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
                 sketches.add(k);
 
             }

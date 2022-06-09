@@ -17,7 +17,7 @@
   <mat-form-field appearance="fill">
     <mat-label class="primary">Filter by Artist</mat-label>
       <mat-select [(ngModel)]="searchCom.artistId" >
-        <mat-option [value]=""> All</mat-option>
+        <mat-option [value]="''"> All</mat-option>
         <div *ngFor="let artist of artists">
           <mat-option [value]="artist.id">{{artist.userName}}</mat-option>
         </div>

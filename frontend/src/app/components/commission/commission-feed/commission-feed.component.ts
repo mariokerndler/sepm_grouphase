@@ -25,7 +25,7 @@ export class CommissionFeedComponent implements OnInit {
   public searchEnum= SearchConstraint;
   options: Options = {
     floor: 0,
-    ceil: 2000,
+    ceil: 10000,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
@@ -40,7 +40,7 @@ export class CommissionFeedComponent implements OnInit {
 
 
   searchCom: CommissionSearchDto= {
-    date: SearchConstraint.none, name: '', priceRange:[0,500], artistId:'',pageNr:0
+    date: SearchConstraint.none, name: '', priceRange:[0,5000], artistId:'',pageNr:0
   };
   commissions: SimpleCommissionDto[];
   hasLoaded = false;

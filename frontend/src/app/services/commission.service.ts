@@ -6,9 +6,7 @@ import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
 import {tap} from 'rxjs/operators';
 import {SimpleCommissionDto} from '../dtos/simpleCommissionDto';
-import {CommissionSearchDto} from "../dtos/commissionSearchDto";
-import {ArtworkDto} from "../dtos/artworkDto";
-
+import {CommissionSearchDto} from '../dtos/commissionSearchDto';
 
 
 
@@ -103,7 +101,8 @@ export class CommissionService {
 
   filterCommissions(searchCom: CommissionSearchDto, errorAction?: () => void): Observable<SimpleCommissionDto[]> {
     const params = new HttpParams()
-      .set('priceRange', searchCom.priceRange.toString())
+      .set('priceRangeUpper', searchCom.priceRange[1  ])
+      .set('priceRangeLower', searchCom.priceRange[0])
       .set('dateSearch', searchCom.date.toString())
       .set('name', searchCom.name)
       .set('pageNr', searchCom.pageNr == null ? '0' : searchCom.pageNr)
@@ -112,7 +111,7 @@ export class CommissionService {
       headers: this.headers,
       params
     };
-    return this.http.get<SimpleCommissionDto[]>(this.commissionBaseUri, searchOptions)
+    return this.http.get<SimpleCommissionDto[]>(this.commissionBaseUri+'/search', searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {

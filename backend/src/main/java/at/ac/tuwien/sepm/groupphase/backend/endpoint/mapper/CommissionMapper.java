@@ -21,6 +21,7 @@ public abstract class CommissionMapper {
     public abstract Commission simpleCommissionDtoToCommission(SimpleCommissionDto simpleCommissionDto);
 
     @Mapping(source = "artist", target = "artistDto")
+    @Mapping(source = "artistCandidates", target = "artistCandidatesDtos")
     @Mapping(source = "customer", target = "customerDto")
     @Mapping(source = "references", target = "referencesDtos")
     @Mapping(source = "receipts", target = "receiptsDtos")
@@ -29,6 +30,7 @@ public abstract class CommissionMapper {
     public abstract DetailedCommissionDto commissionToDetailedCommissionDto(Commission commission);
 
     @Mapping(source = "artistDto", target = "artist")
+    @Mapping(source = "artistCandidatesDtos", target = "artistCandidates")
     @Mapping(source = "customerDto", target = "customer")
     @Mapping(source = "referencesDtos", target = "references", qualifiedByName = "ReferenceWithoutCommissionId")
     @Mapping(source = "receiptsDtos", target = "receipts")

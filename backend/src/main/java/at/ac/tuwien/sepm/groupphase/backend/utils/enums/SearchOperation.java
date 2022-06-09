@@ -1,4 +1,4 @@
-package at.ac.tuwien.sepm.groupphase.backend.utils;
+package at.ac.tuwien.sepm.groupphase.backend.utils.enums;
 
 public enum SearchOperation {
     EQUALITY, NEGATION, GREATER_THAN, LESS_THAN, LIKE, STARTS_WITH, ENDS_WITH, CONTAINS;

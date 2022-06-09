@@ -8,7 +8,7 @@ import at.ac.tuwien.sepm.groupphase.backend.search.ArtistSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

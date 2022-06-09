@@ -8,18 +8,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReferenceDto {
+public class SketchDto {
 
     private Long id;
     private byte[] imageData;
     private String imageUrl;
     private FileType fileType;
-    private Long commissionId;
+    private String description;
+    private Long artworkId;
 
-    public ReferenceDto(String imageUrl, FileType fileType, Long commissionId) {
+    public SketchDto(String imageUrl, FileType fileType, String description, Long artworkId) {
         this.imageUrl = imageUrl;
         this.fileType = fileType;
-        this.commissionId = commissionId;
+        this.description = description;
+        this.artworkId = artworkId;
     }
 
     @Override
@@ -28,6 +30,7 @@ public class ReferenceDto {
             + "id=" + id
             + ", imageUrl='" + imageUrl + '\''
             + ", fileType=" + fileType
-            + ", commissionId=" + commissionId + '}';
+            + ", description=" + description
+            + ", artworkId=" + artworkId + '}';
     }
 }

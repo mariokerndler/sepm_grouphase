@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,9 +25,15 @@ public class Commission implements HasId {
     @ManyToOne
     private Artist artist;
 
+    @ManyToMany
+    private List<Artist> artistCandidates;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private ApplicationUser customer;
+
+    @Column(nullable = false)
+    private CommissionStatus status;
 
     @Column(nullable = false, name = "sketches_shown")
     private int sketchesShown;
@@ -69,7 +76,9 @@ public class Commission implements HasId {
     private Artwork artwork;
 
     public Commission(Artist artist,
+                      List<Artist> artistCandidates,
                       ApplicationUser customer,
+                      CommissionStatus status,
                       int sketchesShown,
                       int feedbackSent,
                       double price,
@@ -82,7 +91,9 @@ public class Commission implements HasId {
                       Review review,
                       Artwork artwork) {
         this.artist = artist;
+        this.artistCandidates = artistCandidates;
         this.customer = customer;
+        this.status = status;
         this.sketchesShown = sketchesShown;
         this.feedbackSent = feedbackSent;
         this.price = price;
@@ -100,8 +111,10 @@ public class Commission implements HasId {
     public String toString() {
         return "Commission{"
             + "id=" + id
-            + ", artist=" + (artist == null ? null : artist.getId())
-            + ", customer=" + customer.getId()
+            + ", artistId=" + (artist == null ? null : artist.getId())
+            + ", artistCandidatesIds=" + (artistCandidates == null ? null : artistCandidates.stream().map(Artist::getId).toList())
+            + ", customerId=" + customer.getId()
+            + ", status=" + status
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent
             + ", price=" + price
@@ -109,9 +122,10 @@ public class Commission implements HasId {
             + ", deadlineDate=" + deadlineDate
             + ", title=" + title
             + ", instructions='" + instructions + '\''
-            + (receipts == null ? "" : ", receipts=" + receipts.stream().map(Receipt::getId).toList())
-            + (review == null ? "" : ", review=" + review.getId())
-            + (artwork == null ? "" : ", artwork=" + artwork.getId()) + '}';
+            + ", referencesIds=" + (references == null ? null : references.stream().map(Reference::getId).toList())
+            + ", receiptsIds=" + (receipts == null ? null : receipts.stream().map(Receipt::getId).toList())
+            + ", review=" + review
+            + ", artworkId=" + (artwork == null ? null : artwork.getId()) + '}';
     }
 
     @Override

@@ -54,6 +54,7 @@ export class AuthService {
           console.log(authResponse);
           AuthService.setToken(authResponse);
           AuthService.setUserId(authorizedUser.id);
+          this.notificationService.displaySuccessSnackbar('Successfully logged in.');
         })
       );
   }

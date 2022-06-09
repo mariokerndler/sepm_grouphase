@@ -17,8 +17,6 @@ import javax.persistence.*;
 @MappedSuperclass
 public class Image {
 
-    @Transient
-    byte[] imageData;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +24,8 @@ public class Image {
     private String imageUrl;
     @Column(nullable = false)
     private FileType fileType;
+    @Transient
+    byte[] imageData;
 
     public Image(String imageUrl, FileType fileType) {
         this.imageUrl = imageUrl;

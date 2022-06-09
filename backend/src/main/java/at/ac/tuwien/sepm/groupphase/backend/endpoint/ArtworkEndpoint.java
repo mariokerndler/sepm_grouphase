@@ -154,7 +154,9 @@ public class ArtworkEndpoint {
     public void postArtwork(@RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());
         try {
-            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+            Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
+            artwork.setTags(artworkDto.getTags());
+            artworkService.saveArtwork(artwork);
         } catch (Exception v) {
             log.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());

@@ -74,13 +74,33 @@ public class ArtworkEndpointTest {
     private PasswordEncoder passwordEncoder;
 
     public Artist getTestArtist1() {
-        return new Artist("testArtist", "bob", "test", "test@test.com", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
+        return Artist.builder()
+            .userName("testArtist")
+            .name("bob")
+            .surname("test")
+            .email("test@test.com")
+            .address("test")
+            .password(passwordEncoder.encode("test"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(1.0)
+            .build();
     }
 
     public Artist getTestArtist2() {
-        return new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
-            , false, UserRole.Artist, null, "TestDescription", null, 2.0, null, null, null, null, null);
+        return Artist.builder()
+            .userName("testArtist2")
+            .name("bobby")
+            .surname("tester")
+            .email("test2@test.com")
+            .address("testStraße 2")
+            .password(passwordEncoder.encode("tester2"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(2.0)
+            .build();
     }
 
     public Artwork getArtwork(Long id, byte[] content) {

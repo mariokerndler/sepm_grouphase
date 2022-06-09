@@ -21,17 +21,17 @@ public class ProfilePicture extends Image {
 
     @OneToOne
     @JoinColumn(nullable = false)
-    private Artist artist;
+    private ApplicationUser applicationUser;
 
-    public ProfilePicture(String imageUrl, FileType fileType, Artist artist) {
+    public ProfilePicture(String imageUrl, FileType fileType, ApplicationUser applicationUser) {
         super(imageUrl, fileType);
-        this.artist = artist;
+        this.applicationUser = applicationUser;
     }
 
     @Override
     public String toString() {
         return "ProfilePicture{"
-            + "artist=" + artist
+            + "user=" + applicationUser
             + '}' + super.toString();
     }
 

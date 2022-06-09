@@ -26,7 +26,7 @@
     <button (click)="previousPage()" class="paginationButton" color="accent" mat-button>
       <span class="material-icons">chevron_left</span>
     </button>
-    <mat-label class="paginationText" color="accent" style="width: 20px">{{searchParams.pageNr}}</mat-label>
+    <mat-label class="paginationText accent-color" style="width: 20px">{{searchParams.pageNr}}</mat-label>
     <button (click)="nextPage()" class="paginationButton" color="accent" mat-button>
       <span class="material-icons">chevron_right</span>
     </button>
@@ -37,14 +37,23 @@
 
 <mat-divider></mat-divider>
 <div class="container" id="container">
-  <div clas="header"><br></div>
+  <div class="header"><br></div>
   <div class="content">
     <div class="card-img-wrap">
-      <div _ngcontent-c6="" class="feed" gdcolumns="repeat(auto-fill, minmax(400px, 1fr))" gdgap="10px"
-           style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px;">
-        <div *ngFor="let artwork of images; let i= index" [style.gridCol]="artwork.col" [style.gridRow]="artwork.row"
-             class="image">
-
+      <div
+        _ngcontent-c6=""
+        class="feed"
+        gdcolumns="repeat(auto-fill, minmax(400px, 1fr))"
+        gdgap="10px"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px;">
+        <div
+          *ngFor="let artwork of images; let i = index"
+          [style.gridCol]="artwork.col"
+          [style.gridRow]="artwork.row"
+          class="image">
+          <button *ngIf="isUser" (click)="deleteImage(artwork)" color="accent" mat-icon-button class="delete">
+            <mat-icon >delete</mat-icon>
+          </button>
           <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" alt="">
 
           <div class="card-img-description-layer">

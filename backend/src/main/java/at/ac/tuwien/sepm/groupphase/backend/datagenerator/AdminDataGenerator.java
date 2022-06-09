@@ -29,7 +29,7 @@ public class AdminDataGenerator {
         if (userRepository.findApplicationUserByEmail("admin@email.com") != null) {
             log.debug("Admin already generated");
         } else {
-            userRepository.save(new ApplicationUser("admin", "Max", "Mustermann", "admin@email.com", "Musterstraße 1", passwordEncoder.encode("password"), true, UserRole.Admin));
+            userRepository.save(new ApplicationUser("admin", null, "Max", "Mustermann", "admin@email.com", "Musterstraße 1", passwordEncoder.encode("password"), true, UserRole.Admin));
         }
     }
 

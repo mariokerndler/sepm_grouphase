@@ -1,11 +1,11 @@
 <mat-toolbar class="toolbar" color="primary">
-  <div fxFlex fxLayout>
+  <div fxFlex="auto" fxLayout="row">
     <button (click)="sidenav.toggle()" class="menu-icon" mat-icon-button>
-      <mat-icon >menu</mat-icon>
+      <mat-icon>menu</mat-icon>
     </button>
   </div>
   <span class="title" routerLink="/">{{globals.projectName}}</span>
-  <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end">
+  <div class="navigation-items" fxFlex="auto" fxLayout="row" fxLayoutAlign="end">
     <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button>Login</button>
     <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button>Register</button>
     <button (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()" mat-button>Profile</button>
@@ -16,23 +16,22 @@
 <mat-sidenav-container (click)="sidenav.toggle()">
   <mat-sidenav #sidenav [fixedInViewport]="true" mode="side">
     <button class="close-menu-icon" mat-icon-button>
-      <mat-icon>close</mat-icon>
+      <mat-icon class="accent-color">close</mat-icon>
     </button>
     <mat-selection-list [multiple]="false" class="sidenav">
-      <mat-list-option routerLink="/feed" routerLinkActive="active">
+      <mat-list-option routerLink="/feed" routerLinkActive="active" class="accent-color">
         Explore
       </mat-list-option>
-      <mat-list-option routerLink="/artists" routerLinkActive="active">
+      <mat-list-option routerLink="/artists" routerLinkActive="active" class="accent-color">
         Artists
       </mat-list-option>
-      <mat-list-option routerLink="/commissions" routerLinkActive="active">
+      <mat-list-option routerLink="/commissions" routerLinkActive="active" class="accent-color">
         Commissions
       </mat-list-option>
-      <mat-list-option (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()">Profile</mat-list-option>
+      <mat-list-option (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()" class="accent-color">
+        Profile
+      </mat-list-option>
     </mat-selection-list>
-
-
   </mat-sidenav>
-
 </mat-sidenav-container>
 

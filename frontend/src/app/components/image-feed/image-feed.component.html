@@ -51,7 +51,9 @@
           [style.gridCol]="artwork.col"
           [style.gridRow]="artwork.row"
           class="image">
-
+          <button *ngIf="isUser" (click)="deleteImage(artwork)" color="accent" mat-icon-button>
+            <mat-icon >delete</mat-icon>
+          </button>
           <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" alt="">
 
           <div class="card-img-description-layer">

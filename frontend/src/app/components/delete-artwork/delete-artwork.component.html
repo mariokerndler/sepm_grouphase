@@ -1,0 +1,8 @@
+<h1 mat-dialog-title xmlns="http://www.w3.org/1999/html">Delete Artwork {{this.data.artwork.name}}</h1>
+<div mat-dialog-content>
+  Are you sure, that you want to delete the artwork <strong>{{this.data.artwork.name}}</strong>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <button (click)="deleteArtwork()" mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+</div>

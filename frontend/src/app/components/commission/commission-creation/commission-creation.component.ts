@@ -18,6 +18,7 @@ import {formatDate} from '@angular/common';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {HttpErrorResponse} from '@angular/common/http';
 import {NotificationService} from '../../../services/notification/notification.service';
+import {CommissionState} from '../../../global/CommissionState';
 
 
 @Component({
@@ -54,7 +55,7 @@ export class CommissionCreationComponent implements OnInit {
       address: '',
       password: 'string',
       admin: true,
-      userRole: UserRole.admin
+      userRole: UserRole.admin,
     },
     deadlineDate: '',
     feedbackSend: 0,
@@ -65,7 +66,8 @@ export class CommissionCreationComponent implements OnInit {
     referencesDtos: [],
     sketchesShown: 0,
     title: '',
-    feedbackRounds: 1
+    feedbackRounds: 1,
+    commissionState: CommissionState.listed,
   };
 
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,

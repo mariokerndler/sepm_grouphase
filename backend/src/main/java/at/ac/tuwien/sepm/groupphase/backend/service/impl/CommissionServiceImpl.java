@@ -100,15 +100,9 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public List<Commission> searchCommissions(CommissionSearchDto cs) {
         if (cs.getSearchConstraint() == SearchConstraint.None) {
-            return this.commissionRepo.searchCommissions(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId());
+            return this.commissionRepo.searchCommissions(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId(), cs.getUserId());
         } else {
-            return this.commissionRepo.searchCommissionsDate(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId(), cs.getSearchConstraint().toString());
-        if(cs.getSearchConstraint()== SearchConstraint.None) {
-            return this.commissionRepo.searchCommissions(cs.getName(), cs.getPriceRangeLower(),cs.getPriceRangeUpper(), cs.getArtistId(),cs.getUserId());
-        }
-
-        else{
-            return this.commissionRepo.searchCommissionsDate(cs.getName(), cs.getPriceRangeLower(),cs.getPriceRangeUpper(),cs.getArtistId(),cs.getUserId(),cs.getSearchConstraint().toString());
+            return this.commissionRepo.searchCommissionsDate(cs.getName(), cs.getPriceRangeLower(), cs.getPriceRangeUpper(), cs.getArtistId(), cs.getSearchConstraint().toString(), cs.getUserId());
         }
     }
 

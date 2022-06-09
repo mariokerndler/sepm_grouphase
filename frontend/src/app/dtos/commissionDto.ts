@@ -1,6 +1,7 @@
 import {ArtistDto} from './artistDto';
 import {ApplicationUserDto} from './applicationUserDto';
 import {ReferenceDto} from './referenceDto';
+import {CommissionState} from '../global/CommissionState';
 
 export class CommissionDto {
   id: number;
@@ -15,4 +16,5 @@ export class CommissionDto {
   issueDate: string;
   deadlineDate: string;
   referencesDtos: ReferenceDto[];
+  commissionState: CommissionState;
 }

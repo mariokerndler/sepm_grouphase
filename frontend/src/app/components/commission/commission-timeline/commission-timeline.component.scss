@@ -1,0 +1,26 @@
+.cdk-virtual-scroll-data-source-example .example-viewport {
+  height: 200px;
+  width: 99.8%;
+  position: absolute;
+  bottom: 50%
+}
+
+.cdk-virtual-scroll-data-source-example .example-viewport .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+.icon {
+  margin:  0 2rem 0 2rem;
+  padding: 0.5rem;
+  border-radius: 100%;
+}
+
+.line{
+  height: 3rem;
+  border-left: 2px solid black;
+  position: relative;
+  left: 49%;
+}

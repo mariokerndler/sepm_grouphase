@@ -1,0 +1,21 @@
+<div>
+  <div class="cdk-virtual-scroll-data-source-example">
+    <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="50" class="example-viewport">
+      <div *cdkVirtualFor="let item of items; let i = index" class="example-item">
+        <!--
+        <mat-card class="example-card">
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+          <mat-card-title>Shiba Inu</mat-card-title>
+          <mat-card-content>
+            <p>This card has divider and indeterminate progress as footer</p>
+          </mat-card-content>
+        </mat-card> -->
+        <div class="time-component">
+          <div class="line" [ngStyle]="{'visibility': (i%2 === 0) ? 'visible' : 'hidden'}"></div>
+          <mat-icon class="accent icon">start</mat-icon>
+          <div class="line" [ngStyle]="{'visibility': (i%2 === 1) ? 'visible' : 'hidden'}"></div>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>

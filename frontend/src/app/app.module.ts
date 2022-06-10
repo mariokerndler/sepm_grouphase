@@ -61,6 +61,7 @@ import {
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { DeleteArtworkComponent } from './components/delete-artwork/delete-artwork.component';
 import { CommissionPageComponent } from './components/artist-page/commission-page/commission-page.component';
+import { CommissionTimelineComponent } from './components/commission/commission-timeline/commission-timeline.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,6 +95,7 @@ import { CommissionPageComponent } from './components/artist-page/commission-pag
     ArtistGallerySubsectionsComponent,
     DeleteArtworkComponent,
     CommissionPageComponent,
+    CommissionTimelineComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,7 +111,7 @@ import { CommissionPageComponent } from './components/artist-page/commission-pag
     NgxMatColorPickerModule,
     DragDropModule,
     MatSliderModule,
-    NgxSliderModule
+    NgxSliderModule,
   ],
   providers: [
     {

@@ -14,6 +14,7 @@ import {CommissionFeedComponent} from './components/commission/commission-feed/c
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
 import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
+import {CommissionTimelineComponent} from './components/commission/commission-timeline/commission-timeline.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -29,6 +30,7 @@ const routes: Routes = [
   {path: 'artists', component: ArtistFeedComponent},
   {path: 'commissions', component: CommissionFeedComponent},
   {path: 'commissions/:id', component: CommissionDetailsComponent},
+  {path: 'commissions/:id/timeline', component: CommissionTimelineComponent},
   {path: 'commission-creation', component: CommissionCreationComponent},
   {path: '**', redirectTo: 'feed'},
 

@@ -13,6 +13,7 @@ export interface DialogData {
   providedIn: 'root'
 })
 export class NotificationService {
+
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar) {
@@ -31,14 +32,14 @@ export class NotificationService {
   public displayErrorSnackbar(message: string) {
     this.snackBar.openFromComponent(ErrorSnackbarComponent, {
       data: message,
-      duration: 500
+      //duration: 500
     });
   }
 
   public displaySuccessSnackbar(message: string) {
     this.snackBar.openFromComponent(SuccessSnackbarComponent, {
       data: message,
-      duration: 2000,
+      //duration: 2000,
     });
   }
 

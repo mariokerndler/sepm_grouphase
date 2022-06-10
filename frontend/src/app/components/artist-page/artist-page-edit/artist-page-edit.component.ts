@@ -167,9 +167,11 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
 
 
           // Check if the user can edit this page
-          if (this.user.email !== this.authService.getUserAuthEmail()) {
-            this.goBack();
+          /*
+          if (this.user.id !== this.authService.getUserId()) {
+            //this.goBack();
           }
+           */
 
           // Check if it's an artist
           if (this.user.userRole === UserRole.artist) {

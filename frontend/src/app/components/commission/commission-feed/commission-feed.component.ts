@@ -72,7 +72,6 @@ export class CommissionFeedComponent implements OnInit {
     this.commissionService.getAllCommissions().subscribe({
       next: (loadedCommissions) => {
         this.commissions = loadedCommissions;
-        console.log(this.commissions);
         this.hasLoaded = true;
       }
     });

@@ -18,7 +18,9 @@ import {formatDate} from '@angular/common';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {HttpErrorResponse} from '@angular/common/http';
 import {NotificationService} from '../../../services/notification/notification.service';
-import {CommissionState} from '../../../global/CommissionState';
+import {CommissionStatus} from '../../../global/CommissionStatus';
+import {UserService} from '../../../services/user.service';
+import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 
 
 @Component({
@@ -67,23 +69,36 @@ export class CommissionCreationComponent implements OnInit {
     sketchesShown: 0,
     title: '',
     feedbackRounds: 1,
-    commissionState: CommissionState.listed,
+    sketchesDtos: [],
+    status: CommissionStatus.listed,
   };
-
+  userId: string;
+  customer: ApplicationUserDto;
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
               private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
               public globalFunctions: GlobalFunctions,
-              private commissionService: CommissionService, private notificationService: NotificationService,) {
+              private commissionService: CommissionService, private notificationService: NotificationService,
+              private userService: UserService) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
-
+  getUserId(): void{
+    const id= localStorage.getItem('userId');
+    if(id !== null){
+      this.userId=id;
+    }
+  }
   ngOnInit(): void {
 
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required],
     });
+    this.getUserId();
+    this.userService.getUserById(Number.parseInt(this.userId, 10)).subscribe(data=>{
+      this.customer=data;
+      }
+    );
   }
    fileSelected() {
 
@@ -134,7 +149,7 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.price = this.commissionForm.value.price;
     this.commission.issueDate = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en_US');
     this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
-
+    this.commission.customerDto=this.customer;
     this.commissionService.createCommission(this.commission).subscribe(ret => {
 
       }, (error: HttpErrorResponse) => {

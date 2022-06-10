@@ -5,6 +5,12 @@ import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {CommissionService} from '../../../services/commission.service';
 import {ActivatedRoute} from '@angular/router';
+import {FileType} from '../../../dtos/artworkDto';
+import {ReferenceDto} from "../../../dtos/referenceDto";
+import {GlobalFunctions} from '../../../global/globalFunctions';
+import {FormControl, FormGroup} from '@angular/forms';
+import {SketchDto} from '../../../dtos/sketchDto';
+
 
 @Component({
   selector: 'app-commission-details',
@@ -17,29 +23,46 @@ export class CommissionDetailsComponent implements OnInit {
   userProfilePicture = 'https://picsum.photos/150/150';
   commission: CommissionDto;
   user: ApplicationUserDto;
+  userId: string;
   hasLoaded = false;
   hasReferences = false;
+  hasSketches = false;
+  allowFeedback= false;
+  allowSketch= false;
+  artistEdit= false;
+  userEdit= false;
+  sketchForm = new FormGroup({
+    sketch: new FormControl(''),
+  });
   items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
-
+  uploadedSketch: any;
+  uploadedSketchDto: SketchDto;
   public selectedArtwork: number = null;
 
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute, private globalFunctions: GlobalFunctions) {
   }
 
   ngOnInit(): void {
     this.getCommission();
+    this.getUserId();
+
   }
 
-
+  getUserId(): void{
+    const id= localStorage.getItem('userId');
+      if(id !== null){
+        this.userId=id;
+      }
+    }
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
-  private getCommission() {
+   getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
@@ -49,6 +72,59 @@ export class CommissionDetailsComponent implements OnInit {
         if (this.commission.referencesDtos.length !== 0) {
           this.hasReferences = true;
         }
+        if(this.commission.sketchesDtos!=null) {
+          if (this.commission.sketchesDtos.length !== 0) {
+            this.hasSketches = true;
+          }
+        }
+        if(this.userId===this.commission.customerDto.id.toString()){
+          this.userEdit=true;
+        }
+        if(this.userId===this.commission.artistDto.id.toString()){
+          this.artistEdit=true;
+        }
+        if(commission.feedbackSend<commission.sketchesShown){
+          this.allowFeedback=true;
+        } else{
+          this.allowSketch=true;
+        }
+        console.log(this.commission);
+        console.log(this.artistEdit);
       });
+  }
+  fileSelected(fileInput: any) {
+    this.uploadedSketch =  fileInput.target.files[0];
+    console.log(this.uploadedSketch);
+       const sketch = new SketchDto();
+           const reader = new FileReader();
+          reader.readAsDataURL(this.uploadedSketch);
+          reader.onload = (event) => {
+            sketch.imageData= event.target.result;
+            const base64result = reader.result.toString().split(',')[1];
+            const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
+            let filetype = FileType.jpg;
+            if (dataType === 'png') {
+              filetype = FileType.png;
+            }
+            if (dataType === 'gif') {
+              filetype = FileType.gif;
+            }
+            const binary = new Uint8Array(this.globalFunctions.base64ToBinaryArray(base64result));
+            const imageData = Array.from(binary);
+            sketch.image= imageData;
+            sketch.fileType = filetype;
+            this.uploadedSketchDto=sketch;
+          };
+  }
+
+  updateCommission() {
+    if(this.uploadedSketchDto!== null){
+      if(this.commission.sketchesDtos==null){
+        this.commission.sketchesDtos= [];
+      }
+      this.commission.sketchesDtos.push(this.uploadedSketchDto);
+      this.commissionService.updateCommission(this.commission).subscribe();
+    }
+
   }
 }

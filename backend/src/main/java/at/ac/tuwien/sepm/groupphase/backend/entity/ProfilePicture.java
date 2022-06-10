@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
-import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,13 +55,5 @@ public class ProfilePicture extends Image {
         }
         ProfilePicture other = (ProfilePicture) obj;
         return this.getId() != null && this.getId().equals(other.getId());
-    }
-
-    public static ProfilePicture getDefaultProfilePicture(ApplicationUser applicationUser) {
-        return ProfilePicture.builder()
-            .fileType(FileType.PNG)
-            .imageUrl(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.defaultUserProfilePictureLocation)
-            .applicationUser(applicationUser)
-            .build();
     }
 }

@@ -3,12 +3,12 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
-import at.ac.tuwien.sepm.groupphase.backend.entity.ProfilePicture;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
+import at.ac.tuwien.sepm.groupphase.backend.service.ProfilePictureService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +26,15 @@ public class ArtistServiceImpl implements ArtistService {
     private final ImageFileManager ifm;
     private final CommissionService commissionService;
     private final ArtworkService artworkService;
+    private final ProfilePictureService profilePictureService;
 
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService) {
+    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService, ProfilePictureService profilePictureService) {
         this.ifm = ifm;
         this.artistRepo = artistRepo;
         this.commissionService = commissionService;
         this.artworkService = artworkService;
+        this.profilePictureService = profilePictureService;
     }
 
     @Override
@@ -57,11 +59,12 @@ public class ArtistServiceImpl implements ArtistService {
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
 
         if (artist.getProfilePicture() == null) {
-            artist.setProfilePicture(ProfilePicture.getDefaultProfilePicture(artist));
-        } else {
-            String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
-            artist.getProfilePicture().setImageUrl(imageUrl);
+            artist.setProfilePicture(profilePictureService.getDefaultProfilePicture(artist));
         }
+
+        String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
+        artist.getProfilePicture().setImageUrl(imageUrl);
+
         return artistRepo.save(artist);
     }
 
@@ -73,12 +76,14 @@ public class ArtistServiceImpl implements ArtistService {
             ifm.renameArtistFolder(artist, oldArtist.getUserName());
         }
 
-        // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
         if (artist.getProfilePicture() == null) {
-            artist.setProfilePicture(ProfilePicture.getDefaultProfilePicture(artist));
-        } else if ((oldArtist.getProfilePicture() == null) || oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
+            artist.setProfilePicture(profilePictureService.getDefaultProfilePicture(artist));
+        }
+
+        if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
+            artist.getProfilePicture().setId(oldArtist.getProfilePicture().getId());
         }
 
         artistRepo.save(artist);

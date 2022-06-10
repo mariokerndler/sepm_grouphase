@@ -1,9 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
-import at.ac.tuwien.sepm.groupphase.backend.entity.ProfilePicture;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.sepm.groupphase.backend.service.ProfilePictureService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
@@ -30,13 +30,15 @@ public class UserServiceImpl implements UserService {
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     private final ImageFileManager ifm;
+    private final ProfilePictureService profilePictureService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder, ImageFileManager ifm) {
+    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder, ImageFileManager ifm, ProfilePictureService profilePictureService) {
         this.userRepo = userRepository;
         this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
         this.ifm = ifm;
+        this.profilePictureService = profilePictureService;
     }
 
     @Override
@@ -88,12 +90,14 @@ public class UserServiceImpl implements UserService {
 
         ApplicationUser oldUser = findUserById(user.getId());
 
-        // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
         if (user.getProfilePicture() == null) {
-            user.setProfilePicture(ProfilePicture.getDefaultProfilePicture(user));
-        } else if ((oldUser.getProfilePicture() == null) || oldUser.getProfilePicture().getId() != oldUser.getProfilePicture().getId()) {
+            user.setProfilePicture(profilePictureService.getDefaultProfilePicture(user));
+        }
+
+        if (oldUser.getProfilePicture().getId() != user.getProfilePicture().getId()) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
+            user.getProfilePicture().setId(oldUser.getProfilePicture().getId());
         }
 
         userRepo.save(user);
@@ -109,11 +113,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (user.getProfilePicture() == null) {
-            user.setProfilePicture(ProfilePicture.getDefaultProfilePicture(user));
-        } else {
-            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-            user.getProfilePicture().setImageUrl(imageUrl);
+            user.setProfilePicture(profilePictureService.getDefaultProfilePicture(user));
         }
+
+        String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
+        user.getProfilePicture().setImageUrl(imageUrl);
 
         userRepo.save(user);
     }

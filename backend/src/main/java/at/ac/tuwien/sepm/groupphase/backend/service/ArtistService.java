@@ -1,8 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface ArtistService {
@@ -21,6 +21,13 @@ public interface ArtistService {
      * @return Found artist with the specified id
      */
     Artist findArtistById(Long id);
+
+    /**
+     * Saves the given user as an artist entity, preserving the original id.
+     *
+     * @param user The user to upgrade.
+     */
+    void upgradeUserToArtist(ApplicationUser user);
 
     /**
      * Saves the given artist entity.

@@ -69,7 +69,7 @@ export class CommissionCreationComponent implements OnInit {
     sketchesShown: 0,
     title: '',
     feedbackRounds: 1,
-    sketchesDtos: [],
+    artworkDto: null,
     status: CommissionStatus.listed,
   };
   userId: string;

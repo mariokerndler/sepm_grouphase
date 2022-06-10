@@ -5,8 +5,7 @@ import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {CommissionService} from '../../../services/commission.service';
 import {ActivatedRoute} from '@angular/router';
-import {FileType} from '../../../dtos/artworkDto';
-import {ReferenceDto} from "../../../dtos/referenceDto";
+import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SketchDto} from '../../../dtos/sketchDto';
@@ -32,7 +31,7 @@ export class CommissionDetailsComponent implements OnInit {
   artistEdit= false;
   userEdit= false;
   sketchForm = new FormGroup({
-    sketch: new FormControl(''),
+    sketchDescription: new FormControl('')
   });
   items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   uploadedSketch: any;
@@ -67,22 +66,39 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
         this.commission = commission;
+        if (this.commission.artworkDto == null) {
+          this.commission.artworkDto = {
+            name: '',
+            imageUrl: '',
+            sketchesDtos: [],
+            id: 0,
+            fileType: FileType.jpg,
+            artistId: 0,
+            imageData: [],
+            description: '',
+            row: '0',
+            col: '0',
+            tags: []
+          };
+        }
         this.user = commission.customerDto;
         this.hasLoaded = true;
         if (this.commission.referencesDtos.length !== 0) {
           this.hasReferences = true;
         }
-        if(this.commission.sketchesDtos!=null) {
-          if (this.commission.sketchesDtos.length !== 0) {
+        if (this.commission.artworkDto.sketchesDtos != null) {
+          if (this.commission.artworkDto.sketchesDtos.length !== 0) {
             this.hasSketches = true;
           }
         }
-        if(this.userId===this.commission.customerDto.id.toString()){
-          this.userEdit=true;
+        if (this.userId === this.commission.customerDto.id.toString()) {
+          this.userEdit = true;
         }
-        if(this.userId===this.commission.artistDto.id.toString()){
-          this.artistEdit=true;
+        if (this.commission.artistDto != null) {
+        if (this.userId === this.commission.artistDto.id.toString()) {
+          this.artistEdit = true;
         }
+      }
         if(commission.feedbackSend<commission.sketchesShown){
           this.allowFeedback=true;
         } else{
@@ -119,10 +135,12 @@ export class CommissionDetailsComponent implements OnInit {
 
   updateCommission() {
     if(this.uploadedSketchDto!== null){
-      if(this.commission.sketchesDtos==null){
-        this.commission.sketchesDtos= [];
+      if(this.commission.artworkDto.sketchesDtos==null){
+        this.commission.artworkDto.sketchesDtos= [];
+        this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
+        this.uploadedSketchDto=null;
       }
-      this.commission.sketchesDtos.push(this.uploadedSketchDto);
+
       this.commissionService.updateCommission(this.commission).subscribe();
     }
 

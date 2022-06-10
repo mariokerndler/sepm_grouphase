@@ -47,8 +47,8 @@
         <strong class="referenceImages">Reference Images:</strong>
         <br><br>
         <div class="scrolling-container">
-          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.referencesDtos.length}}" class="viewport">
-            <div class="image-container" *ngFor="let reference of commission.referencesDtos; let i = index">
+          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.artworkDto.sketchesDtos.length}}" class="viewport">
+            <div class="image-container" *ngFor="let reference of commission.artworkDto.sketchesDtos; let i = index">
               <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt="">
             </div>
           </cdk-virtual-scroll-viewport>
@@ -56,7 +56,7 @@
         <app-gallery-carousel
           (closeCarousel)="selectedArtwork=null"
           *ngIf="selectedArtwork!== null"
-          [artworks]="commission.referencesDtos"
+          [artworks]="commission.artworkDto.sketchesDtos"
           [selectedArtworkId]="selectedArtwork">
         </app-gallery-carousel>
       </div>
@@ -81,7 +81,7 @@
       <form [formGroup]="sketchForm">
         <button (click)="fileInput.click()"  color="accent" mat-button>
           <input   #fileInput (change)="fileSelected($event)"
-                   accept=".png,.jpg,.gif,.jpeg" style="display: none;" formControlName="sketch"  type="file">
+                   accept=".png,.jpg,.gif,.jpeg" style="display: none;"    type="file">
 
         <mat-icon color="accent">upload</mat-icon>
         <span>Upload new Sketch</span>

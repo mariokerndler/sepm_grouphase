@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -147,10 +149,24 @@ public class ImageFileManager {
                 + ImageDataPaths.userProfilePictureIdentifier;
         } catch (IOException e) {
             log.info(e.getMessage());
-            e.printStackTrace();
-            return "";
+            throw new FileManagerException(e.getMessage());
         }
 
+    }
+
+    public void deleteUserProfileImage(ApplicationUser a) {
+
+        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
+
+        if (f.isDirectory() && f.exists()) {
+
+            File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+                + ImageDataPaths.userProfilePictureIdentifier);
+
+            profilePicture.delete();
+        }
+
+        f.delete();
     }
 
 
@@ -163,5 +179,17 @@ public class ImageFileManager {
             throw new FileManagerException(e.getMessage());
         }
 
+    }
+
+    public byte[] getByteArray(String url) {
+
+        Path path = Paths.get(url);
+
+        try {
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            log.info(e.getMessage());
+            throw new FileManagerException(e.getMessage());
+        }
     }
 }

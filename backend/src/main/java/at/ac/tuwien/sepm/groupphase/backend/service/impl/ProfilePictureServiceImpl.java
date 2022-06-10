@@ -18,6 +18,9 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
     }
 
     public ProfilePicture getDefaultProfilePicture(ApplicationUser applicationUser) {
+
+        ifm.downloadPfpIfNotPresent();
+
         return ProfilePicture.builder()
             .fileType(FileType.PNG)
             .imageData(ifm.getByteArray(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.defaultUserProfilePictureLocation))

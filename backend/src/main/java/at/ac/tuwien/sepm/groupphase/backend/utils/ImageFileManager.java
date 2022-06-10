@@ -6,9 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -191,5 +190,27 @@ public class ImageFileManager {
             log.info(e.getMessage());
             throw new FileManagerException(e.getMessage());
         }
+    }
+
+    public void downloadPfpIfNotPresent() {
+
+        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.defaultUserProfilePictureLocation);
+
+        if (!f.exists() && !f.isFile()) {
+            try {
+                URL url = new URL(AssetUrls.default_pfp_url);
+
+                OutputStream output = new FileOutputStream(f);
+
+                InputStream stream = url.openStream();
+
+                output.write(stream.readAllBytes());
+
+            } catch (IOException e) {
+                log.info(e.getMessage());
+                throw new FileManagerException(e.getMessage());
+            }
+        }
+
     }
 }

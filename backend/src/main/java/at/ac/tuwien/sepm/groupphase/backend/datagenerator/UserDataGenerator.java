@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import com.github.javafaker.Faker;
@@ -245,6 +246,7 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setStatus(CommissionStatus.OPEN);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
@@ -284,6 +286,7 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setStatus(CommissionStatus.OPEN);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);

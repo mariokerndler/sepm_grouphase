@@ -68,32 +68,33 @@
       <br><br>
       <strong >Date: {{commission.issueDate.substring(0,11)}}
         - {{commission.deadlineDate.substring(0,11)}}</strong>
-      <div *ngIf="this.uploadedSketchDto" fxLayoutAlign="col" fxFlexAlign="center center">
-      <img   [src]="this.uploadedSketchDto.imageData" alt="" class="preview-image">
-      <input matInput type="text">
+      <div *ngIf="this.uploadedSketchDto"   fxLayoutAlign="center center"  >
+        <div><mat-label>Sketch</mat-label></div>
+      <div><img   [src]="this.uploadedSketchDto.imageData" alt="" class="preview-image" ></div>
+        <div><input matInput type="text"></div>
       </div>
     </div>
     <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId">
     <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Request</button>
     </div>
-    <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch" fxLayout="row" fxLayoutAlign="center center">
-
-      <form [formGroup]="sketchForm">
+    <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch" >
+      <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
+        <div>
         <button (click)="fileInput.click()"  color="accent" mat-button>
           <input   #fileInput (change)="fileSelected($event)"
                    accept=".png,.jpg,.gif,.jpeg" style="display: none;"    type="file">
-
         <mat-icon color="accent">upload</mat-icon>
         <span>Upload new Sketch</span>
-
       </button>
+        </div>
+        <div *ngIf="this.uploadedSketchDto"  >
+          <button  (click)="updateCommission()"   color="primary"  mat-flat-button>Confirm  Upload</button>
+        </div>
       </form>
     </div>
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& userEdit && allowFeedback">
       <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Upload Feedback</button>
     </div>
-    <div *ngIf="this.uploadedSketchDto">
-      <button  (click)="updateCommission()" class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Confirm  Upload</button>
-    </div>
+
   </div>
 </div>

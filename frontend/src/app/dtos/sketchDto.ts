@@ -6,5 +6,6 @@ export class SketchDto {
   fileType: FileType.jpg | FileType.png | FileType.gif;
   imageUrl: string;
   description: string;
+  customerFeedback: string;
   imageData: string | ArrayBuffer;
 }

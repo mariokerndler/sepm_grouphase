@@ -5,10 +5,11 @@ import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {CommissionService} from '../../../services/commission.service';
 import {ActivatedRoute} from '@angular/router';
-import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
+import {FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SketchDto} from '../../../dtos/sketchDto';
+import {TagSearch} from '../../../dtos/tag-search';
 
 
 @Component({
@@ -26,10 +27,10 @@ export class CommissionDetailsComponent implements OnInit {
   hasLoaded = false;
   hasReferences = false;
   hasSketches = false;
-  allowFeedback= false;
-  allowSketch= false;
-  artistEdit= false;
-  userEdit= false;
+  allowFeedback = false;
+  allowSketch = false;
+  artistEdit = false;
+  userEdit = false;
   sketchForm = new FormGroup({
     sketchDescription: new FormControl('')
   });
@@ -50,24 +51,34 @@ export class CommissionDetailsComponent implements OnInit {
 
   }
 
-  getUserId(): void{
-    const id= localStorage.getItem('userId');
-      if(id !== null){
-        this.userId=id;
-      }
+  getUserId(): void {
+    const id = localStorage.getItem('userId');
+    if (id !== null) {
+      this.userId = id;
     }
+  }
+
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
-   getCommission() {
+  getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
         this.commission = commission;
+        console.log(commission.artworkDto);
         if (this.commission.artworkDto == null) {
-          this.commission.artworkDto = {
+          const searchPar: TagSearch = {
+            artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:38', tagIds: []
+          };
+          //this would be a temporary fix but sadly artworks are bugged rn so idk
+          this.artworkService.search(searchPar).subscribe(aw => {
+              this.commission.artworkDto = aw[0];
+            }
+          );
+          /** this.commission.artworkDto = {
             name: '',
             imageUrl: '',
             sketchesDtos: [],
@@ -79,7 +90,7 @@ export class CommissionDetailsComponent implements OnInit {
             row: '0',
             col: '0',
             tags: []
-          };
+          };+*/
         }
         this.user = commission.customerDto;
         this.hasLoaded = true;
@@ -95,50 +106,51 @@ export class CommissionDetailsComponent implements OnInit {
           this.userEdit = true;
         }
         if (this.commission.artistDto != null) {
-        if (this.userId === this.commission.artistDto.id.toString()) {
-          this.artistEdit = true;
+          if (this.userId === this.commission.artistDto.id.toString()) {
+            this.artistEdit = true;
+          }
         }
-      }
-        if(commission.feedbackSend<commission.sketchesShown){
-          this.allowFeedback=true;
-        } else{
-          this.allowSketch=true;
+        if (commission.feedbackSend < commission.sketchesShown) {
+          this.allowFeedback = true;
+        } else {
+          this.allowSketch = true;
         }
         console.log(this.commission);
         console.log(this.artistEdit);
       });
   }
+
   fileSelected(fileInput: any) {
-    this.uploadedSketch =  fileInput.target.files[0];
+    this.uploadedSketch = fileInput.target.files[0];
     console.log(this.uploadedSketch);
-       const sketch = new SketchDto();
-           const reader = new FileReader();
-          reader.readAsDataURL(this.uploadedSketch);
-          reader.onload = (event) => {
-            sketch.imageData= event.target.result;
-            const base64result = reader.result.toString().split(',')[1];
-            const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
-            let filetype = FileType.jpg;
-            if (dataType === 'png') {
-              filetype = FileType.png;
-            }
-            if (dataType === 'gif') {
-              filetype = FileType.gif;
-            }
-            const binary = new Uint8Array(this.globalFunctions.base64ToBinaryArray(base64result));
-            const imageData = Array.from(binary);
-            sketch.image= imageData;
-            sketch.fileType = filetype;
-            this.uploadedSketchDto=sketch;
-          };
+    const sketch = new SketchDto();
+    const reader = new FileReader();
+    reader.readAsDataURL(this.uploadedSketch);
+    reader.onload = (event) => {
+      sketch.imageData = event.target.result;
+      const base64result = reader.result.toString().split(',')[1];
+      const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
+      let filetype = FileType.jpg;
+      if (dataType === 'png') {
+        filetype = FileType.png;
+      }
+      if (dataType === 'gif') {
+        filetype = FileType.gif;
+      }
+      const binary = new Uint8Array(this.globalFunctions.base64ToBinaryArray(base64result));
+      const imageData = Array.from(binary);
+      sketch.image = imageData;
+      sketch.fileType = filetype;
+      this.uploadedSketchDto = sketch;
+    };
   }
 
   updateCommission() {
-    if(this.uploadedSketchDto!== null){
-      if(this.commission.artworkDto.sketchesDtos==null){
-        this.commission.artworkDto.sketchesDtos= [];
+    if (this.uploadedSketchDto !== null) {
+      if (this.commission.artworkDto.sketchesDtos == null) {
+        this.commission.artworkDto.sketchesDtos = [];
         this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
-        this.uploadedSketchDto=null;
+        this.uploadedSketchDto = null;
       }
 
       this.commissionService.updateCommission(this.commission).subscribe();

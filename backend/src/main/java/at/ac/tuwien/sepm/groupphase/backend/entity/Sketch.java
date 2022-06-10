@@ -25,6 +25,9 @@ public class Sketch extends Image {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private String customerFeedback;
+
     @ManyToOne
     @JoinColumn(nullable = false, name = "artwork")
     private Artwork artwork;

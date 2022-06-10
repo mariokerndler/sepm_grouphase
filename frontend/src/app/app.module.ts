@@ -61,7 +61,10 @@ import {
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { DeleteArtworkComponent } from './components/delete-artwork/delete-artwork.component';
 import { CommissionPageComponent } from './components/artist-page/commission-page/commission-page.component';
-import { CommissionTimelineComponent } from './components/commission/commission-timeline/commission-timeline.component';
+import { CommissionTimelineComponent }
+  from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import { CommissionTimeslotsComponent }
+  from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,6 +99,7 @@ import { CommissionTimelineComponent } from './components/commission/commission-
     DeleteArtworkComponent,
     CommissionPageComponent,
     CommissionTimelineComponent,
+    CommissionTimeslotsComponent,
   ],
   imports: [
     BrowserModule,

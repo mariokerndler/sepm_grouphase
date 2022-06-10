@@ -14,7 +14,8 @@ import {CommissionFeedComponent} from './components/commission/commission-feed/c
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
 import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
-import {CommissionTimelineComponent} from './components/commission/commission-timeline/commission-timeline.component';
+import {CommissionTimelineComponent}
+  from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},

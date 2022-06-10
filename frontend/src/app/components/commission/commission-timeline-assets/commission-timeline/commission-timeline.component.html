@@ -1,0 +1,57 @@
+<div>
+  <div class="cdk-virtual-scroll-data-source-example">
+    <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="50" class="example-viewport">
+
+      <!-- Start Node -->
+      <div class="upper-component">
+        <div class="text-container" [ngStyle]="{'top': '40px'}">
+          <span><b>30.05.2020</b></span>
+          <br>
+          <span><b>Start of your commission</b></span>
+          <br><br>
+          <p>
+            On this day the artist Max Mustermann and you
+            decided to create something great
+          </p>
+        </div>
+        <div class="line" [ngStyle]="{'top': '2px'}"></div>
+        <div class="main-line" [ngStyle]="{'top': '20px'}"></div>
+        <mat-icon class="accent icon">start</mat-icon>
+      </div>
+      <!-- Midsection -->
+      <div *cdkVirtualFor="let item of items; let i = index" class="example-item">
+        <app-commission-timeslots [index]="i" [items]="items"></app-commission-timeslots>
+      </div>
+
+      <!-- End Node -->
+      <div class="end-section">
+        <div class="upper-component" [ngStyle]="{'visibility': (items.length%2 === 1) ? 'visible' : 'hidden'}">
+          <div class="text-container" [ngStyle]="{'top': '40px'}">
+            <span><b>30.05.2020</b></span>
+            <br>
+            <span><b>Start of your commission</b></span>
+            <br><br>
+            <p>
+              On this day the artist Max Mustermann and you
+              decided to create something great
+            </p>
+          </div>
+          <div class="line" [ngStyle]="{'top': '2px'}"></div>
+        </div>
+        <mat-icon class="accent icon">check</mat-icon>
+        <div class="lower-component" [ngStyle]="{'visibility': (items.length%2 === 0) ? 'visible' : 'hidden'}">
+          <div class="line" [ngStyle]="{'bottom': '2px'}" ></div>
+          <div class="text-container" [ngStyle]="{'bottom': '40px'}">
+            <span><b>30.05.2021</b></span>
+            <br>
+            <span><b>End of your commission</b></span>
+            <br><br>
+            <p>
+              On this day your commission has come to an end.
+            </p>
+          </div>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>

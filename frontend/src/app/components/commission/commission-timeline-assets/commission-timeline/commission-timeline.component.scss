@@ -1,26 +1,41 @@
 .cdk-virtual-scroll-data-source-example .example-viewport {
-  height: 70%;
+  height: 80%;
   width: 100%;
   position: absolute;
-  top: 25%;
+  top: 20%;
 }
 
 .cdk-virtual-scroll-data-source-example .example-viewport .cdk-virtual-scroll-content-wrapper {
   display: flex;
   flex-direction: row;
-  padding-right: 8rem;
+  align-items: end;
+  padding-right: 10rem;
 }
 
+.time-component {
+  position: relative;
+  bottom: 134px
+}
+
+.start-section{
+  position: relative;
+  bottom: 463px
+}
+
+.end-section{
+    position: relative;
+    bottom: 290px
+}
 
 .icon {
-  margin:  0 8rem 0 8rem;
+  margin:  0 10rem 0 10rem;
   padding: 0.5rem;
   border-radius: 100%;
 }
 
 .text-container {
   position: relative;
-  width: 220px;
+  width: 300px;
   left: 60%;
 }
 
@@ -34,7 +49,7 @@
 .main-line {
   border-top: 2px solid #fb9fa4;
   position: relative;
-  width: 16rem;
-  left: 56.7%;
+  width: 20rem;
+  left: 55.5%;
 }
 

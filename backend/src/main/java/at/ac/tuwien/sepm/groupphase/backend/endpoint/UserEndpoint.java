@@ -141,4 +141,17 @@ public class UserEndpoint {
 
         userService.deleteUserById(id);
     }
+
+    @PermitAll
+    @PutMapping("/{id}/upgrade")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Upgrade user to artist")
+    @Transactional
+    public void upgradeUser(@PathVariable Long id) {
+        log.info("Upgrading user with id " + id + " to artist");
+
+        ApplicationUser applicationUser = userService.findUserById(id);
+
+        userService.upgradeUserToArtist(applicationUser);
+    }
 }

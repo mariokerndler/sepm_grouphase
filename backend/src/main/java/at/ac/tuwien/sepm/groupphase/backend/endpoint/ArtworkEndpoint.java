@@ -155,7 +155,7 @@ public class ArtworkEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post artwork")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         log.debug("Post /Artwork/{}", artworkDto.toString());
 
         Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);

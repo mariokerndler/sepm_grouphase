@@ -31,13 +31,15 @@ public class ArtistServiceImpl implements ArtistService {
     private final ImageFileManager ifm;
     private final CommissionService commissionService;
     private final ArtworkService artworkService;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService) {
+    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService, JdbcTemplate jdbcTemplate) {
         this.ifm = ifm;
         this.artistRepo = artistRepo;
         this.commissionService = commissionService;
         this.artworkService = artworkService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override

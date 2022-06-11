@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
         log.trace("calling searchUser() ...");
         List<ApplicationUser> foundUsers = this.userRepo.findAll(spec);
         log.info("Retrieved all application users {} ({})",
-            "matching the search request: " + spec.toString(),
+            spec != null ? "matching the search request: " + spec : "",
             foundUsers.size());
         return foundUsers;
     }

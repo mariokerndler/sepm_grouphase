@@ -74,7 +74,7 @@ public class ArtworkServiceImpl implements ArtworkService {
         log.trace("calling searchArtworks() ...");
         List<Artwork> foundArtworks = artworkRepo.findAll(spec);
         log.info("Retrieved all artworks {} ({})",
-            "matching the search request: " + spec.toString(),
+            spec != null ? "matching the search request: " + spec : "",
             foundArtworks.size());
         return foundArtworks;
     }

@@ -5,6 +5,8 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
@@ -56,6 +58,9 @@ public class ApplicationUserEndpointTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ArtistRepository artistRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -160,6 +165,36 @@ public class ApplicationUserEndpointTest {
         List<ApplicationUserDto> users4 = allUsers();
         assertEquals(1, users4.size());
         assertFalse(users4.toString().contains("test@atest.com"));
+    }
+
+    @Test
+    @WithMockUser
+    public void upgradeUserToArtist() throws Exception {
+
+        ApplicationUser user = getTestUser1();
+        userRepository.save(user);
+
+        assertEquals(1, userRepository.findAll().size());
+        assertEquals(0, artistRepository.findAll().size());
+
+        mockMvc.perform(put("/api/v1/users/" + user.getId() + "/upgrade"))
+            .andExpect(status().isOk()).andReturn();
+
+        assertEquals(1, userRepository.findAll().size());
+        assertEquals(1, artistRepository.findAll().size());
+
+        Artist artist = artistRepository.findAll().get(0);
+
+        assertEquals(user.getId(), artist.getId());
+        assertEquals(user.getUserName(), artist.getUserName());
+        assertEquals(user.getName(), artist.getName());
+        assertEquals(user.getSurname(), artist.getSurname());
+        assertEquals(user.getEmail(), artist.getEmail());
+        assertEquals(user.getAddress(), artist.getAddress());
+        assertEquals(user.getPassword(), artist.getPassword());
+        assertEquals(user.getUserRole(), UserRole.User);
+        // TODO: FInd out why the hell this fails ? user is now clearly artist and artist is found by getAll ? Why is UserRole still User ?
+        assertEquals(artist.getUserRole(), UserRole.Artist);
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {

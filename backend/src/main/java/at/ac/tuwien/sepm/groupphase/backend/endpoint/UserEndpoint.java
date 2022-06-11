@@ -5,7 +5,6 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidOldPasswordException;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
-import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,10 +29,8 @@ import java.util.stream.Collectors;
 public class UserEndpoint {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
 
-    private final ArtistService artistService;
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)

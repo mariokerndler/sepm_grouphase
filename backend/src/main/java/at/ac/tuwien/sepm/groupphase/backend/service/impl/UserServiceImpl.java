@@ -153,6 +153,10 @@ public class UserServiceImpl implements UserService {
             .setParameter(1, "Artist")
             .setParameter(2, user.getId())
             .executeUpdate();
+
+        entityManager.flush();
+
+        //TODO: Files manager for artist ?
     }
 
     @Override

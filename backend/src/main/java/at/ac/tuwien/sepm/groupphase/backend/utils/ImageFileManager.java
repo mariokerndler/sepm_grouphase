@@ -139,12 +139,14 @@ public class ImageFileManager {
                 throw new FileManagerException(e.getMessage());
             }
         }
-        File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
-            + ImageDataPaths.userProfilePictureIdentifier);
+
+        String profilePicturePath = ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+            + ImageDataPaths.userProfilePictureIdentifier + "." + a.getProfilePicture().getFileType().name().toLowerCase();
+
+        File profilePicture = new File(profilePicturePath);
         try (FileOutputStream outputStream = new FileOutputStream(profilePicture)) {
             outputStream.write(a.getProfilePicture().getImageData());
-            return ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
-                + ImageDataPaths.userProfilePictureIdentifier;
+            return profilePicturePath;
         } catch (IOException e) {
             log.info(e.getMessage());
             throw new FileManagerException(e.getMessage());

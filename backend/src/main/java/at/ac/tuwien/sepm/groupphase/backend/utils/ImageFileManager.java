@@ -147,10 +147,24 @@ public class ImageFileManager {
                 + ImageDataPaths.userProfilePictureIdentifier + "." + a.getProfilePicture().getFileType().toString().toLowerCase(Locale.ROOT);
         } catch (IOException e) {
             log.info(e.getMessage());
-            e.printStackTrace();
-            return "";
+            throw new FileManagerException(e.getMessage());
         }
 
+    }
+
+    public void deleteUserProfileImage(ApplicationUser a) {
+
+        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
+
+        if (f.isDirectory() && f.exists()) {
+
+            File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+                + ImageDataPaths.userProfilePictureIdentifier);
+
+            profilePicture.delete();
+        }
+
+        f.delete();
     }
 
 

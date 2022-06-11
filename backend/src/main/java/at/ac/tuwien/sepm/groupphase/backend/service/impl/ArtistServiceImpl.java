@@ -53,12 +53,13 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Artist saveArtist(Artist artist) {
 
-
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
+
         if (artist.getProfilePicture() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
         }
+
         return artistRepo.save(artist);
     }
 
@@ -70,16 +71,10 @@ public class ArtistServiceImpl implements ArtistService {
             ifm.renameArtistFolder(artist, oldArtist.getUserName());
         }
 
-        // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
+        // TODO: Expand functionality to renaming upp folder
+
         if (artist.getProfilePicture() != null) {
-            String imageUrl = "";
-            if (oldArtist.getProfilePicture() != null) {
-                if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
-                    imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
-                }
-            } else {
-                imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
-            }
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
         }
 

@@ -7,6 +7,7 @@ export class Globals {
   readonly backendUri: string = Globals.findBackendUrl();
   readonly projectName: string = 'Artsperience';
   readonly assetsPath: string = 'assets/';
+  readonly defaultProfilePicture: string = 'data/default_pfp.png';
 
   private static findBackendUrl(): string {
     if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080

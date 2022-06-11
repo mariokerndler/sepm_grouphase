@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FormGroup} from '@angular/forms';
+import {FileType} from '../dtos/artworkDto';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,7 @@ export class GlobalFunctions {
     return result;
   }
 
-  base64ToBinaryArray(base64: string) {
-
+  public base64ToBinaryArray(base64: string) {
     const binary = window.atob(base64);
     const length = binary.length;
     const bytes = new Uint8Array(length);
@@ -44,6 +44,24 @@ export class GlobalFunctions {
       bytes[i] = binary.charCodeAt(i);
     }
     return bytes.buffer;
+  }
+
+  public extractImageAndFileType(result: string): [FileType, number[]] {
+    const base64result = result.toString().split(',')[1];
+    const dataType = ((result.toString().split(',')[0]).split(';')[0]).split('/')[1];
+
+    let filetype = FileType.jpg;
+    if (dataType === 'png') {
+      filetype = FileType.png;
+    }
+    if (dataType === 'gif') {
+      filetype = FileType.gif;
+    }
+
+    const binary = new Uint8Array(this.base64ToBinaryArray(base64result));
+    const image = Array.from(binary);
+
+    return [filetype, image];
   }
 
   public shuffleArray(array: any[]): any[] {
@@ -58,6 +76,5 @@ export class GlobalFunctions {
     }
 
     return array;
-
   }
 }

@@ -139,14 +139,12 @@ public class ImageFileManager {
                 throw new FileManagerException(e.getMessage());
             }
         }
-
-        String profilePicturePath = ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
-            + ImageDataPaths.userProfilePictureIdentifier + "." + a.getProfilePicture().getFileType().name().toLowerCase();
-
-        File profilePicture = new File(profilePicturePath);
+        File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+            + ImageDataPaths.userProfilePictureIdentifier + "." + a.getProfilePicture().getFileType().toString().toLowerCase(Locale.ROOT));
         try (FileOutputStream outputStream = new FileOutputStream(profilePicture)) {
             outputStream.write(a.getProfilePicture().getImageData());
-            return profilePicturePath;
+            return ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+                + ImageDataPaths.userProfilePictureIdentifier + "." + a.getProfilePicture().getFileType().toString().toLowerCase(Locale.ROOT);
         } catch (IOException e) {
             log.info(e.getMessage());
             throw new FileManagerException(e.getMessage());
@@ -154,7 +152,7 @@ public class ImageFileManager {
 
     }
 
-    public void deleteUserProfileImage(ApplicationUser a) {
+    public boolean deleteUserProfileImage(ApplicationUser a) {
 
         File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
 
@@ -163,12 +161,11 @@ public class ImageFileManager {
             File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
                 + ImageDataPaths.userProfilePictureIdentifier);
 
-            profilePicture.delete();
+            return profilePicture.delete();
         }
 
-        f.delete();
+        return f.delete();
     }
-
 
     public void renameArtistFolder(Artist artist, String oldUserName) {
         File oldImageFile = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + oldUserName);

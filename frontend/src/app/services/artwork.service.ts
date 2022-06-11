@@ -15,7 +15,9 @@ export class ArtworkService {
   private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  private options = {headers: this.headers};
+  private options = {
+    headers: this.headers,
+  };
   private artworkBaseUri: string = this.globals.backendUri + '/artworks';
 
   constructor(private http: HttpClient,

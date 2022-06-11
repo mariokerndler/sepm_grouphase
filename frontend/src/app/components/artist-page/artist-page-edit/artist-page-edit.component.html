@@ -67,14 +67,18 @@
         <div *ngIf="isArtist" class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center"
              fxLayoutGap="0.5rem">
           <h3 class="primary">Profile picture</h3>
-          <img [src]="artistProfilePicture" alt="" class="edit-page-pfp">
+          <img [src]="profilePicture" alt="" class="edit-page-pfp">
           <input #fileInput
                  (change)="onFileChanged($event)"
-                 accept="image/png, image/jpeg" style="display: none;"
+                 accept="image/png, image/jpeg, image/gif" style="display: none;"
                  type="file">
           <button (click)="fileInput.click()" color="accent" mat-button>
             <mat-icon color="accent">upload</mat-icon>
             <span>Upload new profile picture</span>
+          </button>
+          <button (click)="revertProfilePicture()" mat-button color="accent">
+            <mat-icon color="accent">history</mat-icon>
+            <span>Revert profile picture</span>
           </button>
         </div>
       </div>

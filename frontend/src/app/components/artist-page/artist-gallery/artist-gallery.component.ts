@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ArtworkService} from '../../../services/artwork.service';
 import {UploadComponent} from '../../upload/upload.component';
 import {MatDialog} from '@angular/material/dialog';
@@ -15,7 +15,6 @@ export class ArtistGalleryComponent implements OnInit {
   @Input() artist;
   artworks: ArtworkDto[] = [];
   isReady = false;
-  artistProfilePicture: string;
 
   private authId: number;
 
@@ -27,8 +26,6 @@ export class ArtistGalleryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.artistProfilePicture = 'https://picsum.photos/100/100';
-
     this.artworkService.getArtworksByArtist(this.artist.id)
       .subscribe(
         (artworks) => {

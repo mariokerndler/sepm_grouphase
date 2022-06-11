@@ -14,7 +14,10 @@ export class TagService {
   private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  private options = {headers: this.headers};
+  private options = {
+    headers: this.headers,
+    mode: 'no-cors'
+  };
 
   constructor(
     private http: HttpClient,

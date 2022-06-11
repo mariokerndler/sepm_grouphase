@@ -18,7 +18,7 @@ export class ArtistFeedCardComponent implements OnInit {
   @Input() artist: ArtistDto;
   isReady = false;
   artworks: ArtworkDto[] = [];
-  artistPfp = 'https://picsum.photos/150/150';
+  artistPfp;
   selectedArtwork: number = null;
 
   constructor(
@@ -37,6 +37,8 @@ export class ArtistFeedCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setArtistProfilePicture();
+
     this.artworkService.getArtworksByArtist(
       this.artist.id,
       () => this.notificationService.displayErrorSnackbar(`Could not load artist with username ${this.artist.userName}.`))
@@ -56,6 +58,14 @@ export class ArtistFeedCardComponent implements OnInit {
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+  }
+
+  private setArtistProfilePicture() {
+    if(this.artist.profilePictureDto) {
+      this.artistPfp = this.globals.assetsPath + this.artist.profilePictureDto.imageUrl;
+    } else {
+      this.artistPfp = this.globals.assetsPath + this.globals.defaultProfilePicture;
+    }
   }
 
 }

@@ -8,7 +8,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
-import at.ac.tuwien.sepm.groupphase.backend.service.ProfilePictureService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +25,13 @@ public class ArtistServiceImpl implements ArtistService {
     private final ImageFileManager ifm;
     private final CommissionService commissionService;
     private final ArtworkService artworkService;
-    private final ProfilePictureService profilePictureService;
 
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService, ProfilePictureService profilePictureService) {
+    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService) {
         this.ifm = ifm;
         this.artistRepo = artistRepo;
         this.commissionService = commissionService;
         this.artworkService = artworkService;
-        this.profilePictureService = profilePictureService;
     }
 
     @Override

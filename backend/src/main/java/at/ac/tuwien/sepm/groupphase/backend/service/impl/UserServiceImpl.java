@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
-import at.ac.tuwien.sepm.groupphase.backend.service.ProfilePictureService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
@@ -30,15 +29,13 @@ public class UserServiceImpl implements UserService {
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     private final ImageFileManager ifm;
-    private final ProfilePictureService profilePictureService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder, ImageFileManager ifm, ProfilePictureService profilePictureService) {
+    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder, ImageFileManager ifm) {
         this.userRepo = userRepository;
         this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
         this.ifm = ifm;
-        this.profilePictureService = profilePictureService;
     }
 
     @Override

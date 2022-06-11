@@ -92,6 +92,10 @@ public class UserServiceImpl implements UserService {
         if (user.getProfilePicture() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
+
+            if (oldUser.getProfilePicture() != null) {
+                user.getProfilePicture().setId(oldUser.getProfilePicture().getId());
+            }
         }
 
         userRepo.save(user);

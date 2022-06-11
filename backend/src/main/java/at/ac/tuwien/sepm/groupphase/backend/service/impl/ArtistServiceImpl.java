@@ -76,6 +76,10 @@ public class ArtistServiceImpl implements ArtistService {
         if (artist.getProfilePicture() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
+
+            if (oldArtist.getProfilePicture() != null) {
+                artist.getProfilePicture().setId(oldArtist.getProfilePicture().getId());
+            }
         }
 
         artistRepo.save(artist);

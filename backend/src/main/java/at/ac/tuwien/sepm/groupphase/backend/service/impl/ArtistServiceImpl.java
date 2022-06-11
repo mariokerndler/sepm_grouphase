@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
@@ -13,6 +12,7 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -53,33 +53,6 @@ public class ArtistServiceImpl implements ArtistService {
             return artist.get();
         }
         throw new NotFoundException(String.format("Could not find Artist with id %s", id));
-    }
-
-    @Override
-    public void upgradeUserToArtist(ApplicationUser user) {
-        em.createNativeQuery("UPDATE APPLICATION_USER SET USERTYPE = ? WHERE ID = ?")
-            .setParameter(1, "Artist")
-            .setParameter(2, user.getId())
-            .executeUpdate();
-
-        Optional<Artist> maybeArtist = artistRepo.findById(user.getId());
-        Artist artist;
-        if (maybeArtist.isPresent()) {
-            log.info(maybeArtist.toString());
-            artist = maybeArtist.get();
-
-            //TODO: is this needed now that all users have profile pictures?
-            ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
-            if (artist.getProfilePicture() != null) {
-                String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
-                artist.getProfilePicture().setImageUrl(imageUrl);
-            }
-
-        } else {
-            log.debug("Upgrading user " + user.getUserName() + " to artist went wrong");
-        }
-
-
     }
 
     // Todo: why does this return an artist?

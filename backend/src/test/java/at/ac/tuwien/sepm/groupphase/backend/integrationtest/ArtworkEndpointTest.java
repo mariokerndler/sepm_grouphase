@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
@@ -62,6 +63,9 @@ public class ArtworkEndpointTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private ArtistRepository artistRepository;
@@ -233,10 +237,10 @@ public class ArtworkEndpointTest {
     @Transactional
     @WithMockUser
     public void givenNothing_addUser_postArtworkByUser_thenGetsUpgradedToArtist() throws Exception {
-        ApplicationUser user = getTestUser();
+        ApplicationUserDto userDto = userMapper.userToUserDto(getTestUser());
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(user);
+        String requestJson = ow.writeValueAsString(userDto);
 
         mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
@@ -245,7 +249,7 @@ public class ArtworkEndpointTest {
         List<ApplicationUserDto> users = allUsers();
         assertEquals(1, users.size());
         assertEquals(UserRole.User, users.get(0).getUserRole());
-        Long userId = userRepository.findApplicationUserByEmail(user.getEmail()).getId();
+        Long userId = userRepository.findApplicationUserByEmail(userDto.getEmail()).getId();
 
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
@@ -261,6 +265,17 @@ public class ArtworkEndpointTest {
                 .content(requestJson2))
             .andExpect(status().isCreated()).andReturn();
 
+        /**
+         userDto.setId(userId);
+         userDto.setUserRole(UserRole.Artist);
+         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
+         String requestJson3 = ow3.writeValueAsString(userDto);
+
+         mockMvc.perform(put("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
+         .content(requestJson3))
+         .andExpect(status().isOk()).andReturn();
+         **/
 
         users = allUsers();
         assertEquals(1, users.size());

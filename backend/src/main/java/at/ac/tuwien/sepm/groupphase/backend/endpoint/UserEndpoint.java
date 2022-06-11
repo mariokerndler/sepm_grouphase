@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidOldPasswordException;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
+import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +33,8 @@ public class UserEndpoint {
 
     private final UserMapper userMapper;
 
+    private final ArtistService artistService;
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
@@ -51,7 +54,7 @@ public class UserEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update user")
     public void updateUser(@Valid @RequestBody ApplicationUserDto userDto) {
-        log.debug("Post /User/{}", userDto.getUserName());
+        log.debug("Put /User/{}", userDto.getUserName());
 
         userService.updateUser(userMapper.userDtoToUser(userDto));
     }

@@ -143,6 +143,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void upgradeUserToArtist(ApplicationUser user) {
+        entityManager.createNativeQuery("UPDATE APPLICATION_USER SET USERTYPE = ?, REVIEW_SCORE = 0 WHERE ID = ?")
+            .setParameter(1, "Artist")
+            .setParameter(2, user.getId())
+            .executeUpdate();
+    }
+
+    @Override
     public void deleteUserById(Long id) {
         log.info(ImageDataPaths.assetAbsoluteLocation);
         Optional<ApplicationUser> user = userRepo.findById(id);

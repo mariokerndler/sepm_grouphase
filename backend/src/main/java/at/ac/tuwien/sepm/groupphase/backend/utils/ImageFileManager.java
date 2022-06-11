@@ -152,7 +152,7 @@ public class ImageFileManager {
 
     }
 
-    public void deleteUserProfileImage(ApplicationUser a) {
+    public boolean deleteUserProfileImage(ApplicationUser a) {
 
         File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
 
@@ -161,12 +161,11 @@ public class ImageFileManager {
             File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
                 + ImageDataPaths.userProfilePictureIdentifier);
 
-            profilePicture.delete();
+            return profilePicture.delete();
         }
 
-        f.delete();
+        return f.delete();
     }
-
 
     public void renameArtistFolder(Artist artist, String oldUserName) {
         File oldImageFile = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + oldUserName);

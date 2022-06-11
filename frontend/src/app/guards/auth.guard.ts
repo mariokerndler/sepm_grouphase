@@ -17,7 +17,6 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const routeId = Number(route.paramMap.get('id'));
     if (this.authService.isLoggedIn() && this.authService.getUserId() === routeId) {
-      console.log('Can activate.');
       return true;
     } else {
       this.notificationService.displayErrorSnackbar('Edit of another artist\' profile page is prohibited.');

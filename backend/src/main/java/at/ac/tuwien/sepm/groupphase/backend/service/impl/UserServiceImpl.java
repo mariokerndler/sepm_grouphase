@@ -87,18 +87,13 @@ public class UserServiceImpl implements UserService {
 
         ApplicationUser oldUser = findUserById(user.getId());
 
-        // TODO: What to do when user deletes profile picture ? Choose avatar to default back to
+        // TODO: Expand functionality to renaming upp folder
+
         if (user.getProfilePicture() != null) {
-            String imageUrl = "";
-            if (oldUser.getProfilePicture() != null) {
-                if (oldUser.getProfilePicture().getId() != user.getProfilePicture().getId()) {
-                    imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-                }
-            } else {
-                imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-            }
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
         }
+
         userRepo.save(user);
 
     }

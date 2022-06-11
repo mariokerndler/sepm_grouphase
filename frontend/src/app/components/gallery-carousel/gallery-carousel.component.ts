@@ -64,8 +64,8 @@ export class GalleryCarouselComponent implements OnInit {
     reviews: [],
     surname: '',
     userName: '',
-    userRole: undefined
-
+    userRole: undefined,
+    profilePictureDto: null
   };
   public animArtwork: number;
   url = 'assets/';

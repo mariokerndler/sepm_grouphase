@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface ArtistService {

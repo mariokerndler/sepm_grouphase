@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,10 @@ public class UserServiceImpl implements UserService {
     private final ImageFileManager ifm;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder, ImageFileManager ifm) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserValidator userValidator,
+                           PasswordEncoder passwordEncoder,
+                           ImageFileManager ifm) {
         this.userRepo = userRepository;
         this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
@@ -42,9 +44,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.debug("Load all user by email");
         try {
-
             ApplicationUser applicationUser = findUserByEmail(email);
-
             List<GrantedAuthority> grantedAuthorities;
             if (applicationUser.getAdmin()) {
                 grantedAuthorities = AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_USER");
@@ -60,35 +60,35 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApplicationUser findUserByEmail(String email) {
-        log.debug("Find application user by email");
+        log.trace("calling findUserByEmail() ...");
         ApplicationUser applicationUser = userRepo.findApplicationUserByEmail(email);
+        log.info("Found application user with email='{}'", email);
         if (applicationUser != null) {
             return applicationUser;
         }
-        throw new NotFoundException(String.format("Could not find the user with the email address %s", email));
+        throw new NotFoundException(String.format("Could not find the application user with the email address %s", email));
     }
 
     @Override
     public ApplicationUser findUserById(Long id) {
-        log.info(ImageDataPaths.assetAbsoluteLocation);
+        log.trace("calling findUserById() ...");
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
-            log.info(user.get().getUserName());
+            log.info("Found application user with id='{}'", id);
             return user.get();
         } else {
-            throw new NotFoundException(String.format("Could not find User with id %s", id));
+            throw new NotFoundException(String.format("Could not find application user with id %s", id));
         }
     }
 
     @Override
     public void updateUser(ApplicationUser user) {
-        log.debug("Service: Update User {}", user.toString());
+        log.trace("calling updateUser() ...");
         userValidator.validateUser(user);
 
         ApplicationUser oldUser = findUserById(user.getId());
 
         // TODO: Expand functionality to renaming upp folder
-
         if (user.getProfilePicture() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
@@ -99,12 +99,12 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepo.save(user);
-
+        log.info("Saved application user with id='{}'", user.getId());
     }
 
     @Override
     public void registerUser(ApplicationUser user) {
-        log.debug("Service: Register User {}", user.toString());
+        log.trace("calling registerUser() ...");
 
         userValidator.validateUser(user);
 
@@ -116,41 +116,52 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepo.save(user);
+        log.info("Created an application user with id='{}'", user.getId());
     }
 
     @Override
     public List<ApplicationUser> searchUser(Specification<ApplicationUser> spec) {
-        return this.userRepo.findAll(spec);
+        log.trace("calling searchUser() ...");
+        List<ApplicationUser> foundUsers = this.userRepo.findAll(spec);
+        log.info("Retrieved all application users {} ({})",
+            "matching the search request: " + spec.toString(),
+            foundUsers.size());
+        return foundUsers;
     }
 
     @Override
     public List<ApplicationUser> getAllUsers() {
-        return userRepo.findAll();
+        log.trace("calling getAllUsers() ...");
+        List<ApplicationUser> foundUsers = userRepo.findAll();
+        log.info("Retrieved all application users ({})", foundUsers.size());
+        return foundUsers;
     }
 
     @Override
     public boolean checkIfValidOldPassword(ApplicationUser user, String oldPassword) {
-        log.debug("Service: CheckIfValidOldPassword User {}, Password {}", user.toString(), oldPassword);
+        log.trace("calling checkIfValidOldPassword() ...");
         return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
     @Override
     public void changeUserPassword(ApplicationUser user, String password) {
-        log.debug("Service: changeUserPassword User {}, Password{}", user.toString(), password);
+        log.trace("calling changeUserPassword() ...");
         user.setPassword(passwordEncoder.encode(password));
         userRepo.save(user);
+        log.info("Updated password for application user with id='{}'", user.getId());
     }
 
     @Override
     public void deleteUserById(Long id) {
-        log.info(ImageDataPaths.assetAbsoluteLocation);
+        log.trace("calling deleteUserById() ...");
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             log.info(user.get().getUserName());
             // TODO: Ifm delete files of artist
             userRepo.deleteById(id);
+            log.info("Deleted application user with id='{}'", id);
         } else {
-            throw new NotFoundException(String.format("Could not find User with id %s", id));
+            throw new NotFoundException(String.format("Could not find application user with id %s", id));
         }
     }
 }

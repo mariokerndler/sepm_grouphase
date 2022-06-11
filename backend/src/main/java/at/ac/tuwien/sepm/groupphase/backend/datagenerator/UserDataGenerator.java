@@ -37,7 +37,13 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
     private static final int NUMBER_OF_COMMISSIONS_TO_GENERATE = 20;
-
+    private final ArtistService artistService;
+    private final UserRepository userRepository;
+    private final ArtistRepository artistRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ArtworkRepository artworkRepo;
+    private final TagRepository tagRepository;
+    private final CommissionRepository commissionRepository;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
         "https://i.ibb.co/7yHp276/image1.jpg",
@@ -49,15 +55,6 @@ public class UserDataGenerator {
         "https://i.ibb.co/09Fk1PB/sketch4.jpg",
         "https://i.ibb.co/pf63fMd/sketch.gif"
     };
-
-
-    private final ArtistService artistService;
-    private final UserRepository userRepository;
-    private final ArtistRepository artistRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final ArtworkRepository artworkRepo;
-    private final TagRepository tagRepository;
-    private final CommissionRepository commissionRepository;
 
     public UserDataGenerator(ArtistService artistService,
                              UserRepository userRepository,

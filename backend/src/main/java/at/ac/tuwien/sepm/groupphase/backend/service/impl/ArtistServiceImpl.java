@@ -58,12 +58,10 @@ public class ArtistServiceImpl implements ArtistService {
 
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
 
-        if (artist.getProfilePicture() == null) {
-            artist.setProfilePicture(profilePictureService.getDefaultProfilePicture(artist));
+        if (artist.getProfilePicture() != null) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
+            artist.getProfilePicture().setImageUrl(imageUrl);
         }
-
-        String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
-        artist.getProfilePicture().setImageUrl(imageUrl);
 
         return artistRepo.save(artist);
     }
@@ -76,14 +74,11 @@ public class ArtistServiceImpl implements ArtistService {
             ifm.renameArtistFolder(artist, oldArtist.getUserName());
         }
 
-        if (artist.getProfilePicture() == null) {
-            artist.setProfilePicture(profilePictureService.getDefaultProfilePicture(artist));
-        }
+        // TODO: Expand functionality to renaming upp folder
 
-        if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
+        if (artist.getProfilePicture() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
-            artist.getProfilePicture().setId(oldArtist.getProfilePicture().getId());
         }
 
         artistRepo.save(artist);

@@ -90,14 +90,11 @@ public class UserServiceImpl implements UserService {
 
         ApplicationUser oldUser = findUserById(user.getId());
 
-        if (user.getProfilePicture() == null) {
-            user.setProfilePicture(profilePictureService.getDefaultProfilePicture(user));
-        }
+        // TODO: Expand functionality to renaming upp folder
 
-        if (oldUser.getProfilePicture().getId() != user.getProfilePicture().getId()) {
+        if (user.getProfilePicture() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
-            user.getProfilePicture().setId(oldUser.getProfilePicture().getId());
         }
 
         userRepo.save(user);
@@ -112,12 +109,10 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (user.getProfilePicture() == null) {
-            user.setProfilePicture(profilePictureService.getDefaultProfilePicture(user));
+        if (user.getProfilePicture() != null) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
+            user.getProfilePicture().setImageUrl(imageUrl);
         }
-
-        String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-        user.getProfilePicture().setImageUrl(imageUrl);
 
         userRepo.save(user);
     }

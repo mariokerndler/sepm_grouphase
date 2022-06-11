@@ -195,5 +195,13 @@ public class ImageFileManager {
             log.error(e.getMessage());
             throw new FileManagerException(e.getMessage());
         }
+        //rename profile folder
+        File oldImageProfileFolder = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + oldUserName);
+        try {
+            Files.move(oldImageProfileFolder.toPath(), oldImageProfileFolder.toPath().resolveSibling(artist.getUserName()));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new FileManagerException(e.getMessage());
+        }
     }
 }

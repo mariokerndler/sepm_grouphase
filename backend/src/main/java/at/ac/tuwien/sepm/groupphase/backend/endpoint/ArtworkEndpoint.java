@@ -139,7 +139,6 @@ public class ArtworkEndpoint {
         log.debug("A user is trying to create a new artwork.");
         try {
             Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
-            artwork.setTags(artworkDto.getTags());
             artworkService.saveArtwork(artwork);
         } catch (Exception v) {
             log.error(v.getMessage() + artworkDto);

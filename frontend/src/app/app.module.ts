@@ -61,6 +61,11 @@ import {
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { DeleteArtworkComponent } from './components/delete-artwork/delete-artwork.component';
 import { CommissionPageComponent } from './components/artist-page/commission-page/commission-page.component';
+import { CommissionTimelineComponent }
+  from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import { CommissionTimeslotsComponent }
+  from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,6 +99,8 @@ import { CommissionPageComponent } from './components/artist-page/commission-pag
     ArtistGallerySubsectionsComponent,
     DeleteArtworkComponent,
     CommissionPageComponent,
+    CommissionTimelineComponent,
+    CommissionTimeslotsComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,18 +116,20 @@ import { CommissionPageComponent } from './components/artist-page/commission-pag
     NgxMatColorPickerModule,
     DragDropModule,
     MatSliderModule,
-    NgxSliderModule
+    NgxSliderModule,
   ],
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false}
+
     },
     httpInterceptorProviders,
     {
       provide: MAT_COLOR_FORMATS,
       useValue: NGX_MAT_COLOR_FORMATS
-    }
+    },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

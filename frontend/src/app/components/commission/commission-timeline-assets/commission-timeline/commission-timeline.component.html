@@ -20,13 +20,14 @@
       </div>
       <!-- Midsection -->
       <div  *cdkVirtualFor="let sketch of [].constructor(data.sketches.length*2); let i = index" class="example-item">
-        <app-commission-timeslots [index]="i" [sketch]="data.sketches[i%3]" [review]="data.reviews[i%3]"></app-commission-timeslots>
+        <app-commission-timeslots [index]="i" [sketch]="data.sketches[i/2]" [review]="data.reviews[(i-1)/2]"></app-commission-timeslots>
       </div>
 
 
       <!-- End Node -->
       <div class="end-section">
-        <div class="upper-component" [ngStyle]="{'visibility': (items.length%2 === 1) ? 'visible' : 'hidden'}">
+        <!--
+        <div class="upper-component" [ngStyle]="{'visibility': ((data.sketches.length*2)%2 === 1) ? 'visible' : 'hidden'}">
           <div class="text-container" [ngStyle]="{'top': '40px'}">
             <span><b>30.05.2020</b></span>
             <br>
@@ -38,9 +39,9 @@
             </p>
           </div>
           <div class="line" [ngStyle]="{'top': '2px'}"></div>
-        </div>
+        </div> -->
         <mat-icon class="accent icon">check</mat-icon>
-        <div class="lower-component" [ngStyle]="{'visibility': (items.length%2 === 0) ? 'visible' : 'hidden'}">
+        <div class="lower-component" [ngStyle]="{'visibility': ((data.sketches.length*2)%2 === 0) ? 'visible' : 'hidden'}">
           <div class="line" [ngStyle]="{'bottom': '2px'}" ></div>
           <div class="text-container" [ngStyle]="{'bottom': '40px'}">
             <span><b>30.05.2021</b></span>

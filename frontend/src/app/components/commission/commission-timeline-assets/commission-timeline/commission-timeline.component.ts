@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import * as data from 'src/assets/commission.json';
+import * as data from 'src/assets/commission2.json';
 
 @Component({
   selector: 'app-commission-timeline',
@@ -9,12 +9,12 @@ import * as data from 'src/assets/commission.json';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommissionTimelineComponent implements OnInit {
-  items = Array.from({length: 8}).map((_, i) => `Item #${i}`);
   data;
   constructor() { }
 
   ngOnInit(): void {
     this.data = data;
+    console.log(this.data);
   }
 
 }

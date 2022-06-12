@@ -8,7 +8,8 @@ import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@an
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommissionTimelineComponent implements OnInit {
-  items = Array.from({length: 12}).map((_, i) => `Item #${i}`);
+  items = Array.from({length: 8}).map((_, i) => `Item #${i}`);
+
 
   constructor() { }
 

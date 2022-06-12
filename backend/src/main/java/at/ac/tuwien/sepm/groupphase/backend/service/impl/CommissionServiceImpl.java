@@ -127,8 +127,8 @@ public class CommissionServiceImpl implements CommissionService {
                 cs.getPriceRangeLower(),
                 cs.getPriceRangeUpper(),
                 cs.getArtistId(),
-                cs.getSearchConstraint().toString(),
-                cs.getUserId());
+                cs.getUserId(),
+                cs.getSearchConstraint().toString());
         }
 
         log.info("Retrieved all commissions {} ({}).",

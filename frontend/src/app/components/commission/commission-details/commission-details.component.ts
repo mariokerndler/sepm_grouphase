@@ -148,15 +148,18 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   updateCommission() {
+    //artist added sketch
     if (this.uploadedSketchDto !== null) {
       if (this.commission.artworkDto.sketchesDtos == null) {
         this.commission.artworkDto.sketchesDtos = [];
-        this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
-        this.uploadedSketchDto = null;
       }
-
+      this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
+      this.commission.sketchesShown+=1;
+      this.uploadedSketchDto = null;
+    }
+    console.log('updating '+ this.commission);
       this.commissionService.updateCommission(this.commission).subscribe();
     }
 
-  }
+
 }

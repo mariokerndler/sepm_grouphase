@@ -1,10 +1,26 @@
+mat-step-header{
+  color: white !important;
+}
+
+
 .mat-stepper-horizontal {
   margin-top: 8px;
 }
 
-.mat-form-field {
+.input-field{
   margin-top: 16px;
+  min-width: 70rem;
+  color: lightblue;
 }
+
+
+
+.slider{
+  position: relative;
+  left: 44%;
+}
+
+
 
 .com-display {
 
@@ -30,30 +46,16 @@
   display: flex;
   width: 100%;
   justify-content: center;
+  color: #fb9fa4;
 }
 
-.mat-form-field-flex{
 
 
-}
-.mat-form-field{
-  display: flex;
-  min-width: 70rem;
 
-
-  justify-content: center;
-
-}
-.close-button{
-
-}
 .mat-stepper-horizontal {
   width: 80rem
 }
 
-.mat-label {
-
-}
 
 .feed {
   scrollbar-gutter: stable;

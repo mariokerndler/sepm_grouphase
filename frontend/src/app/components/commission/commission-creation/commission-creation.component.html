@@ -1,19 +1,19 @@
 <div>
   <mat-horizontal-stepper fxLayoutAlign="center stretch"  #stepper (selectionChange)="setIndex($event)" class="comm_stepper"
                           fxLayout="column"  >
-    <mat-step [stepControl]="commissionForm"   fxLayout="column">
+    <mat-step [stepControl]="commissionForm"   fxLayout="column" >
       <form [formGroup]="commissionForm" >
         <ng-template matStepLabel>Commission Details</ng-template>
 
-        <mat-form-field  appearance="fill" >
+        <mat-form-field class="input-field"  appearance="fill" >
           <mat-label class="accent-color" color="accent-color">Title</mat-label>
           <input formControlName="title" matInput placeholder="Title" required>
         </mat-form-field>
 
         <br>
-        <mat-form-field appearance="fill">
-          <mat-label class="accent-color" color="accent-color">Describe your the Artwork you envision</mat-label>
-          <textarea formControlName="description" matInput placeholder="Description" required>
+        <mat-form-field class="input-field" appearance="fill">
+          <mat-label class="accent-color" color="accent-color">Describe the Artwork you envision</mat-label>
+          <textarea rows="8" formControlName="description" matInput placeholder="Description" required>
         </textarea>
         </mat-form-field>
         <div class="stepper_button">
@@ -25,18 +25,27 @@
     </mat-step>
     <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column" label="Organisation">
       <form [formGroup]="commissionForm">
-        <mat-form-field appearance="fill">
+        <mat-form-field class="input-field" appearance="fill">
           <mat-label class="accent-color" color="accent-color">Delivery Date</mat-label>
           <input formControlName="date" matInput placeholder=" " required
                  type="date">
         </mat-form-field>
         <br>
-        <mat-form-field appearance="fill">
-          <mat-label class="accent-color" color="accent-color">Your offer</mat-label>
+        <mat-form-field class="input-field" appearance="fill">
+          <mat-label class="accent-color" color="accent-color">Your offer (in Euro)</mat-label>
 
           <input formControlName="price" matInput placeholder="Price" required
-                 type="text">
+                 type="number" min="0" step="any">
         </mat-form-field>
+        <br>
+        <div class="slider">
+          <mat-label class="accent-color" color="accent-color">Feed back rounds:</mat-label>
+          <br>
+          <mat-label class="accent-color">0</mat-label>
+          <mat-slider [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
+                      max="5" min="0" thumbLabel tickInterval="1"></mat-slider>
+          <mat-label class="accent-color">5</mat-label>
+        </div>
         <div class="stepper_button">
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
@@ -45,18 +54,14 @@
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>
-        <mat-label class="accent-color" color="accent-color">Feed back rounds:</mat-label>
-        <br>
-        <mat-label>0</mat-label>
-        <mat-slider [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
-                    max="5" min="0" thumbLabel tickInterval="1"></mat-slider>
-        <mat-label>5</mat-label>
+
+
 
       </form>
     </mat-step>
     <mat-step  [stepControl]="commissionForm" label="References">
       <form [formGroup]="commissionForm"  >
-        <mat-form-field appearance="fill"  >
+        <mat-form-field class="input-field" appearance="fill"  >
           <span class="accent-color" color="accent-color">If possible provide reference pictures for your artwork</span>
 
 
@@ -100,10 +105,10 @@
 
 
         <div  class="stepper_button">
-          <button mat-button matStepperPrevious>
+          <button mat-icon-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
-          <button (click)="createDto()" mat-button matStepperNext>
+          <button  (click)="createDto()" mat-icon-button matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>

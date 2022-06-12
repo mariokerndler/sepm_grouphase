@@ -22,11 +22,17 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> loadAllTags() {
-        return tagRepo.findAll();
+        log.trace("calling loadAllTags() ...");
+        List<Tag> foundTags = tagRepo.findAll();
+        log.info("Retrieved all tags ({}).", foundTags.size());
+        return foundTags;
     }
 
     @Override
     public List<Tag> loadTagsOfArtwork(Long id) {
-        return this.tagRepo.findArtworkTags(id);
+        log.trace("calling loadTagsOfArtwork() ...");
+        List<Tag> foundTags = this.tagRepo.findArtworkTags(id);
+        log.info("Retrieved all tags for artwork with id='{}' ({})", id, foundTags.size());
+        return foundTags;
     }
 }

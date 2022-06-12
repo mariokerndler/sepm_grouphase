@@ -30,34 +30,40 @@ public class ArtworkServiceImpl implements ArtworkService {
 
     @Override
     public List<Artwork> findArtworksByArtist(Long id) {
-        return artworkRepo.findArtworkByArtistId(id);
+        log.trace("calling findArtworksByArtist() ...");
+        var foundArtworks = artworkRepo.findArtworkByArtistId(id);
+        log.info("Retrieved all artworks by artist with id='{}'", id);
+        return foundArtworks;
     }
 
     @Override
     public Artwork findById(Long id) {
+        log.trace("calling findById() ...");
         Optional<Artwork> artwork = artworkRepo.findById(id);
 
         if (artwork.isPresent()) {
+            log.info("Retrieved artwork with id='{}'", id);
             return artwork.get();
         } else {
-            throw new NotFoundException(String.format("Could not find Artwork with id %s", id));
+            throw new NotFoundException(String.format("Could not find artwork with id %s", id));
         }
     }
 
     @Override
     public void saveArtwork(Artwork a) {
-
+        log.trace("calling saveArtwork() ...");
         a.setImageUrl(this.ifm.writeArtistImage(a));
-        log.info(a.toString());
         this.artworkRepo.save(a);
+        log.info("Saved artwork with id='{}'", a.getId());
     }
 
     @Override
     public void deleteArtwork(Artwork a) {
+        log.trace("calling deleteArtwork() ...");
         try {
-            System.out.println(a.toString());
             this.artworkRepo.deleteById(a.getId());
             this.ifm.deleteArtistImage(a);
+            log.info("Deleted artwork with id='{}'", a.getId());
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException(String.format("Could not find artwork with id %s", a.getId()));
         }
@@ -65,21 +71,34 @@ public class ArtworkServiceImpl implements ArtworkService {
 
     @Override
     public List<Artwork> searchArtworks(Specification<Artwork> spec) {
-        return artworkRepo.findAll(spec);
+        log.trace("calling searchArtworks() ...");
+        List<Artwork> foundArtworks = artworkRepo.findAll(spec);
+        log.info("Retrieved all artworks {} ({})",
+            spec != null ? "matching the search request: " + spec : "",
+            foundArtworks.size());
+        return foundArtworks;
     }
 
     @Override
     public List<Artwork> searchArtworks(Specification<Artwork> spec, Pageable page, int randomSeed) {
+        log.trace("calling searchArtworks() ...");
+        List<Artwork> foundArtworks;
         if (spec == null) {
             if (randomSeed != 0) {
-                return this.artworkRepo.findArtworkRandom(randomSeed, page).getContent();
+                foundArtworks = this.artworkRepo.findArtworkRandom(randomSeed, page).getContent();
+                log.info("Retrieved all artworks with page='{}' and randomSeed='{}'", page, randomSeed);
             } else {
-                log.info("spec is  null");
-                return this.artworkRepo.findAll(page).getContent();
+                foundArtworks = this.artworkRepo.findAll(page).getContent();
+                log.info("Retrieved all artworks with page='{}'", page);
             }
-
-
+            return foundArtworks;
         }
-        return this.artworkRepo.findAll(spec, page).getContent();
+
+        foundArtworks = this.artworkRepo.findAll(spec, page).getContent();
+        log.info("Retrieved all artworks {} and page='{}' ({})",
+            "matching the search request: " + spec.toString(),
+            page,
+            foundArtworks.size());
+        return foundArtworks;
     }
 }

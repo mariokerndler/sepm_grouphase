@@ -36,14 +36,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
         throws AuthenticationException {
+        log.trace("calling attemptAuthentication() ...");
         UserLoginDto user = null;
         try {
             user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDto.class);
             //Compares the user with CustomUserDetailService#loadUserByUsername and check if the credentials are correct
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                user.getEmail(),
-                user.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    user.getEmail(),
+                    user.getPassword()));
+            log.info("Attempted authentication for user='{}'", user);
+            return authentication;
         } catch (IOException e) {
+            log.error(e.getMessage());
             throw new BadCredentialsException("Wrong API request or JSON schema", e);
         } catch (BadCredentialsException e) {
             if (user != null && user.getEmail() != null) {
@@ -57,9 +62,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException {
+        log.trace("calling unsuccessfulAuthentication() ...");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(failed.getMessage());
-        log.debug("Invalid authentication attempt: {}", failed.getMessage());
+        log.info("Invalid authentication attempt: {}", failed.getMessage());
     }
 
     @Override
@@ -67,6 +73,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException {
+        log.trace("calling successfulAuthentication() ...");
         User user = ((User) authResult.getPrincipal());
 
         List<String> roles = user.getAuthorities()

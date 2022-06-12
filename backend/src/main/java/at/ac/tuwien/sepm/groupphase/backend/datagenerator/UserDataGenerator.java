@@ -1,12 +1,10 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
-import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.TagRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.*;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import com.github.javafaker.Faker;
@@ -39,7 +37,13 @@ public class UserDataGenerator {
     private static final int NUMBER_OF_PROFILES_TO_GENERATE = 40;
     private static final int NUMBER_OF_TAGS_TO_GENERATE = 30;
     private static final int NUMBER_OF_COMMISSIONS_TO_GENERATE = 20;
-
+    private final ArtistService artistService;
+    private final UserRepository userRepository;
+    private final ArtistRepository artistRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ArtworkRepository artworkRepo;
+    private final TagRepository tagRepository;
+    private final CommissionRepository commissionRepository;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
         "https://i.ibb.co/7yHp276/image1.jpg",
@@ -52,22 +56,16 @@ public class UserDataGenerator {
         "https://i.ibb.co/pf63fMd/sketch.gif"
     };
 
-
-    private final ArtistService artistService;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final ArtworkRepository artworkRepo;
-    private final TagRepository tagRepository;
-    private final CommissionRepository commissionRepository;
-
     public UserDataGenerator(ArtistService artistService,
                              UserRepository userRepository,
+                             ArtistRepository artistRepository,
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
                              CommissionRepository commissionRepository) {
         this.artistService = artistService;
         this.userRepository = userRepository;
+        this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
@@ -76,13 +74,29 @@ public class UserDataGenerator {
 
     @PostConstruct
     private void generateUser() throws IOException {
-        loadTags(NUMBER_OF_TAGS_TO_GENERATE);
-        loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
+        if (tagRepository.findAll().size() < NUMBER_OF_TAGS_TO_GENERATE) {
+            loadTags(NUMBER_OF_TAGS_TO_GENERATE);
+        }
 
+        if (artistRepository.findAll().size() < NUMBER_OF_PROFILES_TO_GENERATE) {
+            loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
+        }
 
-        generateArtistTestAccount("testArtist", "12345678");
-        generateUserTestAccount("testUser", "12345678");
-        generateCommissionsTestAccount(NUMBER_OF_COMMISSIONS_TO_GENERATE, NUMBER_OF_USERS_TO_GENERATE);
+        if (artistRepository.findApplicationUserByEmail("testArtist@test.com") == null) {
+            generateArtistTestAccount("testArtist", "12345678");
+        }
+
+        if (artistRepository.findApplicationUserByEmail("testUser@test.com") == null) {
+            generateUserTestAccount("testUser", "12345678");
+        }
+
+        if (userRepository.findAll().size() - NUMBER_OF_PROFILES_TO_GENERATE + 2 < NUMBER_OF_USERS_TO_GENERATE) {
+            generateUsers(NUMBER_OF_USERS_TO_GENERATE);
+        }
+
+        if (commissionRepository.findAll().size() < 2) {
+            generateTestCommissions();
+        }
 
     }
 
@@ -217,12 +231,16 @@ public class UserDataGenerator {
         userRepository.save(user);
     }
 
-    private void generateCommissionsTestAccount(int number, int number1) {
-        for (int i = 0; i < number1; i++) {
+    private void generateUsers(int numberOfUsers) {
+        for (int i = 0; i < numberOfUsers; i++) {
             Faker faker = new Faker();
-            ApplicationUser user = generateUserProfile(faker.starTrek().toString());
+            ApplicationUser user = generateUserProfile(faker.starTrek().character() + i);
             userRepository.save(user);
         }
+    }
+
+    private void generateTestCommissions() {
+
         List<ApplicationUser> users = userRepository.findAll();
         List<Artist> artists = artistService.getAllArtists();
 
@@ -245,6 +263,7 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setStatus(CommissionStatus.OPEN);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
@@ -284,6 +303,7 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setStatus(CommissionStatus.OPEN);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);

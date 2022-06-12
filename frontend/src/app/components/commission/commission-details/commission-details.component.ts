@@ -71,11 +71,38 @@ export class CommissionDetailsComponent implements OnInit {
         console.log(commission.artworkDto);
         if (this.commission.artworkDto == null) {
           const searchPar: TagSearch = {
-            artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:38', tagIds: []
+            artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
           };
           //this would be a temporary fix but sadly artworks are bugged rn so idk
           this.artworkService.search(searchPar).subscribe(aw => {
+            console.log(aw);
               this.commission.artworkDto = aw[0];
+              this.commission.artworkDto.commissionId=this.commission.id;
+            this.user = commission.customerDto;
+            this.hasLoaded = true;
+            if (this.commission.referencesDtos.length !== 0) {
+              this.hasReferences = true;
+            }
+            if (this.commission.artworkDto.sketchesDtos != null) {
+              if (this.commission.artworkDto.sketchesDtos.length !== 0) {
+                this.hasSketches = true;
+              }
+            }
+            if (this.userId === this.commission.customerDto.id.toString()) {
+              this.userEdit = true;
+            }
+            if (this.commission.artistDto != null) {
+              if (this.userId === this.commission.artistDto.id.toString()) {
+                this.artistEdit = true;
+              }
+            }
+            if (commission.feedbackSend < commission.sketchesShown) {
+              this.allowFeedback = true;
+            } else {
+              this.allowSketch = true;
+            }
+            console.log(this.commission);
+            console.log(this.artistEdit);
             }
           );
           /** this.commission.artworkDto = {
@@ -92,31 +119,6 @@ export class CommissionDetailsComponent implements OnInit {
             tags: []
           };+*/
         }
-        this.user = commission.customerDto;
-        this.hasLoaded = true;
-        if (this.commission.referencesDtos.length !== 0) {
-          this.hasReferences = true;
-        }
-        if (this.commission.artworkDto.sketchesDtos != null) {
-          if (this.commission.artworkDto.sketchesDtos.length !== 0) {
-            this.hasSketches = true;
-          }
-        }
-        if (this.userId === this.commission.customerDto.id.toString()) {
-          this.userEdit = true;
-        }
-        if (this.commission.artistDto != null) {
-          if (this.userId === this.commission.artistDto.id.toString()) {
-            this.artistEdit = true;
-          }
-        }
-        if (commission.feedbackSend < commission.sketchesShown) {
-          this.allowFeedback = true;
-        } else {
-          this.allowSketch = true;
-        }
-        console.log(this.commission);
-        console.log(this.artistEdit);
       });
   }
 

@@ -109,7 +109,7 @@ public class CommissionMappingTest {
             .artist(artist)
             .artistCandidates(List.of(artist, artistCandidate))
             .customer(user)
-            .status(CommissionStatus.OPEN)
+            .status(CommissionStatus.LISTED)
             .title("Cowboy Snail")
             .sketchesShown(3)
             .feedbackSent(0)
@@ -205,7 +205,7 @@ public class CommissionMappingTest {
         DetailedCommissionDto commissionDto = new DetailedCommissionDto(artistDto,
             List.of(artistDto, artistCandidateDto),
             userDto,
-            CommissionStatus.OPEN,
+            CommissionStatus.LISTED,
             3,
             0,
             2000.45,

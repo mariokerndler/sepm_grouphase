@@ -67,62 +67,59 @@ export class CommissionDetailsComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
-        this.commission = commission;
-        console.log(commission.artworkDto);
-        if (this.commission.artworkDto == null) {
-          const searchPar: TagSearch = {
-            artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
-          };
-          //this would be a temporary fix but sadly artworks are bugged rn so idk
-          this.artworkService.search(searchPar).subscribe(aw => {
-            console.log(aw);
-              this.commission.artworkDto = aw[0];
-              this.commission.artworkDto.commissionId=this.commission.id;
+          this.commission = commission;
+          console.log(commission.artworkDto);
+          if (this.commission.artworkDto == null) {
+            const searchPar: TagSearch = {
+              artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
+            };
+            //this would be a temporary fix but sadly artworks are bugged rn so idk
+            this.artworkService.search(searchPar).subscribe(aw => {
+                console.log(aw);
+                this.commission.artworkDto = aw[0];
+                this.user = commission.customerDto;
+                this.checkCommissionState(this.commission);
+              }
+            );
+          } else{
             this.user = commission.customerDto;
-            this.hasLoaded = true;
-            if (this.commission.referencesDtos.length !== 0) {
-              this.hasReferences = true;
-            }
-            if (this.commission.artworkDto.sketchesDtos != null) {
-              if (this.commission.artworkDto.sketchesDtos.length !== 0) {
-                this.hasSketches = true;
-              }
-            }
-            if (this.userId === this.commission.customerDto.id.toString()) {
-              this.userEdit = true;
-            }
-            if (this.commission.artistDto != null) {
-              if (this.userId === this.commission.artistDto.id.toString()) {
-                this.artistEdit = true;
-              }
-            }
-            if (commission.feedbackSend < commission.sketchesShown) {
-              this.allowFeedback = true;
-            } else {
-              this.allowSketch = true;
-            }
-            console.log(this.commission);
-            console.log(this.artistEdit);
-            }
-          );
-          /** this.commission.artworkDto = {
-            name: '',
-            imageUrl: '',
-            sketchesDtos: [],
-            id: 0,
-            fileType: FileType.jpg,
-            artistId: 0,
-            imageData: [],
-            description: '',
-            row: '0',
-            col: '0',
-            tags: []
-          };+*/
+            this.checkCommissionState(this.commission);
+          }
+
         }
-      });
+      );
   }
 
-  fileSelected(fileInput: any) {
+  checkCommissionState(commission: CommissionDto): void {
+    if (commission.referencesDtos.length !== 0) {
+      this.hasReferences = true;
+    }
+    if (commission.artworkDto.sketchesDtos != null) {
+      if (commission.artworkDto.sketchesDtos.length !== 0) {
+        this.hasSketches = true;
+      }
+    }
+    if (this.userId === this.commission.customerDto.id.toString()) {
+      this.userEdit = true;
+    }
+    if (commission.artistDto != null) {
+      if (this.userId === this.commission.artistDto.id.toString()) {
+        this.artistEdit = true;
+      }
+    }
+    if (commission.feedbackSend < commission.sketchesShown) {
+      this.allowFeedback = true;
+    } else {
+      this.allowSketch = true;
+    }
+    this.hasLoaded = true;
+    console.log(this.commission);
+    console.log(this.artistEdit);
+  }
+
+
+  fileSelected(fileInput: any
+  ) {
     this.uploadedSketch = fileInput.target.files[0];
     console.log(this.uploadedSketch);
     const sketch = new SketchDto();
@@ -154,12 +151,12 @@ export class CommissionDetailsComponent implements OnInit {
         this.commission.artworkDto.sketchesDtos = [];
       }
       this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
-      this.commission.sketchesShown+=1;
+      this.commission.sketchesShown += 1;
       this.uploadedSketchDto = null;
     }
-    console.log('updating '+ this.commission);
-      this.commissionService.updateCommission(this.commission).subscribe();
-    }
+    console.log('updating ' + this.commission);
+    this.commissionService.updateCommission(this.commission).subscribe();
+  }
 
 
 }

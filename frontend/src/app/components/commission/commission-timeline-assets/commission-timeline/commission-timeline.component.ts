@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import * as data from 'src/assets/commission2.json';
+//import * as data from 'src/assets/commission2.json';
 
 @Component({
   selector: 'app-commission-timeline',
@@ -14,7 +14,7 @@ export class CommissionTimelineComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.data = data;
+    //this.data = data; Just for frontend pipeline.
     console.log(this.data);
   }
 

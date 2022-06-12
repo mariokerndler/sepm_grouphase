@@ -61,7 +61,7 @@ export class CommissionCreationComponent implements OnInit {
       profilePictureDto: null
     },
     deadlineDate: '',
-    feedbackSend: 0,
+    feedbackSent: 0,
     id: null,
     instructions: '',
     issueDate: '',

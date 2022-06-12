@@ -13,7 +13,7 @@ export class CommissionDto {
   title: string;
   instructions: string;
   sketchesShown: number;
-  feedbackSend: number;
+  feedbackSent: number;
   feedbackRounds: number;
   price: number;
   issueDate: string;

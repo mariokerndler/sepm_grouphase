@@ -107,14 +107,16 @@ export class CommissionDetailsComponent implements OnInit {
         this.artistEdit = true;
       }
     }
-    if (commission.feedbackSend < commission.sketchesShown) {
+    if (commission.feedbackSent < commission.sketchesShown) {
       this.allowFeedback = true;
+      this.allowSketch = false;
     } else {
       this.allowSketch = true;
     }
     this.hasLoaded = true;
     console.log(this.commission);
     console.log(this.artistEdit);
+    console.log(this.allowSketch)
   }
 
 
@@ -154,8 +156,9 @@ export class CommissionDetailsComponent implements OnInit {
       this.commission.sketchesShown += 1;
       this.uploadedSketchDto = null;
     }
-    console.log('updating ' + this.commission);
+    console.log( this.commission);
     this.commissionService.updateCommission(this.commission).subscribe();
+
   }
 
 

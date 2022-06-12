@@ -26,12 +26,15 @@ import {CommissionState} from '../../../global/CommissionState';
   templateUrl: './commission-creation.component.html',
   styleUrls: ['./commission-creation.component.scss'],
   encapsulation: ViewEncapsulation.None,
+
 })
 export class CommissionCreationComponent implements OnInit {
   selectedImage;
   artists: ArtistDto[];
   previewImages: any[] = [];
   selectedReferences = [];
+  startDate = new Date(Date.now());
+
 
   commissionForm = new FormGroup({
     title: new FormControl(''),
@@ -82,6 +85,7 @@ export class CommissionCreationComponent implements OnInit {
 
   ngOnInit(): void {
 
+
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required],
     });
@@ -124,8 +128,7 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.instructions = this.commissionForm.value.description;
     this.commission.price = this.commissionForm.value.price;
     this.commission.issueDate = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en_US');
-    this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
-
+    this.commission.deadlineDate = formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
     this.commissionService.createCommission(this.commission).subscribe(ret => {
 
       }, (error: HttpErrorResponse) => {
@@ -135,6 +138,10 @@ export class CommissionCreationComponent implements OnInit {
 
       }
     );
+  }
+
+  formatDate(){
+    return formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US');
   }
 
 

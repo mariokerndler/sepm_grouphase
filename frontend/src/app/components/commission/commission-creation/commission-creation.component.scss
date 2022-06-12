@@ -1,7 +1,9 @@
-mat-step-header{
-  color: white !important;
+.creation-p{
+  color: #BCBCBC;
 }
-
+.mat-step-text-label{
+  color: #fb9fa4;
+}
 
 .mat-stepper-horizontal {
   margin-top: 8px;
@@ -15,11 +17,9 @@ mat-step-header{
 
 
 
-.slider{
-  position: relative;
-  left: 44%;
+mat-slider{
+  width: 20%;
 }
-
 
 
 .com-display {

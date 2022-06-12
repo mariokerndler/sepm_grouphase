@@ -12,12 +12,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CommissionSearchDto {
 
-    private  String priceRangeUpper;
-    private  String priceRangeLower;
-    private  String artistId;
-    private  String userId;
+    private String priceRangeUpper;
+    private String priceRangeLower;
+    private String artistId;
+    private String userId;
     private SearchConstraint searchConstraint;
-    private  String name;
+    private String name;
+    private String pageNr;
 
     @Override
     public String toString() {
@@ -30,8 +31,6 @@ public class CommissionSearchDto {
             + ", pageNr='" + pageNr + '\'' + '}';
     }
 
-    private  String pageNr;
-
     public void setName(String name) {
         this.name = "%" + name + "%";
     }
@@ -39,9 +38,17 @@ public class CommissionSearchDto {
     public void setArtistId(String artistId) {
         this.artistId = "%" + artistId + "%";
     }
+
     public void setUserId(String userId) {
         this.userId = "%" + userId + "%";
     }
 
-
+    public boolean isEmpty() {
+        return priceRangeLower == null
+            && priceRangeUpper == null
+            && artistId == null
+            && userId == null
+            && searchConstraint == null
+            && name == null;
+    }
 }

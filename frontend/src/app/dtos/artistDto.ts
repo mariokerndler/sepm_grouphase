@@ -10,7 +10,6 @@ export class ArtistDto extends ApplicationUserDto {
   reviews: ReviewDto[];
   description?: string;
   profileSettings?: string;
-  //profilePicture: string;
 }
 
 export enum UserRole {

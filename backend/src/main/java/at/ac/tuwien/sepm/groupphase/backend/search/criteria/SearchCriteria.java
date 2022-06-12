@@ -15,13 +15,6 @@ public class SearchCriteria {
     private Object value;
     private String predicateType;
 
-    public boolean isOrPredicate() {
-        if (predicateType.toLowerCase().equals("or")) {
-            return true;
-        }
-        return false;
-    }
-
     public SearchCriteria(String key, String operation, Object value, String predicateType) {
         this.key = key;
         this.operation = operation;
@@ -32,6 +25,13 @@ public class SearchCriteria {
             this.key = "lower(" + key + ')';
         }
         log.info(this.toString());
+    }
+
+    public boolean isOrPredicate() {
+        if (predicateType.toLowerCase().equals("or")) {
+            return true;
+        }
+        return false;
     }
 
     @Override

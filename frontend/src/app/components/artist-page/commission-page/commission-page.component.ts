@@ -34,7 +34,7 @@ export class CommissionPageComponent implements OnInit {
     this.searchCommissions();
   }
   public  searchCommissions(): void{
-    console.log(this.searchCom);
+    //console.log(this.searchCom);
     this.commissionService.filterCommissions(this.searchCom).subscribe(data=>{
       this.commissions=data;
     });

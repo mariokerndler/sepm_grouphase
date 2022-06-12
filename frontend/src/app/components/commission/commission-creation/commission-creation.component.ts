@@ -56,6 +56,7 @@ export class CommissionCreationComponent implements OnInit {
       password: 'string',
       admin: true,
       userRole: UserRole.admin,
+      profilePictureDto: null
     },
     deadlineDate: '',
     feedbackSend: 0,
@@ -100,23 +101,13 @@ export class CommissionCreationComponent implements OnInit {
           const reader = new FileReader();
           reader.readAsDataURL(ref);
           reader.onload = (event) => {
-            const base64result = reader.result.toString().split(',')[1];
-            const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
-            let filetype = FileType.jpg;
-            if (dataType === 'png') {
-              filetype = FileType.png;
-            }
-            if (dataType === 'gif') {
-              filetype = FileType.gif;
-            }
-            const binary = new Uint8Array(this.globalFunctions.base64ToBinaryArray(base64result));
-            const imageData = Array.from(binary);
+            const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
             const r = new ReferenceDto();
-            //TODO: very likley redundant data and URL
-            r.imageData = imageData;
+            //TODO: very likely redundant data and URL
+            r.imageData = extractedValues[1];
             r.imageUrl = event.target.result;
             r.name = ref.name;
-            r.fileType = filetype;
+            r.fileType = extractedValues[0];
             console.log(r);
             this.commission.referencesDtos.push(r);
           };

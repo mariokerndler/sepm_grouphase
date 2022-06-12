@@ -55,7 +55,7 @@ public class ArtistEndpoint {
     @Operation(summary = "Get all artists")
     @Transactional
     public List<ArtistDto> getAllArtists() {
-        log.debug("Get /Artist");
+        log.info("A user requested all artists.");
         return artistService.getAllArtists().stream().map(artistMapper::artistToArtistDto).collect(Collectors.toList());
     }
     //TODO: why does this return an artist o.^
@@ -66,6 +66,7 @@ public class ArtistEndpoint {
     @Operation(summary = "Post new artist")
     @Transactional
     public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
+        log.info("A user is trying to save and artist.");
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {
@@ -82,7 +83,7 @@ public class ArtistEndpoint {
     @Transactional
     public void updateArtist(@RequestBody ArtistDto artistDto) {
         try {
-            log.debug("put artist " + artistDto);
+            log.info("A user is trying to update an artist.");
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {
             log.error(e.getMessage() + " : " + artistDto.toString());
@@ -98,7 +99,7 @@ public class ArtistEndpoint {
     @Transactional
     public ArtistDto getArtistById(@PathVariable Long id) {
         try {
-            log.info(String.valueOf(id));
+            log.info("A user is requesting an artist with id '{}'", id);
             return artistMapper.artistToArtistDto(artistService.findArtistById(id));
         } catch (Exception e) {
             log.error(e.getMessage() + id.toString());
@@ -113,13 +114,11 @@ public class ArtistEndpoint {
     @Transactional
     public void deleteArtistById(@PathVariable Long id) {
         try {
-            log.info("Delete artist with id: " + String.valueOf(id));
+            log.info("A user is deleting an artist with id '{}'", id);
             artistService.deleteArtistById(id);
         } catch (Exception e) {
             log.error(e.getMessage() + id.toString());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
-
-
 }

@@ -11,9 +11,10 @@
         <div fxLayout="row">
           <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
             <div fxLayoutAlign="center center">
-              <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
+              <img [src]="globals.assetsPath + profilePicture" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
             </div>
             <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+              <span class="accent-color artist-username">{{artist.userName}}</span>
               <span class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
               <span class="accent-color artist-role">Artist</span>
             </div>

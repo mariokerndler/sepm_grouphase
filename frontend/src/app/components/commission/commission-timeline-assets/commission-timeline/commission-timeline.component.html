@@ -1,6 +1,6 @@
-<div>
+<div *ngIf="data">
   <div class="cdk-virtual-scroll-data-source-example">
-    <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{items.length}}" class="example-viewport">
+    <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{(data.sketches.length * 2) + 2}}" class="example-viewport">
 
       <!-- Start Node -->
       <div class="start-section">
@@ -19,9 +19,10 @@
         <mat-icon class="accent icon">start</mat-icon>
       </div>
       <!-- Midsection -->
-      <div *cdkVirtualFor="let item of items; let i = index" class="example-item">
-        <app-commission-timeslots [index]="i" [items]="items"></app-commission-timeslots>
+      <div  *cdkVirtualFor="let sketch of [].constructor(data.sketches.length*2); let i = index" class="example-item">
+        <app-commission-timeslots [index]="i" [sketch]="data.sketches[i%3]" [review]="data.reviews[i%3]"></app-commission-timeslots>
       </div>
+
 
       <!-- End Node -->
       <div class="end-section">

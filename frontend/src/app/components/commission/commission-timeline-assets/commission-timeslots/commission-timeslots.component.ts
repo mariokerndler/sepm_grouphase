@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ReviewDto} from '../../../../dtos/reviewDto';
+import {SketchDto} from '../../../../dtos/sketchDto';
 
 @Component({
   selector: 'app-commission-timeslots',
@@ -7,7 +9,8 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CommissionTimeslotsComponent implements OnInit {
   @Input() index: number;
-  @Input() items;
+  @Input() review: ReviewDto;
+  @Input() sketch: SketchDto;
 
   constructor() { }
 

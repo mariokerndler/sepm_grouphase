@@ -10,6 +10,7 @@ import * as data from 'src/assets/commission2.json';
 })
 export class CommissionTimelineComponent implements OnInit {
   data;
+  isPlaying = false;
   constructor() { }
 
   ngOnInit(): void {

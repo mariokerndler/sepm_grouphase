@@ -1,4 +1,4 @@
-<div *ngIf="data">
+<div *ngIf="data" class="primary">
   <div class="cdk-virtual-scroll-data-source-example">
     <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{(data.sketches.length * 2) + 2}}" class="example-viewport">
 
@@ -54,6 +54,22 @@
           </div>
         </div>
       </div>
+
+      <div class="final-image-section">
+        <h1>Your final image</h1>
+        <div class="final-image-subsection">
+          <h2>{{data.finalImage.title}}</h2>
+          <img *ngIf="!isPlaying" class="final-image" src="{{data.finalImage.image}}" alt="{{data.finalImage.title}}">
+          <img *ngIf="isPlaying" class="final-image" src="{{data.imageGif.image}}" alt="{{data.finalImage.title}}">
+          <br><br>
+          <span >Rewind the whole process</span> <br>
+          <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="accent" mat-icon-button>
+            <mat-icon *ngIf="!isPlaying">play_arrows</mat-icon>
+            <mat-icon *ngIf="isPlaying">stop</mat-icon>
+          </button>
+        </div>
+      </div>
+
     </cdk-virtual-scroll-viewport>
   </div>
 </div>

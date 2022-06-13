@@ -129,7 +129,7 @@ export class CommissionDetailsComponent implements OnInit {
     reader.readAsDataURL(this.uploadedSketch);
     reader.onload = (event) => {
       const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
-      sketch.image=extractedValues[1];
+      sketch.imageData=extractedValues[1];
       sketch.description='aaaa';
       sketch.fileType = extractedValues[0];
       sketch.imageUrl='default';

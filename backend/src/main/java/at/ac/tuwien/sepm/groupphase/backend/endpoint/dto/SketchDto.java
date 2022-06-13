@@ -13,7 +13,7 @@ import javax.persistence.Column;
 public class SketchDto {
 
     private Long id;
-    private byte[] imageData;
+        private byte[] imageData;
     private String imageUrl;
     private FileType fileType;
     private String description;

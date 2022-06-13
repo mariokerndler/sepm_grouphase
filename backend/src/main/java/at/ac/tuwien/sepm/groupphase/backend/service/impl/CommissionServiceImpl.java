@@ -79,13 +79,20 @@ public class CommissionServiceImpl implements CommissionService {
         log.trace("calling updateCommission() ...");
         log.info("Writing Sketc1h");
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
-        int sketchCount = c.getArtwork().getSketches().size();
-        //if sketch has been added
-        if (c.getFeedbackSent()<c.getSketchesShown()) ;
-        {
-            log.info("Writing Sketch");
-            c.getArtwork().getSketches().get(sketchCount-1).setImageUrl(
-                this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
+        if (c.getArtwork().getSketches() != null) {
+
+
+            int sketchCount = c.getArtwork().getSketches().size();
+            //if sketch has been added
+            if (c.getFeedbackSent() < c.getSketchesShown()) ;
+            {
+                log.info("Writing Sketch");
+                c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
+                    this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
+            }
+        }
+        else{
+            log.info("SKETCHES EMPTY");
         }
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());

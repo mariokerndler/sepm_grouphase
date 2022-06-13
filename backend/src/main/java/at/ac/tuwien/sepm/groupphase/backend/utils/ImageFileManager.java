@@ -38,16 +38,17 @@ public class ImageFileManager {
     }
 
     public int countFiles(String path) {
-        log.trace("calling countFiles() ...");
+        log.info("counting files of "+path  );
         if (new File(path).listFiles() == null) {
             return 0;
         }
+        log.info("counting files result"+new File(path).listFiles().length);
         return Objects.requireNonNull(new File(path).listFiles()).length;
     }
 
     public String writeReferenceImage(Commission c, Reference r) {
         log.trace("calling writeReferenceImage() ...");
-        log.info("calling writeReferenceImage() ...");
+
 
         String relPath = ImageDataPaths.commissionLocation + c.getCustomer().getId() + c.getTitle();
         relPath += "\\" + ImageDataPaths.refIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
@@ -64,15 +65,18 @@ public class ImageFileManager {
 
     public String writeSketchImage(Commission c, Sketch s) {
         log.trace("calling writeSketchImage() ...");
+        log.info("calling writeReferenceImage() ...");
         String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();;
         relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
+            log.info("Writing sketch images to disk at path='{}'", relPath);
+            log.info(s.toString()+" "+s.getImageData().length);
             outputStream.write(s.getImageData());
             log.info("Wrote sketch images to disk at path='{}'", relPath);
             return relPath;
         } catch (IOException e) {
-            log.error(e.getMessage());
-            return "error";
+            log.info(e.getMessage());
+            throw new FileManagerException(e.getMessage());
         }
     }
 
@@ -85,7 +89,7 @@ public class ImageFileManager {
             return relPath;
         } catch (IOException e) {
             log.error(e.getMessage());
-            return "error";
+            throw new FileManagerException(e.getMessage());
         }
     }
 
@@ -135,7 +139,7 @@ public class ImageFileManager {
             //return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
             log.error(e.getMessage());
-            return "";
+            throw new FileManagerException(e.getMessage());
         }
     }
 

@@ -116,7 +116,7 @@ export class CommissionDetailsComponent implements OnInit {
     this.hasLoaded = true;
     console.log(this.commission);
     console.log(this.artistEdit);
-    console.log(this.allowSketch)
+    console.log(this.allowSketch);
   }
 
 
@@ -128,20 +128,12 @@ export class CommissionDetailsComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(this.uploadedSketch);
     reader.onload = (event) => {
-      sketch.imageData = event.target.result;
-      const base64result = reader.result.toString().split(',')[1];
-      const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
-      let filetype = FileType.jpg;
-      if (dataType === 'png') {
-        filetype = FileType.png;
-      }
-      if (dataType === 'gif') {
-        filetype = FileType.gif;
-      }
-      const binary = new Uint8Array(this.globalFunctions.base64ToBinaryArray(base64result));
-      const imageData = Array.from(binary);
-      sketch.image = imageData;
-      sketch.fileType = filetype;
+      const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
+      sketch.image=extractedValues[1];
+      sketch.description='aaaa';
+      sketch.fileType = extractedValues[0];
+      sketch.imageUrl='default';
+      sketch.artworkId=this.commission.artworkDto.id;
       this.uploadedSketchDto = sketch;
     };
   }

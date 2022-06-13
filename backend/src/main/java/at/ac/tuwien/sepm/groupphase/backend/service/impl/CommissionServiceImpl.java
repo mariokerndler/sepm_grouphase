@@ -34,7 +34,7 @@ public class CommissionServiceImpl implements CommissionService {
         this.commissionRepo = commissionRepo;
         this.commissionValidator = commissionValidator;
         this.ifm = ifm;
-        this.artworkService=artworkService;
+        this.artworkService = artworkService;
     }
 
     @Override
@@ -77,8 +77,16 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void updateCommission(Commission c) {
         log.trace("calling updateCommission() ...");
-
+        log.info("Writing Sketc1h");
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
+        int sketchCount = c.getArtwork().getSketches().size();
+        //if sketch has been added
+        if (c.getFeedbackSent()<c.getSketchesShown()) ;
+        {
+            log.info("Writing Sketch");
+            c.getArtwork().getSketches().get(sketchCount-1).setImageUrl(
+                this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
+        }
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());
     }
@@ -100,7 +108,7 @@ public class CommissionServiceImpl implements CommissionService {
     public void assignArtist(Commission commission) {
 
         Artwork a = new Artwork();
-        a.setName(commission.getTitle()+"_Artwork");
+        a.setName(commission.getTitle() + "_Artwork");
         a.setArtist(commission.getArtist());
         artworkService.saveArtwork(a);
         commissionRepo.save(commission);

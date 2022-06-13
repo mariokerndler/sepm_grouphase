@@ -47,8 +47,11 @@ public class ImageFileManager {
 
     public String writeReferenceImage(Commission c, Reference r) {
         log.trace("calling writeReferenceImage() ...");
+        log.info("calling writeReferenceImage() ...");
+
         String relPath = ImageDataPaths.commissionLocation + c.getCustomer().getId() + c.getTitle();
         relPath += "\\" + ImageDataPaths.refIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
+        log.info(relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             outputStream.write(r.getImageData());
             log.info("Wrote reference images to disk at path='{}'", relPath);
@@ -61,7 +64,8 @@ public class ImageFileManager {
 
     public String writeSketchImage(Commission c, Sketch s) {
         log.trace("calling writeSketchImage() ...");
-        String relPath = ImageDataPaths.commissionLocation + c.getId() + "\\" + ImageDataPaths.sketchIdentifier + s.getId();
+        String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();;
+        relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             outputStream.write(s.getImageData());
             log.info("Wrote sketch images to disk at path='{}'", relPath);

@@ -25,7 +25,7 @@ public class Sketch extends Image {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String customerFeedback;
 
     @ManyToOne

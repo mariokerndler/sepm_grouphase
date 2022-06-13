@@ -109,6 +109,7 @@ public class CommissionEndpoint {
     @Transactional
     public void updateCommission(@RequestBody DetailedCommissionDto commissionDto) {
         log.info("A user is trying to update a commission.");
+        log.info(commissionDto.toString());
         try {
             commissionService.updateCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception e) {

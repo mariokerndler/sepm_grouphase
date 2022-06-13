@@ -8,4 +8,5 @@ export class SketchDto {
   description: string;
   customerFeedback: string;
   imageData: string | ArrayBuffer;
+  artworkId: number;
 }

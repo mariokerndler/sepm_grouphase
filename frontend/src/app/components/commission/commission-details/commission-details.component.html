@@ -45,7 +45,7 @@
           [selectedArtworkId]="selectedArtwork">
         </app-gallery-carousel>
       </div>
-      <div *ngIf="this.commission.status.toString()=== 'LISTED'">
+      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit">
         <mat-label>Commission Candidates</mat-label>
         <mat-selection-list  [multiple]="false" style="width:20%" >
           <div *ngFor="let a of commission.artistCandidatesDtos" fxLayoutAlign="center center">

@@ -24,6 +24,8 @@ export class CommissionDetailsComponent implements OnInit {
   commission: CommissionDto;
   user: ApplicationUserDto;
   userId: string;
+  feedbackButtonStates = ['Write Feedback', 'Hide'];
+  feedbackButtonIndex = 0;
   hasLoaded = false;
   hasReferences = false;
   hasSketches = false;
@@ -81,7 +83,8 @@ export class CommissionDetailsComponent implements OnInit {
                 this.checkCommissionState(this.commission);
               }
             );
-          } else{
+          } else {
+
             this.user = commission.customerDto;
             this.checkCommissionState(this.commission);
           }
@@ -113,9 +116,15 @@ export class CommissionDetailsComponent implements OnInit {
     } else {
       this.allowSketch = true;
     }
+    if(this.commission.sketchesShown>this.commission.feedbackSent){
+
+      this.uploadedSketchDto=this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length-1)];
+      console.log(this.uploadedSketchDto);
+    }
     this.hasLoaded = true;
     console.log(this.commission);
     console.log(this.artistEdit);
+    console.log(this.userEdit);
     console.log(this.allowSketch);
   }
 
@@ -129,29 +138,43 @@ export class CommissionDetailsComponent implements OnInit {
     reader.readAsDataURL(this.uploadedSketch);
     reader.onload = (event) => {
       const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
-      sketch.imageData=extractedValues[1];
-      sketch.description='aaaa';
+      sketch.imageData = extractedValues[1];
+      sketch.description = 'aaaa';
       sketch.fileType = extractedValues[0];
-      sketch.imageUrl='default';
-      sketch.artworkId=this.commission.artworkDto.id;
+      sketch.imageUrl = 'default';
+      sketch.artworkId = this.commission.artworkDto.id;
       this.uploadedSketchDto = sketch;
     };
   }
 
   updateCommission() {
     //artist added sketch
-    if (this.uploadedSketchDto !== null) {
+    if (this.uploadedSketchDto !== null && this.artistEdit) {
       if (this.commission.artworkDto.sketchesDtos == null) {
         this.commission.artworkDto.sketchesDtos = [];
       }
-      this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
-      this.commission.sketchesShown += 1;
-      this.uploadedSketchDto = null;
+      if(this.artistEdit) {
+        this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
+        this.commission.sketchesShown += 1;
+        this.uploadedSketchDto = null;
+      }
     }
-    console.log( this.commission);
+    if(this.userEdit){
+      this.uploadedSketchDto.artworkId=this.commission.artworkDto.id;
+      this.commission.feedbackSent++;
+      this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1]=this.uploadedSketchDto;
+    }
+    console.log(this.commission);
     this.commissionService.updateCommission(this.commission).subscribe();
-
+    this.checkCommissionState(this.commission);
   }
 
 
+  toggleFeedbackField() {
+    if (this.feedbackButtonIndex === 1) {
+      this.feedbackButtonIndex=0;
+    } else {
+      this.feedbackButtonIndex=1;
+    }
+  }
 }

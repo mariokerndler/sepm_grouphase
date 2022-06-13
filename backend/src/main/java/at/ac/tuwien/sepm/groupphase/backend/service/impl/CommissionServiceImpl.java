@@ -87,9 +87,9 @@ public class CommissionServiceImpl implements CommissionService {
 
             int sketchCount = c.getArtwork().getSketches().size();
             //if sketch has been added
-            if (c.getFeedbackSent() < c.getSketchesShown()) ;
+            if (c.getFeedbackSent() < c.getSketchesShown())
             {
-                log.info("Writing Sketch");
+                log.info("Writing Sketch"+c.getFeedbackSent() +" "+ c.getSketchesShown());
                 c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
                     this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
                 this.sketchRepository.save(c.getArtwork().getSketches().get(sketchCount - 1));

@@ -75,7 +75,7 @@
       </div>
     </div>
     <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId">
-    <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Request</button>
+    <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Apply</button>
     </div>
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch" >
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">

@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.SketchRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
@@ -24,14 +25,16 @@ import java.util.Optional;
 @Slf4j
 public class CommissionServiceImpl implements CommissionService {
     private final CommissionRepository commissionRepo;
+    private final SketchRepository sketchRepository;
     private final CommissionValidator commissionValidator;
     private final ArtworkService artworkService;
     private final ImageFileManager ifm;
 
     @Autowired
     public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm,
-                                 ArtworkService artworkService) {
+                                 ArtworkService artworkService, SketchRepository sketchRepository) {
         this.commissionRepo = commissionRepo;
+        this.sketchRepository=sketchRepository;
         this.commissionValidator = commissionValidator;
         this.ifm = ifm;
         this.artworkService = artworkService;
@@ -89,6 +92,7 @@ public class CommissionServiceImpl implements CommissionService {
                 log.info("Writing Sketch");
                 c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
                     this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
+                this.sketchRepository.save(c.getArtwork().getSketches().get(sketchCount - 1));
             }
         }
         else{

@@ -44,7 +44,7 @@
         </app-gallery-carousel>
       </div>
       <div *ngIf="hasSketches">
-        <strong class="referenceImages">Reference Images:</strong>
+        <strong class="referenceImages">Sketches:</strong>
         <br><br>
         <div class="scrolling-container">
           <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.artworkDto.sketchesDtos.length}}" class="viewport">
@@ -93,7 +93,7 @@
       </form>
     </div>
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& userEdit && allowFeedback">
-      <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Upload Feedback</button>
+      <button  color="primary" fxLayoutAlign="center" mat-flat-button>Upload Feedback</button>
     </div>
 
   </div>

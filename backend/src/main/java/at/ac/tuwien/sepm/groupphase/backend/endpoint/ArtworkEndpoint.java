@@ -101,7 +101,7 @@ public class ArtworkEndpoint {
     }
 
 
-    @PermitAll
+    /*@PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
@@ -115,7 +115,7 @@ public class ArtworkEndpoint {
             log.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
-    }
+    }*/
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)

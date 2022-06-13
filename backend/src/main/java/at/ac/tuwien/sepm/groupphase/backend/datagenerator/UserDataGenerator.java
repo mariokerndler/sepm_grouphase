@@ -248,6 +248,13 @@ public class UserDataGenerator {
         commissionRepository.save(c);
         Commission d = generateCommission1(artists.get(1), users.get(1));
         commissionRepository.save(d);
+        Commission e = generateCommission1(artists.get(2), users.get(2));
+        commissionRepository.save(e);
+
+        /*for (int i = 1; i < 20 && i < users.size() && i < artists.size(); i++) {
+            Commission c = generateCommission2(artists.get(i), users.get(i));
+            commissionRepository.save(c);
+        }*/
 
     }
 

@@ -1,12 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
-import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -32,7 +28,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,51 +56,130 @@ public class ApplicationUserEndpointTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private JwtTokenizer jwtTokenizer;
-
-    @Autowired
-    private SecurityProperties securityProperties;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private ApplicationUser applicationUser;
-
     public ApplicationUser getTestUser1() {
-        return applicationUser = new ApplicationUser(String.format("testUser"), null, "bob", "atest",
+        return new ApplicationUser(String.format("testUser"), null, "bob", "atest",
             "test@atest.com", "testStraße 3", passwordEncoder.encode("atest"), false, UserRole.User);
     }
 
     public ApplicationUser getTestUser2() {
-        return applicationUser = new ApplicationUser(String.format("testUser2"), null, "bobby", "aSecondTest",
+        return new ApplicationUser(String.format("testUser2"),null, "bobby", "aSecondTest",
             "test2@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
     }
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws Exception {
         userRepository.deleteAll();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
+
+        ApplicationUser anObject = getTestUser1();
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(anObject);
+
+        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+            .andExpect(status().isCreated()).andReturn();
+
+        List<ApplicationUserDto> users = allUsers();
+        assertEquals(1, users.size());
     }
 
     @Test
     @WithMockUser
-    public void isDataBaseEmptyBeforeTests() throws Exception {
+    public void hasDataBaseOneUserBeforeTests() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/api/v1/users")).andDo(print()).andReturn();
         MockHttpServletResponse response = mvcResult.getResponse();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON_VALUE, response.getContentType());
 
-        List<SimpleMessageDto> simpleUserDtos = Arrays.asList(objectMapper.readValue(response.getContentAsString(),
-            SimpleMessageDto[].class));
+        List<ApplicationUserDto> users = allUsers();
 
-        assertEquals(0, simpleUserDtos.size());
+        assertEquals(1, users.size());
+        assertTrue(users.toString().contains("testUser"));
+        assertTrue(users.toString().contains("bob"));
+        assertTrue(users.toString().contains("atest"));
+        assertTrue(users.toString().contains("test@atest.com"));
+        assertTrue(users.toString().contains("testStraße 3"));
     }
 
     @Test
+    @WithMockUser()
+    public void addAUser() throws Exception {
+        ApplicationUser anotherObject = getTestUser2();
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson2 = ow2.writeValueAsString(anotherObject);
+
+        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson2))
+            .andExpect(status().isCreated()).andReturn();
+
+        List<ApplicationUserDto> users = allUsers();
+        assertEquals(2, users.size());
+        assertTrue(users.toString().contains("testUser"));
+        assertTrue(users.toString().contains("bob"));
+        assertTrue(users.toString().contains("atest"));
+        assertTrue(users.toString().contains("test@atest.com"));
+        assertTrue(users.toString().contains("testStraße 3"));
+        assertTrue(users.toString().contains("testUser2"));
+        assertTrue(users.toString().contains("bobby"));
+        assertTrue(users.toString().contains("aSecondTest"));
+        assertTrue(users.toString().contains("test2@atest.com"));
+        assertTrue(users.toString().contains("testStraße 2"));
+    }
+
+    @Test
+    @WithMockUser()
+    public void modifyUser() throws Exception {
+        List<ApplicationUserDto> user = allUsers();
+        Long id = user.get(0).getId();
+
+        ApplicationUser modifiedObject = new ApplicationUser(id, String.format("testUser"), null, "bobName", "aSecondTest",
+            "testmodify@atest.com", "testModStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson3 = ow3.writeValueAsString(modifiedObject);
+
+        mockMvc.perform(put("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson3))
+            .andExpect(status().isOk()).andReturn();
+
+        List<ApplicationUserDto> users = allUsers();
+        assertEquals(1, users.size());
+        assertTrue(users.toString().contains("testmodify@atest.com"));
+        assertFalse(users.toString().contains("test@atest.com"));
+        assertTrue(users.toString().contains("testUser"));
+        assertTrue(users.toString().contains("bobName"));
+        assertTrue(users.toString().contains("aSecondTest"));
+        assertTrue(users.toString().contains("testModStraße 2"));
+    }
+
+    @Test
+    @WithMockUser()
+    public void deleteUser() throws Exception {
+        List<ApplicationUserDto> user = allUsers();
+        Long id = user.get(0).getId();
+
+        mockMvc.perform(delete("/api/v1/users/" + id))
+            .andExpect(status().isOk()).andReturn();
+
+        List<ApplicationUserDto> users = allUsers();
+        assertEquals(0, users.size());
+        assertFalse(users.toString().contains("testUser"));
+        assertFalse(users.toString().contains("bob"));
+        assertFalse(users.toString().contains("atest"));
+        assertFalse(users.toString().contains("test@atest.com"));
+        assertFalse(users.toString().contains("testStraße 3"));
+    }
+
+
+
+
+
+    /*@Test
     @WithMockUser()
     public void addTwoUsersAndModifyOne() throws Exception {
         ApplicationUser anObject = getTestUser1();
@@ -137,7 +211,7 @@ public class ApplicationUserEndpointTest {
         assertTrue(users2.toString().contains("test@atest.com"));
         assertTrue(users2.toString().contains("testStraße 2"));
 
-        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), null, "bobbyName", "aSecondTest",
+        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), "bobbyName", "aSecondTest",
             "testmodify@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
@@ -160,7 +234,7 @@ public class ApplicationUserEndpointTest {
         List<ApplicationUserDto> users4 = allUsers();
         assertEquals(1, users4.size());
         assertFalse(users4.toString().contains("test@atest.com"));
-    }
+    }*/
 
     public List<ApplicationUserDto> allUsers() throws Exception {
         byte[] body = mockMvc

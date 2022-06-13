@@ -9,6 +9,7 @@ import {AuthService} from '../../../services/auth.service';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Location} from '@angular/common';
+import {Globals} from '../../../global/globals';
 
 @Component({
   selector: 'app-artist-page',
@@ -24,8 +25,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   isArtist = false;
   canEdit = false;
   tabIndex = 0;
-  // TODO: Fill in the real profile picture
-  artistUrl = 'https://picsum.photos/150/150';
+  profilePicture;
+
   private routeSubscription: Subscription;
 
   constructor(
@@ -35,7 +36,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     private artistService: ArtistService,
     private userService: UserService,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    public globals: Globals
   ) {
   }
 
@@ -44,6 +46,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
       (params) => this.userService.getUserById(params.id, () => this.navigateToArtistList())
         .subscribe((user) => {
           this.user = user;
+          console.log(user);
+
+          this.setProfilePicture();
 
           if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
@@ -64,6 +69,15 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           }
         })
     );
+
+    window.onload = () => {
+      const reloading = sessionStorage.getItem('reloading');
+      if (reloading) {
+        sessionStorage.removeItem('reloading');
+        this.changeIndex(1);
+        this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork');
+      }
+    };
   }
 
   ngOnDestroy() {
@@ -104,5 +118,13 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
           this.notificationService.displayErrorSnackbar(error.toString());
         }
       );
+  }
+
+  private setProfilePicture() {
+    if(!this.user.profilePictureDto) {
+      this.profilePicture = this.globals.defaultProfilePicture;
+    } else {
+      this.profilePicture = this.user.profilePictureDto.imageUrl;
+    }
   }
 }

@@ -4,11 +4,13 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class CommissionValidator {
 
     private final CommissionRepository commissionRepository;
@@ -18,6 +20,7 @@ public class CommissionValidator {
     }
 
     public void throwExceptionIfCommissionAlreadyExists(Commission commission) {
+        log.trace("calling throwExceptionIfCommissionAlreadyExists() ...");
         if (commission.getId() != null) {
             Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
 
@@ -28,6 +31,7 @@ public class CommissionValidator {
     }
 
     public void throwExceptionIfCommissionDoesNotExist(Commission commission) {
+        log.trace("calling throwExceptionIfCommissionDoesNotExist() ...");
         if (commission.getId() != null) {
             Optional<Commission> commission1 = commissionRepository.findById(commission.getId());
 

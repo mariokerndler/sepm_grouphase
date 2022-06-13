@@ -15,7 +15,9 @@ export class ArtworkService {
   private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  private options = {headers: this.headers};
+  private options = {
+    headers: this.headers,
+  };
   private artworkBaseUri: string = this.globals.backendUri + '/artworks';
 
   constructor(private http: HttpClient,
@@ -82,14 +84,18 @@ export class ArtworkService {
   /**
    * Deletes the {@link ArtworkDto artwork} with the given {@link ArtworkDto#id id} from the system.
    *
-   * @param id The {@link ArtworkDto#id id} of the {@link ArtworkDto artwork} that will be deleted.
    * @param artwork the {@link ArtworkDto artwork} that will be deleted.
    *
    * @return Observable containing the fetched list of {@link ArtworkDto}.
    */
-  deleteArtwork(id: number, artwork: ArtworkDto): Observable<void> {
+  deleteArtwork(artwork: ArtworkDto, successAction?: () => void): Observable<void> {
     const deleteOptions = {headers: this.headers, body: artwork};
-    return this.http.delete<void>(`${this.artworkBaseUri}/${id}`, deleteOptions);
+    return this.http.delete<void>(`${this.artworkBaseUri}`, deleteOptions).pipe(
+      tap(_ => {
+        if (successAction != null) {
+          successAction();
+        }
+      }));
   }
 
   /**

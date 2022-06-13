@@ -5,11 +5,9 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleCommissionDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.SearchConstraint;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchConstraint;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,8 +23,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/commissions")
 public class CommissionEndpoint {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final CommissionService commissionService;
     private final CommissionMapper commissionMapper;
 
@@ -45,46 +39,51 @@ public class CommissionEndpoint {
     @Operation(summary = "Get all commissions")
     @Transactional
     public List<SimpleCommissionDto> getAllCommissions() {
-        LOGGER.info("Get all commissions");
-        return commissionService.getAllCommissions().stream().map(u -> commissionMapper.commissionToSimpleCommissionDto(u)).collect(Collectors.toList());
+        log.info("A users is fetching all commissions.");
+        return commissionService.getAllCommissions().stream()
+            .map(commissionMapper::commissionToSimpleCommissionDto).collect(Collectors.toList());
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search")
-    @Operation(summary = "Get all commissions filterd")
+    @Operation(summary = "Get all commissions filtered")
     @Transactional
-    public List<SimpleCommissionDto> searchCommissions(@RequestParam(defaultValue = "",name="name")String name,
-                                                       @RequestParam(defaultValue = "0",name="pageNr")String pageNr,
-                                                       @RequestParam(defaultValue = "50000",name="priceRangeUpper")String priceRangeUpper,
-                                                       @RequestParam(defaultValue = "0",name="priceRangeLower")String priceRangeLower,
-                                                       @RequestParam(defaultValue = "",name="artistId")String artistId,
-                                                       @RequestParam(defaultValue = "None",name="date")String dateConstraint
-                                                       ) {
-        LOGGER.info("Get search commissions");
-        CommissionSearchDto cs= new CommissionSearchDto();
+    public List<SimpleCommissionDto> searchCommissions(@RequestParam(defaultValue = "", name = "name") String name,
+                                                       @RequestParam(defaultValue = "0", name = "pageNr") String pageNr,
+                                                       @RequestParam(defaultValue = "50000", name = "priceRangeUpper") String priceRangeUpper,
+                                                       @RequestParam(defaultValue = "0", name = "priceRangeLower") String priceRangeLower,
+                                                       @RequestParam(defaultValue = "", name = "artistId") String artistId,
+                                                       @RequestParam(defaultValue = "", name = "userId") String userId,
+                                                       @RequestParam(defaultValue = "None", name = "date") String dateConstraint
+    ) {
+        log.info("A user is trying to search for a commission.");
+        CommissionSearchDto cs = new CommissionSearchDto();
         cs.setName(name.toLowerCase());
         cs.setArtistId(artistId);
-        if(dateConstraint.toLowerCase().contains(SearchConstraint.ASC.toString().toLowerCase())){
+
+        if (dateConstraint.toLowerCase().contains(SearchConstraint.ASC.toString().toLowerCase())) {
             cs.setSearchConstraint(SearchConstraint.ASC);
-        }
-        else if(dateConstraint.toLowerCase().contains(SearchConstraint.DESC.toString().toLowerCase())){
+        } else if (dateConstraint.toLowerCase().contains(SearchConstraint.DESC.toString().toLowerCase())) {
             cs.setSearchConstraint(SearchConstraint.DESC);
-        }
-        else{
+        } else {
             cs.setSearchConstraint(SearchConstraint.None);
         }
-          cs.setPriceRangeLower(priceRangeLower);
+
+        cs.setPriceRangeLower(priceRangeLower);
         cs.setPriceRangeUpper(priceRangeUpper);
         cs.setPageNr(pageNr);
-        log.info(cs.toString());
-        return commissionService.searchCommissions(cs).stream().map(u -> commissionMapper.commissionToSimpleCommissionDto(u)).collect(Collectors.toList());
+        cs.setUserId(userId);
+
+        return commissionService.searchCommissions(cs).stream().map(commissionMapper::commissionToSimpleCommissionDto).collect(Collectors.toList());
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
     @Operation(summary = "Get commission by id")
     public DetailedCommissionDto findById(@PathVariable Long id) {
-        LOGGER.info("Get commission with id " + id);
+        log.info("A user is fetching a commission with id '{}'", id);
         return commissionMapper.commissionToDetailedCommissionDto(commissionService.findById(id));
     }
 
@@ -93,11 +92,11 @@ public class CommissionEndpoint {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post commission")
     public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
-        LOGGER.info("Post commission " + commissionDto.toString());
+        log.info("A user is trying to create a commission.");
         try {
             commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception v) {
-            LOGGER.error(v.getMessage());
+            log.error(v.getMessage() + commissionDto);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
         }
 
@@ -109,11 +108,11 @@ public class CommissionEndpoint {
     @Operation(summary = "Update commission")
     @Transactional
     public void updateCommission(@RequestBody DetailedCommissionDto commissionDto) {
-        LOGGER.info("Update commission " + commissionDto);
+        log.info("A user is trying to update a commission.");
         try {
             commissionService.updateCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage() + commissionDto);
+            log.error(e.getMessage() + commissionDto);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -124,11 +123,11 @@ public class CommissionEndpoint {
     @DeleteMapping
     @Operation(summary = "Delete commission")
     public void deleteCommission(@RequestBody DetailedCommissionDto commissionDto) {
-        LOGGER.info("Delete commission " + commissionDto);
+        log.info("A user is trying to delete a commission.");
         try {
             commissionService.deleteCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception n) {
-            LOGGER.error(n.getMessage());
+            log.error(n.getMessage() + commissionDto);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }

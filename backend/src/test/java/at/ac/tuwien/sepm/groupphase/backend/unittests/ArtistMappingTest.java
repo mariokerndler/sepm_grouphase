@@ -4,7 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,18 @@ public class ArtistMappingTest {
     private Artist artist;
 
     public Artist getTestArtist1() {
-        return artist = new Artist("testArtist", "bob", "test", "test@test.com", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
+        return artist = Artist.builder()
+            .userName("testArtist")
+            .name("bob")
+            .surname("test")
+            .email("test@test.com")
+            .address("test")
+            .password(passwordEncoder.encode("test"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(1.0)
+            .build();
     }
 
     @Test

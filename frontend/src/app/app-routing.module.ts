@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
 import {AuthGuard} from './guards/auth.guard';
-import {MessageComponent} from './components/message/message.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
 import {LogoutComponent} from './components/logout/logout.component';
@@ -13,20 +12,24 @@ import {ArtistFeedComponent} from './components/artist-feed/artist-feed.componen
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
+import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
+import {CommissionTimelineComponent}
+  from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
-  {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
   {path: 'artist/:id', component: ArtistPageComponent},
-  {path: 'artist/:id/edit', component: ArtistPageEditComponent},
+  {path: 'artist/:id/edit', canActivate: [AuthGuard], component: ArtistPageEditComponent},
+  {path: 'user/:id/commissions', component: CommissionPageComponent},
   {path: 'user/:id', component: UserPageComponent},
   {path: 'user/:id/edit', component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},
   {path: 'artists', component: ArtistFeedComponent},
   {path: 'commissions', component: CommissionFeedComponent},
   {path: 'commissions/:id', component: CommissionDetailsComponent},
+  {path: 'commissions/:id/timeline', component: CommissionTimelineComponent},
   {path: 'commission-creation', component: CommissionCreationComponent},
   {path: '**', redirectTo: 'feed'},
 

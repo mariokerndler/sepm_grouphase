@@ -6,7 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidOldPasswordException;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +37,10 @@ public class UserEndpoint {
     @GetMapping(value = "/{id}")
     @Operation(summary = "Get a user by id")
     public ApplicationUserDto findById(@PathVariable Long id) {
-        log.debug("Get /User/{}", id);
+        log.info("A user is requesting an application user with id '{}'", id);
 
         ApplicationUser applicationUser = userService.findUserById(id);
-        log.info(applicationUser.getUserName());
-        ApplicationUserDto audto = userMapper.userToUserDto(applicationUser);
-        log.info(audto.toString());
-        return audto;
+        return userMapper.userToUserDto(applicationUser);
     }
 
     @PermitAll
@@ -51,7 +48,7 @@ public class UserEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update user")
     public void updateUser(@Valid @RequestBody ApplicationUserDto userDto) {
-        log.debug("Post /User/{}", userDto.getUserName());
+        log.info("A user is trying to updating an application user.");
 
         userService.updateUser(userMapper.userDtoToUser(userDto));
     }
@@ -61,7 +58,7 @@ public class UserEndpoint {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Register user")
     public void registerUser(@Valid @RequestBody ApplicationUserDto userDto) {
-        log.debug("Post /User/{}", userDto.getUserName());
+        log.info("A user is trying to create an application user.");
 
         userService.registerUser(userMapper.userDtoToUser(userDto));
     }
@@ -72,7 +69,7 @@ public class UserEndpoint {
     @Operation(summary = "Find user by email")
     public ApplicationUserDto searchUsersByEmail(
         @RequestParam(name = "email", defaultValue = "") String email) {
-        log.info(email);
+        log.info("A user is trying to search an application user with email '{}'", email);
         return userMapper.userToUserDto(userService.findUserByEmail(email));
     }
 
@@ -83,11 +80,12 @@ public class UserEndpoint {
     public List<ApplicationUserDto> searchUsers(
         @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
 
-        log.info(searchOperations);
+        log.info("A user is trying to search for an application user.");
+
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
         String operationSetExper = String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
-        Pattern pattern = Pattern.compile(
-            "(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
+        Pattern pattern = Pattern
+            .compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),"); //regex not really flexible?
         Matcher matcher = pattern.matcher(searchOperations + ",");
         while (matcher.find()) {
             builder.with(
@@ -96,11 +94,6 @@ public class UserEndpoint {
                 matcher.group(4).toLowerCase(),
                 matcher.group(3),
                 matcher.group(5));
-            log.info(matcher.group(1));
-            log.info(matcher.group(2));
-            log.info(matcher.group(3));
-            log.info(matcher.group(4));
-            log.info(matcher.group(5));
         }
 
         Specification<ApplicationUser> spec = builder.build();
@@ -117,11 +110,9 @@ public class UserEndpoint {
     public void updateUserPassword(@PathVariable Long id,
                                    @RequestParam(name = "password", defaultValue = "") String password,
                                    @RequestParam(name = "oldPassword", defaultValue = "") String oldPassword) {
-        log.debug("Post /User/{}/updatePassword", id);
+        log.info("A user is trying to update the password of application user with id '{}'", id);
 
         ApplicationUser applicationUser = userService.findUserById(id);
-        log.info(applicationUser.getUserName());
-
         if (!userService.checkIfValidOldPassword(applicationUser, oldPassword.trim())) {
             throw new InvalidOldPasswordException("Old password does not match with current password.");
         }
@@ -134,7 +125,7 @@ public class UserEndpoint {
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Delete a user by id")
     public void deleteUserById(@PathVariable Long id) {
-        log.debug("Delete /User/{}", id);
+        log.info("A user is trying to delete the application user with id '{}'", id);
 
         userService.deleteUserById(id);
     }

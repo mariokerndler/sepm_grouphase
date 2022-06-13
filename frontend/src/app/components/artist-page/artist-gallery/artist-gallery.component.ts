@@ -15,7 +15,6 @@ export class ArtistGalleryComponent implements OnInit {
   @Input() artist;
   artworks: ArtworkDto[] = [];
   isReady = false;
-  artistProfilePicture: string;
 
   private authId: number;
 
@@ -27,8 +26,6 @@ export class ArtistGalleryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.artistProfilePicture = 'https://picsum.photos/100/100';
-
     this.artworkService.getArtworksByArtist(this.artist.id)
       .subscribe(
         (artworks) => {
@@ -41,14 +38,22 @@ export class ArtistGalleryComponent implements OnInit {
   }
 
   openDialog() {
-    this.dialog.open(UploadComponent, {
+    const dialogRef = this.dialog.open(UploadComponent, {
       data: {
         artist: this.artist,
       }
     });
+    dialogRef.afterClosed().subscribe(
+      () => this.switchTab()
+    );
   }
 
   isSameUser(): boolean {
     return this.authId === this.artist.id;
+  }
+
+  switchTab() {
+    sessionStorage.setItem('reloading', 'true');
+    document.location.reload();
   }
 }

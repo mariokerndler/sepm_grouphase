@@ -5,15 +5,18 @@
       <form [formGroup]="commissionForm" >
         <ng-template matStepLabel>Commission Details</ng-template>
 
-        <mat-form-field  appearance="fill" >
+        <span class="accent-color"><b>Welcome to commission creation!</b></span> <br> <br>
+        <p class="creation-p">Start of by giving your commission a fitting title. The title should represent your idea and give a short glimpse into your concept</p>
+        <mat-form-field class="input-field"  appearance="fill" >
           <mat-label class="accent-color" color="accent-color">Title</mat-label>
           <input formControlName="title" matInput placeholder="Title" required>
         </mat-form-field>
 
         <br>
-        <mat-form-field appearance="fill">
-          <mat-label class="accent-color" color="accent-color">Describe your the Artwork you envision</mat-label>
-          <textarea formControlName="description" matInput placeholder="Description" required>
+        <p class="creation-p">Now its time to describe the Artwork that you envision. Try to portray your wishes as accurate and precise as possible, so that the artists can understand and visualize your thoughts.</p>
+        <mat-form-field class="input-field" appearance="fill">
+          <mat-label class="accent-color" color="accent-color">Description</mat-label>
+          <textarea rows="8" formControlName="description" matInput placeholder="Description" required>
         </textarea>
         </mat-form-field>
         <div class="stepper_button">
@@ -25,18 +28,47 @@
     </mat-step>
     <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column" label="Organisation">
       <form [formGroup]="commissionForm">
-        <mat-form-field appearance="fill">
+        <p class="creation-p">On this page you can fill in some information for the organization of the project. All of these values, can still be altered at a later stage of the commission.</p>
+
+        <p class="creation-p">At first fill in the date which may be the deadline of the commission.</p>
+        <!--
+        <mat-form-field class="input-field" appearance="fill">
           <mat-label class="accent-color" color="accent-color">Delivery Date</mat-label>
           <input formControlName="date" matInput placeholder=" " required
                  type="date">
         </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label class="accent-color" color="accent-color">Your offer</mat-label>
+
+        -->
+
+        <mat-form-field class="input-field" appearance="fill">
+          <mat-label class="accent-color">Delivery Date</mat-label>
+          <input  formControlName="date" matInput [min]="startDate" [matDatepicker]="picker" required>
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <br><br>
+
+        <p class="creation-p">Now enter the amount of money, that you can offer the artist for their service. (in Euro)</p>
+        <mat-form-field class="input-field" appearance="fill">
+          <mat-label class="accent-color" color="accent-color">Your offer (in Euro)</mat-label>
 
           <input formControlName="price" matInput placeholder="Price" required
-                 type="text">
+                 type="number" min="0" step="any">
         </mat-form-field>
+        <br>
+        <p class="creation-p">A commission can contain multiple feedback rounds. This means, during the art creation process,
+          the artist will show you one sketch per round and you can give feedback to alter the final result.
+          Notice that more feedback rounds usually result in more work for the artist, so a higher price offer may be beneficial.</p>
+        <br>
+        <div class="slider">
+          <mat-label class="accent-color" color="accent-color">Feed back rounds:</mat-label>
+          <br>
+          <mat-label class="accent-color">0</mat-label>
+          <mat-slider [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
+                      max="5" min="0" thumbLabel tickInterval="1"></mat-slider>
+          <mat-label class="accent-color">5</mat-label>
+        </div>
         <div class="stepper_button">
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
@@ -45,20 +77,15 @@
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>
-        <mat-label class="accent-color" color="accent-color">Feed back rounds:</mat-label>
-        <br>
-        <mat-label>0</mat-label>
-        <mat-slider [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
-                    max="5" min="0" thumbLabel tickInterval="1"></mat-slider>
-        <mat-label>5</mat-label>
+
+
 
       </form>
     </mat-step>
     <mat-step  [stepControl]="commissionForm" label="References">
       <form [formGroup]="commissionForm"  >
-        <mat-form-field appearance="fill"  >
-          <span class="accent-color" color="accent-color">If possible provide reference pictures for your artwork</span>
-
+        <p class="creation-p">If possible provide reference pictures for your artwork. This can further assist the artists with understanding and visualizing your concept.</p>
+        <mat-form-field class="input-field" appearance="fill"  >
 
           <!-- this is neat as it allows multiple images at once maybe use-->
           <ngx-mat-file-input #fileInput (change)="fileSelected()" [multiple]="true"
@@ -100,10 +127,10 @@
 
 
         <div  class="stepper_button">
-          <button mat-button matStepperPrevious>
+          <button mat-icon-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
-          <button (click)="createDto()" mat-button matStepperNext>
+          <button  (click)="createDto()" mat-icon-button matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>
@@ -111,22 +138,20 @@
     </mat-step>
     <mat-step>
       <div class="com-display">
-
-
         <ng-template matStepLabel>Done</ng-template>
-        <p class="accent-color" color="accent-color">Confirm your Order</p>
-        <mat-label>Title</mat-label>
-        <p class="accent-color" color="accent-color">{{commissionForm.value.title}} </p>
-        <mat-label>Description</mat-label>
-        <p class="accent-color" color="accent-color">{{commissionForm.value.description}} </p>
-        <mat-label>Price in Euro</mat-label>    <br>
-        <p *ngIf="commissionForm.value.description" class="accent-color" color="accent-color"
+        <p class="accent-color" ><b>Confirm your Order</b></p>
+        <mat-label class="accent-color">Title</mat-label>
+        <p class="creation-p">{{commissionForm.value.title}} </p>
+        <mat-label class="accent-color">Description</mat-label>
+        <p class="creation-p" >{{commissionForm.value.description}} </p>
+        <mat-label class="accent-color">Price in Euro</mat-label>    <br>
+        <p class="creation-p" *ngIf="commissionForm.value.description"
            style="display: inline">{{commissionForm.value.price}} </p>
         <br>
-        <mat-label>Feedback Rounds</mat-label>
-        <p class="accent-color" color="accent-color">{{commission.feedbackRounds}} </p>
-        <mat-label>Delivery Date</mat-label>
-        <p class="accent-color" color="accent-color">{{commissionForm.value.date}} </p>
+        <mat-label class="accent-color">Feedback Rounds</mat-label>
+        <p class="creation-p">{{commission.feedbackRounds}} </p>
+        <mat-label class="accent-color">Delivery Date</mat-label>
+        <p class="creation-p">{{commissionForm.value.date}} </p>
         <div  class="stepper_button">
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>

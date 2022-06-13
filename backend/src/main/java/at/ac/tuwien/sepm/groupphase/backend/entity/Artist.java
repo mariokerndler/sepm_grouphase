@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
-import at.ac.tuwien.sepm.groupphase.backend.utils.Enums.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +19,6 @@ import java.util.List;
 @DiscriminatorValue("Artist")
 @Entity
 public class Artist extends ApplicationUser implements HasId {
-
-    @OneToOne(mappedBy = "artist", cascade = CascadeType.ALL)
-    private ProfilePicture profilePicture;
 
     @Column
     private String description;
@@ -55,6 +52,7 @@ public class Artist extends ApplicationUser implements HasId {
 
 
     public Artist(String userName,
+                  ProfilePicture profilePicture,
                   String name,
                   String surname,
                   String email,
@@ -62,7 +60,6 @@ public class Artist extends ApplicationUser implements HasId {
                   String password,
                   Boolean admin,
                   UserRole userRole,
-                  ProfilePicture profilePicture,
                   String description,
                   String profileSettings,
                   double reviewScore,
@@ -71,23 +68,7 @@ public class Artist extends ApplicationUser implements HasId {
                   List<Commission> commissions,
                   List<Review> reviews,
                   List<Tag> tags) {
-        super(userName, name, surname, email, address, password, admin, userRole);
-        this.profilePicture = profilePicture;
-        this.description = description;
-        this.profileSettings = profileSettings;
-        this.reviewScore = reviewScore;
-        this.gallery = gallery;
-        this.artworks = artworks;
-        this.commissions = commissions;
-        this.reviews = reviews;
-        this.tags = tags;
-    }
-
-    public Artist(Long id, String userName, String name, String surname, String email, String address, String password,
-                  Boolean admin, UserRole userRole, ProfilePicture profilePicture, String description, String profileSettings, double reviewScore,
-                  Gallery gallery, List<Artwork> artworks, List<Commission> commissions, List<Review> reviews, List<Tag> tags) {
-        super(id, userName, name, surname, email, address, password, admin, userRole);
-        this.profilePicture = profilePicture;
+        super(userName, profilePicture, name, surname, email, address, password, admin, userRole);
         this.description = description;
         this.profileSettings = profileSettings;
         this.reviewScore = reviewScore;
@@ -101,7 +82,6 @@ public class Artist extends ApplicationUser implements HasId {
     @Override
     public String toString() {
         return "Artist{"
-            + "profilePicture=" + (profilePicture == null ? null : profilePicture.getId())
             + ", description='" + description + '\''
             + ", profileSettings='" + profileSettings + '\''
             + ", reviewScore=" + reviewScore

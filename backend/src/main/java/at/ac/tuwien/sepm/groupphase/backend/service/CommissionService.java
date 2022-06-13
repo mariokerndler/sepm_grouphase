@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.CommissionSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 public interface CommissionService {

@@ -5,5 +5,6 @@ export class CommissionSearchDto{
   date: string;
   name: string;
   artistId: string;
+  userId: string;
   pageNr: number;
 }

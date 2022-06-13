@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,9 @@ public class SimpleCommissionDto {
 
     @NotNull
     private Long customerId;
+
+    @NotNull
+    private CommissionStatus status;
 
     @Min(0)
     private int sketchesShown;
@@ -53,11 +57,12 @@ public class SimpleCommissionDto {
     //TODO: can we map this to show just the url? ask in meeting
     private List<Long> referencesIds;
 
-    public SimpleCommissionDto(Long artistId, Long customerId, int sketchesShown, int feedbackSent,
+    public SimpleCommissionDto(Long artistId, Long customerId, CommissionStatus status, int sketchesShown, int feedbackSent,
                                double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String title,
                                String instructions, List<Long> referencesIds) {
         this.artistId = artistId;
         this.customerId = customerId;
+        this.status = status;
         this.sketchesShown = sketchesShown;
         this.feedbackSent = feedbackSent;
         this.price = price;
@@ -74,6 +79,7 @@ public class SimpleCommissionDto {
             + "id=" + id
             + ", artistId=" + artistId
             + ", customerId=" + customerId
+            + ", status=" + status
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent
             + ", price=" + price

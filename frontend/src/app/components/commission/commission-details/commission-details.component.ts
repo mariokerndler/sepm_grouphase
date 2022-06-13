@@ -4,12 +4,15 @@ import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {CommissionService} from '../../../services/commission.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SketchDto} from '../../../dtos/sketchDto';
 import {TagSearch} from '../../../dtos/tag-search';
+import {ArtistService} from '../../../services/artist.service';
+import {NotificationService} from '../../../services/notification/notification.service';
+import {ArtistDto} from "../../../dtos/artistDto";
 
 
 @Component({
@@ -41,10 +44,16 @@ export class CommissionDetailsComponent implements OnInit {
   uploadedSketchDto: SketchDto;
   public selectedArtwork: number = null;
 
+  public selectedArtistId =4;
+  //Just dummy data.
+  artistIds=[4,5,6,8,10,39];
+
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
-              private route: ActivatedRoute, private globalFunctions: GlobalFunctions) {
+              private route: ActivatedRoute, private globalFunctions: GlobalFunctions,
+              private artistService: ArtistService, private notificationService: NotificationService,
+              private  router: Router) {
   }
 
   ngOnInit(): void {
@@ -70,6 +79,12 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
           this.commission = commission;
+            this.commission.artistCandidatesDtos=[];
+            this.artistIds.forEach(a=>{
+              this.artistService.getArtistById(a).subscribe(result =>{
+                this.commission.artistCandidatesDtos.push(result);
+              });
+            });
           console.log(commission.artworkDto);
           if (this.commission.artworkDto == null) {
             const searchPar: TagSearch = {
@@ -176,5 +191,14 @@ export class CommissionDetailsComponent implements OnInit {
     } else {
       this.feedbackButtonIndex=1;
     }
+  }
+
+  navigateToArtist(a) {
+    this.router.navigate(['/artist', a.id])
+      .catch((_) => this.notificationService.displayErrorSnackbar(`Could not navigate to the artist with username ${a.userName}.`));
+  }
+
+  chooseArtist() {
+
   }
 }

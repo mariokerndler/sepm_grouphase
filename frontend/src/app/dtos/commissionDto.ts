@@ -18,6 +18,7 @@ export class CommissionDto {
   price: number;
   issueDate: string;
   deadlineDate: string;
+  artistCandidatesDtos: ArtistDto[];
   referencesDtos: ReferenceDto[];
   status: CommissionStatus;
 }

@@ -18,21 +18,23 @@
       <strong>Description:</strong>
       <br><br>
       <div class="description-section">
-      <p>{{commission.instructions}}</p>
+        <p>{{commission.instructions}}</p>
       </div>
       <br>
       <div class="description-section">
-        <strong>Commissioned by:</strong>    <br><br>
+        <strong>Commissioned by:</strong> <br><br>
         <p>{{commission.customerDto.userName}}</p>
       </div>
       <br>
       <div *ngIf="hasReferences">
         <strong class="referenceImages">Reference Images:</strong>
-      <br><br>
+        <br><br>
         <div class="scrolling-container">
-          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.referencesDtos.length}}" class="viewport">
+          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.referencesDtos.length}}"
+                                       class="viewport">
             <div class="image-container" *ngFor="let reference of commission.referencesDtos; let i = index">
-              <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt="">
+              <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl"
+                   alt="">
             </div>
           </cdk-virtual-scroll-viewport>
         </div>
@@ -43,22 +45,34 @@
           [selectedArtworkId]="selectedArtwork">
         </app-gallery-carousel>
       </div>
+      <div *ngIf="this.commission.status.toString()=== 'LISTED'">
+        <mat-label>Commission Candidates</mat-label>
+        <mat-selection-list  [multiple]="false" style="width:20%" >
+          <div *ngFor="let a of commission.artistCandidatesDtos" fxLayoutAlign="center center">
+            <mat-list-option  name="applicant" ngDefaultControl  [value]="a.id"  [(ngModel)]="selectedArtistId"  >{{a.userName}}</mat-list-option>
+            <button (click)="navigateToArtist(a)"  mat-flat-button class="mat-primary">View Profile</button>
+          </div>
+        </mat-selection-list>
 
+        <button    mat-flat-button class="mat-primary"  (click)="chooseArtist()">Choose this Artist</button>
+      </div>
       <br><br>
       <strong>Feedback-Rounds: {{commission.feedbackRounds}}</strong> <br><br>
-        <strong class="status">Status: {{commission.status.replace('_',' ')}}</strong>
+      <strong class="status">Status: {{commission.status.replace('_', ' ')}}</strong>
       <br><br>
-      <strong >Price: ${{commission.price}}</strong>
+      <strong>Price: ${{commission.price}}</strong>
       <br><br>
-      <strong >Date: {{commission.issueDate.substring(0,11)}}
-        - {{commission.deadlineDate.substring(0,11)}}</strong>
+      <strong>Date: {{commission.issueDate.substring(0, 11)}}
+        - {{commission.deadlineDate.substring(0, 11)}}</strong>
       <div *ngIf="hasSketches">
         <strong class="referenceImages">Sketches:</strong>
         <br><br>
         <div class="scrolling-container">
-          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.artworkDto.sketchesDtos.length}}" class="viewport">
+          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
+                                       class="viewport">
             <div class="image-container" *ngFor="let reference of commission.artworkDto.sketchesDtos; let i = index">
-              <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt="">
+              <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl"
+                   alt="">
               <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>
@@ -71,44 +85,57 @@
           [selectedArtworkId]="selectedArtwork">
         </app-gallery-carousel>
       </div>
-      <div *ngIf="this.uploadedSketchDto&&allowSketch"   fxLayoutAlign="center center"  >
-        <div><mat-label>Sketch</mat-label></div>
-      <div><img   [src]="this.uploadedSketchDto.imageData" alt="" class="preview-image" ></div>
-        <div>      <mat-form-field  style="width: 60%; padding-top: 1em">
-          <textarea class="feedbackBox" color="secondary"  [(ngModel)]="this.uploadedSketchDto.description" matInput placeholder="Describe your sketch"></textarea>
-        </mat-form-field></div>
+
+
+      <div *ngIf="this.uploadedSketchDto&&allowSketch" fxLayoutAlign="center center">
+        <div>
+          <mat-label>Sketch</mat-label>
+        </div>
+        <div><img [src]="this.uploadedSketchDto.imageData" alt="" class="preview-image"></div>
+        <div>
+          <mat-form-field style="width: 60%; padding-top: 1em">
+            <textarea class="feedbackBox" color="secondary" [(ngModel)]="this.uploadedSketchDto.description" matInput
+                      placeholder="Describe your sketch"></textarea>
+          </mat-form-field>
+        </div>
       </div>
     </div>
     <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId">
-    <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Apply</button>
+      <button color="primary" fxLayoutAlign="center" mat-flat-button>Apply</button>
     </div>
-    <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start" >
-      <mat-form-field  style="width: 60%; padding-top: 1em">
-        <textarea class="feedbackBox" color="secondary"  [(ngModel)]="this.uploadedSketchDto.customerFeedback" matInput placeholder="Leave a comment"></textarea>
+
+
+    <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start">
+      <mat-form-field style="width: 60%; padding-top: 1em">
+        <textarea class="feedbackBox" color="secondary" [(ngModel)]="this.uploadedSketchDto.customerFeedback" matInput
+                  placeholder="Leave a comment"></textarea>
       </mat-form-field>
     </div>
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& userEdit && allowFeedback" fxLayoutAlign="center">
-      <button  color="primary" fxLayoutAlign="center" mat-flat-button (click)="toggleFeedbackField()">{{feedbackButtonStates[feedbackButtonIndex]}}</button>
+      <button color="primary" fxLayoutAlign="center" mat-flat-button
+              (click)="toggleFeedbackField()">{{feedbackButtonStates[feedbackButtonIndex]}}</button>
       <div *ngIf="feedbackButtonIndex===1">
-        <button  color="primary" fxLayoutAlign="center" mat-flat-button (click)="updateCommission()">Upload</button>
+        <button color="primary" fxLayoutAlign="center" mat-flat-button (click)="updateCommission()">Upload</button>
       </div>
     </div>
-    <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch" >
+
+
+    <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch">
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
         <div>
-        <button (click)="fileInput.click()"  color="accent" mat-button>
-          <input   #fileInput (change)="fileSelected($event)"
-                   accept=".png,.jpg,.gif,.jpeg" style="display: none;"    type="file">
-        <mat-icon color="accent">upload</mat-icon>
-        <span>Upload new Sketch</span>
-      </button>
+          <button (click)="fileInput.click()" color="accent" mat-button>
+            <input #fileInput (change)="fileSelected($event)"
+                   accept=".png,.jpg,.gif,.jpeg" style="display: none;" type="file">
+            <mat-icon color="accent">upload</mat-icon>
+            <span>Upload new Sketch</span>
+          </button>
         </div>
-        <div *ngIf="this.uploadedSketchDto"  >
-          <button  (click)="updateCommission()"   color="primary"  mat-flat-button>Confirm  Upload</button>
+        <div *ngIf="this.uploadedSketchDto">
+          <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
         </div>
-    <div>
+        <div>
 
-    </div>
+        </div>
       </form>
     </div>
 

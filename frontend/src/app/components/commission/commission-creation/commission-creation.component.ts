@@ -75,6 +75,7 @@ export class CommissionCreationComponent implements OnInit {
     feedbackRounds: 1,
     artworkDto: null,
     status: CommissionStatus.listed,
+  artistCandidatesDtos: []
   };
   userId: string;
   customer: ApplicationUserDto;

@@ -12,11 +12,9 @@ public interface NotificationService {
 
     List<Notification> findByUser(ApplicationUser user, Integer limit);
 
-    List<Notification> findByUserAndNotificationId(ApplicationUser user, Long notificationId);
+    Notification findByUserAndNotificationId(ApplicationUser user, Long notificationId);
 
     List<Notification> findByUserAndNotificationTrigger(ApplicationUser user, NotificationTrigger trigger, Integer limit);
 
     Notification saveNotification(Notification notification);
-
-    Notification updateNotification(Notification notification);
 }

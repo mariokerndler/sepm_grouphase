@@ -70,7 +70,7 @@ public class ArtistEndpoint {
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {
-            log.error(e.getMessage() + artistDto.toString());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -86,7 +86,7 @@ public class ArtistEndpoint {
             log.info("A user is trying to update an artist.");
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {
-            log.error(e.getMessage() + " : " + artistDto.toString());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -102,7 +102,7 @@ public class ArtistEndpoint {
             log.info("A user is requesting an artist with id '{}'", id);
             return artistMapper.artistToArtistDto(artistService.findArtistById(id));
         } catch (Exception e) {
-            log.error(e.getMessage() + id.toString());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -117,7 +117,7 @@ public class ArtistEndpoint {
             log.info("A user is deleting an artist with id '{}'", id);
             artistService.deleteArtistById(id);
         } catch (Exception e) {
-            log.error(e.getMessage() + id.toString());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }

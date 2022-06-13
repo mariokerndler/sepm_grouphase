@@ -111,9 +111,9 @@ public class ArtworkEndpoint {
             List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
             return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
-        } catch (Exception n) {
-            log.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -125,9 +125,9 @@ public class ArtworkEndpoint {
         log.info("A user is trying to delete an artwork.");
         try {
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-        } catch (Exception n) {
-            log.error(n.getMessage() + artworkDto);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -140,9 +140,9 @@ public class ArtworkEndpoint {
         try {
             Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
             artworkService.saveArtwork(artwork);
-        } catch (Exception v) {
-            log.error(v.getMessage() + artworkDto);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
 
     }

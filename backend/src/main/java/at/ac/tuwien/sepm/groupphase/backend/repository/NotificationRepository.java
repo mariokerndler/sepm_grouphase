@@ -19,7 +19,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     List<Notification> findByUser(ApplicationUser user);
 
-    List<Notification> findByUserAndId(ApplicationUser user, Long id);
+    Notification findByUserAndId(ApplicationUser user, Long id);
 
     List<Notification> findByUserAndTrigger(ApplicationUser user, NotificationTrigger trigger);
 

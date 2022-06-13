@@ -45,16 +45,17 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findByUserAndNotificationId(ApplicationUser user, Long notificationId) {
+    public Notification findByUserAndNotificationId(ApplicationUser user, Long notificationId) {
         log.trace("calling findByUserAndNotificationId() ...");
         var foundNotifications = this.notificationRepository.findByUserAndId(user, notificationId);
-        log.info("Fetched all notifications ({})", foundNotifications.size());
+        log.info("Fetched the notification with id='{}' and userId='{}'", notificationId, user.getId());
         return foundNotifications;
     }
 
     @Override
     public List<Notification> findByUserAndNotificationTrigger(ApplicationUser user, NotificationTrigger trigger, Integer limit) {
         log.trace("calling findByUserAndNotificationTrigger() ...");
+
         List<Notification> foundNotifications;
         if (limit == null) {
             foundNotifications = this.notificationRepository.findByUserAndTrigger(user, trigger);
@@ -72,12 +73,5 @@ public class NotificationServiceImpl implements NotificationService {
         var savedNotification = this.notificationRepository.save(notification);
         log.info("Saved notification with id='{}'", notification.getId());
         return savedNotification;
-    }
-
-    @Override
-    public Notification updateNotification(Notification notification) {
-        log.trace("calling saveNotification() ...");
-        // Maybe this will change.
-        return saveNotification(notification);
     }
 }

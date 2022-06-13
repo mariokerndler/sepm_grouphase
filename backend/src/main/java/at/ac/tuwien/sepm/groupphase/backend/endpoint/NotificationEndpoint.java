@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.NotificationDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.NotificationMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Notification;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationTrigger;
@@ -49,23 +50,74 @@ public class NotificationEndpoint {
         @RequestParam(value = "limit", required = false, defaultValue = "") Integer limit) {
         log.info("A user is trying fetch all notifications from an user.");
         try {
-            var user = userService.findUserById(userId);
-
-            List<Notification> notifications;
-
-            if (triggerAction == null) {
-                notifications = notificationService.findByUser(user, limit);
-            } else {
-                notifications = notificationService.findByUserAndNotificationTrigger(user, triggerAction, limit);
-            }
+            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction);
 
             return notifications
                 .stream()
                 .map(notificationMapper::notificationToNotificationDto)
                 .collect(Collectors.toList());
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @PatchMapping("/{hasRead}")
+    @Operation(summary = "Mark all notifications as read true/false by user id and trigger action.")
+    public List<NotificationDto> patchNotificationsIsRead(
+        @RequestParam("userId") Long userId,
+        @RequestParam(value = "triggerAction", required = false) NotificationTrigger triggerAction,
+        @PathVariable Boolean hasRead) {
+        log.info("A user is trying patch all notifications from an user.");
+        try {
+            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction);
+
+            notifications.forEach((n) -> {
+                n.setRead(hasRead);
+                notificationService.saveNotification(n);
+            });
+
+            return notifications
+                .stream()
+                .map(notificationMapper::notificationToNotificationDto)
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @PatchMapping("/{id}/{hasRead}")
+    @Operation(summary = "Mark all notifications as read true/false by user id.")
+    public NotificationDto updateNotificationIsRead(
+        @PathVariable Long id,
+        @PathVariable Boolean hasRead,
+        @RequestParam("userId") Long userId
+    ) {
+        log.info("A user is trying patch the notifications from an user.");
+        var user = userService.findUserById(userId);
+
+        var notification = notificationService.findByUserAndNotificationId(user, id);
+
+        if (notification == null) {
+            var exception = new NotFoundException("Notification with id '" + id + "' from user with id '" + userId + "' not found.");
+            log.error(exception.getMessage(), exception);
+            throw exception;
+        }
+
+        try {
+            notification.setRead(hasRead);
+            notificationService.saveNotification(notification);
+            return notificationMapper.notificationToNotificationDto(notification);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -82,8 +134,30 @@ public class NotificationEndpoint {
                     .saveNotification(notificationMapper
                         .notificationDtoToNotification(notificationDto)));
         } catch (Exception e) {
-            log.error(e.getMessage() + notificationDto.toString());
+            log.error(e.getMessage() + notificationDto.toString(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
+    }
+
+    private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationTrigger triggerAction) {
+        var user = userService.findUserById(userId);
+
+        List<Notification> notifications;
+
+        if (triggerAction == null) {
+            notifications = notificationService.findByUser(user, null);
+        } else {
+            notifications = notificationService.findByUserAndNotificationTrigger(user, triggerAction, null);
+        }
+
+        if (notifications == null) {
+            var exception = new NotFoundException("Notifications from user with id '" + userId + "'"
+                + (triggerAction != null ? (" and triggerAction '" + triggerAction.toString()) : " ")
+                + "could not be found.");
+            log.error(exception.getMessage(), exception);
+            throw exception;
+        }
+
+        return notifications;
     }
 }

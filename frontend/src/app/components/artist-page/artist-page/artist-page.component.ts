@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {ArtistService} from '../../../services/artist.service';
@@ -42,6 +42,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.refreshOnBackButtonClick();
     this.routeSubscription = this.route.params.subscribe(
       (params) => this.userService.getUserById(params.id, () => this.navigateToArtistList())
         .subscribe((user) => {
@@ -82,6 +83,14 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
+  }
+
+  refreshOnBackButtonClick(): void {
+    this.router.events.subscribe((event: NavigationStart) => {
+      if (event.navigationTrigger === 'popstate') {
+        window.location.reload();
+      }
+    });
   }
 
   navigateToEdit() {

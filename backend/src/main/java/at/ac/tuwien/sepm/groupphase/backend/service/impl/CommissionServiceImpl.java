@@ -1,10 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.CommissionSearchDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.SketchRepository;
+import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchConstraint;
@@ -22,14 +25,19 @@ import java.util.Optional;
 @Slf4j
 public class CommissionServiceImpl implements CommissionService {
     private final CommissionRepository commissionRepo;
+    private final SketchRepository sketchRepository;
     private final CommissionValidator commissionValidator;
+    private final ArtworkService artworkService;
     private final ImageFileManager ifm;
 
     @Autowired
-    public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm) {
+    public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm,
+                                 ArtworkService artworkService, SketchRepository sketchRepository) {
         this.commissionRepo = commissionRepo;
+        this.sketchRepository = sketchRepository;
         this.commissionValidator = commissionValidator;
         this.ifm = ifm;
+        this.artworkService = artworkService;
     }
 
     @Override
@@ -72,8 +80,22 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void updateCommission(Commission c) {
         log.trace("calling updateCommission() ...");
-
+        log.info("Writing Sketc1h");
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
+        if (c.getArtwork().getSketches() != null) {
+
+
+            int sketchCount = c.getArtwork().getSketches().size();
+            //if sketch has been added
+            if (c.getFeedbackSent() < c.getSketchesShown()) {
+                log.info("Writing Sketch" + c.getFeedbackSent() + " " + c.getSketchesShown());
+                c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
+                    this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
+                this.sketchRepository.save(c.getArtwork().getSketches().get(sketchCount - 1));
+            }
+        } else {
+            log.info("SKETCHES EMPTY");
+        }
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());
     }
@@ -89,6 +111,21 @@ public class CommissionServiceImpl implements CommissionService {
 
         this.commissionRepo.deleteById(c.getId());
         log.info("Deleted commission with id='{}'", c.getId());
+    }
+
+    //This NEEDS to be called AFTER and artist has been assigned to the commission and initializes the artwork
+    @Override
+    public void assignArtist(Commission commission) {
+
+        Artwork a = new Artwork();
+        a.setName(commission.getTitle() + "_Artwork");
+        a.setArtist(commission.getArtist());
+        //  artwork   needs URL to be written first but not tested on empty images ( function can be modified to just return the URL if image is empty)
+        a.setImageUrl(this.ifm.writeArtworkImage(commission, a));
+        artworkService.saveArtwork(a);
+        commissionRepo.save(commission);
+
+
     }
 
     //TODO: in feed, only view open commissions
@@ -110,8 +147,8 @@ public class CommissionServiceImpl implements CommissionService {
                 cs.getPriceRangeLower(),
                 cs.getPriceRangeUpper(),
                 cs.getArtistId(),
-                cs.getSearchConstraint().toString(),
-                cs.getUserId());
+                cs.getUserId(),
+                cs.getSearchConstraint().toString());
         }
 
         log.info("Retrieved all commissions {} ({}).",

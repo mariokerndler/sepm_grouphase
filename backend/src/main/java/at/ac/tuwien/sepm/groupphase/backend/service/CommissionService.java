@@ -54,6 +54,6 @@ public interface CommissionService {
      * @param commission The commission to be deleted.
      */
     void deleteCommission(Commission commission);
-
+    void assignArtist(Commission commission);
     List<Commission> searchCommissions(CommissionSearchDto cs);
 }

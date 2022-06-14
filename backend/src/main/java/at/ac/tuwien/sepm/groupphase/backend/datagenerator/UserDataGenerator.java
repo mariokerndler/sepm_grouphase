@@ -263,7 +263,7 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setStatus(CommissionStatus.OPEN);
+        commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
@@ -298,12 +298,13 @@ public class UserDataGenerator {
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");
-        commission.setSketchesShown((int) (Math.random() * 10));
-        commission.setFeedbackSent((int) (Math.random() * 6));
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
         commission.setPrice((int) (Math.random() * 10000));
+        commission.setFeedbackRounds(4);
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setStatus(CommissionStatus.OPEN);
+        commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);

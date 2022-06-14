@@ -82,7 +82,8 @@ public class ImageFileManager {
 
     public String writeArtworkImage(Commission c, Artwork aw) {
         log.trace("calling writeArtworkImage() ...");
-        String relPath = ImageDataPaths.commissionLocation + c.getId() + "\\" + ImageDataPaths.awhIdentifier + aw.getId();
+        String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();
+         relPath += "\\" + ImageDataPaths.artworkIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(relPath)) {
             outputStream.write(aw.getImageData());
             log.info("Wrote artwork images to disk at path='{}'", relPath);

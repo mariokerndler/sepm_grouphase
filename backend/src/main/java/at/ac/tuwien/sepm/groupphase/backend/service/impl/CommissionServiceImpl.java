@@ -34,7 +34,7 @@ public class CommissionServiceImpl implements CommissionService {
     public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm,
                                  ArtworkService artworkService, SketchRepository sketchRepository) {
         this.commissionRepo = commissionRepo;
-        this.sketchRepository=sketchRepository;
+        this.sketchRepository = sketchRepository;
         this.commissionValidator = commissionValidator;
         this.ifm = ifm;
         this.artworkService = artworkService;
@@ -87,15 +87,13 @@ public class CommissionServiceImpl implements CommissionService {
 
             int sketchCount = c.getArtwork().getSketches().size();
             //if sketch has been added
-            if (c.getFeedbackSent() < c.getSketchesShown())
-            {
-                log.info("Writing Sketch"+c.getFeedbackSent() +" "+ c.getSketchesShown());
+            if (c.getFeedbackSent() < c.getSketchesShown()) {
+                log.info("Writing Sketch" + c.getFeedbackSent() + " " + c.getSketchesShown());
                 c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
                     this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
                 this.sketchRepository.save(c.getArtwork().getSketches().get(sketchCount - 1));
             }
-        }
-        else{
+        } else {
             log.info("SKETCHES EMPTY");
         }
         commissionRepo.save(c);
@@ -115,12 +113,15 @@ public class CommissionServiceImpl implements CommissionService {
         log.info("Deleted commission with id='{}'", c.getId());
     }
 
+    //This NEEDS to be called AFTER and artist has been assigned to the commission and initializes the artwork
     @Override
     public void assignArtist(Commission commission) {
 
         Artwork a = new Artwork();
         a.setName(commission.getTitle() + "_Artwork");
         a.setArtist(commission.getArtist());
+        //  artwork   needs URL to be written first but not tested on empty images ( function can be modified to just return the URL if image is empty)
+        a.setImageUrl(this.ifm.writeArtworkImage(commission, a));
         artworkService.saveArtwork(a);
         commissionRepo.save(commission);
 

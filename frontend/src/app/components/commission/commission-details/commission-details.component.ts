@@ -12,7 +12,6 @@ import {SketchDto} from '../../../dtos/sketchDto';
 import {TagSearch} from '../../../dtos/tag-search';
 import {ArtistService} from '../../../services/artist.service';
 import {NotificationService} from '../../../services/notification/notification.service';
-import {ArtistDto} from "../../../dtos/artistDto";
 
 
 @Component({

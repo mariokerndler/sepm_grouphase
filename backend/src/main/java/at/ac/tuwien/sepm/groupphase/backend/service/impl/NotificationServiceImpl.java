@@ -1,14 +1,19 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Notification;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NotificationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.NotificationMessages;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationTrigger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -73,5 +78,52 @@ public class NotificationServiceImpl implements NotificationService {
         var savedNotification = this.notificationRepository.save(notification);
         log.info("Saved notification with id='{}'", notification.getId());
         return savedNotification;
+    }
+
+    @Override
+    public List<Notification> findByUserAndIsRead(ApplicationUser user, Boolean isRead) {
+        log.trace("calling findByUserAndIsRead() ...");
+        var foundNotifications = this.notificationRepository.findByUserAndIsRead(user, isRead);
+        log.info("Fetched all notifications ({})", foundNotifications.size());
+        return foundNotifications;
+    }
+
+    @Override
+    public void createNotificationByCommission(Commission oldCommission, Commission newCommission) {
+        List<Notification> notifications = new ArrayList<>();
+
+        // New candidate added
+        if (oldCommission.getArtistCandidates() != null && newCommission.getArtistCandidates() != null) {
+            notifications.addAll(
+                addNewNotificationsIfNewCandidate(
+                    oldCommission.getArtistCandidates(),
+                    newCommission.getArtistCandidates(),
+                    newCommission.getId()));
+        }
+
+        // New sketches uploaded
+
+        // New feedback send
+
+        // Status changed
+
+        notifications.forEach(this::saveNotification);
+    }
+
+    private List<Notification> addNewNotificationsIfNewCandidate(List<Artist> oldCandidates, List<Artist> newCandidates, Long commissionId) {
+        List<Notification> notifications = new ArrayList<>();
+        newCandidates.removeAll(oldCandidates);
+
+        newCandidates.forEach(artist -> notifications.add(Notification.builder()
+            .title(NotificationMessages.NEW_CANDIDATE_ADDED_TITLE)
+            .message(NotificationMessages.NEW_CANDIDATE_ADDED_MESSAGE)
+            .createdAt(LocalDateTime.now())
+            .isRead(false)
+            .trigger(NotificationTrigger.CommissionInfo)
+            .referenceId(commissionId)
+            .user(artist)
+            .build()));
+
+        return notifications;
     }
 }

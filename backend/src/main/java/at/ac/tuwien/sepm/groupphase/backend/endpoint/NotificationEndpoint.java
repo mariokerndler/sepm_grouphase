@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +49,30 @@ public class NotificationEndpoint {
         @RequestParam(value = "limit", required = false, defaultValue = "") Integer limit) {
         log.info("A user is trying fetch all notifications from an user.");
         try {
-            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction);
+            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction, limit);
+
+            return notifications
+                .stream()
+                .map(notificationMapper::notificationToNotificationDto)
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/unread")
+    @Operation(summary = "Get all unread notifications by user id.")
+    public List<NotificationDto> getUnreadNotificationsByUserId(
+        @RequestParam("userId") Long userId
+    ) {
+        log.info("A user is trying to fetch all unread notifications from an user.");
+        try {
+            var user = userService.findUserById(userId);
+            var notifications = notificationService.findByUserAndIsRead(user, false);
 
             return notifications
                 .stream()
@@ -73,7 +95,7 @@ public class NotificationEndpoint {
         @PathVariable Boolean hasRead) {
         log.info("A user is trying patch all notifications from an user.");
         try {
-            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction);
+            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction, null);
 
             notifications.forEach((n) -> {
                 n.setRead(hasRead);
@@ -139,20 +161,20 @@ public class NotificationEndpoint {
         }
     }
 
-    private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationTrigger triggerAction) {
+    private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationTrigger triggerAction, Integer limit) {
         var user = userService.findUserById(userId);
 
         List<Notification> notifications;
 
         if (triggerAction == null) {
-            notifications = notificationService.findByUser(user, null);
+            notifications = notificationService.findByUser(user, limit);
         } else {
-            notifications = notificationService.findByUserAndNotificationTrigger(user, triggerAction, null);
+            notifications = notificationService.findByUserAndNotificationTrigger(user, triggerAction, limit);
         }
 
         if (notifications == null) {
             var exception = new NotFoundException("Notifications from user with id '" + userId + "'"
-                + (triggerAction != null ? (" and triggerAction '" + triggerAction.toString()) : " ")
+                + (triggerAction != null ? (" and triggerAction '" + triggerAction) : " ")
                 + "could not be found.");
             log.error(exception.getMessage(), exception);
             throw exception;

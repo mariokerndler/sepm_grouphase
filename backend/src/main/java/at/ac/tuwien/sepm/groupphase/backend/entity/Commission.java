@@ -113,7 +113,7 @@ public class Commission implements HasId {
             + "id=" + id
             + ", artistId=" + (artist == null ? null : artist.getId())
             + ", artistCandidatesIds=" + (artistCandidates == null ? null : artistCandidates.stream().map(Artist::getId).toList())
-            + ", customerId=" + customer.getId()
+            + ", customerId=" + (customer == null ? null : customer.getId())
             + ", status=" + status
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent

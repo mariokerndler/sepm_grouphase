@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Reference;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
+import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchConstraint;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator;
@@ -24,12 +25,18 @@ public class CommissionServiceImpl implements CommissionService {
     private final CommissionRepository commissionRepo;
     private final CommissionValidator commissionValidator;
     private final ImageFileManager ifm;
+    private final NotificationService notificationService;
 
     @Autowired
-    public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm) {
+    public CommissionServiceImpl(
+        CommissionRepository commissionRepo,
+        CommissionValidator commissionValidator,
+        ImageFileManager ifm,
+        NotificationService notificationService) {
         this.commissionRepo = commissionRepo;
         this.commissionValidator = commissionValidator;
         this.ifm = ifm;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -73,6 +80,7 @@ public class CommissionServiceImpl implements CommissionService {
     public void updateCommission(Commission c) {
         log.trace("calling updateCommission() ...");
 
+        notificationService.createNotificationByCommission(findById(c.getId()), c);
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());

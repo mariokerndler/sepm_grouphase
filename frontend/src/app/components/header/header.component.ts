@@ -48,9 +48,11 @@ export class HeaderComponent implements OnInit {
       this.userId = this.authService.getUserId();
     }
 
-    this.router.navigate(['/artist', this.userId])
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+      this.router.navigate(['/artist', this.userId]))
       .catch(_ => this.notificationService.displayErrorSnackbar('Could not navigate to user page.'));
   }
+
 
   logoutUser() {
     this.authService.logoutUser();

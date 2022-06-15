@@ -31,7 +31,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/new-theme.scss"
+              "node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js"

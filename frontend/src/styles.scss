@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap');
 $background: #434F6A;
 
+/*
 @mixin theme-color-grabber($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -31,7 +32,7 @@ $background: #434F6A;
     color: #2f3a51 !important;
   }
 
-}
+} */
 
 :root {
   --bgFilter: blur(0px);
@@ -42,11 +43,13 @@ body {
   background-color: $background;
 }
 
-
+/*
 * {
   font-family: 'Didact Gothic', sans-serif;
   font-size: 1rem;
 }
+*/
+
 
 html, body {
   height: 100%;

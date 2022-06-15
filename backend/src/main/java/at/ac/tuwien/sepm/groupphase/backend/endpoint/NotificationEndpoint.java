@@ -6,7 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Notification;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationTrigger;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationType;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +45,11 @@ public class NotificationEndpoint {
     @Operation(summary = "Get all notifications by user id")
     public List<NotificationDto> getNotificationsByUserId(
         @RequestParam("userId") Long userId,
-        @RequestParam(value = "triggerAction", required = false) NotificationTrigger triggerAction,
+        @RequestParam(value = "notificationType", required = false) NotificationType notificationType,
         @RequestParam(value = "limit", required = false, defaultValue = "") Integer limit) {
         log.info("A user is trying fetch all notifications from an user.");
         try {
-            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction, limit);
+            var notifications = getNotificationsByUserAndTriggerAction(userId, notificationType, limit);
 
             return notifications
                 .stream()
@@ -91,11 +91,11 @@ public class NotificationEndpoint {
     @Operation(summary = "Mark all notifications as read true/false by user id and trigger action.")
     public List<NotificationDto> patchNotificationsIsRead(
         @RequestParam("userId") Long userId,
-        @RequestParam(value = "triggerAction", required = false) NotificationTrigger triggerAction,
+        @RequestParam(value = "notificationType", required = false) NotificationType notificationType,
         @PathVariable Boolean hasRead) {
         log.info("A user is trying patch all notifications from an user.");
         try {
-            var notifications = getNotificationsByUserAndTriggerAction(userId, triggerAction, null);
+            var notifications = getNotificationsByUserAndTriggerAction(userId, notificationType, null);
 
             notifications.forEach((n) -> {
                 n.setRead(hasRead);
@@ -161,20 +161,20 @@ public class NotificationEndpoint {
         }
     }
 
-    private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationTrigger triggerAction, Integer limit) {
+    private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationType notificationType, Integer limit) {
         var user = userService.findUserById(userId);
 
         List<Notification> notifications;
 
-        if (triggerAction == null) {
+        if (notificationType == null) {
             notifications = notificationService.findByUser(user, limit);
         } else {
-            notifications = notificationService.findByUserAndNotificationTrigger(user, triggerAction, limit);
+            notifications = notificationService.findByUserAndNotificationTrigger(user, notificationType, limit);
         }
 
         if (notifications == null) {
             var exception = new NotFoundException("Notifications from user with id '" + userId + "'"
-                + (triggerAction != null ? (" and triggerAction '" + triggerAction) : " ")
+                + (notificationType != null ? (" and notification type '" + notificationType) : " ")
                 + "could not be found.");
             log.error(exception.getMessage(), exception);
             throw exception;

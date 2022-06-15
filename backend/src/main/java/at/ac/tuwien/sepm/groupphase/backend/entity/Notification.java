@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationTrigger;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,7 +24,7 @@ public class Notification {
     @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(nullable = false, length = 500)
+    @Column(length = 500)
     private String message;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -36,7 +36,7 @@ public class Notification {
     private boolean isRead;
 
     @Column(nullable = false)
-    private NotificationTrigger trigger;
+    private NotificationType type;
 
     @Column(nullable = false)
     private Long referenceId;
@@ -58,7 +58,7 @@ public class Notification {
             & getTitle().equals(that.getTitle())
             && getMessage().equals(that.getMessage())
             && getCreatedAt().equals(that.getCreatedAt())
-            && getTrigger() == that.getTrigger()
+            && getType() == that.getType()
             && getReferenceId().equals(that.getReferenceId())
             && getUser().equals(that.getUser());
     }
@@ -70,7 +70,7 @@ public class Notification {
             getMessage(),
             getCreatedAt(),
             isRead(),
-            getTrigger(),
+            getType(),
             getReferenceId(),
             getUser());
     }
@@ -83,7 +83,7 @@ public class Notification {
             + ", message='" + message + '\''
             + ", createdAt=" + createdAt
             + ", isRead=" + isRead
-            + ", trigger=" + trigger
+            + ", type=" + type
             + ", referenceId=" + referenceId
             + ", user=" + user
             + '}';

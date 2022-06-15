@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
-import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationTrigger;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +29,6 @@ public class NotificationDto {
 
     @ValidAlphaNumeric
     @Size(max = 500)
-    @NotNull
-    @NotBlank
     private String message;
 
     @NotNull
@@ -42,7 +40,7 @@ public class NotificationDto {
     private boolean isRead;
 
     @NotNull
-    private NotificationTrigger trigger;
+    private NotificationType type;
 
     @NotNull
     private Long referenceId;
@@ -55,14 +53,14 @@ public class NotificationDto {
                            String message,
                            LocalDateTime createdAt,
                            boolean isRead,
-                           NotificationTrigger trigger,
+                           NotificationType type,
                            Long referenceId,
                            Long userId) {
         this.title = title;
         this.message = message;
         this.createdAt = createdAt;
         this.isRead = isRead;
-        this.trigger = trigger;
+        this.type = type;
         this.referenceId = referenceId;
         this.userId = userId;
     }
@@ -75,7 +73,7 @@ public class NotificationDto {
             + ", message='" + message + '\''
             + ", createdAt=" + createdAt
             + ", isRead=" + isRead
-            + ", trigger=" + trigger
+            + ", type=" + type
             + ", referenceId=" + referenceId
             + ", userId=" + userId
             + '}';

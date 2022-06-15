@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue("Artist")
@@ -78,6 +78,8 @@ public class Artist extends ApplicationUser implements HasId {
         this.reviews = reviews;
         this.tags = tags;
     }
+
+
 
     @Override
     public String toString() {

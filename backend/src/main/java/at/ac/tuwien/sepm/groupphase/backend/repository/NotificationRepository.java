@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.repository;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Notification;
-import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationTrigger;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,9 +21,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     Notification findByUserAndId(ApplicationUser user, Long id);
 
-    List<Notification> findByUserAndTrigger(ApplicationUser user, NotificationTrigger trigger);
+    List<Notification> findByUserAndType(ApplicationUser user, NotificationType type);
 
-    List<Notification> findByUserAndTrigger(ApplicationUser user, NotificationTrigger trigger, Pageable pageSize);
+    List<Notification> findByUserAndType(ApplicationUser user, NotificationType type, Pageable pageSize);
 
     List<Notification> findByUserAndIsRead(ApplicationUser user, boolean isRead);
 }

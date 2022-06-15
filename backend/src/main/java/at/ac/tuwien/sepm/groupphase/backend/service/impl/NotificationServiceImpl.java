@@ -7,16 +7,16 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Notification;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NotificationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.NotificationFactory;
-import at.ac.tuwien.sepm.groupphase.backend.utils.NotificationMessages;
-import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationTrigger;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -60,14 +60,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findByUserAndNotificationTrigger(ApplicationUser user, NotificationTrigger trigger, Integer limit) {
+    public List<Notification> findByUserAndNotificationTrigger(ApplicationUser user, NotificationType type, Integer limit) {
         log.trace("calling findByUserAndNotificationTrigger() ...");
 
         List<Notification> foundNotifications;
         if (limit == null) {
-            foundNotifications = this.notificationRepository.findByUserAndTrigger(user, trigger);
+            foundNotifications = this.notificationRepository.findByUserAndType(user, type);
         } else {
-            foundNotifications = this.notificationRepository.findByUserAndTrigger(user, trigger, PageRequest.of(0, limit));
+            foundNotifications = this.notificationRepository.findByUserAndType(user, type, PageRequest.of(0, limit));
         }
 
         log.info("Fetched all notifications ({})", foundNotifications.size());
@@ -105,10 +105,33 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         // New sketches uploaded
+        var sketchNotification = addNewNotificationsIfSketchUploaded(
+            oldCommission.getSketchesShown(),
+            newCommission.getSketchesShown(),
+            newCommission.getId(),
+            newCommission.getCustomer());
+        if (sketchNotification != null) {
+            notifications.add(sketchNotification);
+        }
 
         // New feedback send
+        var feedbackNotification = addNewNotificationsIfFeedbackUploaded(
+            oldCommission.getFeedbackSent(),
+            newCommission.getFeedbackSent(),
+            newCommission.getId(),
+            newCommission.getArtist());
+        if (feedbackNotification != null) {
+            notifications.add(feedbackNotification);
+        }
 
         // Status changed
+        notifications.addAll(
+            addNewNotificationIfStatusChanged(
+                oldCommission.getStatus(),
+                newCommission.getStatus(),
+                newCommission.getId(),
+                newCommission.getCustomer(),
+                newCommission.getArtist()));
 
         notifications.forEach(this::saveNotification);
     }
@@ -120,35 +143,113 @@ public class NotificationServiceImpl implements NotificationService {
         ApplicationUser customer) {
         List<Notification> notifications = new ArrayList<>();
         // Added candidates
-        List<Artist> candidates = newCandidates;
+        // Need to copy list objects and use the toBuilder() from lombok to make a copy constructor.
+        List<Artist> candidates = newCandidates.stream()
+            .map(artist -> artist == null ? null : artist.toBuilder().build())
+                .collect(Collectors.toList());
+
         candidates.removeAll(oldCandidates);
 
         candidates.forEach(candidate -> notifications.add(
             NotificationFactory.createNotification(
                 NotificationType.COMMISSION_CANDIDATE_ADDED,
-                NotificationTrigger.CommissionInfo,
                 commissionId,
                 customer)));
 
         // Removed candidates
-        candidates = oldCandidates;
+        candidates = oldCandidates.stream()
+            .map(artist -> artist == null ? null : artist.toBuilder().build())
+            .collect(Collectors.toList());
         candidates.removeAll(newCandidates);
         candidates.forEach(candidate -> notifications.add(
             NotificationFactory.createNotification(
                 NotificationType.COMMISSION_CANDIDATE_REMOVED,
-                NotificationTrigger.CommissionInfo,
                 commissionId,
                 candidate)));
 
         return notifications;
     }
 
-    private List<Notification> addNewNotificationsIfSketchUploaded(
-        List<Artist> oldCandidates,
-        List<Artist> newCandidates,
+    private Notification addNewNotificationsIfSketchUploaded(
+        int oldSketchesShown,
+        int newSketchesShown,
         Long commissionId,
         ApplicationUser customer) {
+        int sketchesDifference = newSketchesShown - oldSketchesShown;
 
-        return new ArrayList<>();
+        if (sketchesDifference <= 0) {
+            return null;
+        }
+
+        return NotificationFactory.createNotification(
+            NotificationType.COMMISSION_SKETCH_ADDED,
+            commissionId,
+            customer,
+            sketchesDifference
+        );
+    }
+
+    private Notification addNewNotificationsIfFeedbackUploaded(
+        int oldFeedbackSent,
+        int newFeedbackSent,
+        Long commissionId,
+        ApplicationUser artist) {
+        int feedbackDifference = newFeedbackSent - oldFeedbackSent;
+
+        if (feedbackDifference <= 0) {
+            return null;
+        }
+
+        return NotificationFactory.createNotification(
+            NotificationType.COMMISSION_FEEDBACK_ADDED,
+            commissionId,
+            artist,
+            feedbackDifference
+        );
+    }
+
+    private List<Notification> addNewNotificationIfStatusChanged(
+        CommissionStatus oldStatus,
+        CommissionStatus newStatus,
+        Long commissionId,
+        ApplicationUser user,
+        ApplicationUser artist) {
+        var notifications = new ArrayList<Notification>();
+
+        if (oldStatus != newStatus) {
+            switch (newStatus) {
+                case CANCELLED -> {
+                    notifications.add(
+                        NotificationFactory.createNotification(
+                            NotificationType.COMMISSION_STATUS_CANCELLED,
+                            commissionId,
+                            user));
+                    notifications.add(
+                        NotificationFactory.createNotification(
+                            NotificationType.COMMISSION_STATUS_CANCELLED,
+                            commissionId,
+                            artist));
+                }
+                case IN_PROGRESS -> {
+                    // TODO: Improve this
+                }
+                case COMPLETED -> {
+                    notifications.add(
+                        NotificationFactory.createNotification(
+                            NotificationType.COMMISSION_STATUS_COMPLETED,
+                            commissionId,
+                            user));
+                    notifications.add(
+                        NotificationFactory.createNotification(
+                            NotificationType.COMMISSION_STATUS_COMPLETED,
+                            commissionId,
+                            artist));
+                }
+                case OPEN -> { }
+                default -> throw new IllegalStateException("Unexpected value: " + newStatus);
+            }
+        }
+
+        return notifications;
     }
 }

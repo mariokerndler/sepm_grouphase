@@ -1,6 +1,7 @@
 @use 'node_modules/@angular/material/index' as mat;
 @use 'src/theme/components/drawer-theme' as drawer;
 @use 'src/theme/components/toolbar-theme' as toolbar;
+@use 'src/theme/components/tab-theme' as tab;
 @import 'src/styles';
 
 @include mat.core();
@@ -100,4 +101,6 @@ $new-theme: mat.define-light-theme((
 @include mat.all-component-themes($new-theme);
 @include  toolbar.theme($new-theme);
 @include  drawer.theme($new-theme);
+@include  tab.theme($new-theme);
 @include background-color($new-theme);
+

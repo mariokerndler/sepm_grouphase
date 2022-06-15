@@ -13,8 +13,8 @@
 }
 
 
-
 /*
+
 @mixin theme-color-grabber($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -32,20 +32,20 @@
     color: mat-color($accent) !important;
   }
   .primary {
-    background-color: mat-color($primary) !important;
-    color: mat-color($accent) !important;
+    //background-color: mat-color($primary) !important;
+    color: mat-color($primary) !important;
   }
   .accent {
-    background-color: mat-color($accent) !important;
-    color: mat-color($primary) !important;
+   // background-color: mat-color($accent) !important;
+    color: mat-color($accent) !important;
   }
   .secondary {
     color: #2f3a51 !important;
   }
 
 }
-/*
 
+*/
 
 :root {
   --bgFilter: blur(0px);

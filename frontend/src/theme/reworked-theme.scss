@@ -2,6 +2,8 @@
 @use 'src/theme/components/drawer-theme' as drawer;
 @use 'src/theme/components/toolbar-theme' as toolbar;
 @use 'src/theme/components/tab-theme' as tab;
+@use 'src/theme/components/form-field-style' as form-field;
+@use 'src/theme/components/dialog-theme' as dialog;
 @import 'src/styles';
 
 @include mat.core();
@@ -99,8 +101,10 @@ $new-theme: mat.define-light-theme((
 
 
 @include mat.all-component-themes($new-theme);
-@include  toolbar.theme($new-theme);
-@include  drawer.theme($new-theme);
-@include  tab.theme($new-theme);
+@include toolbar.theme($new-theme);
+@include drawer.theme($new-theme);
+@include tab.theme($new-theme);
+@include form-field.theme($new-theme);
+@include dialog.theme($new-theme);
 @include background-color($new-theme);
 

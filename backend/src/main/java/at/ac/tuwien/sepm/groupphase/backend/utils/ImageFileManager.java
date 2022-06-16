@@ -69,7 +69,6 @@ public class ImageFileManager {
         String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();;
         relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
-            log.info("Writing sketch images to disk at path='{}'", relPath);
             log.info(s.toString()+" "+s.getImageData().length);
             outputStream.write(s.getImageData());
             log.info("Wrote sketch images to disk at path='{}'", relPath);

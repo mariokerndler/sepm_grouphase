@@ -281,6 +281,8 @@ public class UserDataGenerator {
             } else {
                 Sketch k = new Sketch();
                 k.setDescription("Sketch " + i);
+                k.setFileType(FileType.JPG);
+                k.setArtwork(a);
                 k.setImageUrl("data\\com\\adminSample Commission\\sketch" + i);
                 sketches.add(k);
 
@@ -325,6 +327,8 @@ public class UserDataGenerator {
                 a.setFileType(FileType.JPG);
             } else {
                 Sketch k = new Sketch();
+                k.setFileType(FileType.JPG);
+                k.setArtwork(a);
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
                 sketches.add(k);

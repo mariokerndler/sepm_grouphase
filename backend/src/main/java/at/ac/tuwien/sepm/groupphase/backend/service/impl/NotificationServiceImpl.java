@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -234,7 +233,7 @@ public class NotificationServiceImpl implements NotificationService {
                     NotificationFactory.createNotification(
                         NotificationType.COMMISSION_STATUS_IN_PROGRESS,
                         commissionId,
-                        artist
+                        user
                     )
                 );
                 case COMPLETED -> {

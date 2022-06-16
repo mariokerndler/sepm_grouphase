@@ -4,11 +4,9 @@ public final class NotificationMessages {
 
     // Commission candidate added
     public static final String COMMISSION_CANDIDATE_ADDED_TITLE = "A new candidate has been added to your commission.";
-    public static final String COMMISSION_CANDIDATE_ADDED_MESSAGE = "I HAVE NO IDEA WHAT TO WRITE HERE!";
 
     // Commission candidate removed
     public static final String COMMISSION_CANDIDATE_REMOVED_TITLE = "You have been removed as a candidate from a commission.";
-    public static final String COMMISSION_CANDIDATE_REMOVED_MESSAGE = "I HAVE NO IDEA WHAT TO WRITE HERE!";
 
     // Commission sketch added
     public static String commissionSketchAddedTitle(int amount) {
@@ -30,4 +28,6 @@ public final class NotificationMessages {
 
     public static final String COMMISSION_STATUS_CANCELLED_TITLE = "The commission has been cancelled.";
     public static final String COMMISSION_STATUS_COMPLETED_TITLE = "The commission has been completed.";
+    public static final String COMMISSION_STATUS_IN_PROGRESS_TITLE = "The commission information has been edited.";
+
 }

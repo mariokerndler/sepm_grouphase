@@ -8,59 +8,48 @@ import java.time.LocalDateTime;
 
 public final class NotificationFactory {
 
+    private static NotificationType type;
+    private static Long referenceId;
+    private static ApplicationUser user;
+
     public static Notification createNotification(
         NotificationType type,
         Long referenceId,
         ApplicationUser user,
         Integer amount) {
+
+        NotificationFactory.type = type;
+        NotificationFactory.referenceId = referenceId;
+        NotificationFactory.user = user;
+
         switch (type) {
             case COMMISSION_CANDIDATE_ADDED -> {
                 return createNotification(
-                    NotificationMessages.COMMISSION_CANDIDATE_ADDED_TITLE,
-                    NotificationMessages.COMMISSION_CANDIDATE_ADDED_MESSAGE,
-                    type,
-                    referenceId,
-                    user);
+                    NotificationMessages.COMMISSION_CANDIDATE_ADDED_TITLE);
             }
             case COMMISSION_CANDIDATE_REMOVED -> {
                 return createNotification(
-                    NotificationMessages.COMMISSION_CANDIDATE_REMOVED_TITLE,
-                    NotificationMessages.COMMISSION_CANDIDATE_REMOVED_MESSAGE,
-                    type,
-                    referenceId,
-                    user);
+                    NotificationMessages.COMMISSION_CANDIDATE_REMOVED_TITLE);
             }
             case COMMISSION_SKETCH_ADDED -> {
                 return createNotification(
-                    NotificationMessages.commissionSketchAddedTitle(amount),
-                    null,
-                    type,
-                    referenceId,
-                    user);
+                    NotificationMessages.commissionSketchAddedTitle(amount));
             }
             case COMMISSION_FEEDBACK_ADDED -> {
                 return createNotification(
-                    NotificationMessages.commissionFeedbackAddedTitle(amount),
-                    null,
-                    type,
-                    referenceId,
-                    user);
+                    NotificationMessages.commissionFeedbackAddedTitle(amount));
             }
             case COMMISSION_STATUS_CANCELLED -> {
                 return createNotification(
-                    NotificationMessages.COMMISSION_STATUS_CANCELLED_TITLE,
-                    null,
-                    type,
-                    referenceId,
-                    user);
+                    NotificationMessages.COMMISSION_STATUS_CANCELLED_TITLE);
             }
             case COMMISSION_STATUS_COMPLETED -> {
                 return createNotification(
-                    NotificationMessages.COMMISSION_STATUS_COMPLETED_TITLE,
-                    null,
-                    type,
-                    referenceId,
-                    user);
+                    NotificationMessages.COMMISSION_STATUS_COMPLETED_TITLE);
+            }
+            case COMMISSION_STATUS_IN_PROGRESS -> {
+                return createNotification(
+                    NotificationMessages.COMMISSION_STATUS_IN_PROGRESS_TITLE);
             }
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
@@ -74,20 +63,14 @@ public final class NotificationFactory {
     }
 
 
-    private static Notification createNotification(
-        String title,
-        String message,
-        NotificationType type,
-        Long referenceId,
-        ApplicationUser user) {
+    private static Notification createNotification(String title) {
         return Notification.builder()
             .title(title)
-            .message(message)
             .createdAt(LocalDateTime.now())
             .isRead(false)
-            .type(type)
-            .referenceId(referenceId)
-            .user(user)
+            .type(NotificationFactory.type)
+            .referenceId(NotificationFactory.referenceId)
+            .user(NotificationFactory.user)
             .build();
     }
 }

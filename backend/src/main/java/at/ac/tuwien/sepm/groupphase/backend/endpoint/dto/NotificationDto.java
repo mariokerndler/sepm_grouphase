@@ -27,10 +27,6 @@ public class NotificationDto {
     @NotBlank
     private String title;
 
-    @ValidAlphaNumeric
-    @Size(max = 500)
-    private String message;
-
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -50,14 +46,12 @@ public class NotificationDto {
     private Long userId;
 
     public NotificationDto(String title,
-                           String message,
                            LocalDateTime createdAt,
                            boolean isRead,
                            NotificationType type,
                            Long referenceId,
                            Long userId) {
         this.title = title;
-        this.message = message;
         this.createdAt = createdAt;
         this.isRead = isRead;
         this.type = type;
@@ -70,7 +64,6 @@ public class NotificationDto {
         return "NotificationDto{"
             + "id=" + id
             + ", title='" + title + '\''
-            + ", message='" + message + '\''
             + ", createdAt=" + createdAt
             + ", isRead=" + isRead
             + ", type=" + type

@@ -230,9 +230,13 @@ public class NotificationServiceImpl implements NotificationService {
                             commissionId,
                             artist));
                 }
-                case IN_PROGRESS -> {
-                    // TODO: Improve this
-                }
+                case IN_PROGRESS -> notifications.add(
+                    NotificationFactory.createNotification(
+                        NotificationType.COMMISSION_STATUS_IN_PROGRESS,
+                        commissionId,
+                        artist
+                    )
+                );
                 case COMPLETED -> {
                     notifications.add(
                         NotificationFactory.createNotification(

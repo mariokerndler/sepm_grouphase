@@ -24,9 +24,6 @@ public class Notification {
     @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(length = 500)
-    private String message;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false, name = "created_at")
@@ -56,7 +53,6 @@ public class Notification {
         return isRead() == that.isRead()
             && getId().equals(that.getId())
             & getTitle().equals(that.getTitle())
-            && getMessage().equals(that.getMessage())
             && getCreatedAt().equals(that.getCreatedAt())
             && getType() == that.getType()
             && getReferenceId().equals(that.getReferenceId())
@@ -67,7 +63,6 @@ public class Notification {
     public int hashCode() {
         return Objects.hash(getId(),
             getTitle(),
-            getMessage(),
             getCreatedAt(),
             isRead(),
             getType(),
@@ -80,7 +75,6 @@ public class Notification {
         return "Notification{"
             + "id=" + id
             + ", title='" + title + '\''
-            + ", message='" + message + '\''
             + ", createdAt=" + createdAt
             + ", isRead=" + isRead
             + ", type=" + type

@@ -8,7 +8,6 @@ import at.ac.tuwien.sepm.groupphase.backend.search.ArtistSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
-import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +35,11 @@ public class ArtworkEndpoint {
 
     private final ArtworkService artworkService;
     private final ArtworkMapper artworkMapper;
-    private final UserService userService;
 
     @Autowired
-    public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper, UserService userService) {
+    public ArtworkEndpoint(ArtworkService artworkService, ArtworkMapper artworkMapper) {
         this.artworkService = artworkService;
         this.artworkMapper = artworkMapper;
-        this.userService = userService;
     }
 
     //TODO: implementation arguably belongs to service class (feel free to move it :))
@@ -58,9 +55,8 @@ public class ArtworkEndpoint {
                                    @RequestParam(name = "artistIds", required = false) List<String> artistIds,
                                    @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
                                    @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
-        ;
+        log.info("A user is searching for an artwork.");
         TagSearchDto tagSearchDto = new TagSearchDto(tagIds, artistIds, searchOperations.toLowerCase(), pageNr, randomSeed);
-        log.info(tagSearchDto.toString());
         String search = tagSearchDto.getSearchOperations();
 
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
@@ -75,15 +71,9 @@ public class ArtworkEndpoint {
                 matcher.group(4),
                 matcher.group(3),
                 matcher.group(5));
-            log.info(matcher.group(1));
-            log.info(matcher.group(2));
-            log.info(matcher.group(3));
-            log.info(matcher.group(4));
-            log.info(matcher.group(5));
         }
 
         Specification<Artwork> spec = builder.build();
-
 
         if (tagSearchDto.getTagIds() != null) {
             if (tagSearchDto.getTagIds().size() > 0) {
@@ -92,9 +82,7 @@ public class ArtworkEndpoint {
                 }
                 for (String tag : tagSearchDto.getTagIds()) {
                     spec = spec.and(TagSpecification.filterByTags(tag).and(spec));
-                    log.info("filtering by:" + tag);
                 }
-
             }
         }
 
@@ -105,14 +93,12 @@ public class ArtworkEndpoint {
                 }
                 for (String artist : tagSearchDto.getArtistIds()) {
                     spec = spec.and(ArtistSpecification.filterBy(artist).and(spec));
-                    log.info("filtering by:" + artist);
                 }
-
             }
         }
 
         Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
-        return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
     }
 
 
@@ -121,14 +107,11 @@ public class ArtworkEndpoint {
     @GetMapping("/{id}")
     @Operation(summary = "getAllArtworksByArtist")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
-        log.info("Get /Artist");
+        log.info("A user is fetching all artworks by artist with id '{}'", id);
         try {
             List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
-            List<ArtworkDto> artworksDto = artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
-
-
-            return artworksDto;
+            return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
         } catch (Exception n) {
             log.error(n.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
@@ -140,13 +123,11 @@ public class ArtworkEndpoint {
     @DeleteMapping()
     @Operation(summary = "Delete artwork")
     public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
-        log.info("Delete Artwork " + artworkDto.getName());
+        log.info("A user is trying to delete an artwork.");
         try {
-
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-
         } catch (Exception n) {
-            log.error(n.getMessage());
+            log.error(n.getMessage() + artworkDto);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
@@ -156,10 +137,10 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post artwork")
     public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
-        log.debug("Post /Artwork/{}", artworkDto.toString());
+        log.debug("A user is trying to create a new artwork.");
 
         Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
-        artwork.setTags(artworkDto.getTags());
+        //TODO: does mapper really map tags?
         artworkService.saveArtwork(artwork);
 
     }

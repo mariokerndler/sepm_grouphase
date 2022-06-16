@@ -7,7 +7,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
-
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +28,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommissionRepositoryTest {
 
     @Autowired
+    ArtistRepository artistRepository;
+    @Autowired
     private CommissionRepository commissionRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    ArtistRepository artistRepository;
 
     @AfterEach
     public void afterEach() {
@@ -75,7 +74,7 @@ public class CommissionRepositoryTest {
         Commission commission = Commission.builder()
             .artist(artist)
             .customer(user)
-            .status(CommissionStatus.OPEN)
+            .status(CommissionStatus.LISTED)
             .sketchesShown(3)
             .feedbackSent(0)
             .price(300)
@@ -125,7 +124,7 @@ public class CommissionRepositoryTest {
         Commission commission = Commission.builder()
             .artist(artist)
             .customer(user)
-            .status(CommissionStatus.OPEN)
+            .status(CommissionStatus.LISTED)
             .sketchesShown(3)
             .feedbackSent(0)
             .price(300)
@@ -183,7 +182,7 @@ public class CommissionRepositoryTest {
         Commission commission = Commission.builder()
             .artist(artist)
             .customer(user)
-            .status(CommissionStatus.OPEN)
+            .status(CommissionStatus.LISTED)
             .sketchesShown(4)
             .feedbackSent(0)
             .price(8000)

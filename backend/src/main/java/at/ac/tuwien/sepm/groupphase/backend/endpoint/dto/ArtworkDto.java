@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Tag;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import lombok.Getter;
@@ -40,11 +39,11 @@ public class ArtworkDto {
 
     private List<@Valid SketchDto> sketchesDtos;
 
-    private List<Tag> tags;
+    private List<@Valid TagDto> tagsDtos;
 
     //TODO: make simple and detailed artwork dto (put this in while merging so I don't forget
 
-    public ArtworkDto(String name, String description, byte[] imageData, String imageUrl, FileType fileType, Long artistId, List<SketchDto> sketchesDtos, List<Tag> tags) {
+    public ArtworkDto(String name, String description, byte[] imageData, String imageUrl, FileType fileType, Long artistId, List<SketchDto> sketchesDtos, List<TagDto> tagsDtos) {
         this.name = name;
         this.description = description;
         this.imageData = imageData;
@@ -52,7 +51,7 @@ public class ArtworkDto {
         this.fileType = fileType;
         this.artistId = artistId;
         this.sketchesDtos = sketchesDtos;
-        this.tags = tags;
+        this.tagsDtos = tagsDtos;
     }
 
     @Override
@@ -65,7 +64,7 @@ public class ArtworkDto {
             + ", fileType=" + fileType
             + ", artistId=" + artistId
             + ", sketchesDtosIds=" + (sketchesDtos == null ? null : sketchesDtos.stream().map(SketchDto::getId))
-            + ", tags=" + tags
+            + ", tags=" + (tagsDtos == null ? null : tagsDtos.stream().map(TagDto::getName))
             + '}';
     }
 

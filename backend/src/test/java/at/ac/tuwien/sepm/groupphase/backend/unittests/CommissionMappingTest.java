@@ -28,26 +28,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommissionMappingTest {
 
     @Autowired
-    private CommissionMapper commissionMapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     CommissionRepository commissionRepository;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     ArtistRepository artistRepository;
-
     @Autowired
     ArtworkRepository artworkRepository;
-
     @Autowired
     ReviewRepository reviewRepository;
-
+    @Autowired
+    private CommissionMapper commissionMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private Artist artist;
     private Artist artistCandidate;
     private ApplicationUser user;
@@ -109,7 +102,7 @@ public class CommissionMappingTest {
             .artist(artist)
             .artistCandidates(List.of(artist, artistCandidate))
             .customer(user)
-            .status(CommissionStatus.OPEN)
+            .status(CommissionStatus.LISTED)
             .title("Cowboy Snail")
             .sketchesShown(3)
             .feedbackSent(0)
@@ -205,7 +198,7 @@ public class CommissionMappingTest {
         DetailedCommissionDto commissionDto = new DetailedCommissionDto(artistDto,
             List.of(artistDto, artistCandidateDto),
             userDto,
-            CommissionStatus.OPEN,
+            CommissionStatus.LISTED,
             3,
             0,
             2000.45,

@@ -29,7 +29,7 @@ public class Artwork extends Image implements HasId {
     @JoinColumn(name = "artist_id", nullable = false)
     private Artist artist;
 
-    @OneToMany(mappedBy = "artwork")
+    @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
     private List<Sketch> sketches;
 
     @OneToOne

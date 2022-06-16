@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.CommissionSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 public interface CommissionService {
@@ -55,6 +54,6 @@ public interface CommissionService {
      * @param commission The commission to be deleted.
      */
     void deleteCommission(Commission commission);
-
+    void assignArtist(Commission commission);
     List<Commission> searchCommissions(CommissionSearchDto cs);
 }

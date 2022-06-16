@@ -27,7 +27,7 @@ public class ApplicationUser {
     @Column(nullable = false, length = 50, unique = true)
     private String userName;
 
-    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private ProfilePicture profilePicture;
 
     @Column(nullable = false, length = 35)

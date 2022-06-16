@@ -6,10 +6,11 @@ public class ImageDataPaths {
     public static final String tagLocation = "data\\tags\\tags.txt";
     public static final String artistProfileLocation = "data\\ap\\";
     public static final String userProfilePictureLocation = "data\\upp\\";
+    public static final String defaultUserProfilePictureLocation = "data\\default_pfp.png";
     public static final String userProfilePictureIdentifier = "profile";
     public static final String refIdentifier = "ref";
     public static final String sketchIdentifier = "sk";
-    public static final String awhIdentifier = "aw";
+    public static final String artworkIdentifier = "aw";
     public static final String commissionLocation = "data\\com\\";
 
 

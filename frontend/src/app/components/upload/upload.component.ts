@@ -12,6 +12,7 @@ import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {LayoutComponent} from '../artist-page/artist-page-edit/layoutComponent';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {GlobalFunctions} from '../../global/globalFunctions';
 
 @Component({
   selector: 'app-upload',
@@ -40,7 +41,8 @@ export class UploadComponent implements OnInit {
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<UploadComponent>,
     private _ngZone: NgZone,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private  globalFunctions: GlobalFunctions) {
     this.uploadForm = this.formBuilder.group({
       artworkName: ['', [Validators.required]],
       description: [''],
@@ -75,21 +77,16 @@ export class UploadComponent implements OnInit {
       };
       reader.readAsDataURL(this.file.target.files[0]);
       reader.onload = () => {
-        if (this.uploadForm.valid) {
-          const base64result = reader.result.toString().split(',')[1];
-          const dataType = ((reader.result.toString().split(',')[0]).split(';')[0]).split('/')[1];
-          let filetype = FileType.jpg;
-          if (dataType === 'png') {
-            filetype = FileType.png;
-          }
-          if (dataType === 'gif') {
-            filetype = FileType.gif;
-          }
-          const binary = new Uint8Array(this.base64ToBinaryArray(base64result));
-          const image = Array.from(binary);
-          this.uploadNewImage(this.uploadForm.controls.artworkName.value, this.uploadForm.controls.description.value, image, filetype);
-          this.dialogRef.close();
+        if (!this.uploadForm.valid) {
+          return;
         }
+        const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
+        this.uploadNewImage(
+          this.uploadForm.controls.artworkName.value,
+          this.uploadForm.controls.description.value,
+          extractedValues[1],
+          extractedValues[0]);
+        this.dialogRef.close();
       };
     }
   }
@@ -102,18 +99,6 @@ export class UploadComponent implements OnInit {
     } as ArtworkDto;
     this.artworkService.createArtwork(artwork, null,
       () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork')).subscribe();
-  }
-
-
-  base64ToBinaryArray(base64: string) {
-
-    const binary = window.atob(base64);
-    const length = binary.length;
-    const bytes = new Uint8Array(length);
-    for (let i = 0; i < length; i++) {
-      bytes[i] = binary.charCodeAt(i);
-    }
-    return bytes.buffer;
   }
 
   triggerResize() {

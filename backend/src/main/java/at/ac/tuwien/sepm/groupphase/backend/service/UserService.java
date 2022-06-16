@@ -75,7 +75,7 @@ public interface UserService extends UserDetailsService {
     /**
      * Returns true/false if the old password is equal to the user's password.
      *
-     * @param user The user, which password will be checked.
+     * @param user        The user, which password will be checked.
      * @param oldPassword The old password which will be compared to.
      * @return true if the password matches, false if not.
      */

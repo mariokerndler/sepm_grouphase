@@ -93,9 +93,9 @@ public interface UserService extends UserDetailsService {
     /**
      * Saves the given user as an artist entity, preserving the original id.
      *
-     * @param user The user to upgrade.
+     * @param id The id of user to upgrade.
      */
-    void upgradeUserToArtist(ApplicationUser user);
+    void upgradeUserToArtist(Long id);
 
     /**
      * Deletes the user with the specified id, if there is a user with this id saved in the database.

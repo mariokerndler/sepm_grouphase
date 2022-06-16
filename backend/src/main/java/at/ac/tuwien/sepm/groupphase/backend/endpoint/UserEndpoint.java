@@ -137,8 +137,6 @@ public class UserEndpoint {
     public void upgradeUser(@PathVariable Long id) {
         log.info("A user is trying to upgrade application user with id {} to artist", id);
 
-        //TODO: shift this to userService
-        ApplicationUser applicationUser = userService.findUserById(id);
-        userService.upgradeUserToArtist(applicationUser);
+        userService.upgradeUserToArtist(id);
     }
 }

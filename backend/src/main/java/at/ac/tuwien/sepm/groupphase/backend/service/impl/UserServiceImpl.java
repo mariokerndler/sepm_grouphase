@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -157,16 +158,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void upgradeUserToArtist(ApplicationUser user) {
+    public void upgradeUserToArtist(Long id) {
         entityManager.createNativeQuery("UPDATE APPLICATION_USER SET USERTYPE = ?, USER_ROLE = ?, REVIEW_SCORE = 0 WHERE ID = ?")
             .setParameter(1, "Artist")
             .setParameter(2, 1)
-            .setParameter(3, user.getId())
+            .setParameter(3, id)
             .executeUpdate();
 
         entityManager.flush();
 
-        //TODO: Files manager for artist ?
+        ApplicationUser user = findUserById(id);
+        ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + user.getUserName());
+
+        //TODO: delete profile picture from profile picture folder?
+        if (user.getProfilePicture() != null) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
+            user.getProfilePicture().setImageUrl(imageUrl);
+        }
     }
 
     @Override

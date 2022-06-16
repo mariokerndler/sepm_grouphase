@@ -1,9 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Notification;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NotificationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.NotificationFactory;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -126,8 +124,8 @@ public class NotificationServiceImpl implements NotificationService {
         // Status changed
         notifications.addAll(
             addNewNotificationIfStatusChanged(
-                oldCommission.getStatus(),
-                newCommission.getStatus(),
+                oldCommission,
+                newCommission,
                 newCommission.getId(),
                 newCommission.getCustomer(),
                 newCommission.getArtist()));
@@ -208,15 +206,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     private List<Notification> addNewNotificationIfStatusChanged(
-        CommissionStatus oldStatus,
-        CommissionStatus newStatus,
+        Commission oldCommission,
+        Commission newCommission,
         Long commissionId,
         ApplicationUser user,
         ApplicationUser artist) {
         var notifications = new ArrayList<Notification>();
 
-        if (oldStatus != newStatus) {
-            switch (newStatus) {
+        if (oldCommission.getStatus() != newCommission.getStatus()) {
+            switch (newCommission.getStatus()) {
                 case CANCELLED -> {
                     notifications.add(
                         NotificationFactory.createNotification(
@@ -248,11 +246,39 @@ public class NotificationServiceImpl implements NotificationService {
                             commissionId,
                             artist));
                 }
-                case OPEN -> { }
-                default -> throw new IllegalStateException("Unexpected value: " + newStatus);
+                case OPEN, NEGOTIATING -> { }
+                default -> throw new IllegalStateException("Unexpected value: " + newCommission.getStatus());
+            }
+        } else if (oldCommission.getStatus() == CommissionStatus.NEGOTIATING
+            && newCommission.getStatus() == CommissionStatus.NEGOTIATING) {
+            if (commissionInformationChanged(oldCommission, newCommission)) {
+                notifications.add(
+                    NotificationFactory.createNotification(
+                        NotificationType.COMMISSION_STATUS_NEGOTIATING,
+                        commissionId,
+                        artist
+                    )
+                );
             }
         }
 
         return notifications;
+    }
+
+    private boolean commissionInformationChanged(Commission oldCommission, Commission newCommission) {
+        return (
+            oldCommission.getPrice() != newCommission.getPrice()
+            || !oldCommission.getDeadlineDate().equals(newCommission.getDeadlineDate())
+            || !oldCommission.getInstructions().equals(newCommission.getInstructions())
+            || commissionReferencesChanged(oldCommission.getReferences(), newCommission.getReferences()));
+    }
+
+    private boolean commissionReferencesChanged(List<Reference> oldReferences, List<Reference> newReferences) {
+        if (oldReferences == null
+            && newReferences == null) {
+            return false;
+        }
+
+        return Objects.requireNonNull(oldReferences).size() != Objects.requireNonNull(newReferences).size();
     }
 }

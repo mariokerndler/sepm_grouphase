@@ -15,6 +15,7 @@ import {CommissionCreationComponent} from './components/commission/commission-cr
 import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
 import {CommissionTimelineComponent}
   from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import {ChatComponent} from './chat/chat.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -31,7 +32,9 @@ const routes: Routes = [
   {path: 'commissions/:id', component: CommissionDetailsComponent},
   {path: 'commissions/:id/timeline', component: CommissionTimelineComponent},
   {path: 'commission-creation', component: CommissionCreationComponent},
+  {path: 'chat/:id', component: ChatComponent},
   {path: '**', redirectTo: 'feed'},
+
 
 ];
 

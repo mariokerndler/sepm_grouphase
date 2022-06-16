@@ -57,6 +57,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {
   ArtistGallerySubsectionsComponent
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
+import { NgChatModule } from 'ng-chat';
 
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { DeleteArtworkComponent } from './components/delete-artwork/delete-artwork.component';
@@ -66,6 +67,8 @@ import { CommissionTimelineComponent }
 import { CommissionTimeslotsComponent }
   from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
+// @ts-ignore
+import { ChatComponent } from './chat/chat.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -101,6 +104,7 @@ import {MAT_DATE_LOCALE} from '@angular/material/core';
     CommissionPageComponent,
     CommissionTimelineComponent,
     CommissionTimeslotsComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -117,6 +121,7 @@ import {MAT_DATE_LOCALE} from '@angular/material/core';
     DragDropModule,
     MatSliderModule,
     NgxSliderModule,
+    NgChatModule
   ],
   providers: [
     {

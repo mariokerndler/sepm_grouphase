@@ -236,7 +236,7 @@ public class ArtworkEndpointTest {
     @Test
     @Transactional
     @WithMockUser
-    public void givenNothing_addUser_postArtworkByUser_thenGetsUpgradedToArtist() throws Exception {
+    public void givenNothing_addUser_postArtworkByUser_expectBadRequest() throws Exception {
         ApplicationUserDto userDto = userMapper.userToUserDto(getTestUser());
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
@@ -254,7 +254,7 @@ public class ArtworkEndpointTest {
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
         ArtworkDto artworkDto = new ArtworkDto("Artwork by User",
-            "This is an artwork posted by a user that is not an artist yet",
+            "This is an artwork posted by a user that is not an artist",
             image, null, FileType.PNG, userId, null, null);
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -263,27 +263,7 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
-            .andExpect(status().isCreated()).andReturn();
-
-        /**
-         userDto.setId(userId);
-         userDto.setUserRole(UserRole.Artist);
-         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
-         String requestJson3 = ow3.writeValueAsString(userDto);
-
-         mockMvc.perform(put("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
-         .content(requestJson3))
-         .andExpect(status().isOk()).andReturn();
-         **/
-
-        users = allUsers();
-        assertEquals(1, users.size());
-        assertEquals(UserRole.Artist, users.get(0).getUserRole());
-
-        List<ArtistDto> artists = allArtists();
-        assertEquals(1, artists.size());
-        assertEquals(UserRole.Artist, artists.get(0).getUserRole());
+            .andExpect(status().isBadRequest()).andReturn();
     }
 
     public List<ArtistDto> allArtists() throws Exception {

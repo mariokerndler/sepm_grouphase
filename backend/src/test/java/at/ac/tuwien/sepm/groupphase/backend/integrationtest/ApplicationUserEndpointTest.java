@@ -155,7 +155,7 @@ public class ApplicationUserEndpointTest {
         List<ApplicationUserDto> users3 = allUsers();
         assertEquals(2, users3.size());
         assertTrue(users3.toString().contains("testmodify@atest.com"));
-        assertTrue(!users3.toString().contains("test2@atest.com"));
+        assertFalse(users3.toString().contains("test2@atest.com"));
 
         Long userId = users3.get(0).getId();
 
@@ -169,7 +169,7 @@ public class ApplicationUserEndpointTest {
 
     @Test
     @WithMockUser
-    public void upgradeUserToArtist() throws Exception {
+    public void upgradeUserToArtist_upgradesRelevantFields() throws Exception {
 
         ApplicationUser user = getTestUser1();
         userRepository.save(user);
@@ -193,8 +193,7 @@ public class ApplicationUserEndpointTest {
         assertEquals(user.getAddress(), artist.getAddress());
         assertEquals(user.getPassword(), artist.getPassword());
         assertEquals(user.getUserRole(), UserRole.User);
-        // TODO: FInd out why the hell this fails ? user is now clearly artist and artist is found by getAll ? Why is UserRole still User ?
-        assertEquals(artist.getUserRole(), UserRole.Artist);
+        assertEquals(UserRole.Artist, artist.getUserRole());
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {

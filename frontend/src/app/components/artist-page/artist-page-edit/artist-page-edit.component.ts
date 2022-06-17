@@ -15,7 +15,6 @@ import {TagService} from '../../../services/tag.service';
 import {Location} from '@angular/common';
 import {Color} from '@angular-material-components/color-picker';
 import {GlobalFunctions} from '../../../global/globalFunctions';
-import {AuthService} from '../../../services/auth.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {UserService} from '../../../services/user.service';
 import {MatChipInputEvent} from '@angular/material/chips';
@@ -339,6 +338,15 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     event.chipInput?.clear();
 
     this.tagForm.setValue(null);
+  }
+
+  upgradeUser(): void {
+    this.userService.upgradeUser(this.user.id).subscribe(
+      data => {
+        this.router.navigate([`/artist/${this.user.id}`]).catch((_) =>
+          this.notificationService.displayErrorSnackbar('Could not navigate to artist list.'));
+      }
+    );
   }
 
   private filterTags(value: TagDto): TagDto[] {

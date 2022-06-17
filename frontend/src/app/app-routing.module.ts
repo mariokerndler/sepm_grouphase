@@ -13,8 +13,9 @@ import {CommissionFeedComponent} from './components/commission/commission-feed/c
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
 import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
-import {CommissionTimelineComponent}
-  from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import {
+  CommissionTimelineComponent
+} from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
 import {ChatComponent} from './chat/chat.component';
 
 const routes: Routes = [
@@ -25,7 +26,7 @@ const routes: Routes = [
   {path: 'artist/:id/edit', canActivate: [AuthGuard], component: ArtistPageEditComponent},
   {path: 'user/:id/commissions', component: CommissionPageComponent},
   {path: 'user/:id', component: UserPageComponent},
-  {path: 'user/:id/edit', component: UserPageEditComponent},
+  {path: 'user/:id/edit', canActivate: [AuthGuard], component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},
   {path: 'artists', component: ArtistFeedComponent},
   {path: 'commissions', component: CommissionFeedComponent},

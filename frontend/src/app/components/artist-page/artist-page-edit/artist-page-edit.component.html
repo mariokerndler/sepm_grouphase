@@ -136,6 +136,13 @@
       </div>
     </mat-tab>
 
+    <mat-tab *ngIf="!isArtist" label="Upgrade to Artist">
+      <h2 class="primary">Upgrade from user to artist</h2>
+
+      <button (click)="upgradeUser()" color="accent" mat-flat-button>Upgrade</button>
+
+    </mat-tab>
+
     <mat-tab *ngIf="isArtist" label="Appearance">
       <h2 class="primary">Update the profile appearance</h2>
       <!--

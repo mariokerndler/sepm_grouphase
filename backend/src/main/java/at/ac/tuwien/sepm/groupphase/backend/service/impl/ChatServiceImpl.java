@@ -2,6 +2,8 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Chat;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ChatMessage;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ChatMessageRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ChatRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +16,10 @@ import java.util.List;
 @Service
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
-
-    public ChatServiceImpl(ChatRepository chatRepository) {
+    private final ChatMessageRepository chatMessageRepository;
+    public ChatServiceImpl(ChatRepository chatRepository, ChatMessageRepository chatMessageRepository) {
         this.chatRepository = chatRepository;
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     @Override
@@ -28,4 +31,12 @@ public class ChatServiceImpl implements ChatService {
         }
         return partners;
     }
+
+    @Override
+    public List<ChatMessage> getChatMessageHistory(String userId, String participantId) {
+        Chat c = this.chatRepository.getAllByUserAndChatPartner(userId,participantId);
+        return this.chatMessageRepository.getChatMessagesByChatId(String.valueOf(c.getId()));
+    }
+
+
 }

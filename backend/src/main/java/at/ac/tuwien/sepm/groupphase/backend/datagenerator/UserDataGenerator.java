@@ -44,6 +44,7 @@ public class UserDataGenerator {
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
     private final ChatRepository chatRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final CommissionRepository commissionRepository;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
@@ -63,7 +64,7 @@ public class UserDataGenerator {
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
-                             ChatRepository chatRepository, CommissionRepository commissionRepository) {
+                             ChatRepository chatRepository, ChatMessageRepository chatMessageRepository, CommissionRepository commissionRepository) {
         this.artistService = artistService;
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
@@ -71,6 +72,7 @@ public class UserDataGenerator {
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
         this.chatRepository = chatRepository;
+        this.chatMessageRepository = chatMessageRepository;
         this.commissionRepository = commissionRepository;
     }
 
@@ -104,21 +106,39 @@ public class UserDataGenerator {
     private  void generateChats() {
         List<ApplicationUser> users= this.userRepository.findAll();
 
-        ApplicationUser testuser=(ApplicationUser) users.stream().filter(a-> a.getUserName().toLowerCase().equals("testartist")).findAny().get();
-
+        ApplicationUser testUser=(ApplicationUser) users.stream().filter(a-> a.getUserName().toLowerCase().equals("testartist")).findAny().get();
+        Faker f = new Faker();
         for(int i=0; i<5;i++){
             Chat c = new Chat();
-            c.setUser(testuser);
+            c.setUser(testUser);
             c.setChatPartner(users.get(i+5));
             this.chatRepository.save(c);
+            for(int j =0; j<50;j++){
+                ChatMessage message= new ChatMessage();
+                message.setMessage(f.shakespeare().romeoAndJulietQuote());
+                if(j%2==0){
+                    message.setFromId(c.getUser().getId());
+                    message.setToId(c.getChatPartner().getId());
+                }
+                else{
+                    message.setToId(c.getUser().getId());
+                    message.setFromId(c.getChatPartner().getId());
+                }
+                message.setSentDate(LocalDateTime.now());
+                message.setChat(c);
+
+                this.chatMessageRepository.save(message);
+            }
+
+
         }
     }
-    private void loadTags(int numberOftags) throws FileNotFoundException {
+    private void loadTags(int numberOfTags) throws FileNotFoundException {
         File text = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.tagLocation);
         List<String> tags = new LinkedList<>();
         Scanner scanner = new Scanner(text);
-        while (scanner.hasNext() && numberOftags > 0) {
-            numberOftags--;
+        while (scanner.hasNext() && numberOfTags > 0) {
+            numberOfTags--;
             Tag t = new Tag(scanner.nextLine());
             if (!tags.contains(t.getName())) {
                 tags.add(t.getName());

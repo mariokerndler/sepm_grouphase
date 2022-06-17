@@ -17,7 +17,7 @@ export class Adapter implements ChatAdapter {
   }
 
   getMessageHistory(destinataryId: any): Observable<Message[]> {
-    return undefined;
+    return this.chatService.chatHistoryMapper(this.userId,destinataryId);
   }
 
   listFriends(): Observable<ParticipantResponse[]> {

@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, mergeMap, Observable, of} from 'rxjs';
 import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
 import {ApplicationUserDto} from '../dtos/applicationUserDto';
 import {ChatParticipantStatus, ParticipantResponse} from 'ng-chat';
+import {ChatMessage} from '../dtos/chat-message';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,16 @@ export class ChatService {
          return this.notificationService.notifyUserAboutFailedOperation<ParticipantResponse[]>('Finding chat list')(err);
        })
      );
+ }
+ chatHistoryMapper(userId: string, participantId: string): Observable<ChatMessage[]>{
+   const params = new HttpParams()
+     .set('userId', userId)
+     .set('participantId', participantId);
+   const searchOptions = {
+     headers: this.headers,
+     params
+   };
+   return this.http.get<ChatMessage[]>(`${this.chatsBaseUri}`+'/history', searchOptions);
  }
   getChatList(id: string, errorAction?: () => void): Observable<ApplicationUserDto[]> {
     return this.http.get<ApplicationUserDto[]>(`${this.chatsBaseUri}/${id}`, this.options)

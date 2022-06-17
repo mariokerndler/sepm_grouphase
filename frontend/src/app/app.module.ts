@@ -58,14 +58,18 @@ import {
   ArtistGallerySubsectionsComponent
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
 
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { DeleteArtworkComponent } from './components/delete-artwork/delete-artwork.component';
-import { CommissionPageComponent } from './components/artist-page/commission-page/commission-page.component';
-import { CommissionTimelineComponent }
-  from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
-import { CommissionTimeslotsComponent }
-  from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
+import {NgxSliderModule} from '@angular-slider/ngx-slider';
+import {DeleteArtworkComponent} from './components/delete-artwork/delete-artwork.component';
+import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
+import {
+  CommissionTimelineComponent
+} from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import {
+  CommissionTimeslotsComponent
+} from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
+import {PaymentComponent} from './components/payment/payment.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -101,6 +105,7 @@ import {MAT_DATE_LOCALE} from '@angular/material/core';
     CommissionPageComponent,
     CommissionTimelineComponent,
     CommissionTimeslotsComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public abstract class ChatMessageMapper {
 
     public abstract ChatMessageDto chatMessageToChatMessageDto(ChatMessage message);
-    public abstract ChatMessage  chatMessageDtoToChatMessage(ChatMessage message);
+    public abstract ChatMessage  chatMessageDtoToChatMessage(ChatMessageDto message);
 
 }

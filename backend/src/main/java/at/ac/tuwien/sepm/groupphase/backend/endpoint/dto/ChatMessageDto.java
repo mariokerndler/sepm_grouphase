@@ -22,5 +22,13 @@ public class ChatMessageDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime sentDate;
 
-
+    @Override
+    public String toString() {
+        return "ChatMessageDto{" +
+            "message='" + message + '\'' +
+            ", fromId=" + fromId +
+            ", toId=" + toId +
+            ", sentDate=" + sentDate +
+            '}';
+    }
 }

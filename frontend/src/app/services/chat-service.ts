@@ -4,8 +4,9 @@ import {catchError, mergeMap, Observable, of} from 'rxjs';
 import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
 import {ApplicationUserDto} from '../dtos/applicationUserDto';
-import {ChatParticipantStatus, ParticipantResponse} from 'ng-chat';
-import {ChatMessage} from '../dtos/chat-message';
+import {ChatParticipantStatus, Message, ParticipantResponse} from 'ng-chat';
+import {ChatMessageDto} from '../dtos/chat-message-dto';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class ChatService {
        })
      );
  }
- chatHistoryMapper(userId: string, participantId: string): Observable<ChatMessage[]>{
+ chatHistoryMapper(userId: string, participantId: string): Observable<ChatMessageDto[]>{
    const params = new HttpParams()
      .set('userId', userId)
      .set('participantId', participantId);
@@ -49,7 +50,7 @@ export class ChatService {
      headers: this.headers,
      params
    };
-   return this.http.get<ChatMessage[]>(`${this.chatsBaseUri}`+'/history', searchOptions);
+   return this.http.get<ChatMessageDto[]>(`${this.chatsBaseUri}`+'/history', searchOptions);
  }
   getChatList(id: string, errorAction?: () => void): Observable<ApplicationUserDto[]> {
     return this.http.get<ApplicationUserDto[]>(`${this.chatsBaseUri}/${id}`, this.options)
@@ -61,5 +62,20 @@ export class ChatService {
           return this.notificationService.notifyUserAboutFailedOperation<ApplicationUserDto[]>('Finding chat list')(err);
         })
       );
+  }
+  postChatMessage(message: ChatMessageDto, errorAction?: () => void, successAction?: () => void): Observable<ChatMessageDto> {
+    return this.http.post<ChatMessageDto>(this.chatsBaseUri, message, this.options)
+      .pipe(
+        catchError((err) => {
+          if (errorAction != null) {
+            errorAction();
+          }
+          return this.notificationService.notifyUserAboutFailedOperation<ChatMessageDto>('Error sending Message')(err);
+        }),
+        tap(_ => {
+          if (successAction != null) {
+            successAction();
+          }
+        }));
   }
 }

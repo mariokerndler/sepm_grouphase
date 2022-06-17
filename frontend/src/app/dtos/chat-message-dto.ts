@@ -1,4 +1,4 @@
-export  class  ChatMessage{
+export  class ChatMessageDto {
   fromId: number;
   toId: number;
   message: string;

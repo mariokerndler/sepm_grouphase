@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ChatMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ChatMessageMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.ChatMessage;
 import at.ac.tuwien.sepm.groupphase.backend.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class ChatEndpoint {
 
     @Autowired
     public ChatEndpoint(ChatService chatService, UserMapper userMapper, ChatMessageMapper chatMessageMapper) {
-        this.userMapper=userMapper;
+        this.userMapper = userMapper;
         this.chatService = chatService;
         this.chatMessageMapper = chatMessageMapper;
     }
@@ -48,6 +49,7 @@ public class ChatEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/history")
@@ -68,4 +70,18 @@ public class ChatEndpoint {
         }
     }
 
+    @PermitAll
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Post chatMessage")
+    public void postArtwork(@RequestBody ChatMessageDto chatMessageDto) {
+        log.debug("Endpoint: postChatMessage()." + chatMessageDto.toString());
+        try {
+            ChatMessage chatMessage = chatMessageMapper.chatMessageDtoToChatMessage(chatMessageDto);
+            chatService.postChatMessage(chatMessage);
+        } catch (Exception v) {
+            log.error(v.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        }
+    }
 }

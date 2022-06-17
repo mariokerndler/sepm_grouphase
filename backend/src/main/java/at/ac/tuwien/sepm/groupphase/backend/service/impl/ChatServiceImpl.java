@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +37,23 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatMessage> getChatMessageHistory(String userId, String participantId) {
         Chat c = this.chatRepository.getAllByUserAndChatPartner(userId,participantId);
         return this.chatMessageRepository.getChatMessagesByChatId(String.valueOf(c.getId()));
+    }
+
+    @Override
+    public void postChatMessage(ChatMessage chatMessage) {
+        if(chatMessage.getSentDate()==null){
+            chatMessage.setSentDate( LocalDateTime.now());
+        }
+        Chat c = this.chatRepository.getAllByUserAndChatPartner(String.valueOf(chatMessage.getFromId())
+            ,String.valueOf(chatMessage.getToId()));
+        if(c==null){
+            this.chatRepository.getAllByUserAndChatPartner(String.valueOf(chatMessage.getToId())
+                ,String.valueOf(chatMessage.getFromId()));
+        }
+        chatMessage.setChat(c);
+
+        this.chatMessageRepository.save(chatMessage);
+
     }
 
 

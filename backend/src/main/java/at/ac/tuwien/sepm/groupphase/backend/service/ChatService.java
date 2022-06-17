@@ -11,4 +11,6 @@ public interface ChatService {
     List<ApplicationUser> getChatListForUser(long id);
 
     List<ChatMessage> getChatMessageHistory(String  userId, String participantId);
+
+    void postChatMessage(ChatMessage chatMessage);
 }

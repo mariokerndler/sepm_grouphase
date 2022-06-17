@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.FileManagerException;
 import at.ac.tuwien.sepm.groupphase.backend.utils.AssetUrls;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
-import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -30,8 +29,8 @@ public class AssetGenerator {
     }
 
     private void downloadDefaultPfpIfNotPresent() {
-
-        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.defaultUserProfilePictureLocation + "." + FileType.PNG.name().toLowerCase());
+        log.info("Downloading default profile picture ...");
+        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.defaultUserProfilePictureLocation);
 
         if (!f.exists() && !f.isFile()) {
             try {

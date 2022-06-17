@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
         ApplicationUser oldUser = findUserById(user.getId());
 
         // TODO: Expand functionality to renaming upp folder
-        if (user.getProfilePicture() != null) {
+        if (user.getProfilePicture() != null && user.getProfilePicture().getImageData() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
 
@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + user.getUserName());
 
         //TODO: delete profile picture from profile picture folder?
-        if (user.getProfilePicture() != null) {
+        if (user.getProfilePicture() != null && user.getProfilePicture().getImageData() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
             user.getProfilePicture().setImageUrl(imageUrl);
         }

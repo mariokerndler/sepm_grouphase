@@ -1,5 +1,5 @@
 import {ChatAdapter, IChatParticipant, Message, ParticipantResponse} from 'ng-chat';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 
 export class Adapter implements ChatAdapter{
   friendsListChangedHandler(participantsResponse: ParticipantResponse[]): void {

@@ -75,7 +75,6 @@ public class ArtistEndpoint {
         }
     }
 
-
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
@@ -91,11 +90,10 @@ public class ArtistEndpoint {
         }
     }
 
-
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    @Operation(summary = "Get  artist by id")
+    @Operation(summary = "Get artist by id")
     @Transactional
     public ArtistDto getArtistById(@PathVariable Long id) {
         try {

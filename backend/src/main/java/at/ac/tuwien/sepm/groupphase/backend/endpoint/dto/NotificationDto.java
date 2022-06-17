@@ -42,7 +42,6 @@ public class NotificationDto {
     private Long referenceId;
 
     @NotNull
-    @Valid
     private Long userId;
 
     public NotificationDto(String title,

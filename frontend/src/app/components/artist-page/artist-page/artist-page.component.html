@@ -34,8 +34,17 @@
             </mat-tab>
             <mat-tab label="Contact">
             </mat-tab>
-            <mat-tab label="My Commissions">
+            <mat-tab *ngIf="canEdit" label="My Commissions">
               <app-commission-page [user]="artist"></app-commission-page>
+            </mat-tab>
+            <mat-tab *ngIf="canEdit">
+              <ng-template mat-tab-label>
+                <span [matBadge]="notifications.length > 9 ? '9+' : notifications.length" matBadgeOverlap="false" matBadgeColor="warn" [matBadgeHidden]="!hasNotifications">Notifications</span>
+              </ng-template>
+              <br>
+              <div *ngIf="hasNotifications">
+                <div *ngFor="let notification of notifications">{{notification.title}}</div>
+              </div>
             </mat-tab>
           </mat-tab-group>
         </div>

@@ -10,6 +10,7 @@ import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Location} from '@angular/common';
 import {Globals} from '../../../global/globals';
+import {NotificationDto} from '../../../dtos/notificationDto';
 
 @Component({
   selector: 'app-artist-page',
@@ -26,6 +27,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   canEdit = false;
   tabIndex = 0;
   profilePicture;
+
+  hasNotifications = false;
+  notifications: NotificationDto[];
 
   private routeSubscription: Subscription;
 
@@ -46,9 +50,10 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
       (params) => this.userService.getUserById(params.id, () => this.navigateToArtistList())
         .subscribe((user) => {
           this.user = user;
-          console.log(user);
 
           this.setProfilePicture();
+
+          this.fetchNotifications();
 
           if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
@@ -126,5 +131,15 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     } else {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
     }
+  }
+
+  private fetchNotifications() {
+    this.notifications = [];
+
+    this.notificationService.getUnreadNotificationsByUserId(this.user.id)
+      .subscribe((notifications) => {
+        this.notifications = notifications;
+        this.hasNotifications = this.notifications.length > 0;
+      });
   }
 }

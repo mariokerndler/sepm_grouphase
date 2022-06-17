@@ -117,7 +117,7 @@ public class NotificationEndpoint {
     @Transactional
     @PatchMapping("/{id}/{hasRead}")
     @Operation(summary = "Mark all notifications as read true/false by user id.")
-    public NotificationDto updateNotificationIsRead(
+    public NotificationDto pathNotificationIsReadOfIdFromUser(
         @PathVariable Long id,
         @PathVariable Boolean hasRead,
         @RequestParam("userId") Long userId
@@ -142,6 +142,23 @@ public class NotificationEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    @Operation(summary = "Create a new notification")
+    @Transactional
+    public void createNotification(@RequestBody NotificationDto notificationDto) {
+        log.info("A user is trying to create a notifications.");
+        try {
+            notificationService
+                .saveNotification(notificationMapper.notificationDtoToNotification(notificationDto));
+        } catch (Exception e) {
+            log.error(e.getMessage() + notificationDto.toString(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        }
+    }
+
 
     private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationType notificationType, Integer limit) {
         var user = userService.findUserById(userId);

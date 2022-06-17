@@ -19,6 +19,10 @@
   .mat-form-field-underline{
     background-color: darkgray !important;
   }
+  .mat-form-field-underline .mat-form-field-ripple{
+    background-color: mat.get-color-from-palette($primary-palette, 200) !important;
+  }
+
 
   .mat-focused .mat-form-field-label {
     color: mat.get-color-from-palette($primary-palette, 200) !important;

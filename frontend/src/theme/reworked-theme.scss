@@ -4,6 +4,7 @@
 @use 'src/theme/components/tab-theme' as tab;
 @use 'src/theme/components/form-field-style' as form-field;
 @use 'src/theme/components/dialog-theme' as dialog;
+@use 'src/theme/components/option-theme' as option;
 @import 'src/styles';
 
 @include mat.core();
@@ -106,5 +107,6 @@ $new-theme: mat.define-light-theme((
 @include tab.theme($new-theme);
 @include form-field.theme($new-theme);
 @include dialog.theme($new-theme);
+@include option.theme($new-theme);
 @include background-color($new-theme);
 

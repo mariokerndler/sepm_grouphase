@@ -133,7 +133,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate([`artist/${this.user.id}`]);
   }
 
   updateUserInformation() {

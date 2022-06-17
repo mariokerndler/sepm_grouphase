@@ -21,6 +21,7 @@ import {NotificationService} from '../../../services/notification/notification.s
 import {CommissionStatus} from '../../../global/CommissionStatus';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
+import {ChatParticipantStatus, ChatParticipantType} from "ng-chat";
 
 
 @Component({
@@ -61,7 +62,11 @@ export class CommissionCreationComponent implements OnInit {
       password: 'string',
       admin: true,
       userRole: UserRole.admin,
-      profilePictureDto: null
+      profilePictureDto: null,
+      displayName:'',
+      avatar: null,
+      participantType:  ChatParticipantType.User,
+      status: ChatParticipantStatus.Online
     },
     deadlineDate: '',
     feedbackSent: 0,

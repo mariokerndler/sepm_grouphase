@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ChatAdapter} from 'ng-chat';
 import {Adapter} from './adapter';
+import {ChatService} from '../services/chat-service';
 
 @Component({
   selector: 'app-chat',
@@ -12,9 +13,10 @@ import {Adapter} from './adapter';
 export class ChatComponent implements OnInit {
 
   public userId;
-  public adapter: ChatAdapter = new Adapter();
+  public adapter: ChatAdapter ;
 
-  constructor() {
+  constructor(private chatService: ChatService) {
+
   }
 
   getUserId(): void {
@@ -26,6 +28,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserId();
+    this.adapter = new Adapter(this.chatService,this.userId);
   }
 
 }

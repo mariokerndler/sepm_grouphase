@@ -43,6 +43,7 @@ public class UserDataGenerator {
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
+    private final ChatRepository chatRepository;
     private final CommissionRepository commissionRepository;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
@@ -62,13 +63,14 @@ public class UserDataGenerator {
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
-                             CommissionRepository commissionRepository) {
+                             ChatRepository chatRepository, CommissionRepository commissionRepository) {
         this.artistService = artistService;
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
+        this.chatRepository = chatRepository;
         this.commissionRepository = commissionRepository;
     }
 
@@ -97,9 +99,20 @@ public class UserDataGenerator {
         if (commissionRepository.findAll().size() < 2) {
             generateTestCommissions();
         }
-
+        generateChats();
     }
+    private  void generateChats() {
+        List<ApplicationUser> users= this.userRepository.findAll();
 
+        ApplicationUser testuser=(ApplicationUser) users.stream().filter(a-> a.getUserName().toLowerCase().equals("testartist")).findAny().get();
+
+        for(int i=0; i<5;i++){
+            Chat c = new Chat();
+            c.setUser(testuser);
+            c.setChatPartner(users.get(i+5));
+            this.chatRepository.save(c);
+        }
+    }
     private void loadTags(int numberOftags) throws FileNotFoundException {
         File text = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.tagLocation);
         List<String> tags = new LinkedList<>();

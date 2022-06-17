@@ -1,8 +1,16 @@
 import {ChatAdapter, IChatParticipant, Message, ParticipantResponse} from 'ng-chat';
-import {Observable} from "rxjs";
+import {forkJoin, Observable, of, switchMap} from 'rxjs';
+import {ChatService} from '../services/chat-service';
 
-export class Adapter implements ChatAdapter{
+export class Adapter implements ChatAdapter {
+
+
+  constructor(private chatService: ChatService, private userId: string) {
+
+  }
+
   friendsListChangedHandler(participantsResponse: ParticipantResponse[]): void {
+
   }
 
   messageReceivedHandler(participant: IChatParticipant, message: Message): void {
@@ -13,7 +21,7 @@ export class Adapter implements ChatAdapter{
   }
 
   listFriends(): Observable<ParticipantResponse[]> {
-    return undefined;
+      return this.chatService.chatListWrapper(this.userId);
   }
 
   onFriendsListChanged(participantsResponse: ParticipantResponse[]): void {

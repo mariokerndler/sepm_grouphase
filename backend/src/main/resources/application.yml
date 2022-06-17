@@ -3,6 +3,7 @@ logging:
   level:
     root: Info
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    at.ac.tuwien.sepm.groupphase.backend: DEBUG
 
 spring:
   datasource:

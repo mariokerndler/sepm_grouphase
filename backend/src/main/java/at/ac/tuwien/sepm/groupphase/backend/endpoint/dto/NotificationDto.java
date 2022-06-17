@@ -8,12 +8,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
+/**
+ * Contains all properties needed to represent a
+ * {@link at.ac.tuwien.sepm.groupphase.backend.entity.Notification notification entity} outside of the system.
+ */
 @NoArgsConstructor
 @Getter
 @Setter

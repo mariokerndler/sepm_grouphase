@@ -72,11 +72,10 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification saveNotification(Notification notification) {
+    public void saveNotification(Notification notification) {
         log.trace("calling saveNotification() ...");
-        var savedNotification = this.notificationRepository.save(notification);
+        this.notificationRepository.save(notification);
         log.info("Saved notification with id='{}'", notification.getId());
-        return savedNotification;
     }
 
     @Override

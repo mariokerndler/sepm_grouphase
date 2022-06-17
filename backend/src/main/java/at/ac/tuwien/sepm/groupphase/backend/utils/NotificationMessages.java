@@ -26,6 +26,7 @@ public final class NotificationMessages {
         }
     }
 
+    // Commission status changed
     public static final String COMMISSION_STATUS_CANCELLED_TITLE = "The commission has been cancelled.";
     public static final String COMMISSION_STATUS_COMPLETED_TITLE = "The commission has been completed.";
     public static final String COMMISSION_STATUS_IN_PROGRESS_TITLE = "The commission is now in progress.";

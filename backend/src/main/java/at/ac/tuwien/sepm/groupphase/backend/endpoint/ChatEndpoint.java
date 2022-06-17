@@ -1,9 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ChatDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ChatMessageDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ChatMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ChatMessageMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Chat;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ChatMessage;
 import at.ac.tuwien.sepm.groupphase.backend.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,12 +28,13 @@ public class ChatEndpoint {
     private final ChatService chatService;
     private final UserMapper userMapper;
     private final ChatMessageMapper chatMessageMapper;
-
+    private final ChatMapper chatMapper;
     @Autowired
-    public ChatEndpoint(ChatService chatService, UserMapper userMapper, ChatMessageMapper chatMessageMapper) {
+    public ChatEndpoint(ChatService chatService, UserMapper userMapper, ChatMessageMapper chatMessageMapper, ChatMapper chatMapper) {
         this.userMapper = userMapper;
         this.chatService = chatService;
         this.chatMessageMapper = chatMessageMapper;
+        this.chatMapper = chatMapper;
     }
 
 
@@ -69,12 +73,25 @@ public class ChatEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
-
+    @PermitAll
+    @PostMapping("/chat")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Post Chat")
+    public void postChat(@RequestBody ChatDto chatDto) {
+        log.debug("Endpoint: postChat()." + chatDto.toString());
+        try {
+            Chat c= this.chatMapper.ChatDtoToChat(chatDto);
+            chatService.postChat(c);
+        } catch (Exception v) {
+            log.error(v.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        }
+    }
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post chatMessage")
-    public void postArtwork(@RequestBody ChatMessageDto chatMessageDto) {
+    public void postChatMessage(@RequestBody ChatMessageDto chatMessageDto) {
         log.debug("Endpoint: postChatMessage()." + chatMessageDto.toString());
         try {
             ChatMessage chatMessage = chatMessageMapper.chatMessageDtoToChatMessage(chatMessageDto);

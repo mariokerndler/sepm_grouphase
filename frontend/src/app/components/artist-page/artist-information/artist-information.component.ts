@@ -4,6 +4,9 @@ import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtworkDto} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
+import {ChatDto} from "../../../dtos/chatDto";
+import {ChatService} from "../../../services/chat-service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -26,7 +29,8 @@ export class ArtistInformationComponent implements OnInit {
   artistUrl = 'https://picsum.photos/150/150';
 
 
-  constructor(private artworkService: ArtworkService, public globalFunctions: GlobalFunctions,) {
+  constructor(private artworkService: ArtworkService, public globalFunctions: GlobalFunctions,private chatService: ChatService,
+              private  router: Router) {
   }
 
   ngOnInit(): void {
@@ -39,5 +43,16 @@ export class ArtistInformationComponent implements OnInit {
   switchTab(index) {
     this.tabIndexEvent.emit(index);
   }
-
+  messageUser() {
+    const id = Number.parseInt(localStorage.getItem('userId'), 10);
+    const chat: ChatDto = {
+      chatPartnerId: this.artist.id, userId: id
+    };
+    console.log(chat);
+    this.chatService.postChat(chat).subscribe(success => {
+      this.router.navigate(['/chat/' + id]);
+    },error => {
+      this.router.navigate(['/chat/' + id]);
+    });
+  }
 }

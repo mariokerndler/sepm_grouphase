@@ -7,6 +7,7 @@ import {ApplicationUserDto} from '../dtos/applicationUserDto';
 import {ChatParticipantStatus, Message, ParticipantResponse} from 'ng-chat';
 import {ChatMessageDto} from '../dtos/chat-message-dto';
 import {tap} from 'rxjs/operators';
+import {ChatDto} from "../dtos/chatDto";
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,16 @@ export class ChatService {
           }
           return this.notificationService.notifyUserAboutFailedOperation<ChatMessageDto>('Error sending Message')(err);
         }),
+        tap(_ => {
+          if (successAction != null) {
+            successAction();
+          }
+        }));
+  }
+
+  postChat(message: ChatDto, errorAction?: () => void, successAction?: () => void): Observable<ChatDto> {
+    return this.http.post<ChatDto>(this.chatsBaseUri+'/chat', message, this.options)
+      .pipe(
         tap(_ => {
           if (successAction != null) {
             successAction();

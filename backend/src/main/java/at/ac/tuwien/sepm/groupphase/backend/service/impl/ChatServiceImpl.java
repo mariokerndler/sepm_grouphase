@@ -56,5 +56,11 @@ public class ChatServiceImpl implements ChatService {
 
     }
 
+    @Override
+    public void postChat(Chat chat) {
+
+        this.chatRepository.save(chat);
+    }
+
 
 }

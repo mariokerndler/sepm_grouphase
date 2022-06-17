@@ -1,8 +1,7 @@
 import {ChatAdapter, IChatParticipant, Message, ParticipantResponse} from 'ng-chat';
 import {forkJoin, Observable, of, switchMap} from 'rxjs';
 import {ChatService} from '../services/chat-service';
-import {MessageDto} from "../dtos/messageDto";
-import {ChatMessageDto} from "../dtos/chat-message-dto";
+import {ChatMessageDto} from '../dtos/chat-message-dto';
 
 export class Adapter implements ChatAdapter {
 
@@ -35,8 +34,6 @@ export class Adapter implements ChatAdapter {
      const m: ChatMessageDto={
        dateSent:message.dateSeen, fromId: message.fromId, message: message.message, toId: message.toId
      };
-
-    console.log(m)
     this.chatService.postChatMessage(m).subscribe();
 
   }

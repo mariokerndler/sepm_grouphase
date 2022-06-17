@@ -9,19 +9,6 @@
   $primary-palette: map.get($color-config, 'primary');
   $accent-palette: map.get($color-config, 'accent');
 
-  mat-card{
-    background: darkgray !important;
-    color: #434F6A !important;
-    border: 4px lightgray solid !important;
-  }
-
-  mat-card:hover{
-    border: 4px solid  mat.get-color-from-palette($primary-palette, 200) !important;
-    background: mat.get-color-from-palette($primary-palette, 200) !important;
-    color: mat.get-color-from-palette($primary-palette, 800) !important;
-  }
-
-
 }
 
 

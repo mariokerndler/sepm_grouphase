@@ -46,6 +46,10 @@
     }
   }
 
+  .mat-hint{
+    color: mat.get-color-from-palette($primary-palette, 100) !important;
+  }
+
 
 
 }

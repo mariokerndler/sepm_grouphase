@@ -82,7 +82,7 @@ public class CommissionServiceImpl implements CommissionService {
         log.trace("calling updateCommission() ...");
         log.info("Writing Sketc1h");
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
-        if (c.getArtwork().getSketches() != null) {
+        if (c.getArtwork() != null && c.getArtwork().getSketches() != null) {
 
 
             int sketchCount = c.getArtwork().getSketches().size();

@@ -113,7 +113,6 @@ export class ArtworkService {
           if (errorAction != null) {
             errorAction();
           }
-
           return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto>('Creating Artwork')(err);
         }),
         tap(_ => {

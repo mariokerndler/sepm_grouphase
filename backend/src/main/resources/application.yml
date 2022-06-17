@@ -1,7 +1,7 @@
 logging:
   file.name: ./log/backend.log
   level:
-    root: Info
+    root: debug
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
 
 spring:

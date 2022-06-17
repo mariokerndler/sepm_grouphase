@@ -19,22 +19,23 @@ public class Chat {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Artist artist;
+    private ApplicationUser user;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private ApplicationUser customer;
+    private ApplicationUser chatPartner;
 
     @OneToMany(mappedBy = "chat")
     private List<ChatMessage> messages;
 
     @Override
     public String toString() {
-        return "Chat{"
-            + "id=" + id
-            + ", artist=" + artist.getId()
-            + ", customer=" + customer.getId()
-            + '}';
+        return "Chat{" +
+            "id=" + id +
+            ", user=" + user +
+            ", chatPartner=" + chatPartner +
+            ", messages=" + messages +
+            '}';
     }
 
     @Override

@@ -1,7 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,9 +20,17 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 500)
-    private String text;
+    @Column(nullable = false)
+    private  Long fromId;
+    @Column(nullable = false)
+    private  Long toId;
 
+
+    @Column(nullable = false, length = 1000)
+    private String message;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false, name = "sent_date")
     private LocalDateTime sentDate;
 
@@ -28,8 +38,8 @@ public class ChatMessage {
     @JoinColumn(nullable = false, name = "chat")
     private Chat chat;
 
-    public ChatMessage(String text, LocalDateTime sentDate) {
-        this.text = text;
+    public ChatMessage(String message, LocalDateTime sentDate) {
+        this.message = message;
         this.sentDate = sentDate;
     }
 
@@ -37,7 +47,7 @@ public class ChatMessage {
     public String toString() {
         return "ChatMessage{"
             + "id=" + id
-            + ", text='" + text + '\''
+            + ", message='" + message + '\''
             + ", sentDate=" + sentDate
             + ", chat=" + chat.getId()
             + '}';

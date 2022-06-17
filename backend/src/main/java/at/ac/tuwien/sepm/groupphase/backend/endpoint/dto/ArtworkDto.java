@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,11 +18,13 @@ public class ArtworkDto {
     private Long id;
 
     @Size(max = 50)
-    @ValidAlphaNumeric
+    //TODO: make spaces legal
+    //@ValidAlphaNumeric
     private String name;
 
     @Size(max = 255)
-    @ValidAlphaNumeric
+    //TODO: make spaces legal
+    //@ValidAlphaNumeric
     private String description;
 
     private byte[] imageData;

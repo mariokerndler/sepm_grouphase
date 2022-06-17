@@ -165,17 +165,6 @@ public class ApplicationUserEndpointTest {
         assertTrue(users3.toString().contains("testmodify@atest.com"));
         assertFalse(users3.toString().contains("test2@atest.com"));
 
-        /*
-        Long userId = users3.get(0).getId();
-
-        mockMvc.perform(delete("/api/v1/users/" + userId))
-            .andExpect(status().isOk()).andReturn();
-
-        List<ApplicationUserDto> users4 = allUsers();
-        assertEquals(1, users4.size());
-        assertFalse(users4.toString().contains("test@atest.com"));
-
-         */
     }
 
     @Test
@@ -242,8 +231,8 @@ public class ApplicationUserEndpointTest {
         assertEquals(1, allArtists().size());
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
-        ArtworkDto artworkDto = new ArtworkDto("ArtworkbynewArtist",
-            "Thiscription",
+        ArtworkDto artworkDto = new ArtworkDto("Artwork by new Artist",
+            "This is the description of an artwork posted by a rookie artist",
             image, null, FileType.PNG, userDto.getId(), null, null);
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -253,6 +242,15 @@ public class ApplicationUserEndpointTest {
         mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson1))
             .andExpect(status().isCreated()).andReturn();
+
+        byte[] body = mockMvc
+            .perform(MockMvcRequestBuilders
+                .get("/api/v1/artworks")
+                .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsByteArray();
+        List<ArtworkDto> artworkResult = objectMapper.readerFor(ArtworkDto.class).<ArtworkDto>readValues(body).readAll();
+        System.out.println(artworkResult.get(0).toString());
     }
 
     public List<ArtistDto> allArtists() throws Exception {

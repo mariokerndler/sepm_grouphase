@@ -263,7 +263,7 @@ public class ArtworkEndpointTest {
 
         mockMvc.perform(post("/api/v1/artworks").contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
-            .andExpect(status().isBadRequest()).andReturn();
+            .andExpect(status().isNotFound()).andReturn();
     }
 
     public List<ArtistDto> allArtists() throws Exception {

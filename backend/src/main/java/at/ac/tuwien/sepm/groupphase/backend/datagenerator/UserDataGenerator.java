@@ -255,6 +255,7 @@ public class UserDataGenerator {
 
         Faker faker = new Faker();
         Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.IN_PROGRESS);
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");
@@ -297,6 +298,7 @@ public class UserDataGenerator {
 
         Faker faker = new Faker();
         Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.IN_PROGRESS);
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");

@@ -54,6 +54,10 @@ public interface CommissionService {
      * @param commission The commission to be deleted.
      */
     void deleteCommission(Commission commission);
+
+    //TODO: javadoc
     void assignArtist(Commission commission);
+
+    //TODO: javadoc
     List<Commission> searchCommissions(CommissionSearchDto cs);
 }

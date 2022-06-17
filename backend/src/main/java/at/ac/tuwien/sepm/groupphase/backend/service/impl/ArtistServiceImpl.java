@@ -12,8 +12,11 @@ import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,17 +24,22 @@ import java.util.Optional;
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
+    @PersistenceContext
+    EntityManager em;
+
     private final ArtistRepository artistRepo;
     private final ImageFileManager ifm;
     private final CommissionService commissionService;
     private final ArtworkService artworkService;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService) {
+    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService, JdbcTemplate jdbcTemplate) {
         this.ifm = ifm;
         this.artistRepo = artistRepo;
         this.commissionService = commissionService;
         this.artworkService = artworkService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override

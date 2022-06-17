@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 public class UserEndpoint {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
 
     @PermitAll
@@ -48,7 +47,7 @@ public class UserEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update user")
     public void updateUser(@Valid @RequestBody ApplicationUserDto userDto) {
-        log.info("A user is trying to updating an application user.");
+        log.info("A user is trying to update an application user.");
 
         userService.updateUser(userMapper.userDtoToUser(userDto));
     }
@@ -128,5 +127,16 @@ public class UserEndpoint {
         log.info("A user is trying to delete the application user with id '{}'", id);
 
         userService.deleteUserById(id);
+    }
+
+    @PermitAll
+    @PutMapping("/{id}/upgrade")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Upgrade user to artist")
+    @Transactional
+    public void upgradeUser(@PathVariable Long id) {
+        log.info("A user is trying to upgrade application user with id {} to artist", id);
+
+        userService.upgradeUserToArtist(id);
     }
 }

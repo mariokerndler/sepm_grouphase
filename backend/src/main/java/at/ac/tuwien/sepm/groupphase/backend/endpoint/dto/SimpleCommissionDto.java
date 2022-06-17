@@ -54,7 +54,6 @@ public class SimpleCommissionDto {
 
     private String instructions;
 
-    //TODO: can we map this to show just the url? ask in meeting
     private List<Long> referencesIds;
 
     public SimpleCommissionDto(Long artistId, Long customerId, CommissionStatus status, int sketchesShown, int feedbackSent,

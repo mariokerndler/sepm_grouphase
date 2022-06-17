@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +18,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     private final UserRepository userRepo;
     private final UserValidator userValidator;
@@ -149,6 +155,26 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
         userRepo.save(user);
         log.info("Updated password for application user with id='{}'", user.getId());
+    }
+
+    @Override
+    public void upgradeUserToArtist(Long id) {
+        entityManager.createNativeQuery("UPDATE APPLICATION_USER SET USERTYPE = ?, USER_ROLE = ?, REVIEW_SCORE = 0 WHERE ID = ?")
+            .setParameter(1, "Artist")
+            .setParameter(2, 1)
+            .setParameter(3, id)
+            .executeUpdate();
+
+        entityManager.flush();
+
+        ApplicationUser user = findUserById(id);
+        ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + user.getUserName());
+
+        //TODO: delete profile picture from profile picture folder?
+        if (user.getProfilePicture() != null) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
+            user.getProfilePicture().setImageUrl(imageUrl);
+        }
     }
 
     @Override

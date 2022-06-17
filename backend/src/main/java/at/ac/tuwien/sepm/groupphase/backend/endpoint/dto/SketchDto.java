@@ -5,20 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-
 @Getter
 @Setter
 @NoArgsConstructor
 public class SketchDto {
 
     private Long id;
-        private byte[] imageData;
+    private byte[] imageData;
     private String imageUrl;
     private FileType fileType;
     private String description;
     private Long artworkId;
     private String customerFeedback;
+
     public SketchDto(String imageUrl, FileType fileType, String description, Long artworkId) {
         this.imageUrl = imageUrl;
         this.fileType = fileType;
@@ -33,7 +32,7 @@ public class SketchDto {
             + ", imageUrl='" + imageUrl + '\''
             + ", fileType=" + fileType
             + ", description=" + description
-            + ", customerFeedback=" +customerFeedback
+            + ", customerFeedback=" + customerFeedback
             + ", artworkId=" + artworkId + '}';
     }
 }

@@ -43,7 +43,7 @@ public class Sketch extends Image {
         return "Sketch{"
             + "description='" + description + '\''
             + ", artwork=" + artwork.getId()
-            + '}' ;
+            + '}';
     }
 
     @Override

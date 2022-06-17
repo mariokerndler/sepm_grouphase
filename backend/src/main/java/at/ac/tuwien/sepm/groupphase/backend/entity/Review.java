@@ -26,7 +26,6 @@ public class Review implements HasId {
     @JoinColumn(nullable = false)
     private ApplicationUser customer;
 
-    //TODO: why length gone??
     @Column(nullable = false)
     private String text;
 

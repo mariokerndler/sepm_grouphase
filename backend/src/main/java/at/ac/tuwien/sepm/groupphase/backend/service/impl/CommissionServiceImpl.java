@@ -128,8 +128,6 @@ public class CommissionServiceImpl implements CommissionService {
 
     }
 
-    //TODO: in feed, only view open commissions
-
     @Override
     public List<Commission> searchCommissions(CommissionSearchDto cs) {
         log.trace("calling searchCommissions() ...");

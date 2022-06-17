@@ -139,7 +139,6 @@ public class ArtworkEndpoint {
         log.debug("A user is trying to create a new artwork.");
 
         Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
-        //TODO: does mapper really map tags?
         artworkService.saveArtwork(artwork);
 
     }

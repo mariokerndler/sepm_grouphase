@@ -119,8 +119,6 @@ public class ApplicationUserEndpointTest {
     @Test
     @WithMockUser()
     public void addTwoUsersAndModifyOne() throws Exception {
-        //TODO: check why testcase works when executed by itself but not in automatic testing?? this deleteALl doesn't change anything
-        //TODO: leaving this here because intellij won't let me debug
 
         ApplicationUserDto anObject = userMapper.userToUserDto(getTestUser1());
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);

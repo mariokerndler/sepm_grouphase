@@ -2,9 +2,11 @@
 @use 'src/theme/components/drawer-theme' as drawer;
 @use 'src/theme/components/toolbar-theme' as toolbar;
 @use 'src/theme/components/tab-theme' as tab;
-@use 'src/theme/components/form-field-style' as form-field;
+@use 'src/theme/components/form-field-theme' as form-field;
 @use 'src/theme/components/dialog-theme' as dialog;
 @use 'src/theme/components/option-theme' as option;
+@use 'src/theme/components/menu-theme' as menu;
+@use 'src/theme/components/card-theme' as card;
 @import 'src/styles';
 
 @include mat.core();
@@ -108,5 +110,7 @@ $new-theme: mat.define-light-theme((
 @include form-field.theme($new-theme);
 @include dialog.theme($new-theme);
 @include option.theme($new-theme);
+@include menu.theme($new-theme);
+@include card.theme($new-theme);
 @include background-color($new-theme);
 

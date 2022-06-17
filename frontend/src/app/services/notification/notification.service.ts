@@ -97,7 +97,7 @@ export class NotificationService {
       params
     };
 
-    return this.http.get<NotificationDto[]>(this.notificationBaseUri, searchOptions)
+    return this.http.get<NotificationDto[]>(this.notificationBaseUri + '/unread', searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
@@ -187,7 +187,7 @@ export class NotificationService {
       params
     };
 
-    return this.http.patch<NotificationDto>(`${this.notificationBaseUri}/${id}/${hasRead}`, searchOptions)
+    return this.http.patch<NotificationDto>(`${this.notificationBaseUri}/${id}/${hasRead}?${params.toString()}`, searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {

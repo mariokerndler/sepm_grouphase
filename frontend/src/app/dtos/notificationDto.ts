@@ -2,7 +2,7 @@ export class NotificationDto {
   id?: number;
   title: string;
   createdAt: Date;
-  isRead: boolean;
+  read: boolean;
   type: NotificationType;
   referenceId: number;
   userId: number;

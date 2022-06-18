@@ -114,6 +114,7 @@ public class ArtistServiceImpl implements ArtistService {
                     }
                 }
             }
+            ifm.deleteUserProfileImage(artist.get());
             // TODO: Ifm delete files of artist
             artistRepo.delete(artist.get());
             log.info("Deleted artist with id='{}'", id);

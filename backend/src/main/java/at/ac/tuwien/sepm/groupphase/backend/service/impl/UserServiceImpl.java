@@ -160,11 +160,7 @@ public class UserServiceImpl implements UserService {
         ApplicationUser user = findUserById(id);
         ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + user.getUserName());
 
-        //TODO: delete profile picture from profile picture folder?
-        if (user.getProfilePicture() != null) {
-            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-            user.getProfilePicture().setImageUrl(imageUrl);
-        }
+        updateProfilePictureFiles(null, user);
     }
 
     @Override
@@ -174,6 +170,7 @@ public class UserServiceImpl implements UserService {
         if (user.isPresent()) {
             log.info(user.get().getUserName());
             // TODO: Ifm delete files of artist
+            ifm.deleteUserProfileImage(user.get());
             userRepo.deleteById(id);
             log.info("Deleted application user with id='{}'", id);
         } else {

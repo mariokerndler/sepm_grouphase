@@ -184,14 +184,16 @@ public class UserServiceImpl implements UserService {
     public void updateProfilePictureFiles(ApplicationUser oldUser, ApplicationUser newUser) {
         log.trace("calling updateProfilePicture() ...");
 
-        if (newUser != null && newUser.getProfilePicture() != null) {
+        if (newUser != null && newUser.getProfilePicture() != null && newUser.getProfilePicture().getImageData() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(newUser);
             newUser.getProfilePicture().setImageUrl(imageUrl);
 
             if (oldUser != null && oldUser.getProfilePicture() != null) {
                 newUser.getProfilePicture().setId(oldUser.getProfilePicture().getId());
             }
-        } else {
+        }
+
+        if (newUser != null && newUser.getProfilePicture() == null) {
             ifm.deleteUserProfileImage(newUser);
         }
     }

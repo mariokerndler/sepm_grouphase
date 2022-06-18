@@ -69,7 +69,7 @@ public class UserEndpoint {
     public ApplicationUserDto searchUsersByEmail(
         @RequestParam(name = "email", defaultValue = "") String email) {
         log.info("A user is trying to search an application user with email '{}'", email);
-        return userMapper.userToUserDto(userService.findUserByEmail(email));
+        return userMapper.userToUserDto(userService.findUserByEmail(email.toLowerCase()));
     }
 
     @PermitAll

@@ -5,15 +5,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class ReferenceDto {
 
     private Long id;
+
     private byte[] imageData;
+
+    @Size(max = 255)
     private String imageUrl;
+
+    @NotNull
     private FileType fileType;
+
     private Long commissionId;
 
     public ReferenceDto(String imageUrl, FileType fileType, Long commissionId) {

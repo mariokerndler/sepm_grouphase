@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.OneNotNull;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,10 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Getter
 @Setter
+@OneNotNull(
+    fields = {"imageUrl", "imageData"},
+    message = "Either imageUrl or imageData must be set"
+)
 public class ProfilePictureDto {
 
     private Long id;

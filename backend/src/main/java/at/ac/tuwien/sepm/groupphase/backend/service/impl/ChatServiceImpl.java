@@ -18,6 +18,7 @@ import java.util.List;
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
     private final ChatMessageRepository chatMessageRepository;
+
     public ChatServiceImpl(ChatRepository chatRepository, ChatMessageRepository chatMessageRepository) {
         this.chatRepository = chatRepository;
         this.chatMessageRepository = chatMessageRepository;
@@ -26,8 +27,8 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ApplicationUser> getChatListForUser(long id) {
         List<Chat> chats = this.chatRepository.getAllByUserId(String.valueOf(id));
-        List<ApplicationUser> partners= new LinkedList<>();
-        for( Chat a: chats){
+        List<ApplicationUser> partners = new LinkedList<>();
+        for (Chat a : chats) {
             partners.add(a.getChatPartner());
         }
         return partners;
@@ -35,20 +36,20 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<ChatMessage> getChatMessageHistory(String userId, String participantId) {
-        Chat c = this.chatRepository.getAllByUserAndChatPartner(userId,participantId);
+        Chat c = this.chatRepository.getAllByUserAndChatPartner(userId, participantId);
         return this.chatMessageRepository.getChatMessagesByChatId(String.valueOf(c.getId()));
     }
 
     @Override
     public void postChatMessage(ChatMessage chatMessage) {
-        if(chatMessage.getSentDate()==null){
-            chatMessage.setSentDate( LocalDateTime.now());
+        if (chatMessage.getSentDate() == null) {
+            chatMessage.setSentDate(LocalDateTime.now());
         }
-        Chat c = this.chatRepository.getAllByUserAndChatPartner(String.valueOf(chatMessage.getFromId())
-            ,String.valueOf(chatMessage.getToId()));
-        if(c==null){
-            this.chatRepository.getAllByUserAndChatPartner(String.valueOf(chatMessage.getToId())
-                ,String.valueOf(chatMessage.getFromId()));
+        Chat c = this.chatRepository.getAllByUserAndChatPartner(String.valueOf(chatMessage.getFromId()),
+            String.valueOf(chatMessage.getToId()));
+        if (c == null) {
+            this.chatRepository.getAllByUserAndChatPartner(String.valueOf(chatMessage.getToId()),
+                String.valueOf(chatMessage.getFromId()));
         }
         chatMessage.setChat(c);
 

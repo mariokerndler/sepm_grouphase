@@ -7,7 +7,7 @@ import {ApplicationUserDto} from '../dtos/applicationUserDto';
 import {ChatParticipantStatus, Message, ParticipantResponse} from 'ng-chat';
 import {ChatMessageDto} from '../dtos/chat-message-dto';
 import {tap} from 'rxjs/operators';
-import {ChatDto} from "../dtos/chatDto";
+import {ChatDto} from '../dtos/chatDto';
 
 @Injectable({
   providedIn: 'root'

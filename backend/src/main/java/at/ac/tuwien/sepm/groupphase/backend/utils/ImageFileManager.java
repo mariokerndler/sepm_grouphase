@@ -67,7 +67,8 @@ public class ImageFileManager {
     public String writeSketchImage(Commission c, Sketch s) {
         log.trace("calling writeSketchImage() ...");
         log.info("calling writeReferenceImage() ...");
-        String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();;
+        String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
+        ;
         relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             log.info(s.toString() + " " + s.getImageData().length);
@@ -82,7 +83,7 @@ public class ImageFileManager {
 
     public String writeArtworkImage(Commission c, Artwork aw) {
         log.trace("calling writeArtworkImage() ...");
-        String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();
+        String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
         relPath += "\\" + ImageDataPaths.artworkIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(relPath)) {
             outputStream.write(aw.getImageData());

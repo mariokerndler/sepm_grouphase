@@ -4,9 +4,9 @@ import {ArtistProfileSettings} from '../artist-page-edit/artistProfileSettings';
 import {ArtworkService} from '../../../services/artwork.service';
 import {ArtworkDto} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
-import {ChatDto} from "../../../dtos/chatDto";
-import {ChatService} from "../../../services/chat-service";
-import {Router} from "@angular/router";
+import {ChatDto} from '../../../dtos/chatDto';
+import {ChatService} from '../../../services/chat-service';
+import {Router} from '@angular/router';
 
 
 @Component({

@@ -6,7 +6,7 @@ import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
 import {TagService} from '../../services/tag.service';
 import {GlobalFunctions} from '../../global/globalFunctions';
-import {ChatParticipantStatus, ChatParticipantType} from "ng-chat";
+import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

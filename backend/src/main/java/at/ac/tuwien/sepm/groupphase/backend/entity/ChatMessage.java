@@ -21,9 +21,9 @@ public class ChatMessage {
     private Long id;
 
     @Column(nullable = false)
-    private  Long fromId;
+    private Long fromId;
     @Column(nullable = false)
-    private  Long toId;
+    private Long toId;
 
 
     @Column(nullable = false, length = 1000)

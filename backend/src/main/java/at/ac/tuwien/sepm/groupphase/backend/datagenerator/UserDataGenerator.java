@@ -103,24 +103,24 @@ public class UserDataGenerator {
         }
         generateChats();
     }
-    private  void generateChats() {
-        List<ApplicationUser> users= this.userRepository.findAll();
 
-        ApplicationUser testUser=(ApplicationUser) users.stream().filter(a-> a.getUserName().toLowerCase().equals("testartist")).findAny().get();
+    private void generateChats() {
+        List<ApplicationUser> users = this.userRepository.findAll();
+
+        ApplicationUser testUser = (ApplicationUser) users.stream().filter(a -> a.getUserName().toLowerCase().equals("testartist")).findAny().get();
         Faker f = new Faker();
-        for(int i=0; i<5;i++){
+        for (int i = 0; i < 5; i++) {
             Chat c = new Chat();
             c.setUser(testUser);
-            c.setChatPartner(users.get(i+5));
+            c.setChatPartner(users.get(i + 5));
             this.chatRepository.save(c);
-            for(int j =0; j<50;j++){
-                ChatMessage message= new ChatMessage();
+            for (int j = 0; j < 50; j++) {
+                ChatMessage message = new ChatMessage();
                 message.setMessage(f.shakespeare().romeoAndJulietQuote());
-                if(j%2==0){
+                if (j % 2 == 0) {
                     message.setFromId(c.getUser().getId());
                     message.setToId(c.getChatPartner().getId());
-                }
-                else{
+                } else {
                     message.setToId(c.getUser().getId());
                     message.setFromId(c.getChatPartner().getId());
                 }
@@ -133,6 +133,7 @@ public class UserDataGenerator {
 
         }
     }
+
     private void loadTags(int numberOfTags) throws FileNotFoundException {
         File text = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.tagLocation);
         List<String> tags = new LinkedList<>();

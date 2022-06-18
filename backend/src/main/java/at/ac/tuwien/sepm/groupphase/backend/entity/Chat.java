@@ -11,9 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(uniqueConstraints={
-@UniqueConstraint(columnNames = {"user_id", "chat_partner_id"})
-})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "chat_partner_id"})})
 public class Chat {
 
     @Id
@@ -33,12 +31,11 @@ public class Chat {
 
     @Override
     public String toString() {
-        return "Chat{" +
-            "id=" + id +
-            ", user=" + user +
-            ", chatPartner=" + chatPartner +
-            ", messages=" + messages +
-            '}';
+        return "Chat{"
+            + "id=" + id
+            + ", user=" + user
+            + ", chatPartner=" + chatPartner
+            + ", messages=" + messages + '}';
     }
 
     @Override

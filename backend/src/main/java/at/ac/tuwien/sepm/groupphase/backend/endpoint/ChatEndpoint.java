@@ -29,6 +29,7 @@ public class ChatEndpoint {
     private final UserMapper userMapper;
     private final ChatMessageMapper chatMessageMapper;
     private final ChatMapper chatMapper;
+
     @Autowired
     public ChatEndpoint(ChatService chatService, UserMapper userMapper, ChatMessageMapper chatMessageMapper, ChatMapper chatMapper) {
         this.userMapper = userMapper;
@@ -73,6 +74,7 @@ public class ChatEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
         }
     }
+
     @PermitAll
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.CREATED)
@@ -80,13 +82,14 @@ public class ChatEndpoint {
     public void postChat(@RequestBody ChatDto chatDto) {
         log.debug("Endpoint: postChat()." + chatDto.toString());
         try {
-            Chat c= this.chatMapper.ChatDtoToChat(chatDto);
+            Chat c = this.chatMapper.chatDtoToChat(chatDto);
             chatService.postChat(c);
         } catch (Exception v) {
             log.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
         }
     }
+
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -16,7 +16,7 @@ public class ChatMessageDto {
 
     private String message;
     private long fromId;
-    private  long toId;
+    private long toId;
     @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -24,11 +24,11 @@ public class ChatMessageDto {
 
     @Override
     public String toString() {
-        return "ChatMessageDto{" +
-            "message='" + message + '\'' +
-            ", fromId=" + fromId +
-            ", toId=" + toId +
-            ", sentDate=" + sentDate +
-            '}';
+        return "ChatMessageDto{"
+            + "message='" + message + '\''
+            + ", fromId=" + fromId
+            + ", toId=" + toId
+            + ", sentDate=" + sentDate
+            + '}';
     }
 }

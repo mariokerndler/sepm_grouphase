@@ -76,7 +76,7 @@
             <mat-icon color="accent">upload</mat-icon>
             <span>Upload new profile picture</span>
           </button>
-          <button (click)="revertProfilePicture()" mat-button color="accent">
+          <button (click)="revertProfilePicture()" color="accent" mat-button>
             <mat-icon color="accent">history</mat-icon>
             <span>Revert profile picture</span>
           </button>
@@ -139,7 +139,8 @@
     <mat-tab *ngIf="!isArtist" label="Upgrade to Artist">
       <h2 class="primary">Upgrade from user to artist</h2>
 
-      <h3 class="primary">If you want to upload your art, take commissions, and participate as an artist, click this button:</h3>
+      <h3 class="primary">If you want to upload your art, take commissions, and participate as an artist, click this
+        button:</h3>
       <button (click)="upgradeUser()" color="accent" mat-flat-button>Upgrade</button>
 
     </mat-tab>

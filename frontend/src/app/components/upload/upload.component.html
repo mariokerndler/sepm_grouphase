@@ -34,7 +34,7 @@
     <span *ngIf="file">Change Picture</span>
   </button>
   <mat-form-field *ngIf="file" appearance="fill" class="form-group">
-    <mat-label >Tags</mat-label>
+    <mat-label>Tags</mat-label>
     <input
       #tagInput
       (matChipInputTokenEnd)="addTag($event)"

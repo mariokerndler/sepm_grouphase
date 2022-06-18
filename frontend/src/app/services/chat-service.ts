@@ -4,7 +4,7 @@ import {catchError, mergeMap, Observable, of} from 'rxjs';
 import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
 import {ApplicationUserDto} from '../dtos/applicationUserDto';
-import {ChatParticipantStatus, Message, ParticipantResponse} from 'ng-chat';
+import {ChatParticipantStatus, ParticipantResponse} from 'ng-chat';
 import {ChatMessageDto} from '../dtos/chat-message-dto';
 import {tap} from 'rxjs/operators';
 import {ChatDto} from '../dtos/chatDto';
@@ -20,39 +20,43 @@ export class ChatService {
   private options = {
     headers: this.headers,
   };
+
   constructor(private http: HttpClient,
               private globals: Globals,
               private notificationService: NotificationService) {
   }
- chatListWrapper(id: string, errorAction?: () => void): Observable<ParticipantResponse[]>{
 
-   return this.http.get<ApplicationUserDto[]>(`${this.chatsBaseUri}/${id}`, this.options)
-     .pipe(
-       mergeMap(success=>of(success.map(user =>{
-           const participantResponse = new ParticipantResponse();
-           user.displayName = user.userName;
-           user.status= ChatParticipantStatus.Online;
-           participantResponse.participant = user;
-           return participantResponse;
-         })))
-       ,catchError((err) => {
-         if (errorAction != null) {
-           errorAction();
-         }
-         return this.notificationService.notifyUserAboutFailedOperation<ParticipantResponse[]>('Finding chat list')(err);
-       })
-     );
- }
- chatHistoryMapper(userId: string, participantId: string): Observable<ChatMessageDto[]>{
-   const params = new HttpParams()
-     .set('userId', userId)
-     .set('participantId', participantId);
-   const searchOptions = {
-     headers: this.headers,
-     params
-   };
-   return this.http.get<ChatMessageDto[]>(`${this.chatsBaseUri}`+'/history', searchOptions);
- }
+  chatListWrapper(id: string, errorAction?: () => void): Observable<ParticipantResponse[]> {
+
+    return this.http.get<ApplicationUserDto[]>(`${this.chatsBaseUri}/${id}`, this.options)
+      .pipe(
+        mergeMap(success => of(success.map(user => {
+          const participantResponse = new ParticipantResponse();
+          user.displayName = user.userName;
+          user.status = ChatParticipantStatus.Online;
+          participantResponse.participant = user;
+          return participantResponse;
+        })))
+        , catchError((err) => {
+          if (errorAction != null) {
+            errorAction();
+          }
+          return this.notificationService.notifyUserAboutFailedOperation<ParticipantResponse[]>('Finding chat list')(err);
+        })
+      );
+  }
+
+  chatHistoryMapper(userId: string, participantId: string): Observable<ChatMessageDto[]> {
+    const params = new HttpParams()
+      .set('userId', userId)
+      .set('participantId', participantId);
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+    return this.http.get<ChatMessageDto[]>(`${this.chatsBaseUri}` + '/history', searchOptions);
+  }
+
   getChatList(id: string, errorAction?: () => void): Observable<ApplicationUserDto[]> {
     return this.http.get<ApplicationUserDto[]>(`${this.chatsBaseUri}/${id}`, this.options)
       .pipe(
@@ -64,6 +68,7 @@ export class ChatService {
         })
       );
   }
+
   postChatMessage(message: ChatMessageDto, errorAction?: () => void, successAction?: () => void): Observable<ChatMessageDto> {
     return this.http.post<ChatMessageDto>(this.chatsBaseUri, message, this.options)
       .pipe(
@@ -81,7 +86,7 @@ export class ChatService {
   }
 
   postChat(message: ChatDto, errorAction?: () => void, successAction?: () => void): Observable<ChatDto> {
-    return this.http.post<ChatDto>(this.chatsBaseUri+'/chat', message, this.options)
+    return this.http.post<ChatDto>(this.chatsBaseUri + '/chat', message, this.options)
       .pipe(
         tap(_ => {
           if (successAction != null) {

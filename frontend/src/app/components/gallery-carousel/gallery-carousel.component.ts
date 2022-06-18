@@ -53,7 +53,7 @@ export class GalleryCarouselComponent implements OnInit {
   @Output() closeCarousel = new EventEmitter<void>();
   public animState = 'middle';
   public artist: ArtistDto = {
-    id:-1,
+    id: -1,
     address: '',
     admin: false,
     artworkIds: [],
@@ -68,9 +68,9 @@ export class GalleryCarouselComponent implements OnInit {
     userName: '',
     userRole: undefined,
     profilePictureDto: null,
-    displayName:'',
+    displayName: '',
     avatar: null,
-    participantType:  ChatParticipantType.User,
+    participantType: ChatParticipantType.User,
     status: ChatParticipantStatus.Online
   };
   public animArtwork: number;

@@ -42,6 +42,7 @@ public class ArtworkEndpoint {
         this.artworkMapper = artworkMapper;
     }
 
+    //TODO: implementation arguably belongs to service class (feel free to move it :))
     //see https://www.baeldung.com/rest-api-query-search-language-more-operations
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
@@ -111,9 +112,9 @@ public class ArtworkEndpoint {
             List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
             return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
-        } catch (Exception n) {
-            log.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -125,9 +126,9 @@ public class ArtworkEndpoint {
         log.info("A user is trying to delete an artwork.");
         try {
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-        } catch (Exception n) {
-            log.error(n.getMessage() + artworkDto);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -140,6 +141,5 @@ public class ArtworkEndpoint {
 
         Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
         artworkService.saveArtwork(artwork);
-
     }
 }

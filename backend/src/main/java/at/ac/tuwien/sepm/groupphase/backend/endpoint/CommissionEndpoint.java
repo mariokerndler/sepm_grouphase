@@ -95,9 +95,9 @@ public class CommissionEndpoint {
         log.info("A user is trying to create a commission.");
         try {
             commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
-        } catch (Exception v) {
-            log.error(v.getMessage() + commissionDto);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
 
     }
@@ -113,7 +113,7 @@ public class CommissionEndpoint {
         try {
             commissionService.updateCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception e) {
-            log.error(e.getMessage() + commissionDto);
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -127,9 +127,9 @@ public class CommissionEndpoint {
         log.info("A user is trying to delete a commission.");
         try {
             commissionService.deleteCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
-        } catch (Exception n) {
-            log.error(n.getMessage() + commissionDto);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 }

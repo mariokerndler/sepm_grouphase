@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ApplicationUser")

@@ -29,8 +29,8 @@ export class ArtistInformationComponent implements OnInit {
   artistUrl = 'https://picsum.photos/150/150';
 
 
-  constructor(private artworkService: ArtworkService, public globalFunctions: GlobalFunctions,private chatService: ChatService,
-              private  router: Router) {
+  constructor(private artworkService: ArtworkService, public globalFunctions: GlobalFunctions, private chatService: ChatService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -43,6 +43,7 @@ export class ArtistInformationComponent implements OnInit {
   switchTab(index) {
     this.tabIndexEvent.emit(index);
   }
+
   messageUser() {
     const id = Number.parseInt(localStorage.getItem('userId'), 10);
     const chat: ChatDto = {
@@ -51,7 +52,7 @@ export class ArtistInformationComponent implements OnInit {
     console.log(chat);
     this.chatService.postChat(chat).subscribe(success => {
       this.router.navigate(['/chat/' + id]);
-    },error => {
+    }, error => {
       this.router.navigate(['/chat/' + id]);
     });
   }

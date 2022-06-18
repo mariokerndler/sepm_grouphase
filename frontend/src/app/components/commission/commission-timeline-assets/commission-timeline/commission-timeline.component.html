@@ -1,10 +1,11 @@
 <div *ngIf="data" class="primary">
   <div class="cdk-virtual-scroll-data-source-example">
-    <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{(data.sketches.length * 2) + 2}}" class="example-viewport">
+    <cdk-virtual-scroll-viewport class="example-viewport" itemSize="{{(data.sketches.length * 2) + 2}}"
+                                 orientation="horizontal">
 
       <!-- Start Node -->
       <div class="start-section">
-        <div class="text-container" [ngStyle]="{'top': '40px'}">
+        <div [ngStyle]="{'top': '40px'}" class="text-container">
           <span><b>30.05.2020</b></span>
           <br>
           <span><b>Start of your commission</b></span>
@@ -14,13 +15,14 @@
             decided to create something great
           </p>
         </div>
-        <div class="line" [ngStyle]="{'top': '2px'}"></div>
-        <div class="main-line" [ngStyle]="{'top': '20px'}"></div>
+        <div [ngStyle]="{'top': '2px'}" class="line"></div>
+        <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
         <mat-icon class="accent icon">start</mat-icon>
       </div>
       <!-- Midsection -->
-      <div  *cdkVirtualFor="let sketch of [].constructor(data.sketches.length*2); let i = index" class="example-item">
-        <app-commission-timeslots [index]="i" [sketch]="data.sketches[i/2]" [review]="data.reviews[(i-1)/2]"></app-commission-timeslots>
+      <div *cdkVirtualFor="let sketch of [].constructor(data.sketches.length*2); let i = index" class="example-item">
+        <app-commission-timeslots [index]="i" [review]="data.reviews[(i-1)/2]"
+                                  [sketch]="data.sketches[i/2]"></app-commission-timeslots>
       </div>
 
 
@@ -41,9 +43,10 @@
           <div class="line" [ngStyle]="{'top': '2px'}"></div>
         </div> -->
         <mat-icon class="accent icon">check</mat-icon>
-        <div class="lower-component" [ngStyle]="{'visibility': ((data.sketches.length*2)%2 === 0) ? 'visible' : 'hidden'}">
-          <div class="line" [ngStyle]="{'bottom': '2px'}" ></div>
-          <div class="text-container" [ngStyle]="{'bottom': '40px'}">
+        <div [ngStyle]="{'visibility': ((data.sketches.length*2)%2 === 0) ? 'visible' : 'hidden'}"
+             class="lower-component">
+          <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
+          <div [ngStyle]="{'bottom': '40px'}" class="text-container">
             <span><b>30.05.2021</b></span>
             <br>
             <span><b>End of your commission</b></span>
@@ -59,10 +62,10 @@
         <h1>Your final image</h1>
         <div class="final-image-subsection">
           <h2>{{data.finalImage.title}}</h2>
-          <img *ngIf="!isPlaying" class="final-image" src="{{data.finalImage.image}}" alt="{{data.finalImage.title}}">
-          <img *ngIf="isPlaying" class="final-image" src="{{data.imageGif.image}}" alt="{{data.finalImage.title}}">
+          <img *ngIf="!isPlaying" alt="{{data.finalImage.title}}" class="final-image" src="{{data.finalImage.image}}">
+          <img *ngIf="isPlaying" alt="{{data.finalImage.title}}" class="final-image" src="{{data.imageGif.image}}">
           <br><br>
-          <span >Rewind the whole process</span> <br>
+          <span>Rewind the whole process</span> <br>
           <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="accent" mat-icon-button>
             <mat-icon *ngIf="!isPlaying">play_arrows</mat-icon>
             <mat-icon *ngIf="isPlaying">stop</mat-icon>

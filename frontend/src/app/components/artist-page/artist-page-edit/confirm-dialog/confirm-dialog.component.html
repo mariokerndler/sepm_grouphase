@@ -3,6 +3,6 @@
   {{data.message}}
 </div>
 <div style="float:right;margin:20px;">
-  <input style="margin:0px 10px;" type="button" value="Yes" [mat-dialog-close]="true">
-  <input type="button" value="No"  [mat-dialog-close]="false">
+  <input [mat-dialog-close]="true" style="margin:0px 10px;" type="button" value="Yes">
+  <input [mat-dialog-close]="false" type="button" value="No">
 </div>

@@ -30,11 +30,11 @@
         <strong class="referenceImages">Reference Images:</strong>
         <br><br>
         <div class="scrolling-container">
-          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.referencesDtos.length}}"
-                                       class="viewport">
-            <div class="image-container" *ngFor="let reference of commission.referencesDtos; let i = index">
-              <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl"
-                   alt="">
+          <cdk-virtual-scroll-viewport class="viewport" itemSize="{{commission.referencesDtos.length}}"
+                                       orientation="horizontal">
+            <div *ngFor="let reference of commission.referencesDtos; let i = index" class="image-container">
+              <img (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt=""
+                   class="gallery-pictures">
             </div>
           </cdk-virtual-scroll-viewport>
         </div>
@@ -47,14 +47,15 @@
       </div>
       <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit">
         <mat-label>Commission Candidates</mat-label>
-        <mat-selection-list  [multiple]="false" style="width:20%" >
+        <mat-selection-list [multiple]="false" style="width:20%">
           <div *ngFor="let a of commission.artistCandidatesDtos" fxLayoutAlign="center center">
-            <mat-list-option  name="applicant" ngDefaultControl  [value]="a.id"  [(ngModel)]="selectedArtistId"  >{{a.userName}}</mat-list-option>
-            <button (click)="navigateToArtist(a)"  mat-flat-button class="mat-primary">View Profile</button>
+            <mat-list-option [(ngModel)]="selectedArtistId" [value]="a.id" name="applicant"
+                             ngDefaultControl>{{a.userName}}</mat-list-option>
+            <button (click)="navigateToArtist(a)" class="mat-primary" mat-flat-button>View Profile</button>
           </div>
         </mat-selection-list>
 
-        <button    mat-flat-button class="mat-primary"  (click)="chooseArtist()">Choose this Artist</button>
+        <button (click)="chooseArtist()" class="mat-primary" mat-flat-button>Choose this Artist</button>
       </div>
       <br><br>
       <strong>Feedback-Rounds: {{commission.feedbackRounds}}</strong> <br><br>
@@ -68,11 +69,11 @@
         <strong class="referenceImages">Sketches:</strong>
         <br><br>
         <div class="scrolling-container">
-          <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
-                                       class="viewport">
-            <div class="image-container" *ngFor="let reference of commission.artworkDto.sketchesDtos; let i = index">
-              <img class="gallery-pictures" (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl"
-                   alt="">
+          <cdk-virtual-scroll-viewport class="viewport" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
+                                       orientation="horizontal">
+            <div *ngFor="let reference of commission.artworkDto.sketchesDtos; let i = index" class="image-container">
+              <img (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt=""
+                   class="gallery-pictures">
               <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>
@@ -94,7 +95,7 @@
         <div><img [src]="this.uploadedSketchDto.imageData" alt="" class="preview-image"></div>
         <div>
           <mat-form-field style="width: 60%; padding-top: 1em">
-            <textarea class="feedbackBox" color="secondary" [(ngModel)]="this.uploadedSketchDto.description" matInput
+            <textarea [(ngModel)]="this.uploadedSketchDto.description" class="feedbackBox" color="secondary" matInput
                       placeholder="Describe your sketch"></textarea>
           </mat-form-field>
         </div>
@@ -107,15 +108,15 @@
 
     <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start">
       <mat-form-field style="width: 60%; padding-top: 1em">
-        <textarea class="feedbackBox" color="secondary" [(ngModel)]="this.uploadedSketchDto.customerFeedback" matInput
+        <textarea [(ngModel)]="this.uploadedSketchDto.customerFeedback" class="feedbackBox" color="secondary" matInput
                   placeholder="Leave a comment"></textarea>
       </mat-form-field>
     </div>
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& userEdit && allowFeedback" fxLayoutAlign="center">
-      <button color="primary" fxLayoutAlign="center" mat-flat-button
-              (click)="toggleFeedbackField()">{{feedbackButtonStates[feedbackButtonIndex]}}</button>
+      <button (click)="toggleFeedbackField()" color="primary" fxLayoutAlign="center"
+              mat-flat-button>{{feedbackButtonStates[feedbackButtonIndex]}}</button>
       <div *ngIf="feedbackButtonIndex===1">
-        <button color="primary" fxLayoutAlign="center" mat-flat-button (click)="updateCommission()">Upload</button>
+        <button (click)="updateCommission()" color="primary" fxLayoutAlign="center" mat-flat-button>Upload</button>
       </div>
     </div>
 

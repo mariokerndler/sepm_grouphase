@@ -13,7 +13,7 @@ import {ChatService} from '../services/chat-service';
 export class ChatComponent implements OnInit {
 
   public userId;
-  public adapter: ChatAdapter ;
+  public adapter: ChatAdapter;
 
   constructor(private chatService: ChatService) {
 
@@ -28,7 +28,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserId();
-    this.adapter = new Adapter(this.chatService,this.userId);
+    this.adapter = new Adapter(this.chatService, this.userId);
   }
 
 }

@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.exception.FileManagerException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Directory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -213,6 +214,15 @@ public class ImageFileManager {
         log.trace("calling renameUserProfilePictureFolder() ...");
         //rename profile folder
         File oldImageProfileFolder = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + oldUserName);
+        if (!oldImageProfileFolder.exists()) {
+            try {
+                Files.createDirectory(oldImageProfileFolder.toPath());
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+                throw new FileManagerException(e.getMessage(), e);
+            }
+        }
+
         try {
             Files.move(oldImageProfileFolder.toPath(), oldImageProfileFolder.toPath().resolveSibling(applicationUser.getUserName()));
         } catch (IOException e) {

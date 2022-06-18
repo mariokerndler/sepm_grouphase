@@ -6,6 +6,7 @@ import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
 import {TagService} from '../../services/tag.service';
 import {GlobalFunctions} from '../../global/globalFunctions';
+import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -52,6 +53,7 @@ export class GalleryCarouselComponent implements OnInit {
   @Output() closeCarousel = new EventEmitter<void>();
   public animState = 'middle';
   public artist: ArtistDto = {
+    id:-1,
     address: '',
     admin: false,
     artworkIds: [],
@@ -65,7 +67,11 @@ export class GalleryCarouselComponent implements OnInit {
     surname: '',
     userName: '',
     userRole: undefined,
-    profilePictureDto: null
+    profilePictureDto: null,
+    displayName:'',
+    avatar: null,
+    participantType:  ChatParticipantType.User,
+    status: ChatParticipantStatus.Online
   };
   public animArtwork: number;
   url = 'assets/';

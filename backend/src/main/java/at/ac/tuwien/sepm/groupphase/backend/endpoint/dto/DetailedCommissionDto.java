@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumericWithSpaces;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -20,11 +20,13 @@ public class DetailedCommissionDto {
 
     private Long id;
 
+    @Valid
     private ArtistDto artistDto;
 
-    private List<ArtistDto> artistCandidatesDtos;
+    private List<@Valid ArtistDto> artistCandidatesDtos;
 
     @NotNull
+    @Valid
     private ApplicationUserDto customerDto;
 
     @NotNull
@@ -38,9 +40,10 @@ public class DetailedCommissionDto {
 
     @Min(0)
     private double price;
+
     @Min(0)
-    @Max(5)
     private int feedbackRounds;
+
     @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -52,10 +55,10 @@ public class DetailedCommissionDto {
     private LocalDateTime deadlineDate;
 
     @Size(max = 50)
-    @ValidAlphaNumeric
+    @ValidAlphaNumericWithSpaces
     private String title;
 
-
+    @Size(max = 255)
     private String instructions;
 
     private List<@Valid ReferenceDto> referencesDtos;

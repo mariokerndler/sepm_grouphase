@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,12 +16,18 @@ import java.util.List;
 public class ReceiptDto {
 
     private Long id;
+    @Min(0)
     private double price;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime issueDate;
+
+    @Min(0)
     private double taxRate;
+
     private List<String> companyInfo;
+
     private Long commissionId;
 
     public ReceiptDto(double price, LocalDateTime issueDate, double taxRate, List<String> companyInfo, Long commissionId) {

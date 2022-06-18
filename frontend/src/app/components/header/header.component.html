@@ -31,6 +31,9 @@
       <mat-list-option (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()" class="accent-color">
         Profile
       </mat-list-option>
+      <mat-list-option (click)="navigateToChat()" *ngIf="authService.isLoggedIn()" class="accent-color">
+        Chat
+      </mat-list-option>
     </mat-selection-list>
   </mat-sidenav>
 </mat-sidenav-container>

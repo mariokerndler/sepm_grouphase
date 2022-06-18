@@ -47,8 +47,6 @@ public class ArtistEndpoint {
         }
     }*/
 
-    // TODO: ArtistDto includes infinite loop because of circular dependency between Entities (e.g. Artwork and Artist).
-    //  Configure Mapper to avoid this or remove entities that are responsible
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping

@@ -59,4 +59,8 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/feed'])
       .catch(_ => this.notificationService.displayErrorSnackbar('Could not navigate to frontpage.'));
   }
+
+  navigateToChat() {
+    this.router.navigate(['/chat/'+this.userId]);
+  }
 }

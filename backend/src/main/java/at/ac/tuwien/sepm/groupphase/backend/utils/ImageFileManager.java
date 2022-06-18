@@ -38,11 +38,11 @@ public class ImageFileManager {
     }
 
     public int countFiles(String path) {
-        log.info("counting files of "+path  );
+        log.info("counting files of " + path);
         if (new File(path).listFiles() == null) {
             return 0;
         }
-        log.info("counting files result"+new File(path).listFiles().length);
+        log.info("counting files result" + new File(path).listFiles().length);
         return Objects.requireNonNull(new File(path).listFiles()).length;
     }
 
@@ -66,11 +66,11 @@ public class ImageFileManager {
     public String writeSketchImage(Commission c, Sketch s) {
         log.trace("calling writeSketchImage() ...");
         log.info("calling writeReferenceImage() ...");
-        String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();;
+        String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
+        ;
         relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
-            log.info("Writing sketch images to disk at path='{}'", relPath);
-            log.info(s.toString()+" "+s.getImageData().length);
+            log.info(s.toString() + " " + s.getImageData().length);
             outputStream.write(s.getImageData());
             log.info("Wrote sketch images to disk at path='{}'", relPath);
             return relPath;
@@ -82,8 +82,8 @@ public class ImageFileManager {
 
     public String writeArtworkImage(Commission c, Artwork aw) {
         log.trace("calling writeArtworkImage() ...");
-        String relPath = ImageDataPaths.commissionLocation + + c.getCustomer().getId() + c.getTitle();
-         relPath += "\\" + ImageDataPaths.artworkIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
+        String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
+        relPath += "\\" + ImageDataPaths.artworkIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(relPath)) {
             outputStream.write(aw.getImageData());
             log.info("Wrote artwork images to disk at path='{}'", relPath);

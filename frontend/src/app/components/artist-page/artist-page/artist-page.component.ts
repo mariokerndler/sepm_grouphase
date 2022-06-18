@@ -10,6 +10,8 @@ import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Location} from '@angular/common';
 import {Globals} from '../../../global/globals';
+import {ChatService} from '../../../services/chat-service';
+import {ChatDto} from '../../../dtos/chatDto';
 
 @Component({
   selector: 'app-artist-page',
@@ -37,7 +39,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private notificationService: NotificationService,
     private authService: AuthService,
-    public globals: Globals
+    public globals: Globals,
+    private  chatService: ChatService
   ) {
   }
 
@@ -136,4 +139,6 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
     }
   }
+
+
 }

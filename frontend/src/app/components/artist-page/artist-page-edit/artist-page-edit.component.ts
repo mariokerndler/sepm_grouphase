@@ -21,6 +21,8 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {FileType} from '../../../dtos/artworkDto';
 import {ProfilePictureDto} from '../../../dtos/profilePictureDto';
 import {Globals} from '../../../global/globals';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -78,6 +80,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private globalFunctions: GlobalFunctions,
     public globals: Globals,
+    private dialog: MatDialog
   ) {
     this.fillFormValidators();
 
@@ -340,13 +343,23 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     this.tagForm.setValue(null);
   }
 
-  upgradeUser(): void {
-    this.userService.upgradeUser(this.user.id).subscribe(
-      data => {
-        this.router.navigate([`/artist/${this.user.id}`]).catch((_) =>
-          this.notificationService.displayErrorSnackbar('Could not navigate to artist list.'));
+  upgradeUser() {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Upgrade to artist account',
+        message: 'Are you sure you want to be an artist?'
       }
-    );
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.userService.upgradeUser(this.user.id).subscribe(
+          data => {
+            this.router.navigate([`/artist/${this.user.id}`]).catch((_) =>
+              this.notificationService.displayErrorSnackbar('Could not navigate to artist list.'));
+          }
+        );
+      }
+    });
   }
 
   private filterTags(value: TagDto): TagDto[] {
@@ -535,4 +548,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       imageData: this.pfpArray
     };
   }
+
+
 }

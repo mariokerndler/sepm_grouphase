@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -135,15 +136,10 @@ public class ArtworkEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post artwork")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         log.debug("A user is trying to create a new artwork.");
-        try {
-            Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
-            artworkService.saveArtwork(artwork);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
-        }
 
+        Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
+        artworkService.saveArtwork(artwork);
     }
 }

@@ -43,6 +43,8 @@ public class UserDataGenerator {
     private final PasswordEncoder passwordEncoder;
     private final ArtworkRepository artworkRepo;
     private final TagRepository tagRepository;
+    private final ChatRepository chatRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final CommissionRepository commissionRepository;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
@@ -62,13 +64,15 @@ public class UserDataGenerator {
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
-                             CommissionRepository commissionRepository) {
+                             ChatRepository chatRepository, ChatMessageRepository chatMessageRepository, CommissionRepository commissionRepository) {
         this.artistService = artistService;
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
         this.passwordEncoder = passwordEncoder;
         this.artworkRepo = artworkRepo;
         this.tagRepository = tagRepository;
+        this.chatRepository = chatRepository;
+        this.chatMessageRepository = chatMessageRepository;
         this.commissionRepository = commissionRepository;
     }
 
@@ -82,11 +86,11 @@ public class UserDataGenerator {
             loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
         }
 
-        if (artistRepository.findApplicationUserByEmail("testArtist@test.com") == null) {
+        if (artistRepository.findApplicationUserByEmail("testartist@test.com") == null) {
             generateArtistTestAccount("testArtist", "12345678");
         }
 
-        if (artistRepository.findApplicationUserByEmail("testUser@test.com") == null) {
+        if (artistRepository.findApplicationUserByEmail("testuser@test.com") == null) {
             generateUserTestAccount("testUser", "12345678");
         }
 
@@ -97,15 +101,45 @@ public class UserDataGenerator {
         if (commissionRepository.findAll().size() < 2) {
             generateTestCommissions();
         }
-
+        generateChats();
     }
 
-    private void loadTags(int numberOftags) throws FileNotFoundException {
+    private void generateChats() {
+        List<ApplicationUser> users = this.userRepository.findAll();
+
+        ApplicationUser testUser = (ApplicationUser) users.stream().filter(a -> a.getUserName().toLowerCase().equals("testartist")).findAny().get();
+        Faker f = new Faker();
+        for (int i = 0; i < 5; i++) {
+            Chat c = new Chat();
+            c.setUser(testUser);
+            c.setChatPartner(users.get(i + 5));
+            this.chatRepository.save(c);
+            for (int j = 0; j < 50; j++) {
+                ChatMessage message = new ChatMessage();
+                message.setMessage(f.shakespeare().romeoAndJulietQuote());
+                if (j % 2 == 0) {
+                    message.setFromId(c.getUser().getId());
+                    message.setToId(c.getChatPartner().getId());
+                } else {
+                    message.setToId(c.getUser().getId());
+                    message.setFromId(c.getChatPartner().getId());
+                }
+                message.setSentDate(LocalDateTime.now());
+                message.setChat(c);
+
+                this.chatMessageRepository.save(message);
+            }
+
+
+        }
+    }
+
+    private void loadTags(int numberOfTags) throws FileNotFoundException {
         File text = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.tagLocation);
         List<String> tags = new LinkedList<>();
         Scanner scanner = new Scanner(text);
-        while (scanner.hasNext() && numberOftags > 0) {
-            numberOftags--;
+        while (scanner.hasNext() && numberOfTags > 0) {
+            numberOfTags--;
             Tag t = new Tag(scanner.nextLine());
             if (!tags.contains(t.getName())) {
                 tags.add(t.getName());
@@ -219,14 +253,14 @@ public class UserDataGenerator {
 
     private void generateArtistTestAccount(String username, String password) throws IOException {
         Artist artist = generateArtistProfile(username);
-        artist.setEmail(username + "@test.com");
+        artist.setEmail(username.toLowerCase() + "@test.com");
         artist.setPassword(passwordEncoder.encode(password));
         artistService.saveArtist(artist);
     }
 
     private void generateUserTestAccount(String username, String password) {
         ApplicationUser user = generateUserProfile(username);
-        user.setEmail(username + "@test.com");
+        user.setEmail(username.toLowerCase() + "@test.com");
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
@@ -255,6 +289,7 @@ public class UserDataGenerator {
 
         Faker faker = new Faker();
         Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.IN_PROGRESS);
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");
@@ -263,7 +298,7 @@ public class UserDataGenerator {
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setStatus(CommissionStatus.OPEN);
+        commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
@@ -281,6 +316,8 @@ public class UserDataGenerator {
             } else {
                 Sketch k = new Sketch();
                 k.setDescription("Sketch " + i);
+                k.setFileType(FileType.JPG);
+                k.setArtwork(a);
                 k.setImageUrl("data\\com\\adminSample Commission\\sketch" + i);
                 sketches.add(k);
 
@@ -295,15 +332,17 @@ public class UserDataGenerator {
 
         Faker faker = new Faker();
         Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.IN_PROGRESS);
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");
-        commission.setSketchesShown((int) (Math.random() * 10));
-        commission.setFeedbackSent((int) (Math.random() * 6));
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
         commission.setPrice((int) (Math.random() * 10000));
+        commission.setFeedbackRounds(4);
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
-        commission.setStatus(CommissionStatus.OPEN);
+        commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote().toString();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
@@ -324,6 +363,8 @@ public class UserDataGenerator {
                 a.setFileType(FileType.JPG);
             } else {
                 Sketch k = new Sketch();
+                k.setFileType(FileType.JPG);
+                k.setArtwork(a);
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
                 sketches.add(k);

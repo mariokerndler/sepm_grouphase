@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {ArtistService} from '../../../services/artist.service';
@@ -28,7 +28,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   tabIndex = 0;
   profilePicture;
 
-  hasNotifications = false;
+  hasReadNotifications = false;
+  hasUnreadNotifications = false;
   notifications: NotificationDto[];
   sortedNotifications: NotificationDto[];
   readNotifications: NotificationDto[];
@@ -52,6 +53,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.refreshOnBackButtonClick();
     this.routeSubscription = this.route.params.subscribe(
       (params) => this.userService.getUserById(params.id, () => this.navigateToArtistList())
         .subscribe((user) => {
@@ -96,6 +98,14 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
+  refreshOnBackButtonClick(): void {
+    this.router.events.subscribe((event: NavigationStart) => {
+      if (event.navigationTrigger === 'popstate') {
+        window.location.reload();
+      }
+    });
+  }
+
   navigateToEdit() {
     this.router.navigate(['/artist', this.artist.id, 'edit'])
       .catch(
@@ -133,8 +143,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
 
   sortNotifications(sort: Sort, read: boolean) {
     const data = read ? this.readNotifications.slice() : this.notifications.slice();
-    if(!sort.active || sort.direction === '') {
-      if(read) {
+    if (!sort.active || sort.direction === '') {
+      if (read) {
         this.readNotifications = data;
       } else {
         this.sortedNotifications = data;
@@ -158,7 +168,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
       }
     });
 
-    if(read) {
+    if (read) {
       this.readNotifications = sortedData;
     } else {
       this.sortedNotifications = sortedData;
@@ -170,7 +180,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     let returnType = '';
     let first = true;
     for (const word of convertedType.split('_')) {
-      if(first) {
+      if (first) {
         returnType += word.charAt(0).toUpperCase() + word.slice(1) + ' ';
         first = false;
       } else {
@@ -184,10 +194,21 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   readNotification(notification: NotificationDto) {
     this.notificationService.pathNotificationIsReadOfIdFromUser(notification.id, notification.userId, true)
       .subscribe((_) => {
-        this.fetchNotifications();
-        this.fetchReadNotifications();
-      }
-    );
+          this.fetchNotifications();
+          this.fetchReadNotifications();
+          this.notificationService.displaySuccessSnackbar('Marked notification as read.');
+        }
+      );
+  }
+
+  readAllNotifications() {
+    this.notificationService.patchNotificationsIsRead(this.user.id, true)
+      .subscribe(_ => {
+          this.fetchNotifications();
+          this.fetchReadNotifications();
+          this.notificationService.displaySuccessSnackbar('Marked notifications as read.');
+        }
+      );
   }
 
   private navigateToArtistList() {
@@ -200,7 +221,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   }
 
   private setProfilePicture() {
-    if(!this.user.profilePictureDto) {
+    if (!this.user.profilePictureDto) {
       this.profilePicture = this.globals.defaultProfilePicture;
     } else {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
@@ -213,8 +234,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     this.notificationService.getUnreadNotificationsByUserId(this.user.id)
       .subscribe((notifications) => {
         this.notifications = notifications;
-        this.hasNotifications = this.notifications.length > 0;
+        this.hasUnreadNotifications = this.notifications.length > 0;
         this.sortedNotifications = this.notifications.slice();
+        console.log(notifications);
       });
   }
 
@@ -224,6 +246,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     this.notificationService.getNotificationsByUserId(this.user.id)
       .subscribe((notifications) => {
         this.readNotifications = notifications.filter(notification => notification.read);
+        this.hasReadNotifications = this.readNotifications.length > 0;
       });
   }
 }

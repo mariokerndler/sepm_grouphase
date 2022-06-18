@@ -10,7 +10,6 @@ import {TagDto} from '../../dtos/tagDto';
 import {TagService} from '../../services/tag.service';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
-import {LayoutComponent} from '../artist-page/artist-page-edit/layoutComponent';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {GlobalFunctions} from '../../global/globalFunctions';
 
@@ -42,7 +41,7 @@ export class UploadComponent implements OnInit {
     public dialogRef: MatDialogRef<UploadComponent>,
     private _ngZone: NgZone,
     private notificationService: NotificationService,
-    private  globalFunctions: GlobalFunctions) {
+    private globalFunctions: GlobalFunctions) {
     this.uploadForm = this.formBuilder.group({
       artworkName: ['', [Validators.required]],
       description: [''],

@@ -12,7 +12,6 @@ import {GlobalFunctions} from '../../global/globalFunctions';
 import {Globals} from '../../global/globals';
 import {NotificationService} from '../../services/notification/notification.service';
 import {MatPaginator} from '@angular/material/paginator';
-import {UploadComponent} from '../upload/upload.component';
 import {DeleteArtworkComponent} from '../delete-artwork/delete-artwork.component';
 import {MatDialog} from '@angular/material/dialog';
 

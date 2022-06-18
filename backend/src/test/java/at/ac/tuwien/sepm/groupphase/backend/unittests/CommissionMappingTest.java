@@ -102,7 +102,7 @@ public class CommissionMappingTest {
             .artist(artist)
             .artistCandidates(List.of(artist, artistCandidate))
             .customer(user)
-            .status(CommissionStatus.OPEN)
+            .status(CommissionStatus.LISTED)
             .title("Cowboy Snail")
             .sketchesShown(3)
             .feedbackSent(0)
@@ -192,13 +192,13 @@ public class CommissionMappingTest {
         artistCandidateDto.setId(artistCandidate.getId());
 
         ReviewDto reviewDto = new ReviewDto(artistDto, userDto, "I really enjoyed working with Carl. He drew me a nice smol snail:)", null, 5);
-        ArtworkDto artworkDto = new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", "just/some/url", FileType.PNG, artist.getId(), null, null);
+        ArtworkDto artworkDto = new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", null, "just/some/url", FileType.PNG, artist.getId(), null, null);
 
 
         DetailedCommissionDto commissionDto = new DetailedCommissionDto(artistDto,
             List.of(artistDto, artistCandidateDto),
             userDto,
-            CommissionStatus.OPEN,
+            CommissionStatus.LISTED,
             3,
             0,
             2000.45,

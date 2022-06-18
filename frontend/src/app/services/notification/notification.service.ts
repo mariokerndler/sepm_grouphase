@@ -69,7 +69,7 @@ export class NotificationService {
           ('Get notifications by user with id="' + userId + '"')(err);
         }),
         tap((success) => {
-          if(successAction != null) {
+          if (successAction != null) {
             success.forEach(x => {
               successAction(x.title);
             });
@@ -108,7 +108,7 @@ export class NotificationService {
           ('Get unread notifications by user with id="' + userId + '"')(err);
         }),
         tap((success) => {
-          if(successAction != null) {
+          if (successAction != null) {
             success.forEach(x => {
               successAction(x.title);
             });
@@ -131,7 +131,7 @@ export class NotificationService {
     hasRead: boolean,
     type?: NotificationType,
     errorAction?: () => void,
-    successAction?: (string) => void): Observable<NotificationDto[]> {
+    successAction?: () => void): Observable<NotificationDto[]> {
     const params = new HttpParams()
       .set('userId', userId);
 
@@ -144,7 +144,7 @@ export class NotificationService {
       params
     };
 
-    return this.http.patch<NotificationDto[]>(`${this.notificationBaseUri}/${hasRead}`, searchOptions)
+    return this.http.patch<NotificationDto[]>(`${this.notificationBaseUri}/${hasRead}?${params.toString()}`, searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {
@@ -154,11 +154,9 @@ export class NotificationService {
           return this.notifyUserAboutFailedOperation<NotificationDto[]>
           ('Patching notifications of user with id="' + userId + '"')(err);
         }),
-        tap((success) => {
-          if(successAction != null) {
-            success.forEach(x => {
-              successAction(x.title);
-            });
+        tap((_) => {
+          if (successAction != null) {
+            successAction();
           }
         })
       );
@@ -195,11 +193,11 @@ export class NotificationService {
           }
 
           return this.notifyUserAboutFailedOperation<NotificationDto>
-          ('Patching notifications with id="'+ id + '" of user with id="' + userId + '"')(err);
+          ('Patching notifications with id="' + id + '" of user with id="' + userId + '"')(err);
         }),
         tap((success) => {
-          if(successAction != null) {
-              successAction(success.title);
+          if (successAction != null) {
+            successAction(success.title);
           }
         })
       );

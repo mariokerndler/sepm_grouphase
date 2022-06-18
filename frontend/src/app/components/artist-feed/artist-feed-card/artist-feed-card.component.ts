@@ -61,7 +61,7 @@ export class ArtistFeedCardComponent implements OnInit {
   }
 
   private setArtistProfilePicture() {
-    if(this.artist.profilePictureDto) {
+    if (this.artist.profilePictureDto) {
       this.artistPfp = this.globals.assetsPath + this.artist.profilePictureDto.imageUrl;
     } else {
       this.artistPfp = this.globals.assetsPath + this.globals.defaultProfilePicture;

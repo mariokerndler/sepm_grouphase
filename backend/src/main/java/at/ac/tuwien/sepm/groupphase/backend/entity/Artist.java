@@ -79,7 +79,17 @@ public class Artist extends ApplicationUser implements HasId {
         this.tags = tags;
     }
 
-
+    public Artist(ApplicationUser user) {
+        super(user.getUserName(),
+            user.getProfilePicture(),
+            user.getName(),
+            user.getSurname(),
+            user.getEmail(),
+            user.getAddress(),
+            user.getPassword(),
+            user.getAdmin(),
+            UserRole.Artist);
+    }
 
     @Override
     public String toString() {

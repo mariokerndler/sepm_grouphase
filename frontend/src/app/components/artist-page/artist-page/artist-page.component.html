@@ -1,4 +1,3 @@
-
 <div class="artist-page-wrapper">
   <div
     *ngIf="isReady"
@@ -11,7 +10,8 @@
         <div fxLayout="row">
           <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
             <div fxLayoutAlign="center center">
-              <img [src]="globals.assetsPath + profilePicture" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
+              <img [src]="globals.assetsPath + profilePicture" alt="{{artist.userName}} profile picture"
+                   class="artist-profile-picture">
             </div>
             <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
               <span class="accent-color artist-username">{{artist.userName}}</span>
@@ -39,77 +39,84 @@
             </mat-tab>
             <mat-tab *ngIf="canEdit">
               <ng-template mat-tab-label>
-                <span [matBadge]="notifications.length > 9 ? '9+' : notifications.length"
-                      matBadgeOverlap="false"
+                <span [matBadgeHidden]="!hasUnreadNotifications"
+                      [matBadge]="notifications.length > 9 ? '9+' : notifications.length"
                       matBadgeColor="warn"
-                      [matBadgeHidden]="!hasNotifications">Notifications
+                      matBadgeOverlap="false">Notifications
                 </span>
               </ng-template>
               <br>
-                <mat-accordion multi>
-                  <mat-expansion-panel class="mat-elevation-z0" *ngIf="hasNotifications" expanded="true">
-                    <mat-expansion-panel-header>
-                      <span class="accent-color notification-header">Unread notifications</span>
-                    </mat-expansion-panel-header>
-                    <table matSort (matSortChange)="sortNotifications($event, false)">
-                      <tr>
-                        <th mat-sort-header="title">Message</th>
-                        <th mat-sort-header="createdAt">Created at</th>
-                        <th mat-sort-header="type">Type</th>
-                        <th mat-sort-header="referenceId">Reference</th>
-                        <th >Has Read</th>
-                      </tr>
-                      <tr *ngFor="let notification of sortedNotifications">
-                        <td>{{notification.title}}</td>
-                        <td>{{notification.createdAt}}</td>
-                        <td>{{convertNotificationTypeToString(notification.type)}}</td>
-                        <td>
-                          <button *ngIf="notification.type.toString().includes('COMMISSION')"
-                                  mat-flat-button
-                                  (click)="navigateToCommission(notification.referenceId)"
-                          color="accent">
-                            Go to commission
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            mat-button
-                            mat-flat-button
-                            (click)="readNotification(notification)"
-                            color="accent">
-                            Read
-                          </button>
-                        </td>
-                      </tr>
-                    </table>
-                  </mat-expansion-panel>
-                  <mat-expansion-panel class="mat-elevation-z0" *ngIf="readNotifications">
-                    <mat-expansion-panel-header>
-                      <span class="accent-color notification-header">Read notifications</span>
-                    </mat-expansion-panel-header>
-                    <table matSort (matSortChange)="sortNotifications($event, true)">
-                      <tr>
-                        <th mat-sort-header="title">Message</th>
-                        <th mat-sort-header="createdAt">Created at</th>
-                        <th mat-sort-header="type">Type</th>
-                        <th mat-sort-header="referenceId">Reference</th>
-                      </tr>
-                      <tr *ngFor="let notification of readNotifications">
-                        <td>{{notification.title}}</td>
-                        <td>{{notification.createdAt}}</td>
-                        <td>{{convertNotificationTypeToString(notification.type)}}</td>
-                        <td>
-                          <button *ngIf="notification.type.toString().includes('COMMISSION')"
-                                  mat-flat-button
-                                  (click)="navigateToCommission(notification.referenceId)"
-                                  color="accent">
-                            Go to commission
-                          </button>
-                        </td>
-                      </tr>
-                    </table>
-                  </mat-expansion-panel>
-                </mat-accordion>
+              <div *ngIf="!hasReadNotifications && !hasUnreadNotifications">
+                <span class="accent-color notification-header">You dont have any notifications!</span>
+              </div>
+              <mat-accordion multi>
+                <mat-expansion-panel *ngIf="hasUnreadNotifications" [expanded]="hasUnreadNotifications"
+                                     class="mat-elevation-z0">
+                  <mat-expansion-panel-header>
+                    <span class="accent-color notification-header">Unread notifications</span>
+                  </mat-expansion-panel-header>
+                  <table (matSortChange)="sortNotifications($event, false)" matSort>
+                    <tr>
+                      <th class="primary" mat-sort-header="title">Message</th>
+                      <th class="primary" mat-sort-header="createdAt">Created at</th>
+                      <th class="primary" mat-sort-header="type">Type</th>
+                      <th class="primary" mat-sort-header="referenceId">Reference</th>
+                      <th class="primary">Has Read</th>
+                    </tr>
+                    <tr *ngFor="let notification of sortedNotifications">
+                      <td class="primary">{{notification.title}}</td>
+                      <td class="primary">{{notification.createdAt}}</td>
+                      <td class="primary">{{convertNotificationTypeToString(notification.type)}}</td>
+                      <td>
+                        <button (click)="navigateToCommission(notification.referenceId)"
+                                *ngIf="notification.type.toString().includes('COMMISSION')"
+                                color="accent"
+                                mat-flat-button>
+                          Go to commission
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          (click)="readNotification(notification)"
+                          color="accent"
+                          mat-button
+                          mat-flat-button>
+                          Read
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <button (click)="readAllNotifications()" color="accent" mat-flat-button>Read all</button>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="hasReadNotifications" [expanded]="hasReadNotifications"
+                                     class="mat-elevation-z0">
+                  <mat-expansion-panel-header>
+                    <span class="accent-color notification-header">Read notifications</span>
+                  </mat-expansion-panel-header>
+                  <table (matSortChange)="sortNotifications($event, true)" matSort>
+                    <tr>
+                      <th class="primary" mat-sort-header="title">Message</th>
+                      <th class="primary" mat-sort-header="createdAt">Created at</th>
+                      <th class="primary" mat-sort-header="type">Type</th>
+                      <th class="primary" mat-sort-header="referenceId">Reference</th>
+                    </tr>
+                    <tr *ngFor="let notification of readNotifications">
+                      <td class="primary">{{notification.title}}</td>
+                      <td class="primary">{{notification.createdAt}}</td>
+                      <td class="primary">{{convertNotificationTypeToString(notification.type)}}</td>
+                      <td>
+                        <button (click)="navigateToCommission(notification.referenceId)"
+                                *ngIf="notification.type.toString().includes('COMMISSION')"
+                                color="accent"
+                                mat-flat-button>
+                          Go to commission
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </mat-expansion-panel>
+              </mat-accordion>
             </mat-tab>
           </mat-tab-group>
         </div>
@@ -129,6 +136,7 @@
       <span class="edit-text">Go Back</span>
     </button>
   </div>
+
 
 </div>
 

@@ -14,7 +14,7 @@ export enum NotificationType {
   commissionSketchAdded = 'COMMISSION_SKETCH_ADDED',
   commissionFeedbackAdded = 'COMMISSION_FEEDBACK_ADDED',
   commissionStatusCancelled = 'COMMISSION_STATUS_CANCELLED',
-  commissionStatusInProgress ='COMMISSION_STATUS_IN_PROGRESS',
+  commissionStatusInProgress = 'COMMISSION_STATUS_IN_PROGRESS',
   commissionStatusCompleted = 'COMMISSION_STATUS_COMPLETED',
   commissionStatusNegotiating = 'COMMISSION_STATUS_NEGOTIATING'
 }

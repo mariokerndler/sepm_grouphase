@@ -34,6 +34,9 @@ import {
   SuccessSnackbarComponent
 } from './services/notification/notification.service';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
+import {
+  ConfirmDialogComponent,
+} from './components/artist-page/artist-page-edit/confirm-dialog/confirm-dialog.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {UserPageComponent} from './components/user-page/user-page.component';
@@ -57,10 +60,21 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {
   ArtistGallerySubsectionsComponent
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
+import {NgChatModule} from 'ng-chat';
 
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { DeleteArtworkComponent } from './components/delete-artwork/delete-artwork.component';
-import { CommissionPageComponent } from './components/artist-page/commission-page/commission-page.component';
+import {NgxSliderModule} from '@angular-slider/ngx-slider';
+import {DeleteArtworkComponent} from './components/delete-artwork/delete-artwork.component';
+import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
+import {
+  CommissionTimelineComponent
+} from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import {
+  CommissionTimeslotsComponent
+} from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+// @ts-ignore
+import {ChatComponent} from './chat/chat.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,6 +108,10 @@ import { CommissionPageComponent } from './components/artist-page/commission-pag
     ArtistGallerySubsectionsComponent,
     DeleteArtworkComponent,
     CommissionPageComponent,
+    CommissionTimelineComponent,
+    CommissionTimeslotsComponent,
+    ChatComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -109,18 +127,21 @@ import { CommissionPageComponent } from './components/artist-page/commission-pag
     NgxMatColorPickerModule,
     DragDropModule,
     MatSliderModule,
-    NgxSliderModule
+    NgxSliderModule,
+    NgChatModule
   ],
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false}
+
     },
     httpInterceptorProviders,
     {
       provide: MAT_COLOR_FORMATS,
       useValue: NGX_MAT_COLOR_FORMATS
-    }
+    },
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

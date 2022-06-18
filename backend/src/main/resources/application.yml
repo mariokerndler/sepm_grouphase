@@ -6,6 +6,10 @@ logging:
     at.ac.tuwien.sepm.groupphase.backend: DEBUG
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
   datasource:
     url: jdbc:h2:file:./database/db;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -20,7 +24,6 @@ spring:
     # is disabled since it breaks the principle of least astonishment and leads to bad performance. The learn more,
     # follow this link: https://bit.ly/2LaX9ku
     open-in-view: false
-
 security:
   auth:
     header: Authorization
@@ -61,7 +64,9 @@ management:
     export:
       prometheus:
         enabled: true
-
+server:
+  tomcat:
+    max-swallow-size: 50MB
 ---
 spring:
   config:

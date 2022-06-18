@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "chat_partner_id"})})
 public class Chat {
 
     @Id
@@ -19,11 +20,11 @@ public class Chat {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Artist artist;
+    private ApplicationUser user;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private ApplicationUser customer;
+    private ApplicationUser chatPartner;
 
     @OneToMany(mappedBy = "chat")
     private List<ChatMessage> messages;
@@ -32,9 +33,9 @@ public class Chat {
     public String toString() {
         return "Chat{"
             + "id=" + id
-            + ", artist=" + artist.getId()
-            + ", customer=" + customer.getId()
-            + '}';
+            + ", user=" + user
+            + ", chatPartner=" + chatPartner
+            + ", messages=" + messages + '}';
     }
 
     @Override

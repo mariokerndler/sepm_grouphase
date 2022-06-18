@@ -35,11 +35,11 @@ strong {
 
 }
 
-.description-section{
+.description-section {
   border-radius: 10px;
 }
 
-.description{
+.description {
   margin-left: 12rem;
   position: relative;
   bottom: 12rem;
@@ -80,11 +80,15 @@ strong {
   transform: scale(0.95);
 }
 
-.image-container{
+.image-container {
   margin: 8px;
 }
 
-.gallery-pictures{
+.feedbackBox {
+  color: #2f3a51;
+}
+
+.gallery-pictures {
   max-height: 200px;
   object-fit: cover;
 }
@@ -128,4 +132,9 @@ strong {
 ::-webkit-scrollbar-thumb {
   background: #fb9fa4;
   border-radius: 10px;
+}
+
+.preview-image {
+  max-height: 400px;
+  max-width: 400px;
 }

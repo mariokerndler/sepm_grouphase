@@ -5,7 +5,7 @@ import {CommissionSearchDto} from '../../../dtos/commissionSearchDto';
 import {SearchConstraint} from '../../../global/SearchConstraint';
 
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
-import {ArtistDto} from '../../../dtos/artistDto';
+import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 
 
 @Component({
@@ -14,29 +14,35 @@ import {ArtistDto} from '../../../dtos/artistDto';
   styleUrls: ['./commission-page.component.scss']
 })
 export class CommissionPageComponent implements OnInit {
-  @Input()user: ApplicationUserDto;
-  @Input()artist: ArtistDto;
+  @Input() user: ApplicationUserDto;
+  @Input() artist: ArtistDto;
   commissions: SimpleCommissionDto[];
   hasLoaded = false;
-  searchCom: CommissionSearchDto= {
-    date: SearchConstraint.asc, name: '', priceRange:[0,5000], userId:'',artistId:'',pageNr:0
+  searchCom: CommissionSearchDto = {
+    date: SearchConstraint.asc, name: '', priceRange: [0, 500000], userId: '', artistId: '', pageNr: 0
   };
-  constructor(private commissionService: CommissionService) { }
+
+  constructor(private commissionService: CommissionService) {
+  }
 
   ngOnInit(): void {
-    if(this.user===undefined) {
+    if (this.user.userRole === UserRole.artist) {
       //search for artist  field
-      this.searchCom.artistId=this.artist.id.toString();
-    } else {
+      this.searchCom.artistId = this.user.id.toString();
+      console.log('searching for ' + this.searchCom.artistId + ' as artist');
+    } else if (this.user.userRole === UserRole.user) {
       //search for customer field
-      this.searchCom.userId=this.user.id.toString();
+      this.searchCom.userId = this.user.id.toString();
+      console.log('searching for ' + this.searchCom.userId + ' as user');
     }
     this.searchCommissions();
   }
-  public  searchCommissions(): void{
+
+  public searchCommissions(): void {
     //console.log(this.searchCom);
-    this.commissionService.filterCommissions(this.searchCom).subscribe(data=>{
-      this.commissions=data;
+    this.commissionService.filterCommissions(this.searchCom).subscribe(data => {
+      console.log(this.searchCom);
+      this.commissions = data;
     });
   }
 }

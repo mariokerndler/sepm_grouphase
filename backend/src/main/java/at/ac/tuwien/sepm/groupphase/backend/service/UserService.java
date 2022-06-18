@@ -89,11 +89,29 @@ public interface UserService extends UserDetailsService {
      */
     void changeUserPassword(ApplicationUser user, String password);
 
+
+    /**
+     * Saves the given user as an artist entity, preserving the original id.
+     *
+     * @param id The id of user to upgrade.
+     */
+    void upgradeUserToArtist(Long id);
+
     /**
      * Deletes the user with the specified id, if there is a user with this id saved in the database.
      *
      * @param id The id of the user to be deleted.
      */
     void deleteUserById(Long id);
+
+    /**
+     * Updates the saved profile picture in image files. If there is no picture saved ,
+     * the file manager will create the folder and save it. If newUser has no profile picture,
+     * the old one will be deleted (if there is one)
+     *
+     * @param oldUser state of user before update
+     * @param newUser state of user after update
+     */
+    void updateProfilePictureFiles(ApplicationUser oldUser, ApplicationUser newUser);
 
 }

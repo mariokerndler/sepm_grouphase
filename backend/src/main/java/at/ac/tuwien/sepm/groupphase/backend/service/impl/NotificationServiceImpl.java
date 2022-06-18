@@ -245,7 +245,7 @@ public class NotificationServiceImpl implements NotificationService {
                             commissionId,
                             artist));
                 }
-                case OPEN, NEGOTIATING -> { }
+                case LISTED, NEGOTIATING -> { }
                 default -> throw new IllegalStateException("Unexpected value: " + newCommission.getStatus());
             }
         } else if (oldCommission.getStatus() == CommissionStatus.NEGOTIATING

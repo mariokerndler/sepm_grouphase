@@ -1,0 +1,55 @@
+<div *ngIf="index%2===0" class="time-component">
+  <div [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}" class="upper-component">
+    <div [ngStyle]="{'top': '40px'}" class="text-container">
+      <span><b>05.06.2021</b></span>
+      <br>
+      <span><b>Your first sketch arrived</b></span>
+      <br><br>
+      <img alt="" class="image" src="{{sketch.image}}">
+    </div>
+    <div [ngStyle]="{'top': '2px'}" class="line"></div>
+    <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
+  </div>
+  <mat-icon class="accent icon">brush</mat-icon>
+  <div [ngStyle]="{'visibility': (index%2 === 0) ? 'visible' : 'hidden'}" class="lower-component">
+    <div [ngStyle]="{'bottom': '21px'}" class="main-line"></div>
+    <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
+    <div [ngStyle]="{'bottom': '40px'}" class="text-container">
+      <span><b>05.06.2021</b></span>
+      <br>
+      <span><b>Your first sketch arrived</b></span>
+      <br><br>
+      <img alt="" class="image" src="{{sketch.image}}">
+    </div>
+  </div>
+</div>
+<div *ngIf="index%2===1" class="review-component">
+  <div [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}" class="upper-component">
+    <div [ngStyle]="{'top': '40px'}" class="text-container">
+      <span><b>30.05.2020</b></span>
+      <br>
+      <span><b>You composed your first review</b></span>
+      <br><br>
+      <p class="review-text">
+        {{review.reviewText}}
+      </p>
+    </div>
+    <div [ngStyle]="{'top': '2px'}" class="line"></div>
+    <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
+  </div>
+  <mat-icon class="accent icon">grade</mat-icon>
+  <div [ngStyle]="{'visibility': (index%2 === 0) ? 'visible' : 'hidden'}" class="lower-component">
+    <div [ngStyle]="{'bottom': '21px'}" class="main-line"></div>
+    <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
+    <div [ngStyle]="{'top': '40px'}" class="text-container">
+      <span><b>30.05.2020</b></span>
+      <br>
+      <span><b>You composed your first review</b></span>
+      <br><br>
+      <p>
+        {{review.reviewText}}
+      </p>
+    </div>
+  </div>
+</div>
+

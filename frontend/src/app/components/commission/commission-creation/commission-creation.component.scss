@@ -1,10 +1,26 @@
+.creation-p {
+  color: #BCBCBC;
+}
+
+.mat-step-text-label {
+  color: #fb9fa4;
+}
+
 .mat-stepper-horizontal {
   margin-top: 8px;
 }
 
-.mat-form-field {
+.input-field {
   margin-top: 16px;
+  min-width: 70rem;
+  color: lightblue;
 }
+
+
+mat-slider {
+  width: 20%;
+}
+
 
 .com-display {
 
@@ -22,38 +38,24 @@
   width: 80%;
 
 }
-.max-width{
+
+.max-width {
 
   max-width: 1750px;
 }
-.stepper_button{
+
+.stepper_button {
   display: flex;
   width: 100%;
   justify-content: center;
+  color: #fb9fa4;
 }
 
-.mat-form-field-flex{
 
-
-}
-.mat-form-field{
-  display: flex;
-  min-width: 70rem;
-
-
-  justify-content: center;
-
-}
-.close-button{
-
-}
 .mat-stepper-horizontal {
   width: 80rem
 }
 
-.mat-label {
-
-}
 
 .feed {
   scrollbar-gutter: stable;

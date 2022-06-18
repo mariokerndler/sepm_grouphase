@@ -18,12 +18,12 @@
       <strong>Description:</strong>
       <br><br>
       <div class="description-section">
-        <p>{{commission.instructions}}</p>
+        <p class="p-section">{{commission.instructions}}</p>
       </div>
       <br>
       <div class="description-section">
         <strong>Commissioned by:</strong> <br><br>
-        <p>{{commission.customerDto.userName}}</p>
+        <p class="p-section">{{commission.customerDto.userName}}</p>
       </div>
       <br>
       <div *ngIf="hasReferences">
@@ -57,12 +57,16 @@
         <button    mat-flat-button class="mat-primary"  (click)="chooseArtist()">Choose this Artist</button>
       </div>
       <br><br>
-      <strong>Feedback-Rounds: {{commission.feedbackRounds}}</strong> <br><br>
-      <strong class="status">Status: {{commission.status.replace('_', ' ')}}</strong>
+      <strong>Feedback-Rounds: </strong>
+      <strong class="p-section"> {{commission.feedbackRounds}}</strong> <br><br>
+      <strong>Status:</strong>
+      <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
       <br><br>
-      <strong>Price: ${{commission.price}}</strong>
+      <strong>Price: </strong>
+      <strong class="p-section">${{commission.price}}</strong>
       <br><br>
-      <strong>Date: {{commission.issueDate.substring(0, 11)}}
+      <strong>Date: </strong>
+      <strong class="p-section">{{commission.issueDate.substring(0, 11)}}
         - {{commission.deadlineDate.substring(0, 11)}}</strong>
       <div *ngIf="hasSketches">
         <strong class="referenceImages">Sketches:</strong>
@@ -101,7 +105,7 @@
       </div>
     </div>
     <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId">
-      <button color="primary" fxLayoutAlign="center" mat-flat-button>Apply</button>
+      <button color="primary" class="apply" fxLayoutAlign="center" mat-flat-button>Apply</button>
     </div>
 
 

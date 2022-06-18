@@ -1,17 +1,15 @@
 <div (click)="close()" class="gallery-carousel">
-  <mat-card class="image-Card" style="  background: radial-gradient(#536281, #2f3a51);">
+  <mat-card class="image-Card">
 
     <mat-card-header *ngIf="artworks[animArtwork].name">
 
-      <mat-card-title class="image-title"
-                      style="text-align: center;  color:#d7bce8"> {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
-      <mat-divider></mat-divider>
+      <mat-card-title class="image-title">
+        {{globalFunctions.artworkNameParser(artworks[animArtwork].name)}} </mat-card-title>
 
 
-      <mat-card-subtitle (click)="routeToArtist()" class="carousel-artist"
-                         style="text-align: left; font-size: x-large; color:#dedae0">by {{artist.userName}}
+      <mat-card-subtitle (click)="routeToArtist()" class="carousel-artist">
+        by {{artist.userName}}
       </mat-card-subtitle>
-      <mat-divider></mat-divider>
     </mat-card-header>
 
     <div (click)="onEvent($event)" class="carousel-image">
@@ -32,8 +30,9 @@
             tabindex="3">
       <mat-icon>close</mat-icon>
     </button>
-    <mat-card-subtitle
-      style="text-align: center; font-size: x-large;color: #d7bce8;">{{artworks[animArtwork].description}} </mat-card-subtitle>
+    <mat-card-subtitle class="subtitle">
+      {{artworks[animArtwork].description}}
+    </mat-card-subtitle>
 
   </mat-card>
   <br>

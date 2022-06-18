@@ -21,7 +21,7 @@ import {NotificationService} from '../../../services/notification/notification.s
 import {CommissionStatus} from '../../../global/CommissionStatus';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
-import {ChatParticipantStatus, ChatParticipantType} from "ng-chat";
+import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
 
 
 @Component({

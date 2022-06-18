@@ -249,7 +249,7 @@ public class ArtworkEndpointTest {
         List<ApplicationUserDto> users = allUsers();
         assertEquals(1, users.size());
         assertEquals(UserRole.User, users.get(0).getUserRole());
-        Long userId = userRepository.findApplicationUserByEmail(userDto.getEmail()).getId();
+        Long userId = userRepository.findApplicationUserByEmail(userDto.getEmail().toLowerCase()).getId();
 
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");

@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumericWithSpaces;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,11 +25,11 @@ public class ArtistDto {
     @Valid
     private ProfilePictureDto profilePictureDto;
 
-    @ValidAlphaNumeric
+    @ValidAlphaNumericWithSpaces
     @Size(max = 50)
     private String name;
 
-    @ValidAlphaNumeric
+    @ValidAlphaNumericWithSpaces
     @Size(max = 50)
     private String surname;
 
@@ -51,6 +52,7 @@ public class ArtistDto {
     @NotNull
     private UserRole userRole;
 
+    @Size(max = 255)
     private String description;
 
     @Min(0)

@@ -64,7 +64,7 @@
           </mat-form-field>
         </form>
 
-        <div *ngIf="isArtist" class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center"
+        <div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center"
              fxLayoutGap="0.5rem">
           <h3 class="primary">Profile picture</h3>
           <img [src]="profilePicture" alt="" class="edit-page-pfp">
@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <button (click)="updateUserInformation()" class="update-user-button" color="accent" mat-flat-button>Update user
+      <button (click)="updateUserInformation()" class="update-user-button" color="accent" mat-flat-button>Update
       </button>
     </mat-tab>
 
@@ -134,6 +134,14 @@
         </div>
 
       </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="!isArtist" label="Upgrade to Artist">
+      <h2 class="primary">Upgrade from user to artist</h2>
+
+      <h3 class="primary">If you want to upload your art, take commissions, and participate as an artist, click this button:</h3>
+      <button (click)="upgradeUser()" color="accent" mat-flat-button>Upgrade</button>
+
     </mat-tab>
 
     <mat-tab *ngIf="isArtist" label="Appearance">

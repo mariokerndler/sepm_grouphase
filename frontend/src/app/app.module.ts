@@ -34,6 +34,9 @@ import {
   SuccessSnackbarComponent
 } from './services/notification/notification.service';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
+import {
+  ConfirmDialogComponent,
+} from './components/artist-page/artist-page-edit/confirm-dialog/confirm-dialog.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {UserPageComponent} from './components/user-page/user-page.component';
@@ -104,7 +107,8 @@ import { ChatComponent } from './chat/chat.component';
     CommissionPageComponent,
     CommissionTimelineComponent,
     CommissionTimeslotsComponent,
-    ChatComponent
+    ChatComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

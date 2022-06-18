@@ -86,11 +86,11 @@ public class UserDataGenerator {
             loadProfiles(NUMBER_OF_PROFILES_TO_GENERATE);
         }
 
-        if (artistRepository.findApplicationUserByEmail("testArtist@test.com") == null) {
+        if (artistRepository.findApplicationUserByEmail("testartist@test.com") == null) {
             generateArtistTestAccount("testArtist", "12345678");
         }
 
-        if (artistRepository.findApplicationUserByEmail("testUser@test.com") == null) {
+        if (artistRepository.findApplicationUserByEmail("testuser@test.com") == null) {
             generateUserTestAccount("testUser", "12345678");
         }
 
@@ -252,14 +252,14 @@ public class UserDataGenerator {
 
     private void generateArtistTestAccount(String username, String password) throws IOException {
         Artist artist = generateArtistProfile(username);
-        artist.setEmail(username + "@test.com");
+        artist.setEmail(username.toLowerCase() + "@test.com");
         artist.setPassword(passwordEncoder.encode(password));
         artistService.saveArtist(artist);
     }
 
     private void generateUserTestAccount(String username, String password) {
         ApplicationUser user = generateUserProfile(username);
-        user.setEmail(username + "@test.com");
+        user.setEmail(username.toLowerCase() + "@test.com");
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }

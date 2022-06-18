@@ -88,7 +88,7 @@ public class ArtistServiceImpl implements ArtistService {
 
         // TODO: Expand functionality to renaming upp folder
 
-        if (artist.getProfilePicture() != null) {
+        if (artist.getProfilePicture() != null && artist.getProfilePicture().getImageData() != null) {
             String imageUrl = ifm.writeAndReplaceUserProfileImage(artist);
             artist.getProfilePicture().setImageUrl(imageUrl);
 

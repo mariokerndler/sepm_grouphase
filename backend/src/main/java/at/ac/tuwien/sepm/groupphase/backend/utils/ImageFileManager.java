@@ -179,17 +179,18 @@ public class ImageFileManager {
 
     public boolean deleteUserProfileImage(ApplicationUser a) {
         log.trace("calling deleteUserProfileImage() ...");
-        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
+        File userPfpDir = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
+        boolean isDeleted = false;
 
-        if (f.isDirectory() && f.exists()) {
-            File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+        if (userPfpDir.isDirectory() && userPfpDir.exists()) {
+            File userPfp = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
                 + ImageDataPaths.userProfilePictureIdentifier);
 
-            return profilePicture.delete();
+            isDeleted = userPfp.delete();
         }
 
-        boolean isDeleted = f.delete();
-        log.info("Deleted user profile image from disk for application user with id='{}'", a.getId());
+        isDeleted = isDeleted && userPfpDir.delete();
+        log.info("Deleted user profile image and directory from disk for application user with id='{}'", a.getId());
         return isDeleted;
     }
 

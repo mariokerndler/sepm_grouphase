@@ -104,4 +104,14 @@ public interface UserService extends UserDetailsService {
      */
     void deleteUserById(Long id);
 
+    /**
+     * Updates the saved profile picture in image files. If there is no picture saved ,
+     * the file manager will create the folder and save it. If newUser has no profile picture,
+     * the old one will be deleted (if there is one)
+     *
+     * @param oldUser state of user before update
+     * @param newUser state of user after update
+     */
+    void updateProfilePictureFiles(ApplicationUser oldUser, ApplicationUser newUser);
+
 }

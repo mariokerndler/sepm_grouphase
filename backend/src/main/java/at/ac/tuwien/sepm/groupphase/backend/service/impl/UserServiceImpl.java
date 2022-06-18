@@ -95,14 +95,7 @@ public class UserServiceImpl implements UserService {
         ApplicationUser oldUser = findUserById(user.getId());
 
         // TODO: Expand functionality to renaming upp folder
-        if (user.getProfilePicture() != null) {
-            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-            user.getProfilePicture().setImageUrl(imageUrl);
-
-            if (oldUser.getProfilePicture() != null) {
-                user.getProfilePicture().setId(oldUser.getProfilePicture().getId());
-            }
-        }
+        updateProfilePictureFiles(oldUser, user);
 
         userRepo.save(user);
         log.info("Saved application user with id='{}'", user.getId());
@@ -116,10 +109,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (user.getProfilePicture() != null) {
-            String imageUrl = ifm.writeAndReplaceUserProfileImage(user);
-            user.getProfilePicture().setImageUrl(imageUrl);
-        }
+        updateProfilePictureFiles(null, user);
 
         userRepo.save(user);
         log.info("Created an application user with id='{}'", user.getId());
@@ -188,6 +178,21 @@ public class UserServiceImpl implements UserService {
             log.info("Deleted application user with id='{}'", id);
         } else {
             throw new NotFoundException(String.format("Could not find application user with id %s", id));
+        }
+    }
+
+    public void updateProfilePictureFiles(ApplicationUser oldUser, ApplicationUser newUser) {
+        log.trace("calling updateProfilePicture() ...");
+
+        if (newUser != null && newUser.getProfilePicture() != null) {
+            String imageUrl = ifm.writeAndReplaceUserProfileImage(newUser);
+            newUser.getProfilePicture().setImageUrl(imageUrl);
+
+            if (oldUser != null && oldUser.getProfilePicture() != null) {
+                newUser.getProfilePicture().setId(oldUser.getProfilePicture().getId());
+            }
+        } else {
+            ifm.deleteUserProfileImage(newUser);
         }
     }
 }

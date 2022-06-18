@@ -26,7 +26,8 @@ public class ImageFileManager {
             try {
                 Files.createDirectories(f.toPath());
             } catch (IOException e) {
-                throw new FileManagerException("Error when creating user Folder");
+                log.error(e.getMessage(), e);
+                throw new FileManagerException(e.getMessage(), e);
             }
             log.info("Created a folder at url='{}'", url);
         }
@@ -58,8 +59,8 @@ public class ImageFileManager {
             log.info("Wrote reference images to disk at path='{}'", relPath);
             return relPath;
         } catch (IOException e) {
-            log.error(e.getMessage());
-            return "error";
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
         }
     }
 
@@ -75,8 +76,8 @@ public class ImageFileManager {
             log.info("Wrote sketch images to disk at path='{}'", relPath);
             return relPath;
         } catch (IOException e) {
-            log.info(e.getMessage());
-            throw new FileManagerException(e.getMessage());
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
         }
     }
 
@@ -89,8 +90,8 @@ public class ImageFileManager {
             log.info("Wrote artwork images to disk at path='{}'", relPath);
             return relPath;
         } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new FileManagerException(e.getMessage());
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
         }
     }
 
@@ -139,8 +140,8 @@ public class ImageFileManager {
             return ImageDataPaths.artistProfileLocation + a.getArtist().getUserName() + "/" + a.getName() + '.' + a.getFileType().toString().toLowerCase(Locale.ROOT);
             //return  ImageDataPaths.artistProfilePictureLocation+"/"+a.getName();
         } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new FileManagerException(e.getMessage());
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
         }
     }
 
@@ -159,8 +160,8 @@ public class ImageFileManager {
             try {
                 Files.createDirectories(f.toPath());
             } catch (IOException e) {
-                log.error(e.getMessage());
-                throw new FileManagerException(e.getMessage());
+                log.error(e.getMessage(), e);
+                throw new FileManagerException(e.getMessage(), e);
             }
         }
         File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
@@ -172,45 +173,51 @@ public class ImageFileManager {
             return ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
                 + ImageDataPaths.userProfilePictureIdentifier + "." + a.getProfilePicture().getFileType().toString().toLowerCase(Locale.ROOT);
         } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new FileManagerException(e.getMessage());
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
         }
 
     }
 
     public boolean deleteUserProfileImage(ApplicationUser a) {
         log.trace("calling deleteUserProfileImage() ...");
-        File f = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
+        File userPfpDir = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName());
+        boolean isDeleted = false;
 
-        if (f.isDirectory() && f.exists()) {
-            File profilePicture = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
+        if (userPfpDir.isDirectory() && userPfpDir.exists()) {
+            File userPfp = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + a.getUserName() + "\\"
                 + ImageDataPaths.userProfilePictureIdentifier);
 
-            return profilePicture.delete();
+            isDeleted = userPfp.delete();
         }
 
-        boolean isDeleted = f.delete();
-        log.info("Deleted user profile image from disk for application user with id='{}'", a.getId());
+        isDeleted = isDeleted && userPfpDir.delete();
+        log.info("Deleted user profile image and directory from disk for application user with id='{}'", a.getId());
         return isDeleted;
     }
 
-    public void renameArtistFolder(Artist artist, String oldUserName) {
+    public void renameArtistFolders(Artist artist, String oldUserName) {
         log.trace("calling renameArtistFolder() ...");
         File oldImageFile = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + oldUserName);
         try {
             Files.move(oldImageFile.toPath(), oldImageFile.toPath().resolveSibling(artist.getUserName()));
             log.info("Renamed artist folder for artist with id='{}'", artist.getId());
         } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new FileManagerException(e.getMessage());
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
         }
+        renameUserFolder(artist, oldUserName);
+    }
+
+    public void renameUserFolder(ApplicationUser applicationUser, String oldUserName) {
+        log.trace("calling renameUserProfilePictureFolder() ...");
         //rename profile folder
         File oldImageProfileFolder = new File(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.userProfilePictureLocation + oldUserName);
         try {
-            Files.move(oldImageProfileFolder.toPath(), oldImageProfileFolder.toPath().resolveSibling(artist.getUserName()));
+            Files.move(oldImageProfileFolder.toPath(), oldImageProfileFolder.toPath().resolveSibling(applicationUser.getUserName()));
         } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new FileManagerException(e.getMessage());
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
         }
     }
 }

@@ -94,7 +94,10 @@ public class UserServiceImpl implements UserService {
 
         ApplicationUser oldUser = findUserById(user.getId());
 
-        // TODO: Expand functionality to renaming upp folder
+        if (!oldUser.getUserName().equals(user.getUserName())) {
+            ifm.renameUserFolder(user, oldUser.getUserName());
+        }
+
         updateProfilePictureFiles(oldUser, user);
 
         userRepo.save(user);

@@ -83,10 +83,9 @@ public class ArtistServiceImpl implements ArtistService {
         Artist oldArtist = findArtistById(artist.getId());
 
         if (!oldArtist.getUserName().equals(artist.getUserName())) {
-            ifm.renameArtistFolder(artist, oldArtist.getUserName());
+            ifm.renameArtistFolders(artist, oldArtist.getUserName());
         }
 
-        // TODO: Expand functionality to renaming upp folder
         this.userService.updateProfilePictureFiles(oldArtist, artist);
 
         artistRepo.save(artist);

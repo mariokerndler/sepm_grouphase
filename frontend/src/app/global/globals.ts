@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 })
 export class Globals {
   readonly backendUri: string = Globals.findBackendUrl();
-  readonly projectName: string = 'Artsperience';
+  readonly projectName: string = 'Project: Sketchbook';
   readonly assetsPath: string = 'assets/';
   readonly defaultProfilePicture: string = 'data/default_pfp.png';
 

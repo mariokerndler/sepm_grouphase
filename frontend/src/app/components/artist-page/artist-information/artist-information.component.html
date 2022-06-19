@@ -1,4 +1,3 @@
-
 <div *ngIf="!profileSettings">
   <div>
     <span class="accent-color artist-about-header">About</span>
@@ -27,7 +26,7 @@
   </div>
   -->
 </div>
-<div>
+<div *ngIf="this.loggedInUserId!==this.artist.id">
   <button (click)="messageUser()" color="accent" mat-button>
     <mat-icon color="accent">message</mat-icon>
     <span class="edit-text">Message User</span>

@@ -2,7 +2,7 @@ import {UserRole} from './artistDto';
 import {ProfilePictureDto} from './profilePictureDto';
 import {ChatParticipantStatus, ChatParticipantType, IChatParticipant} from 'ng-chat';
 
-export class ApplicationUserDto implements  IChatParticipant {
+export class ApplicationUserDto implements IChatParticipant {
   id: number;
   userName: string;
   profilePictureDto: ProfilePictureDto;
@@ -15,6 +15,6 @@ export class ApplicationUserDto implements  IChatParticipant {
   userRole: UserRole;
   readonly avatar: string | null;
   displayName: string;
-  participantType: ChatParticipantType= ChatParticipantType.User;
-   status: ChatParticipantStatus;
+  participantType: ChatParticipantType = ChatParticipantType.User;
+  status: ChatParticipantStatus;
 }

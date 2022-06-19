@@ -12,8 +12,10 @@ export class CommissionTimeslotsComponent implements OnInit {
   @Input() review: ReviewDto;
   @Input() sketch: SketchDto;
 
-  constructor() { }
+  constructor() {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
 }

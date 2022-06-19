@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue("Artist")

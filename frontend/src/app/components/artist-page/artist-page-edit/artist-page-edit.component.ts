@@ -488,7 +488,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       updatedArtist.description = description;
     }
 
-    if(this.oldProfilePicture !== this.profilePicture) {
+    if (this.oldProfilePicture !== this.profilePicture) {
       updatedArtist.profilePictureDto = this.createProfilePictureDto();
     }
 
@@ -525,7 +525,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       updatedUser.address = address.valueOf();
     }
 
-    if(this.oldProfilePicture !== this.profilePicture) {
+    if (this.oldProfilePicture !== this.profilePicture) {
       updatedUser.profilePictureDto = this.createProfilePictureDto();
     }
 
@@ -533,7 +533,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   private setProfilePicture() {
-    if(this.user.profilePictureDto) {
+    if (this.user.profilePictureDto) {
       this.oldProfilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
       this.profilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
     } else {

@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.basetest.GetImageByteArray;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtworkMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
@@ -150,10 +149,10 @@ public class ArtworkEndpointTest {
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON_VALUE, response.getContentType());
 
-        List<SimpleMessageDto> simpleArtistDtos = Arrays.asList(objectMapper.readValue(response.getContentAsString(),
-            SimpleMessageDto[].class));
+        List<ArtistDto> artistDtos = Arrays.asList(objectMapper.readValue(response.getContentAsString(),
+            ArtistDto[].class));
 
-        assertEquals(0, simpleArtistDtos.size());
+        assertEquals(0, artistDtos.size());
     }
 
     @Test

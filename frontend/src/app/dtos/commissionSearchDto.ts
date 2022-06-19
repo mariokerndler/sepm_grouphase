@@ -1,6 +1,4 @@
-
-
-export class CommissionSearchDto{
+export class CommissionSearchDto {
   priceRange: number[];
   date: string;
   name: string;

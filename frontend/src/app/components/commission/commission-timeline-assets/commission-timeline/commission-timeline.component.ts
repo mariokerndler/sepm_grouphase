@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
-
 //import * as data from 'src/assets/commission2.json';
 import {CommissionService} from '../../../../services/commission.service';
 import {ActivatedRoute} from '@angular/router';

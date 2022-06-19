@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DeleteArtworkComponent } from './delete-artwork.component';
+import {DeleteArtworkComponent} from './delete-artwork.component';
 
 describe('DeleteArtworkComponent', () => {
   let component: DeleteArtworkComponent;
@@ -8,9 +8,9 @@ describe('DeleteArtworkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteArtworkComponent ]
+      declarations: [DeleteArtworkComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,3 +1,40 @@
+table {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+th {
+  border-bottom: 2px solid #fb9fa4;
+  text-align: left;
+}
+
+td {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #fb9fa4;
+  text-align: left;
+}
+
+mat-expansion-panel {
+  background: transparent;
+  box-shadow: none;
+}
+
+mat-expansion-panel-header {
+  padding: 15px 5px 15px 5px;
+}
+
+.mat-expansion-indicator {
+  color: #fb9fa4;
+  background-color: #fb9fa4;
+}
+
+.notification-header {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
 .artist-page {
   width: 60%;
   margin: auto;

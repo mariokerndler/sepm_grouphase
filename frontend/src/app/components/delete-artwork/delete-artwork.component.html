@@ -1,12 +1,12 @@
 <div fxLayout="column">
-  <h1 mat-dialog-title >Delete Artwork {{this.data.artwork.name}}</h1>
+  <h1 mat-dialog-title>Delete Artwork {{this.data.artwork.name}}</h1>
   <div mat-dialog-content>
     Are you sure, that you want to delete the artwork <strong>{{this.data.artwork.name}}</strong>?
   </div>
   <br>
-  <img fxFlexAlign="center" [src]="'assets/' + this.data.artwork.imageUrl" alt="" class="preview-image">
+  <img [src]="'assets/' + this.data.artwork.imageUrl" alt="" class="preview-image" fxFlexAlign="center">
   <div fxFlexAlign="center" mat-dialog-actions>
     <button mat-button mat-dialog-close>No</button>
-    <button (click)="deleteArtwork()" mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+    <button (click)="deleteArtwork()" cdkFocusInitial mat-button mat-dialog-close>Ok</button>
   </div>
 </div>

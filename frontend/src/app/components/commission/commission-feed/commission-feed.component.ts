@@ -22,7 +22,7 @@ export class CommissionFeedComponent implements OnInit {
       issueDate: new Date(2022, 1, 1),
       deadlineDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
     } as CommissionDto; */
-  public searchEnum= SearchConstraint;
+  public searchEnum = SearchConstraint;
   options: Options = {
     floor: 0,
     ceil: 10000,
@@ -39,8 +39,8 @@ export class CommissionFeedComponent implements OnInit {
   };
 
 
-  searchCom: CommissionSearchDto= {
-    date: SearchConstraint.none, name: '', priceRange:[0,5000], artistId:'',userId:'',pageNr:0
+  searchCom: CommissionSearchDto = {
+    date: SearchConstraint.none, name: '', priceRange: [0, 5000], artistId: '', userId: '', pageNr: 0
   };
   commissions: SimpleCommissionDto[];
   hasLoaded = false;
@@ -53,21 +53,24 @@ export class CommissionFeedComponent implements OnInit {
     this.fetchCommissions();
     this.loadAllArtists();
   }
-  public  search(): void{
+
+  public search(): void {
     console.log(this.searchCom);
-   this.commissionService.filterCommissions(this.searchCom).subscribe(data=>{
-      this.commissions=data;
+    this.commissionService.filterCommissions(this.searchCom).subscribe(data => {
+      this.commissions = data;
     });
   }
 
   public routeToCommissionCreation(): void {
     this.router.navigate(['/commisson-create']);
   }
-  private  loadAllArtists(){
-    this.artistService.getAllArtists().subscribe(data=> {
-    this.artists=data;
+
+  private loadAllArtists() {
+    this.artistService.getAllArtists().subscribe(data => {
+      this.artists = data;
     });
   }
+
   private fetchCommissions() {
     this.commissionService.getAllCommissions().subscribe({
       next: (loadedCommissions) => {

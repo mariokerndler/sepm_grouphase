@@ -14,32 +14,35 @@ import {ArtistDto, UserRole} from '../../../dtos/artistDto';
   styleUrls: ['./commission-page.component.scss']
 })
 export class CommissionPageComponent implements OnInit {
-  @Input()user: ApplicationUserDto;
-  @Input()artist: ArtistDto;
+  @Input() user: ApplicationUserDto;
+  @Input() artist: ArtistDto;
   commissions: SimpleCommissionDto[];
   hasLoaded = false;
-  searchCom: CommissionSearchDto= {
-    date: SearchConstraint.asc, name: '', priceRange:[0,500000], userId:'',artistId:'',pageNr:0
+  searchCom: CommissionSearchDto = {
+    date: SearchConstraint.asc, name: '', priceRange: [0, 500000], userId: '', artistId: '', pageNr: 0
   };
-  constructor(private commissionService: CommissionService) { }
+
+  constructor(private commissionService: CommissionService) {
+  }
 
   ngOnInit(): void {
-    if(this.user.userRole===UserRole.artist) {
+    if (this.user.userRole === UserRole.artist) {
       //search for artist  field
-      this.searchCom.artistId=this.user.id.toString();
-      console.log('searching for '+this.searchCom.artistId+' as artist');
-    } else if(this.user.userRole===UserRole.user){
+      this.searchCom.artistId = this.user.id.toString();
+      console.log('searching for ' + this.searchCom.artistId + ' as artist');
+    } else if (this.user.userRole === UserRole.user) {
       //search for customer field
-      this.searchCom.userId=this.user.id.toString();
-      console.log('searching for '+this.searchCom.userId+' as user');
+      this.searchCom.userId = this.user.id.toString();
+      console.log('searching for ' + this.searchCom.userId + ' as user');
     }
     this.searchCommissions();
   }
-  public  searchCommissions(): void{
+
+  public searchCommissions(): void {
     //console.log(this.searchCom);
-    this.commissionService.filterCommissions(this.searchCom).subscribe(data=>{
+    this.commissionService.filterCommissions(this.searchCom).subscribe(data => {
       console.log(this.searchCom);
-      this.commissions=data;
+      this.commissions = data;
     });
   }
 }

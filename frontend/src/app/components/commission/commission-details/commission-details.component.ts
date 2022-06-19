@@ -12,6 +12,7 @@ import {SketchDto} from '../../../dtos/sketchDto';
 import {TagSearch} from '../../../dtos/tag-search';
 import {ArtistService} from '../../../services/artist.service';
 import {NotificationService} from '../../../services/notification/notification.service';
+import {CommissionStatus} from '../../../global/CommissionStatus';
 
 
 @Component({
@@ -45,8 +46,7 @@ export class CommissionDetailsComponent implements OnInit {
 
   public selectedArtistId = 4;
   //Just dummy data.
-  artistIds = [4, 5, 6, 8, 10, 39];
-
+  artistIds = [4, 5, 6, 8, 10,39];
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
@@ -90,13 +90,8 @@ export class CommissionDetailsComponent implements OnInit {
               artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
             };
             //this would be a temporary fix but sadly artworks are bugged rn so idk
-            this.artworkService.search(searchPar).subscribe(aw => {
-                console.log(aw);
-                this.commission.artworkDto = aw[0];
                 this.user = commission.customerDto;
                 this.checkCommissionState(this.commission);
-              }
-            );
           } else {
 
             this.user = commission.customerDto;
@@ -111,9 +106,16 @@ export class CommissionDetailsComponent implements OnInit {
     if (commission.referencesDtos.length !== 0) {
       this.hasReferences = true;
     }
+    if (this.commission.artworkDto !== null) {
     if (commission.artworkDto.sketchesDtos != null) {
       if (commission.artworkDto.sketchesDtos.length !== 0) {
         this.hasSketches = true;
+      }
+    }
+      if (this.commission.sketchesShown > this.commission.feedbackSent) {
+
+        this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
+        console.log(this.uploadedSketchDto);
       }
     }
     if (this.userId === this.commission.customerDto.id.toString()) {
@@ -129,11 +131,6 @@ export class CommissionDetailsComponent implements OnInit {
       this.allowSketch = false;
     } else {
       this.allowSketch = true;
-    }
-    if (this.commission.sketchesShown > this.commission.feedbackSent) {
-
-      this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
-      console.log(this.uploadedSketchDto);
     }
     this.hasLoaded = true;
     console.log(this.commission);
@@ -160,7 +157,6 @@ export class CommissionDetailsComponent implements OnInit {
       this.uploadedSketchDto = sketch;
     };
   }
-
   updateCommission() {
     //artist added sketch
     if (this.uploadedSketchDto !== null && this.artistEdit) {
@@ -198,6 +194,39 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   chooseArtist() {
+      this.commission.status = CommissionStatus.negotiating;
+      this.artistService.getArtistById(this.selectedArtistId).subscribe(artist => {
+      this.commission.artistDto = artist;
+      console.log(this.selectedArtistId);
+      this.commissionService.updateCommission(this.commission).subscribe(ok => {
+      this.notificationService.displaySuccessSnackbar('Artist selected successfully');
+      });
+    });
+  }
 
+  //triggered by Artist
+  applyArtist() {
+    if (this.commission.artistCandidatesDtos === null) {
+      this.commission.artistCandidatesDtos = [];
+    }
+
+    this.artistService.getArtistById(Number.parseInt(this.userId, 10)).subscribe(data => {
+      if (this.commission.artistCandidatesDtos.filter(a => a.id === data.id)) {
+        this.notificationService.displaySimpleDialog('', 'You have already applied for this commission');
+      } else {
+        this.commission.artistCandidatesDtos.push(data);
+        this.commissionService.updateCommission(this.commission).subscribe(success => {
+          this.notificationService.displaySuccessSnackbar('You have applied for this commission');
+        });
+      }
+    });
+  }
+
+  //triggered by User
+  startCommission() {
+    this.commission.status=CommissionStatus.inProgress;
+    this.commissionService.updateCommission(this.commission).subscribe(success=>{
+      this.notificationService.displaySuccessSnackbar('Commission is now in progress');
+    });
   }
 }

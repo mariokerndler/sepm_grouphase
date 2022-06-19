@@ -64,7 +64,6 @@ public class ArtistServiceImpl implements ArtistService {
         throw new NotFoundException(String.format("Could not find Artist with id %s", id));
     }
 
-    // Todo: why does this return an artist?
     @Override
     public Artist saveArtist(Artist artist) {
         log.trace("calling saveArtist() ...");

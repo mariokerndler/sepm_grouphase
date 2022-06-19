@@ -97,10 +97,9 @@ public class CommissionServiceImpl implements CommissionService {
         notificationService.createNotificationByCommission(findById(c.getId()), c);
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
 
-        if(this.commissionRepo.getById(c.getId()).getStatus()== CommissionStatus.LISTED && c.getStatus()==CommissionStatus.NEGOTIATING){
+        if (this.commissionRepo.getById(c.getId()).getStatus() == CommissionStatus.LISTED && c.getStatus() == CommissionStatus.NEGOTIATING) {
             this.assignArtist(c);
-        }
-       else  if (c.getArtwork() != null && c.getArtwork().getSketches() != null) {
+        } else if (c.getArtwork() != null && c.getArtwork().getSketches() != null) {
             int sketchCount = c.getArtwork().getSketches().size();
             //if sketch has been added
             if (c.getFeedbackSent() < c.getSketchesShown()) {
@@ -132,19 +131,16 @@ public class CommissionServiceImpl implements CommissionService {
     //This NEEDS to be called AFTER and artist has been assigned to the commission and initializes the artwork
     @Override
     public void assignArtist(Commission commission) {
-
         Artwork a = new Artwork();
         a.setName(commission.getTitle() + "_Artwork");
         a.setArtist(commission.getArtist());
         a.setFileType(FileType.PNG);
         a.setCommission(commission);
-        a.setDescription("Commisson for"+ commission.getCustomer().getUserName());
+        a.setDescription("Commission for" + commission.getCustomer().getUserName());
         a.setImageUrl(this.ifm.writeCommissionArtwork(commission, a));
         //this has to be done through repo cause it doesnt contain image data;
         artworkRepository.save(a);
         commissionRepo.save(commission);
-
-
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Slf4j
+@Validated
 @RestController
 @RequestMapping(value = "api/v1/artworks")
 public class ArtworkEndpoint {
@@ -122,7 +124,7 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
     @Operation(summary = "Delete artwork")
-    public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         log.info("A user is trying to delete an artwork.");
         try {
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));

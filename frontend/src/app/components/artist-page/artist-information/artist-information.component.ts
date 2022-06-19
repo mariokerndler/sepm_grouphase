@@ -22,6 +22,7 @@ export class ArtistInformationComponent implements OnInit {
   profileSettings: ArtistProfileSettings;
   artworks: ArtworkDto[];
   isReady = false;
+  loggedInUserId;
   public selectedArtwork: number = null;
 
 
@@ -37,6 +38,7 @@ export class ArtistInformationComponent implements OnInit {
     if (this.artist.profileSettings) {
       this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
     }
+    this.loggedInUserId= Number.parseInt(localStorage.getItem('userId'), 10);
   }
 
 
@@ -45,15 +47,14 @@ export class ArtistInformationComponent implements OnInit {
   }
 
   messageUser() {
-    const id = Number.parseInt(localStorage.getItem('userId'), 10);
     const chat: ChatDto = {
-      chatPartnerId: this.artist.id, userId: id
+      chatPartnerId: this.artist.id, userId: this.loggedInUserId
     };
     console.log(chat);
     this.chatService.postChat(chat).subscribe(success => {
-      this.router.navigate(['/chat/' + id]);
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
     }, error => {
-      this.router.navigate(['/chat/' + id]);
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
     });
   }
 }

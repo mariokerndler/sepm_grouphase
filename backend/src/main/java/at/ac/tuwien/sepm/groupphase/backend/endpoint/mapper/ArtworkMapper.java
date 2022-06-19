@@ -19,10 +19,6 @@ public abstract class ArtworkMapper {
     @Mapping(source = "tagsDtos", target = "tags")
     public abstract Artwork artworkDtoToArtwork(ArtworkDto artworkDto);
 
-    // TODO: (Ask Daniel why this is necessary) uncommenting this to see if it's needed
-    //@BeforeMapping
-    //protected void urlDefault(ArtworkDto artworkDto, @MappingTarget Artwork a) {
-    //    a.setImageUrl("default");
-    //}
+
 
 }

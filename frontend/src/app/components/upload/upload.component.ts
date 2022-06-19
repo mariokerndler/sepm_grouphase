@@ -32,7 +32,6 @@ export class UploadComponent implements OnInit {
   allTags: TagDto[] = [];
   filteredTags: Observable<TagDto[]>;
 
-
   constructor(
     private artworkService: ArtworkService,
     private tagService: TagService,
@@ -85,7 +84,6 @@ export class UploadComponent implements OnInit {
           this.uploadForm.controls.description.value,
           extractedValues[1],
           extractedValues[0]);
-        this.dialogRef.close();
       };
     }
   }
@@ -94,10 +92,17 @@ export class UploadComponent implements OnInit {
     const artwork = {
       name, description, imageData,
       imageUrl: '',
-      fileType: filetype, artistId: this.data.artist.id, tags: this.selectedTags
+      fileType: filetype,
+      artistId: this.data.artist.id,
+      tagsDtos: this.selectedTags
     } as ArtworkDto;
     this.artworkService.createArtwork(artwork, null,
-      () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork')).subscribe();
+      () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork'))
+      .subscribe(
+        (x) => {
+          this.dialogRef.close();
+        }
+      );
   }
 
   triggerResize() {
@@ -177,6 +182,4 @@ export class UploadComponent implements OnInit {
 
     return this.allTags.filter(tag => tag.name.toLowerCase().includes(filterValue));
   }
-
-
 }

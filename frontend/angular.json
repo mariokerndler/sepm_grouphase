@@ -31,7 +31,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/new-theme.scss"
+              "src/theme/reworked-theme.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js"

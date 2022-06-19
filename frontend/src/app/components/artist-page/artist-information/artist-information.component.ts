@@ -25,11 +25,6 @@ export class ArtistInformationComponent implements OnInit {
   loggedInUserId;
   public selectedArtwork: number = null;
 
-
-  // TODO: Fill in the real profile picture
-  artistUrl = 'https://picsum.photos/150/150';
-
-
   constructor(private artworkService: ArtworkService, public globalFunctions: GlobalFunctions, private chatService: ChatService,
               private router: Router) {
   }
@@ -37,6 +32,7 @@ export class ArtistInformationComponent implements OnInit {
   ngOnInit(): void {
     if (this.artist.profileSettings) {
       this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
+      console.log(this.profileSettings);
     }
     this.loggedInUserId= Number.parseInt(localStorage.getItem('userId'), 10);
   }

@@ -1,9 +1,17 @@
 <div *ngIf="!profileSettings">
-  <div>
-    <span class="accent-color artist-about-header">About</span>
-    <p class="accent-color artist-about-description">
-      {{artist.description}}
-    </p>
+  <div fxLayout="row" fxFill>
+    <div fxFlex="auto">
+      <span class="accent-color artist-about-header">About</span>
+      <p class="accent-color artist-about-description">
+        {{artist.description}}
+      </p>
+    </div>
+    <div *ngIf="this.loggedInUserId!==this.artist.id" fxLayoutAlign="end center" fxFlex="auto">
+      <button (click)="messageUser()" color="primary" mat-button style="height: 40px">
+        <mat-icon color="primary">message</mat-icon>
+        <span class="edit-text" style="padding-left: 10px">Message User</span>
+      </button>
+    </div>
   </div>
   <br>
   <!--
@@ -26,12 +34,6 @@
   </div>
   -->
 </div>
-<div *ngIf="this.loggedInUserId!==this.artist.id">
-  <button (click)="messageUser()" color="accent" mat-button>
-    <mat-icon color="accent">message</mat-icon>
-    <span class="edit-text">Message User</span>
-  </button>
-</div>
 <div *ngIf="profileSettings">
   <div>
     <span class="accent-color artist-about-header">About</span>
@@ -42,11 +44,11 @@
 
   <br>
   <div *ngFor="let element of profileSettings.layout; let i = index">
-    <div *ngIf="element.componentName.substring(0,7) === 'Gallery'">
+    <div *ngIf="element.type.includes('Gallery')">
       <div>
         <span class="accent-color artist-about-header">{{element.componentName}}</span>
         <div fxFlex="auto" fxLayoutAlign="end">
-          <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
+          <button (click)="switchTab(1)" color="primary" mat-button>See More</button>
         </div>
       </div>
       <app-artist-gallery-subsections [artist]="artist"

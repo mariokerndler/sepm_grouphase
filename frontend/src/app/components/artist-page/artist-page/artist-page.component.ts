@@ -236,7 +236,6 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
         this.notifications = notifications;
         this.hasUnreadNotifications = this.notifications.length > 0;
         this.sortedNotifications = this.notifications.slice();
-        console.log(notifications);
       });
   }
 

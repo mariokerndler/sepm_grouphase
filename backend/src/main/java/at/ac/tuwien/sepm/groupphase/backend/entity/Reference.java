@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Reference extends Image {
+public class Reference extends Image implements HasId {
 
 
     @ManyToOne

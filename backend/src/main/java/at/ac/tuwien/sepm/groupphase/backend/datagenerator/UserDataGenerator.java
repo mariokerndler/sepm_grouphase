@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
@@ -280,11 +281,11 @@ public class UserDataGenerator {
         commissionRepository.save(c);
         Commission d = generateCommission1(artists.get(1), users.get(1));
         commissionRepository.save(d);
-        Commission e = generateCommission3(artists.get(0), users.get(0));
+        Commission e = generateCommission3(artists.get(0), users.get(1));
         commissionRepository.save(e);
-        Commission f = generateCommission4(artists.get(0), users.get(0));
+        Commission f = generateCommission4(artists.get(0), users.get(1));
         commissionRepository.save(f);
-        Commission g = generateCommission5(artists.get(0), users.get(0));
+        Commission g = generateCommission5(artists.get(0), users.get(1));
         commissionRepository.save(g);
 
 
@@ -412,6 +413,9 @@ public class UserDataGenerator {
         List<Reference> references = new LinkedList<Reference>();
         Artwork a = new Artwork();
         List<Sketch> sketches = new LinkedList<Sketch>();
+        ImageFileManager ifm = new ImageFileManager();
+        String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
+        ifm.createFolderIfNotExists(assetAbsoluteLocation+"data\\com\\adminSample Commission3\\");
         for (int i = 5; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
@@ -432,7 +436,6 @@ public class UserDataGenerator {
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission3\\b" + i);
                 sketches.add(k);
-
             }
         }
         Reference reference = new Reference();
@@ -441,12 +444,20 @@ public class UserDataGenerator {
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
         references.add(reference);
+        Reference reference1 = new Reference();
+        reference1.setImageUrl("data\\com\\adminSample Commission3\\bReference1");
+        reference1.setImageData(getImageBytes(urls[1]));
+        reference1.setCommission(commission);
+        reference1.setFileType(FileType.JPG);
+        references.add(reference1);
         a.setSketches(sketches);
         Artwork artwork = new Artwork();
         artwork.setDescription(desc);
         artwork.setImageUrl("data\\com\\adminSample Commission3\\artwork");
         artwork.setImageData(getImageBytes(urls[3]));
         artwork.setFileType(FileType.JPG);
+        ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\adminSample Commission3\\bReference");
+        ifm.writeReferenceDatagenImage(commission, reference1, "data\\com\\adminSample Commission3\\bReference1");
         commission.setArtwork(artwork);
         commission.setReferences(references);
         commission.setArtwork(a);
@@ -475,6 +486,9 @@ public class UserDataGenerator {
         List<Reference> references = new LinkedList<Reference>();
         Artwork a = new Artwork();
         List<Sketch> sketches = new LinkedList<Sketch>();
+        ImageFileManager ifm = new ImageFileManager();
+        String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
+        ifm.createFolderIfNotExists(assetAbsoluteLocation+"data\\com\\adminSample Commission4\\");
         for (int i = 5; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
@@ -499,10 +513,11 @@ public class UserDataGenerator {
         }
         Reference reference = new Reference();
         reference.setImageUrl("data\\com\\adminSample Commission4\\bReference");
-        reference.setImageData(getImageBytes(urls[0]));
+        reference.setImageData(getImageBytes(urls[1]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
         references.add(reference);
+        ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\adminSample Commission4\\bReference");
         a.setSketches(sketches);
         commission.setReferences(references);
         commission.setArtwork(a);

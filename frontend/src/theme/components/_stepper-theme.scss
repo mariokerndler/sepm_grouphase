@@ -9,17 +9,17 @@
 
   .mat-stepper-horizontal
    {
-      background-color: #424242 !important;
+      background-color: #2f3a51 !important;
    }
 
   .mat-step-icon {
     background-color: darkgray !important;
-    color: #424242 !important;
+    color: #2f3a51 !important;
   }
 
   .mat-step-icon-selected {
     background-color: mat.get-color-from-palette($primary-palette, 200) !important;
-    color: #424242 !important;
+    color: #2f3a51 !important;
   }
 
 

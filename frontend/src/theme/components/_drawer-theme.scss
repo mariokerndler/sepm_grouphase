@@ -9,7 +9,7 @@
   $primary-palette: map.get($color-config, 'primary');
 
   .mat-drawer{
-    background-color:#424242;
+    background-color: #2f3a51;
     color: mat.get-color-from-palette($primary-palette, 200) !important;
   }
 

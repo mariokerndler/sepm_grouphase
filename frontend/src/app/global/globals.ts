@@ -8,6 +8,9 @@ export class Globals {
   readonly projectName: string = 'Artsperience';
   readonly assetsPath: string = 'assets/';
   readonly defaultProfilePicture: string = 'data/default_pfp.png';
+  readonly clientID: string = '';
+  readonly appSecret: string = '';
+  readonly paymentBaseUrl: string = 'https://api-m.sandbox.paypal.com';
 
   private static findBackendUrl(): string {
     if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080

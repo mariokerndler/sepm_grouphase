@@ -21,6 +21,7 @@ import {NotificationService} from '../../../services/notification/notification.s
 import {CommissionStatus} from '../../../global/CommissionStatus';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
+import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
 
 
 @Component({
@@ -61,7 +62,11 @@ export class CommissionCreationComponent implements OnInit {
       password: 'string',
       admin: true,
       userRole: UserRole.admin,
-      profilePictureDto: null
+      profilePictureDto: null,
+      displayName: '',
+      avatar: null,
+      participantType: ChatParticipantType.User,
+      status: ChatParticipantStatus.Online
     },
     deadlineDate: '',
     feedbackSent: 0,
@@ -75,10 +80,11 @@ export class CommissionCreationComponent implements OnInit {
     feedbackRounds: 1,
     artworkDto: null,
     status: CommissionStatus.listed,
-  artistCandidatesDtos: []
+    artistCandidatesDtos: []
   };
   userId: string;
   customer: ApplicationUserDto;
+
   constructor(private artworkService: ArtworkService, private artistService: ArtistService,
               private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
               public globalFunctions: GlobalFunctions,
@@ -88,12 +94,14 @@ export class CommissionCreationComponent implements OnInit {
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
-  getUserId(): void{
-    const id= localStorage.getItem('userId');
-    if(id !== null){
-      this.userId=id;
+
+  getUserId(): void {
+    const id = localStorage.getItem('userId');
+    if (id !== null) {
+      this.userId = id;
     }
   }
+
   ngOnInit(): void {
 
 
@@ -101,12 +109,13 @@ export class CommissionCreationComponent implements OnInit {
       secondCtrl: ['', Validators.required],
     });
     this.getUserId();
-    this.userService.getUserById(Number.parseInt(this.userId, 10)).subscribe(data=>{
-      this.customer=data;
+    this.userService.getUserById(Number.parseInt(this.userId, 10)).subscribe(data => {
+        this.customer = data;
       }
     );
   }
-   fileSelected() {
+
+  fileSelected() {
 
     this.selectedReferences = this.commissionForm.value.references;
     console.log((this.selectedReferences.length));
@@ -144,20 +153,20 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.instructions = this.commissionForm.value.description;
     this.commission.price = this.commissionForm.value.price;
     this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
-    this.commission.customerDto=this.customer;
+    this.commission.customerDto = this.customer;
     this.commission.deadlineDate = formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
     this.commissionService.createCommission(this.commission).subscribe(ret => {
 
       }, (error: HttpErrorResponse) => {
-      this.notificationService.displayErrorSnackbar(error.error);
+        this.notificationService.displayErrorSnackbar(error.error);
       }, () => {
-      this.notificationService.displaySuccessSnackbar('Commission created successfully');
+        this.notificationService.displaySuccessSnackbar('Commission created successfully');
 
       }
     );
   }
 
-  formatDate(){
+  formatDate() {
     return formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US');
   }
 

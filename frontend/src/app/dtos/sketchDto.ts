@@ -2,7 +2,7 @@ import {FileType} from './artworkDto';
 
 export class SketchDto {
   id: number;
-  image: string |ArrayBuffer ;
+  image: string | ArrayBuffer;
   fileType: FileType.jpg | FileType.png | FileType.gif;
   imageUrl: string;
   description: string;

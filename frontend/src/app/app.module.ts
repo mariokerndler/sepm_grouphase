@@ -34,6 +34,9 @@ import {
   SuccessSnackbarComponent
 } from './services/notification/notification.service';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
+import {
+  ConfirmDialogComponent,
+} from './components/artist-page/artist-page-edit/confirm-dialog/confirm-dialog.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {UserPageComponent} from './components/user-page/user-page.component';
@@ -57,6 +60,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {
   ArtistGallerySubsectionsComponent
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
+import {NgChatModule} from 'ng-chat';
 
 import {NgxSliderModule} from '@angular-slider/ngx-slider';
 import {DeleteArtworkComponent} from './components/delete-artwork/delete-artwork.component';
@@ -68,6 +72,8 @@ import {
   CommissionTimeslotsComponent
 } from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
+// @ts-ignore
+import {ChatComponent} from './chat/chat.component';
 import {PaymentComponent} from './components/payment/payment.component';
 
 @NgModule({
@@ -105,7 +111,9 @@ import {PaymentComponent} from './components/payment/payment.component';
     CommissionPageComponent,
     CommissionTimelineComponent,
     CommissionTimeslotsComponent,
-    PaymentComponent,
+    ChatComponent,
+    ConfirmDialogComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -122,6 +130,7 @@ import {PaymentComponent} from './components/payment/payment.component';
     DragDropModule,
     MatSliderModule,
     NgxSliderModule,
+    NgChatModule
   ],
   providers: [
     {
@@ -134,7 +143,7 @@ import {PaymentComponent} from './components/payment/payment.component';
       provide: MAT_COLOR_FORMATS,
       useValue: NGX_MAT_COLOR_FORMATS
     },
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

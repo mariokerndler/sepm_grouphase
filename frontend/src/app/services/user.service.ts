@@ -152,4 +152,22 @@ export class UserService {
         })
       );
   }
+
+  upgradeUser(id: number): Observable<any> {
+    const params = new HttpParams()
+      .set('id', id);
+
+    const options = {
+      header: this.headers,
+      params
+    };
+
+    return this.http.put(`${this.userBaseUI}/${id}/upgrade`, null, options)
+      .pipe(
+        catchError((error) => this.notificationService.notifyUserAboutFailedOperation('Upgrading user to artist')(error)),
+        tap(_ => {
+          this.notificationService.displaySuccessSnackbar('Successfully upgraded user to artist.');
+        })
+      );
+  }
 }

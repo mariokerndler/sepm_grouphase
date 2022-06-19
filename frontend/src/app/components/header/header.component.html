@@ -19,17 +19,20 @@
       <mat-icon class="accent-color">close</mat-icon>
     </button>
     <mat-selection-list [multiple]="false" class="sidenav">
-      <mat-list-option routerLink="/feed" routerLinkActive="active" class="accent-color">
+      <mat-list-option class="accent-color" routerLink="/feed" routerLinkActive="active">
         Explore
       </mat-list-option>
-      <mat-list-option routerLink="/artists" routerLinkActive="active" class="accent-color">
+      <mat-list-option class="accent-color" routerLink="/artists" routerLinkActive="active">
         Artists
       </mat-list-option>
-      <mat-list-option routerLink="/commissions" routerLinkActive="active" class="accent-color">
+      <mat-list-option class="accent-color" routerLink="/commissions" routerLinkActive="active">
         Commissions
       </mat-list-option>
       <mat-list-option (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()" class="accent-color">
         Profile
+      </mat-list-option>
+      <mat-list-option (click)="navigateToChat()" *ngIf="authService.isLoggedIn()" class="accent-color">
+        Chat
       </mat-list-option>
     </mat-selection-list>
   </mat-sidenav>

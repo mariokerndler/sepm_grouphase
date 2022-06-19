@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue("Artist")
@@ -77,6 +77,18 @@ public class Artist extends ApplicationUser implements HasId {
         this.commissions = commissions;
         this.reviews = reviews;
         this.tags = tags;
+    }
+
+    public Artist(ApplicationUser user) {
+        super(user.getUserName(),
+            user.getProfilePicture(),
+            user.getName(),
+            user.getSurname(),
+            user.getEmail(),
+            user.getAddress(),
+            user.getPassword(),
+            user.getAdmin(),
+            UserRole.Artist);
     }
 
     @Override

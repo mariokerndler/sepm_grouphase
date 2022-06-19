@@ -13,7 +13,8 @@ export class DeleteArtworkComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<DeleteArtworkComponent>,
               private artworkService: ArtworkService,
-              private notificationService: NotificationService) { }
+              private notificationService: NotificationService) {
+  }
 
   ngOnInit(): void {
   }

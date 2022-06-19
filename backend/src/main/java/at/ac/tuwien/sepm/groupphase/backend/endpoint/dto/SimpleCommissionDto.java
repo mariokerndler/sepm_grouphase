@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumericWithSpaces;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -35,9 +35,10 @@ public class SimpleCommissionDto {
 
     @Min(0)
     private double price;
+
     @Min(0)
-    @Max(5)
     private int feedbackRounds;
+
     @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -49,12 +50,12 @@ public class SimpleCommissionDto {
     private LocalDateTime deadlineDate;
 
     @Size(max = 50)
-    @ValidAlphaNumeric
+    @ValidAlphaNumericWithSpaces
     private String title;
 
+    @Size(max = 255)
     private String instructions;
 
-    //TODO: can we map this to show just the url? ask in meeting
     private List<Long> referencesIds;
 
     public SimpleCommissionDto(Long artistId, Long customerId, CommissionStatus status, int sketchesShown, int feedbackSent,

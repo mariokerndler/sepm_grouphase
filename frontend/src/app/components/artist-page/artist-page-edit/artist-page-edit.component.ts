@@ -15,13 +15,14 @@ import {TagService} from '../../../services/tag.service';
 import {Location} from '@angular/common';
 import {Color} from '@angular-material-components/color-picker';
 import {GlobalFunctions} from '../../../global/globalFunctions';
-import {AuthService} from '../../../services/auth.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {UserService} from '../../../services/user.service';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {FileType} from '../../../dtos/artworkDto';
 import {ProfilePictureDto} from '../../../dtos/profilePictureDto';
 import {Globals} from '../../../global/globals';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -79,6 +80,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private globalFunctions: GlobalFunctions,
     public globals: Globals,
+    private dialog: MatDialog
   ) {
     this.fillFormValidators();
 
@@ -134,7 +136,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate([`artist/${this.user.id}`]);
   }
 
   updateUserInformation() {
@@ -341,6 +343,25 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     this.tagForm.setValue(null);
   }
 
+  upgradeUser() {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Upgrade to artist account',
+        message: 'Are you sure you want to be an artist?'
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.userService.upgradeUser(this.user.id).subscribe(
+          data => {
+            this.router.navigate([`/artist/${this.user.id}`]).catch((_) =>
+              this.notificationService.displayErrorSnackbar('Could not navigate to artist list.'));
+          }
+        );
+      }
+    });
+  }
+
   private filterTags(value: TagDto): TagDto[] {
     let filterValue;
     if (typeof value == 'string') {
@@ -467,7 +488,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       updatedArtist.description = description;
     }
 
-    if(this.oldProfilePicture !== this.profilePicture) {
+    if (this.oldProfilePicture !== this.profilePicture) {
       updatedArtist.profilePictureDto = this.createProfilePictureDto();
     }
 
@@ -504,7 +525,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       updatedUser.address = address.valueOf();
     }
 
-    if(this.oldProfilePicture !== this.profilePicture) {
+    if (this.oldProfilePicture !== this.profilePicture) {
       updatedUser.profilePictureDto = this.createProfilePictureDto();
     }
 
@@ -512,7 +533,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   private setProfilePicture() {
-    if(this.user.profilePictureDto) {
+    if (this.user.profilePictureDto) {
       this.oldProfilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
       this.profilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
     } else {
@@ -527,4 +548,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       imageData: this.pfpArray
     };
   }
+
+
 }

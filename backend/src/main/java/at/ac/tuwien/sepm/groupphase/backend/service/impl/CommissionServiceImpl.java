@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.SketchRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
+import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchConstraint;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator;
@@ -29,15 +30,22 @@ public class CommissionServiceImpl implements CommissionService {
     private final CommissionValidator commissionValidator;
     private final ArtworkService artworkService;
     private final ImageFileManager ifm;
+    private final NotificationService notificationService;
 
     @Autowired
-    public CommissionServiceImpl(CommissionRepository commissionRepo, CommissionValidator commissionValidator, ImageFileManager ifm,
-                                 ArtworkService artworkService, SketchRepository sketchRepository) {
+    public CommissionServiceImpl(
+        CommissionRepository commissionRepo,
+        CommissionValidator commissionValidator,
+        ImageFileManager ifm,
+        ArtworkService artworkService,
+        SketchRepository sketchRepository,
+        NotificationService notificationService) {
         this.commissionRepo = commissionRepo;
         this.sketchRepository = sketchRepository;
         this.commissionValidator = commissionValidator;
         this.ifm = ifm;
         this.artworkService = artworkService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -80,11 +88,10 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void updateCommission(Commission c) {
         log.trace("calling updateCommission() ...");
-        log.info("Writing Sketc1h");
+
+        notificationService.createNotificationByCommission(findById(c.getId()), c);
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
-        if (c.getArtwork().getSketches() != null) {
-
-
+        if (c.getArtwork() != null && c.getArtwork().getSketches() != null) {
             int sketchCount = c.getArtwork().getSketches().size();
             //if sketch has been added
             if (c.getFeedbackSent() < c.getSketchesShown()) {
@@ -127,8 +134,6 @@ public class CommissionServiceImpl implements CommissionService {
 
 
     }
-
-    //TODO: in feed, only view open commissions
 
     @Override
     public List<Commission> searchCommissions(CommissionSearchDto cs) {

@@ -43,16 +43,16 @@ export class CommissionDetailsComponent implements OnInit {
   uploadedSketchDto: SketchDto;
   public selectedArtwork: number = null;
 
-  public selectedArtistId =4;
+  public selectedArtistId = 4;
   //Just dummy data.
-  artistIds=[4,5,6,8,10,39];
+  artistIds = [4, 5, 6, 8, 10, 39];
 
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
               private route: ActivatedRoute, private globalFunctions: GlobalFunctions,
               private artistService: ArtistService, private notificationService: NotificationService,
-              private  router: Router) {
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -78,12 +78,12 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
           this.commission = commission;
-            this.commission.artistCandidatesDtos=[];
-            this.artistIds.forEach(a=>{
-              this.artistService.getArtistById(a).subscribe(result =>{
-                this.commission.artistCandidatesDtos.push(result);
-              });
+          this.commission.artistCandidatesDtos = [];
+          this.artistIds.forEach(a => {
+            this.artistService.getArtistById(a).subscribe(result => {
+              this.commission.artistCandidatesDtos.push(result);
             });
+          });
           console.log(commission.artworkDto);
           if (this.commission.artworkDto == null) {
             const searchPar: TagSearch = {
@@ -130,9 +130,9 @@ export class CommissionDetailsComponent implements OnInit {
     } else {
       this.allowSketch = true;
     }
-    if(this.commission.sketchesShown>this.commission.feedbackSent){
+    if (this.commission.sketchesShown > this.commission.feedbackSent) {
 
-      this.uploadedSketchDto=this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length-1)];
+      this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
       console.log(this.uploadedSketchDto);
     }
     this.hasLoaded = true;
@@ -167,16 +167,16 @@ export class CommissionDetailsComponent implements OnInit {
       if (this.commission.artworkDto.sketchesDtos == null) {
         this.commission.artworkDto.sketchesDtos = [];
       }
-      if(this.artistEdit) {
+      if (this.artistEdit) {
         this.commission.artworkDto.sketchesDtos.push(this.uploadedSketchDto);
         this.commission.sketchesShown += 1;
         this.uploadedSketchDto = null;
       }
     }
-    if(this.userEdit){
-      this.uploadedSketchDto.artworkId=this.commission.artworkDto.id;
+    if (this.userEdit) {
+      this.uploadedSketchDto.artworkId = this.commission.artworkDto.id;
       this.commission.feedbackSent++;
-      this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1]=this.uploadedSketchDto;
+      this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1] = this.uploadedSketchDto;
     }
     console.log(this.commission);
     this.commissionService.updateCommission(this.commission).subscribe();
@@ -186,9 +186,9 @@ export class CommissionDetailsComponent implements OnInit {
 
   toggleFeedbackField() {
     if (this.feedbackButtonIndex === 1) {
-      this.feedbackButtonIndex=0;
+      this.feedbackButtonIndex = 0;
     } else {
-      this.feedbackButtonIndex=1;
+      this.feedbackButtonIndex = 1;
     }
   }
 

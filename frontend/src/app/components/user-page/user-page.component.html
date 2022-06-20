@@ -5,18 +5,62 @@
     fxLayout="column"
     fxLayoutAlign="start space-evenly"
     fxLayoutGap="0.5rem">
-    <app-user-information *ngIf="user" [user]="user"></app-user-information>
+    <div class="information-container">
+      <div fxFill fxLayout="column">
+        <div fxLayout="row">
+          <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
+            <div fxLayoutAlign="center center">
+              <img [src]="globals.assetsPath + profilePicture" alt="{{user.userName}} profile picture"
+                   class="artist-profile-picture">
+            </div>
+            <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+              <span class="accent-color artist-username">{{user.userName}}</span>
+              <span class="accent-color artist-full-name">{{user.name}} {{user.surname}}</span>
+              <span class="accent-color artist-role">User</span>
+            </div>
+          </div>
+        </div>
+        <div class="artist-middle-menu">
+          <mat-tab-group backgroundColor="primary" dynamicHeight *ngIf="canEdit">
+            <mat-tab label="My Commissions">
+              <app-commission-page [user]="user"></app-commission-page>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span [matBadgeHidden]="!hasUnreadNotifications"
+                      [matBadge]="notificationLength > 9 ? '9+' : notificationLength"
+                      matBadgeColor="warn"
+                      matBadgeOverlap="false">Notifications
+                </span>
+              </ng-template>
+              <br>
+              <app-notification-display
+                [user]="user"
+                (unreadEvent)="setUnreadNotifications($event)"
+                (notificationLengthEvent)="setNotificationLength($event)">
+              </app-notification-display>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="canEdit" class="edit-button">
-    <button (click)="navigateToUserEditPage()" color="accent" mat-button>
-      <mat-icon color="accent">edit</mat-icon>
+    <button (click)="navigateToUserEditPage()" color="primary" mat-button>
+      <mat-icon color="primary">edit</mat-icon>
       <span class="edit-text">Edit your page</span>
-      <mat-tab-group>
-        <mat-tab label="My Commissions">
-          <app-commission-page [user]="user"></app-commission-page>
-        </mat-tab>
-      </mat-tab-group>
     </button>
   </div>
 </div>
+
+
+<!--
+    <app-artist-information *ngIf="user" [user]="user"></app-artist-information>
+
+    <mat-tab-group>
+      <mat-tab label="My Commissions">
+        <app-commission-page [user]="user"></app-commission-page>
+      </mat-tab>
+    </mat-tab-group>
+    -->

@@ -193,58 +193,6 @@ public class ApplicationUserEndpointTest {
         assertFalse(users.toString().contains("testStraße 3"));
     }
 
-
-
-
-
-    /*@Test
-    @WithMockUser()
-    public void addTwoUsersAndModifyOne() throws Exception {
-        ApplicationUser anObject = getTestUser1();
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(anObject);
-
-        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
-            .andExpect(status().isCreated()).andReturn();
-
-        List<ApplicationUserDto> users = allUsers();
-        assertEquals(1, users.size());
-
-        ApplicationUser anotherObject = getTestUser2();
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson2 = ow2.writeValueAsString(anotherObject);
-
-        mockMvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson2))
-            .andExpect(status().isCreated()).andReturn();
-
-        List<ApplicationUserDto> users2 = allUsers();
-        assertEquals(2, users2.size());
-
-        assertTrue(users2.toString().contains("bob"));
-        assertTrue(users2.toString().contains("bobby"));
-        assertTrue(users2.toString().contains("test@atest.com"));
-        assertTrue(users2.toString().contains("testStraße 2"));
-
-        ApplicationUser modifiedObject = applicationUser = new ApplicationUser(2L, String.format("testUser2"), null, "bobbyName", "aSecondTest",
-            "testmodify@atest.com", "testStraße 2", passwordEncoder.encode("SecondTest"), false, UserRole.User);
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson3 = ow3.writeValueAsString(modifiedObject);
-
-        mockMvc.perform(put("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson3))
-            .andExpect(status().isOk()).andReturn();
-
-        List<ApplicationUserDto> users3 = allUsers();
-        assertEquals(2, users3.size());
-        assertTrue(users3.toString().contains("testmodify@atest.com"));
-        assertTrue(!users3.toString().contains("test2@atest.com"));
-
-     */
     @Test
     @WithMockUser
     public void upgradeUserToArtist_upgradesRelevantFields() throws Exception {

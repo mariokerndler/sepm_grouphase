@@ -1,4 +1,3 @@
-{{index}}
 <div *ngIf="index%2===0" class="time-component">
   <div [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}" class="upper-component">
     <div [ngStyle]="{'top': '40px'}" class="text-container">
@@ -26,10 +25,10 @@
 </div>
 <div *ngIf="index%2===1" class="review-component">
   <div [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}" class="upper-component">
-    <div [ngStyle]="{'top': '40px'}" class="text-container">
+    <div [ngStyle]="{'top': '40px'}" class="feedback-text-container">
       <span><b>30.05.2020</b></span>
       <br>
-      <span><b>You composed your first review</b></span>
+      <span class=><b>You composed your first review</b></span>
       <br><br>
       <p class="review-text">
         {{sketch.customerFeedback}}
@@ -42,7 +41,7 @@
   <div [ngStyle]="{'visibility': (index%2 === 0) ? 'visible' : 'hidden'}" class="lower-component">
     <div [ngStyle]="{'bottom': '21px'}" class="main-line"></div>
     <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
-    <div [ngStyle]="{'top': '40px'}" class="text-container">
+    <div [ngStyle]="{'top': '40px'}" class="feedback-text-container">
       <span><b>30.05.2020</b></span>
       <br>
       <span><b>You composed your first review</b></span>

@@ -116,7 +116,7 @@ public class ArtworkMappingTest implements TestData {
         Artwork artwork = getArtwork(id, image);
         ArtworkDto artworkDto = artworkMapper.artworkToArtworkDto(artwork);
         assertAll(
-            () -> assertEquals(1L, artworkDto.getId()),
+            () -> assertEquals(artwork.getId(), artworkDto.getId()),
             () -> assertEquals("okay dog pls", artworkDto.getDescription()),
             () -> assertEquals("./data/image0", artworkDto.getImageUrl()),
             () -> assertEquals(FileType.PNG, artworkDto.getFileType()),

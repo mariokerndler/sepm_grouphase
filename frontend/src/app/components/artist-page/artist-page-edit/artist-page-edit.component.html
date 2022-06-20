@@ -141,7 +141,7 @@
 
       <h3 class="primary">If you want to upload your art, take commissions, and participate as an artist, click this
         button:</h3>
-      <button (click)="upgradeUser()" color="accent" mat-flat-button>Upgrade</button>
+      <button (click)="upgradeUser()" color="primary" mat-flat-button>Upgrade</button>
 
     </mat-tab>
 
@@ -217,8 +217,8 @@
                  [cdkDragDisabled]="item.disabled"
                  cdkDrag
                  class="element-box">
-              {{item.componentName}}
-
+              {{item.componentName}},
+              Tags:{{item?.tags.length}}
               <button (click)="deleteComponent(item)" *ngIf="item.componentName !== 'Profile information'" mat-button>
                 <mat-icon>close</mat-icon>
               </button>
@@ -256,7 +256,7 @@
 
 <ng-template #gallery>
   <h3 class="primary">{{selectedComponent.type}} settings</h3>
-  <div class="gallery-settings">
+  <div class="gallery-settings" fxLayout="column">
     <mat-form-field appearance="fill" class="gallery-settings-tags">
       <mat-label class="primary">Name</mat-label>
       <input type="text" matInput name="text" [(ngModel)]="selectedComponent.componentName" required>

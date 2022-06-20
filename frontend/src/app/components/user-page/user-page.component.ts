@@ -6,6 +6,7 @@ import {UserService} from '../../services/user.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {AuthService} from '../../services/auth.service';
 import {UserRole} from '../../dtos/artistDto';
+import {Globals} from '../../global/globals';
 
 @Component({
   selector: 'app-user-page',
@@ -17,6 +18,10 @@ export class UserPageComponent implements OnInit, OnDestroy {
   user: ApplicationUserDto;
   isReady = false;
   canEdit = false;
+  profilePicture;
+  hasUnreadNotifications: boolean;
+  notificationLength: number;
+
   private routeSubscription: Subscription;
 
   constructor(
@@ -24,12 +29,12 @@ export class UserPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    public globals: Globals
   ) {
   }
 
   private static navigateToUserList() {
-    // TODO: Implement a user list
 
   }
 
@@ -38,6 +43,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
       (params) => this.userService.getUserById(params.id, () => UserPageComponent.navigateToUserList())
         .subscribe((user) => {
           this.user = user;
+
+          this.setProfilePicture();
 
           if (this.user.userRole === UserRole.artist) {
             this.navigateToArtistPage();
@@ -62,6 +69,14 @@ export class UserPageComponent implements OnInit, OnDestroy {
       );
   }
 
+  setUnreadNotifications($event: boolean) {
+    this.hasUnreadNotifications = $event;
+  }
+
+  setNotificationLength($event: number) {
+    this.notificationLength = $event;
+  }
+
   private navigateToArtistPage() {
     this.router.navigate(['/artist', this.user.id])
       .catch(
@@ -71,5 +86,12 @@ export class UserPageComponent implements OnInit, OnDestroy {
       );
   }
 
+  private setProfilePicture() {
+    if (!this.user.profilePictureDto) {
+      this.profilePicture = this.globals.defaultProfilePicture;
+    } else {
+      this.profilePicture = this.user.profilePictureDto.imageUrl;
+    }
+  }
 
 }

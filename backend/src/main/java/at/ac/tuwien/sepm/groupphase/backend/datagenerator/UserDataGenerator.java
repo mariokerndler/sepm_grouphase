@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
+import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
@@ -23,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,6 +45,7 @@ public class UserDataGenerator {
     private final ChatRepository chatRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final CommissionRepository commissionRepository;
+    private final CommissionService commissionService;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
         "https://i.ibb.co/7yHp276/image1.jpg",
@@ -63,7 +64,7 @@ public class UserDataGenerator {
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
-                             ChatRepository chatRepository, ChatMessageRepository chatMessageRepository, CommissionRepository commissionRepository) {
+                             ChatRepository chatRepository, ChatMessageRepository chatMessageRepository, CommissionRepository commissionRepository, CommissionService commissionService) {
         this.artistService = artistService;
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
@@ -73,6 +74,7 @@ public class UserDataGenerator {
         this.chatRepository = chatRepository;
         this.chatMessageRepository = chatMessageRepository;
         this.commissionRepository = commissionRepository;
+        this.commissionService = commissionService;
     }
 
     @PostConstruct
@@ -278,15 +280,15 @@ public class UserDataGenerator {
         List<Artist> artists = artistService.getAllArtists();
 
         Commission c = generateCommission2(artists.get(0), users.get(0));
-        commissionRepository.save(c);
+        commissionService.saveCommission(c);
         Commission d = generateCommission1(artists.get(1), users.get(1));
-        commissionRepository.save(d);
+        commissionService.saveCommission(d);
         Commission e = generateCommission3(artists.get(0), users.get(1));
-        commissionRepository.save(e);
+        commissionService.saveCommission(e);
         Commission f = generateCommission4(artists.get(0), users.get(1));
-        commissionRepository.save(f);
+        commissionService.saveCommission(f);
         Commission g = generateCommission5(artists.get(0), users.get(1));
-        commissionRepository.save(g);
+        commissionService.saveCommission(g);
 
 
     }
@@ -375,6 +377,7 @@ public class UserDataGenerator {
                 k.setImageData(getImageBytes(urls[i]));
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
+                k.setCustomerFeedback("nice work " + i);
                 sketches.add(k);
 
             }
@@ -435,6 +438,7 @@ public class UserDataGenerator {
                 k.setImageData(getImageBytes(urls[i]));
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission3\\b" + i);
+                k.setCustomerFeedback("looks great " + i);
                 sketches.add(k);
             }
         }
@@ -471,8 +475,8 @@ public class UserDataGenerator {
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");
-        commission.setSketchesShown(0);
-        commission.setFeedbackSent(0);
+        commission.setSketchesShown(4);
+        commission.setFeedbackSent(4);
         commission.setPrice((int) (Math.random() * 10000));
         commission.setFeedbackRounds(4);
         commission.setIssueDate(LocalDateTime.now());
@@ -504,9 +508,10 @@ public class UserDataGenerator {
                 Sketch k = new Sketch();
                 k.setFileType(FileType.JPG);
                 k.setArtwork(a);
-                k.setImageData(getImageBytes(urls[i]));
+                k.setImageData(getImageBytes(urls[i+3]));
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission4\\b" + i);
+                k.setCustomerFeedback("looks good " + i);
                 sketches.add(k);
 
             }
@@ -519,6 +524,7 @@ public class UserDataGenerator {
         references.add(reference);
         ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\adminSample Commission4\\bReference");
         a.setSketches(sketches);
+        commission.setArtistCandidates(null);
         commission.setReferences(references);
         commission.setArtwork(a);
         return commission;

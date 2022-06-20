@@ -9,8 +9,8 @@ import {SketchDto} from '../../../../dtos/sketchDto';
 })
 export class CommissionTimeslotsComponent implements OnInit {
   @Input() index: number;
-  @Input() review: ReviewDto;
   @Input() sketch: SketchDto;
+
 
   constructor() {
   }

@@ -1,3 +1,4 @@
+{{index}}
 <div *ngIf="index%2===0" class="time-component">
   <div [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}" class="upper-component">
     <div [ngStyle]="{'top': '40px'}" class="text-container">
@@ -5,7 +6,7 @@
       <br>
       <span><b>Your first sketch arrived</b></span>
       <br><br>
-      <img alt="" class="image" src="{{sketch.image}}">
+      <img alt="" class="image" src="/assets/{{sketch.imageUrl}}">
     </div>
     <div [ngStyle]="{'top': '2px'}" class="line"></div>
     <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
@@ -19,7 +20,7 @@
       <br>
       <span><b>Your first sketch arrived</b></span>
       <br><br>
-      <img alt="" class="image" src="{{sketch.image}}">
+      <img alt="" class="image" src="/assets/{{sketch.imageUrl}}">
     </div>
   </div>
 </div>
@@ -31,7 +32,7 @@
       <span><b>You composed your first review</b></span>
       <br><br>
       <p class="review-text">
-        {{review.reviewText}}
+        {{sketch.customerFeedback}}
       </p>
     </div>
     <div [ngStyle]="{'top': '2px'}" class="line"></div>
@@ -47,7 +48,7 @@
       <span><b>You composed your first review</b></span>
       <br><br>
       <p>
-        {{review.reviewText}}
+        {{sketch.customerFeedback}}
       </p>
     </div>
   </div>

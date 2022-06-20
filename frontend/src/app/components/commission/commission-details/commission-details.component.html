@@ -145,11 +145,14 @@
         <div *ngIf="this.uploadedSketchDto">
           <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
         </div>
-        <div>
-
-        </div>
+        <br>
+        <button (click)="openDialog()" color="primary" mat-button>
+          <mat-icon color="primary">upload</mat-icon>
+          <span>Upload finished image</span>
+        </button>
       </form>
     </div>
+
 
 
   </div>

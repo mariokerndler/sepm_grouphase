@@ -13,6 +13,8 @@ import {TagSearch} from '../../../dtos/tag-search';
 import {ArtistService} from '../../../services/artist.service';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {CommissionStatus} from '../../../global/CommissionStatus';
+import {UploadComponent} from '../../upload/upload.component';
+import {MatDialog} from '@angular/material/dialog';
 
 
 @Component({
@@ -52,7 +54,8 @@ export class CommissionDetailsComponent implements OnInit {
               private commissionService: CommissionService,
               private route: ActivatedRoute, private globalFunctions: GlobalFunctions,
               private artistService: ArtistService, private notificationService: NotificationService,
-              private router: Router) {
+              private router: Router,
+              private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -178,6 +181,9 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.updateCommission(this.commission).subscribe();
     this.checkCommissionState(this.commission);
   }
+  finalImageUpload(){
+
+  }
 
 
   toggleFeedbackField() {
@@ -227,6 +233,15 @@ export class CommissionDetailsComponent implements OnInit {
     this.commission.status=CommissionStatus.inProgress;
     this.commissionService.updateCommission(this.commission).subscribe(success=>{
       this.notificationService.displaySuccessSnackbar('Commission is now in progress');
+    });
+  }
+
+  openDialog() {
+   this.dialog.open(UploadComponent, {
+      data: {
+        artist: this.commission.artistDto,
+        commission: this.commission
+      }
     });
   }
 }

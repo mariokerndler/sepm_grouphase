@@ -15,6 +15,8 @@ import {
   NGX_MAT_COLOR_FORMATS,
   NgxMatColorPickerModule
 } from '@angular-material-components/color-picker';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 
 // Routing
 import {AppRoutingModule} from './app-routing.module';
@@ -74,7 +76,10 @@ import {
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 // @ts-ignore
 import {ChatComponent} from './chat/chat.component';
-import {PaymentComponent} from './components/payment/payment.component';
+import {SuccessComponent} from './components/success/success.component';
+import {CancelComponent} from './components/cancel/cancel.component';
+import {CheckoutComponent} from './components/checkout/checkout.component';
+
 
 @NgModule({
   declarations: [
@@ -113,7 +118,9 @@ import {PaymentComponent} from './components/payment/payment.component';
     CommissionTimeslotsComponent,
     ChatComponent,
     ConfirmDialogComponent,
-    PaymentComponent
+    CancelComponent,
+    SuccessComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
@@ -130,7 +137,9 @@ import {PaymentComponent} from './components/payment/payment.component';
     DragDropModule,
     MatSliderModule,
     NgxSliderModule,
-    NgChatModule
+    NgChatModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   providers: [
     {

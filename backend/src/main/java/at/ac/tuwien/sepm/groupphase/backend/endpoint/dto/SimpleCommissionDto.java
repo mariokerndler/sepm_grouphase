@@ -61,9 +61,11 @@ public class SimpleCommissionDto {
 
     private List<Long> referencesIds;
 
+    private Long artworkId;
+
     public SimpleCommissionDto(Long artistId, Long customerId, CommissionStatus status, int sketchesShown, int feedbackSent,
                                double price, LocalDateTime issueDate, LocalDateTime deadlineDate, String title,
-                               String instructions, List<Long> referencesIds) {
+                               String instructions, List<Long> referencesIds, Long artworkId) {
         this.artistId = artistId;
         this.customerId = customerId;
         this.status = status;
@@ -75,6 +77,7 @@ public class SimpleCommissionDto {
         this.title = title;
         this.instructions = instructions;
         this.referencesIds = referencesIds;
+        this.artworkId = artworkId;
     }
 
     @Override
@@ -91,6 +94,7 @@ public class SimpleCommissionDto {
             + ", deadlineDate=" + deadlineDate
             + ", title=" + title
             + ", instructions='" + instructions + '\''
-            + ", referenceIds=" + referencesIds + '}';
+            + ", referenceIds=" + referencesIds
+            + ", artworkId=" + artworkId + '}';
     }
 }

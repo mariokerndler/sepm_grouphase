@@ -254,7 +254,7 @@ public class ArtworkEndpointTest {
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
         ArtworkDto artworkDto = new ArtworkDto("Artwork by User",
             "This is an artwork posted by a user that is not an artist",
-            image, null, FileType.PNG, userId, null, null);
+            image, null, FileType.PNG, userId, null, null, null);
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();

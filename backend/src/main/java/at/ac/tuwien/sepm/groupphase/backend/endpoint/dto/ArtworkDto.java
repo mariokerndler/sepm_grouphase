@@ -46,7 +46,9 @@ public class ArtworkDto {
 
     private List<@Valid TagDto> tagsDtos;
 
-    public ArtworkDto(String name, String description, byte[] imageData, String imageUrl, FileType fileType, Long artistId, List<SketchDto> sketchesDtos, List<TagDto> tagsDtos) {
+    private Long commissionId;
+
+    public ArtworkDto(String name, String description, byte[] imageData, String imageUrl, FileType fileType, Long artistId, List<SketchDto> sketchesDtos, List<TagDto> tagsDtos, Long commissionId) {
         this.name = name;
         this.description = description;
         this.imageData = imageData;
@@ -55,6 +57,7 @@ public class ArtworkDto {
         this.artistId = artistId;
         this.sketchesDtos = sketchesDtos;
         this.tagsDtos = tagsDtos;
+        this.commissionId = commissionId;
     }
 
     @Override
@@ -68,6 +71,7 @@ public class ArtworkDto {
             + ", artistId=" + artistId
             + ", sketchesDtosIds=" + (sketchesDtos == null ? null : sketchesDtos.stream().map(SketchDto::getId))
             + ", tags=" + (tagsDtos == null ? null : tagsDtos.stream().map(TagDto::getName))
+            + ", commissionId=" + commissionId
             + '}';
     }
 

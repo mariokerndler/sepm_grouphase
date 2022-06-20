@@ -5,7 +5,7 @@ import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {map, Observable, startWith, Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {LayoutComponent} from './layoutComponent';
+import {LayoutComponent, LayoutComponentType} from './layoutComponent';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {TagDto} from '../../../dtos/tagDto';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
@@ -50,14 +50,20 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   isReady = false;
 
   availableComponents: LayoutComponent[] = [
-    {componentName: 'Gallery', disabled: false, tags: []},
-    {componentName: 'Reviews', disabled: false, tags: []}
+    {componentName: 'Gallery', type: LayoutComponentType.gallery, disabled: false, tags: []},
+    {componentName: 'Reviews', type: LayoutComponentType.reviews, disabled: false, tags: []}
   ];
 
-  profileInfoComponent: LayoutComponent = {componentName: 'Profile information', disabled: true, tags: []};
-  chosenComponents: LayoutComponent[] = [];
+  profileInfoComponent: LayoutComponent = {
+    componentName: 'Profile information',
+    type: LayoutComponentType.information,
+    disabled: true,
+    tags: []
+  };
 
+  chosenComponents: LayoutComponent[] = [];
   selectedComponent: LayoutComponent;
+
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagForm = new FormControl();
   allTags: TagDto[] = [];
@@ -238,6 +244,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const item = this.availableComponents[event.previousIndex];
       const newItem = {
         componentName: item.componentName,
+        type: item.type,
         disabled: item.disabled,
         tags: [...item.tags]
       };
@@ -341,6 +348,14 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     event.chipInput?.clear();
 
     this.tagForm.setValue(null);
+  }
+
+  validLayoutComponentName(): boolean {
+    if(this.selectedComponent) {
+      return this.selectedComponent.componentName.trim().length <= 0;
+    } else {
+      return false;
+    }
   }
 
   upgradeUser() {
@@ -548,6 +563,4 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       imageData: this.pfpArray
     };
   }
-
-
 }

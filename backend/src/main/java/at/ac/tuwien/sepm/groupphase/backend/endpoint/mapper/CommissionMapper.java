@@ -14,7 +14,7 @@ public abstract class CommissionMapper {
 
     @Mapping(source = "artist.id", target = "artistId")
     @Mapping(source = "customer.id", target = "customerId")
-    @Mapping(source = "references", target = "referencesIds")
+    @Mapping(source = "artwork.id", target = "artworkId")
     public abstract SimpleCommissionDto commissionToSimpleCommissionDto(Commission commission);
 
     @Mapping(source = "artistId", target = "artist", qualifiedByName = "idToArtist")

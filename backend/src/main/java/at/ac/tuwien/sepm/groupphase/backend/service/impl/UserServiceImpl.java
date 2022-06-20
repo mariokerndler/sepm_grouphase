@@ -6,7 +6,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
-import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,17 +30,14 @@ public class UserServiceImpl implements UserService {
     EntityManager entityManager;
 
     private final UserRepository userRepo;
-    private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     private final ImageFileManager ifm;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           UserValidator userValidator,
                            PasswordEncoder passwordEncoder,
                            ImageFileManager ifm) {
         this.userRepo = userRepository;
-        this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
         this.ifm = ifm;
     }
@@ -90,7 +86,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(ApplicationUser user) {
         log.trace("calling updateUser() ...");
-        userValidator.validateUser(user);
 
         ApplicationUser oldUser = findUserById(user.getId());
 
@@ -107,8 +102,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(ApplicationUser user) {
         log.trace("calling registerUser() ...");
-
-        userValidator.validateUser(user);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

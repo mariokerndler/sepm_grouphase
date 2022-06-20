@@ -53,7 +53,7 @@
                 <mat-expansion-panel *ngIf="hasUnreadNotifications" [expanded]="hasUnreadNotifications"
                                      class="mat-elevation-z0">
                   <mat-expansion-panel-header>
-                    <span class="accent-color notification-header">Unread notifications</span>
+                    <span class="notification-header primary">Unread notifications</span>
                   </mat-expansion-panel-header>
                   <table (matSortChange)="sortNotifications($event, false)" matSort>
                     <tr>
@@ -70,7 +70,7 @@
                       <td>
                         <button (click)="navigateToCommission(notification.referenceId)"
                                 *ngIf="notification.type.toString().includes('COMMISSION')"
-                                color="accent"
+                                color="primary"
                                 mat-flat-button>
                           Go to commission
                         </button>
@@ -78,7 +78,7 @@
                       <td>
                         <button
                           (click)="readNotification(notification)"
-                          color="accent"
+                          color="primary"
                           mat-button
                           mat-flat-button>
                           Read
@@ -87,12 +87,12 @@
                     </tr>
                   </table>
 
-                  <button (click)="readAllNotifications()" color="accent" mat-flat-button>Read all</button>
+                  <button (click)="readAllNotifications()" color="primary" mat-flat-button>Read all</button>
                 </mat-expansion-panel>
                 <mat-expansion-panel *ngIf="hasReadNotifications" [expanded]="hasReadNotifications"
                                      class="mat-elevation-z0">
                   <mat-expansion-panel-header>
-                    <span class="accent-color notification-header">Read notifications</span>
+                    <span class="primary notification-header">Read notifications</span>
                   </mat-expansion-panel-header>
                   <table (matSortChange)="sortNotifications($event, true)" matSort>
                     <tr>
@@ -108,7 +108,7 @@
                       <td>
                         <button (click)="navigateToCommission(notification.referenceId)"
                                 *ngIf="notification.type.toString().includes('COMMISSION')"
-                                color="accent"
+                                color="primary"
                                 mat-flat-button>
                           Go to commission
                         </button>
@@ -125,14 +125,14 @@
   </div>
 
   <div *ngIf="canEdit" class="edit-button">
-    <button (click)="navigateToEdit()" color="accent" mat-button>
-      <mat-icon color="accent">edit</mat-icon>
+    <button (click)="navigateToEdit()" color="primary" mat-button>
+      <mat-icon color="primary">edit</mat-icon>
       <span class="edit-text">Edit your page</span>
     </button>
   </div>
   <div *ngIf="!canEdit" class="edit-button">
-    <button (click)="goBack()" color="accent" mat-button>
-      <mat-icon color="accent">arrow_back</mat-icon>
+    <button (click)="goBack()" color="primary" mat-button>
+      <mat-icon color="primary">arrow_back</mat-icon>
       <span class="edit-text">Go Back</span>
     </button>
   </div>

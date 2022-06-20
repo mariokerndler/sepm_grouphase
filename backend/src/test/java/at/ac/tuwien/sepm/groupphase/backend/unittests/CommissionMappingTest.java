@@ -50,6 +50,7 @@ public class CommissionMappingTest {
 
     @BeforeEach
     public void beforeEach() {
+        reviewRepository.deleteAll();
         artworkRepository.deleteAll();
         commissionRepository.deleteAll();
         artistRepository.deleteAll();
@@ -124,7 +125,7 @@ public class CommissionMappingTest {
             .build();
 
         artworkRepository.save(artwork);
-
+        commission.setArtwork(artwork);
 
         this.review = Review.builder()
             .artist(artist)
@@ -135,8 +136,7 @@ public class CommissionMappingTest {
             .build();
 
         reviewRepository.save(review);
-
-
+        commission.setReview(review);
     }
 
 
@@ -192,7 +192,7 @@ public class CommissionMappingTest {
         artistCandidateDto.setId(artistCandidate.getId());
 
         ReviewDto reviewDto = new ReviewDto(artistDto, userDto, "I really enjoyed working with Carl. He drew me a nice smol snail:)", null, 5);
-        ArtworkDto artworkDto = new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", null, "just/some/url", FileType.PNG, artist.getId(), null, null);
+        ArtworkDto artworkDto = new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", null, "just/some/url", FileType.PNG, artist.getId(), null, null, null);
 
 
         DetailedCommissionDto commissionDto = new DetailedCommissionDto(artistDto,
@@ -265,6 +265,27 @@ public class CommissionMappingTest {
             () -> assertEquals((commission.getReceipts() == null ? null : commission.getReceipts().size()), (commissionDto.getReceiptsDtos() == null ? null : commissionDto.getReceiptsDtos().size())),
             () -> assertEquals((commission.getReview() == null ? null : commission.getReview().getId()), (commissionDto.getReviewDto() == null ? null : commissionDto.getReviewDto().getId())),
             () -> assertEquals((commission.getArtwork() == null ? null : commission.getArtwork().getId()), (commissionDto.getArtworkDto() == null ? null : commissionDto.getArtworkDto().getId()))
+        );
+    }
+
+    @Test
+    @Transactional
+    public void whenMapEntityToSimpleCommissionDto_thenSimpleCommissionDtoHasAllProperties() {
+
+        SimpleCommissionDto commissionDto = commissionMapper.commissionToSimpleCommissionDto(this.commission);
+        assertAll(
+            () -> assertEquals(commission.getId(), commissionDto.getId()),
+            () -> assertEquals(artist.getId(), commissionDto.getArtistId()),
+            () -> assertEquals(user.getId(), commissionDto.getCustomerId()),
+            () -> assertEquals(commission.getStatus(), commissionDto.getStatus()),
+            () -> assertEquals(commission.getSketchesShown(), commissionDto.getSketchesShown()),
+            () -> assertEquals(commission.getFeedbackSent(), commissionDto.getFeedbackSent()),
+            () -> assertEquals(commission.getPrice(), commissionDto.getPrice()),
+            () -> assertEquals(commission.getIssueDate(), commissionDto.getIssueDate()),
+            () -> assertEquals(commission.getDeadlineDate(), commissionDto.getDeadlineDate()),
+            () -> assertEquals(commission.getInstructions(), commissionDto.getInstructions()),
+            () -> assertEquals((commission.getReferences() == null ? null : commission.getReferences().size()), (commissionDto.getReferencesIds() == null ? null : commissionDto.getReferencesIds().size())),
+            () -> assertEquals((commission.getArtwork() == null ? null : commission.getArtwork().getId()), commissionDto.getArtworkId())
         );
     }
 }

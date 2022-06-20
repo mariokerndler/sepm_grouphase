@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@Validated
 @RequestMapping(value = "api/v1/users")
 @RequiredArgsConstructor
 public class UserEndpoint {

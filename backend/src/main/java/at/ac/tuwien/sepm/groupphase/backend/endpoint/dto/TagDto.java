@@ -14,8 +14,8 @@ public class TagDto {
 
     private Long id;
 
-    @NotBlank
-    @Size(max = 35)
+    @NotBlank(message = "Name cannot be blank or null.")
+    @Size(max = 35, message = "Name has to be shorter than 35 characters.")
     private String name;
 
     public TagDto(String name) {

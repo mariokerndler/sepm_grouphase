@@ -232,7 +232,7 @@ public class ApplicationUserEndpointTest {
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
         ArtworkDto artworkDto = new ArtworkDto("Artwork by new Artist",
             "This is the description of an artwork posted by a rookie artist",
-            image, null, FileType.PNG, userDto.getId(), null, null);
+            image, null, FileType.PNG, userDto.getId(), null, null, null);
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow1 = objectMapper.writer().withDefaultPrettyPrinter();

@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.exception.FileManagerException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Directory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -102,20 +101,19 @@ public class ImageFileManager {
         log.trace("calling writeArtworkImage() ...");
         String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
         relPath += "\\" + c.getTitle();
-        if(aw.getImageData()==null){
-            log.info(ImageDataPaths.assetAbsoluteLocation +relPath);
+        if (aw.getImageData() == null) {
+            log.info(ImageDataPaths.assetAbsoluteLocation + relPath);
             log.info("Creating empty image");
-            File image= new File(ImageDataPaths.assetAbsoluteLocation +relPath);
+            File image = new File(ImageDataPaths.assetAbsoluteLocation + relPath);
             try {
                 image.createNewFile();
-                return  relPath;
+                return relPath;
             } catch (IOException e) {
                 throw new FileManagerException(e.getMessage(), e);
             }
-        }
-        else {
+        } else {
             log.info("Writing final Artwork");
-            try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation +relPath)) {
+            try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
                 outputStream.write(aw.getImageData());
                 log.info("Wrote artwork images to disk at path='{}'", relPath);
                 return relPath;

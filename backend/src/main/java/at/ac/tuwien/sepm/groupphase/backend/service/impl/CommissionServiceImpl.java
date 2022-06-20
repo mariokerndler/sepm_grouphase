@@ -132,7 +132,7 @@ public class CommissionServiceImpl implements CommissionService {
     @Override
     public void assignArtist(Commission commission) {
         Artwork a = new Artwork();
-        a.setName(commission.getTitle() + "_Artwork");
+        a.setName(commission.getTitle() + "Artwork");
         a.setArtist(commission.getArtist());
         a.setFileType(FileType.PNG);
         a.setCommission(commission);

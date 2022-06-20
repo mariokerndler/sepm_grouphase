@@ -154,6 +154,7 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.price = this.commissionForm.value.price;
     this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
     this.commission.customerDto = this.customer;
+    this.commission.referencesDtos.forEach(r=> r.imageUrl='');
     this.commission.deadlineDate = formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
     this.commissionService.createCommission(this.commission).subscribe(ret => {
 

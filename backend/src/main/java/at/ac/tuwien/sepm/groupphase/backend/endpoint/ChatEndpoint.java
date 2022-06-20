@@ -80,10 +80,12 @@ public class ChatEndpoint {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post Chat")
     public void postChat(@RequestBody ChatDto chatDto) {
+        log.info(chatDto.toString());
         log.debug("Endpoint: postChat()." + chatDto.toString());
         try {
             Chat c = this.chatMapper.chatDtoToChat(chatDto);
             chatService.postChat(c);
+            log.info(c.toString());
         } catch (Exception v) {
             log.error(v.getMessage());
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());

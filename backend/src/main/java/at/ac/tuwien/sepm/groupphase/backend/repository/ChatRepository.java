@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-    @Query(nativeQuery = true, value = "SELECT * FROM Chat WHERE Chat.user_Id=:userId")
+    @Query(nativeQuery = true, value = "SELECT DISTINCT  * FROM  CHAT WHERE Chat.user_Id=:userId OR CHAT.CHAT_PARTNER_ID=:userId ")
     List<Chat> getAllByUserId(@Param("userId") String userId);
 
-    @Query(nativeQuery = true, value = "    select * from Chat where CHAT_PARTNER_ID=:partnerId  AND User_ID =:userId LIMIT 1")
+    @Query(nativeQuery = true, value = "    select * from Chat where CHAT_PARTNER_ID=:partnerId  AND User_ID =:userId OR CHAT_PARTNER_ID=:userId  AND User_ID =:partnerId LIMIT 1")
     Chat getAllByUserAndChatPartner(@Param("userId") String userId,
                                     @Param("partnerId") String partnerId);
 

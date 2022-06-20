@@ -64,11 +64,26 @@ public class ImageFileManager {
         }
     }
 
+    public String writeReferenceDatagenImage(Commission c, Reference r, String url) {
+        log.trace("calling writeReferenceImage() ...");
+
+
+        String relPath = url;
+        log.info(relPath);
+        try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
+            outputStream.write(r.getImageData());
+            log.info("Wrote reference images to disk at path='{}'", relPath);
+            return relPath;
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            throw new FileManagerException(e.getMessage(), e);
+        }
+    }
+
     public String writeSketchImage(Commission c, Sketch s) {
         log.trace("calling writeSketchImage() ...");
         log.info("calling writeReferenceImage() ...");
         String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
-        ;
         relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             log.info(s.toString() + " " + s.getImageData().length);

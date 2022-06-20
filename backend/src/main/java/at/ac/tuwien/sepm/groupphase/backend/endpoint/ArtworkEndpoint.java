@@ -16,11 +16,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Slf4j
+@Validated
 @RestController
 @RequestMapping(value = "api/v1/artworks")
 public class ArtworkEndpoint {
@@ -111,9 +114,9 @@ public class ArtworkEndpoint {
             List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
             return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
-        } catch (Exception n) {
-            log.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }*/
 
@@ -121,13 +124,13 @@ public class ArtworkEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
     @Operation(summary = "Delete artwork")
-    public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         log.info("A user is trying to delete an artwork.");
         try {
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-        } catch (Exception n) {
-            log.error(n.getMessage() + artworkDto);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -135,15 +138,10 @@ public class ArtworkEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post artwork")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
+    public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         log.debug("A user is trying to create a new artwork.");
-        try {
-            Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
-            artworkService.saveArtwork(artwork);
-        } catch (Exception v) {
-            log.error(v.getMessage() + artworkDto);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
 
+        Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
+        artworkService.saveArtwork(artwork);
     }
 }

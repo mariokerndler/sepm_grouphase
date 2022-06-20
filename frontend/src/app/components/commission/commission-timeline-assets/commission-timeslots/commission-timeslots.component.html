@@ -1,31 +1,31 @@
 <div *ngIf="index%2===0" class="time-component">
-    <div class="upper-component" [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}">
-      <div class="text-container" [ngStyle]="{'top': '40px'}">
-        <span><b>05.06.2021</b></span>
-        <br>
-        <span><b>Your first sketch arrived</b></span>
-        <br><br>
-        <img class="image" src="{{sketch.image}}" alt="">
-      </div>
-      <div class="line" [ngStyle]="{'top': '2px'}"></div>
-      <div class="main-line" [ngStyle]="{'top': '20px'}"></div>
+  <div [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}" class="upper-component">
+    <div [ngStyle]="{'top': '40px'}" class="text-container">
+      <span><b>05.06.2021</b></span>
+      <br>
+      <span><b>Your first sketch arrived</b></span>
+      <br><br>
+      <img alt="" class="image" src="{{sketch.image}}">
     </div>
-    <mat-icon class="accent icon">brush</mat-icon>
-    <div class="lower-component" [ngStyle]="{'visibility': (index%2 === 0) ? 'visible' : 'hidden'}">
-      <div class="main-line" [ngStyle]="{'bottom': '21px'}" ></div>
-      <div class="line" [ngStyle]="{'bottom': '2px'}" ></div>
-      <div class="text-container" [ngStyle]="{'bottom': '40px'}">
-        <span><b>05.06.2021</b></span>
-        <br>
-        <span><b>Your first sketch arrived</b></span>
-        <br><br>
-        <img class="image" src="{{sketch.image}}" alt="">
-      </div>
+    <div [ngStyle]="{'top': '2px'}" class="line"></div>
+    <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
+  </div>
+  <mat-icon class="accent icon">brush</mat-icon>
+  <div [ngStyle]="{'visibility': (index%2 === 0) ? 'visible' : 'hidden'}" class="lower-component">
+    <div [ngStyle]="{'bottom': '21px'}" class="main-line"></div>
+    <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
+    <div [ngStyle]="{'bottom': '40px'}" class="text-container">
+      <span><b>05.06.2021</b></span>
+      <br>
+      <span><b>Your first sketch arrived</b></span>
+      <br><br>
+      <img alt="" class="image" src="{{sketch.image}}">
     </div>
+  </div>
 </div>
 <div *ngIf="index%2===1" class="review-component">
-  <div class="upper-component" [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}">
-    <div class="text-container" [ngStyle]="{'top': '40px'}">
+  <div [ngStyle]="{'visibility': (index%2 === 1) ? 'visible' : 'hidden'}" class="upper-component">
+    <div [ngStyle]="{'top': '40px'}" class="text-container">
       <span><b>30.05.2020</b></span>
       <br>
       <span><b>You composed your first review</b></span>
@@ -34,14 +34,14 @@
         {{review.reviewText}}
       </p>
     </div>
-    <div class="line" [ngStyle]="{'top': '2px'}"></div>
-    <div class="main-line" [ngStyle]="{'top': '20px'}"></div>
+    <div [ngStyle]="{'top': '2px'}" class="line"></div>
+    <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
   </div>
   <mat-icon class="accent icon">grade</mat-icon>
-  <div class="lower-component" [ngStyle]="{'visibility': (index%2 === 0) ? 'visible' : 'hidden'}">
-    <div class="main-line" [ngStyle]="{'bottom': '21px'}" ></div>
-    <div class="line" [ngStyle]="{'bottom': '2px'}" ></div>
-    <div class="text-container" [ngStyle]="{'top': '40px'}">
+  <div [ngStyle]="{'visibility': (index%2 === 0) ? 'visible' : 'hidden'}" class="lower-component">
+    <div [ngStyle]="{'bottom': '21px'}" class="main-line"></div>
+    <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
+    <div [ngStyle]="{'top': '40px'}" class="text-container">
       <span><b>30.05.2020</b></span>
       <br>
       <span><b>You composed your first review</b></span>

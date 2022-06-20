@@ -20,7 +20,7 @@ public abstract class UserMapper {
     public abstract ApplicationUser userDtoToUser(ApplicationUserDto applicationUserDto);
 
     @AfterMapping
-    public ApplicationUser setUserForChildren(@MappingTarget ApplicationUser.ApplicationUserBuilder applicationUserBuilder) {
+    public ApplicationUser setUserForChildren(@MappingTarget ApplicationUser.ApplicationUserBuilder<?, ?> applicationUserBuilder) {
         ApplicationUser applicationUser = applicationUserBuilder.build();
         if (applicationUser.getProfilePicture() != null) {
             applicationUser.getProfilePicture().setApplicationUser(applicationUser);

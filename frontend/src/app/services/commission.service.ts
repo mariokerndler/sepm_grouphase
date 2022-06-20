@@ -101,7 +101,7 @@ export class CommissionService {
 
   filterCommissions(searchCom: CommissionSearchDto, errorAction?: () => void): Observable<SimpleCommissionDto[]> {
     const params = new HttpParams()
-      .set('priceRangeUpper', searchCom.priceRange[1  ])
+      .set('priceRangeUpper', searchCom.priceRange[1])
       .set('priceRangeLower', searchCom.priceRange[0])
       .set('dateSearch', searchCom.date.toString())
       .set('name', searchCom.name)
@@ -111,7 +111,7 @@ export class CommissionService {
       headers: this.headers,
       params
     };
-    return this.http.get<SimpleCommissionDto[]>(this.commissionBaseUri+'/search', searchOptions)
+    return this.http.get<SimpleCommissionDto[]>(this.commissionBaseUri + '/search', searchOptions)
       .pipe(
         catchError((err) => {
           if (errorAction != null) {

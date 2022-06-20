@@ -2,7 +2,8 @@
   <span class="primary artist-gallery-header">Gallery</span>
 </div>
 
-<div *ngIf="isSameUser()" class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+<div *ngIf="isSameUser()" class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center"
+     fxLayoutGap="0.5rem">
   <button (click)="openDialog()" color="accent" mat-button>
     <mat-icon color="accent">upload</mat-icon>
     <span>Upload new picture</span>

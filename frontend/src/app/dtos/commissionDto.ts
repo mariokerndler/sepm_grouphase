@@ -1,20 +1,23 @@
 import {ArtistDto} from './artistDto';
 import {ApplicationUserDto} from './applicationUserDto';
 import {ReferenceDto} from './referenceDto';
-import {CommissionState} from '../global/CommissionState';
+import {CommissionStatus} from '../global/CommissionStatus';
+import {ArtworkDto} from './artworkDto';
 
 export class CommissionDto {
   id: number;
   artistDto: ArtistDto;
+  artworkDto: ArtworkDto;
   customerDto: ApplicationUserDto;
   title: string;
   instructions: string;
   sketchesShown: number;
-  feedbackSend: number;
+  feedbackSent: number;
   feedbackRounds: number;
   price: number;
   issueDate: string;
   deadlineDate: string;
+  artistCandidatesDtos: ArtistDto[];
   referencesDtos: ReferenceDto[];
-  commissionState: CommissionState;
+  status: CommissionStatus;
 }

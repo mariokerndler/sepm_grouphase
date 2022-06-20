@@ -1,11 +1,14 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.exceptionhandler.ApplicationUserValidationMessages;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumericWithSpaces;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -14,45 +17,54 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
+
 @NoArgsConstructor
 @Getter
 @Setter
+@Validated
 public class ApplicationUserDto {
+
+    public static final int NAME_SIZE = 50;
+    public static final int ADDRESS_PASSWORD_SIZE = 100;
 
     private Long id;
 
-    @ValidAlphaNumeric
-    @Size(max = 50)
+    @ValidAlphaNumeric(message = ApplicationUserValidationMessages.USERNAME_NO_VALID_ALPHA_NUMERIC)
+    @Size(max = NAME_SIZE, message = ApplicationUserValidationMessages.USERNAME_SIZE_TOO_BIG)
     private String userName;
 
     @Valid
     private ProfilePictureDto profilePictureDto;
 
-    @ValidAlphaNumeric
-    @Size(max = 50)
+    @ValidAlphaNumericWithSpaces(
+        message = ApplicationUserValidationMessages.NAME_NO_VALID_ALPHA_NUMERIC_WITH_SPACES)
+    @Size(max = NAME_SIZE,
+        message = ApplicationUserValidationMessages.NAME_SIZE_TOO_BIG)
     private String name;
 
-    @ValidAlphaNumeric
-    @Size(max = 50)
+    @ValidAlphaNumericWithSpaces(
+        message = ApplicationUserValidationMessages.SURNAME_NO_VALID_ALPHA_NUMERIC_WITH_SPACES)
+    @Size(max = NAME_SIZE,
+        message = ApplicationUserValidationMessages.SURNAME_SIZE_TOO_BIG)
     private String surname;
 
-    @NotNull
-    @Email
-    @Size(max = 50)
+    @NotNull(message = ApplicationUserValidationMessages.EMAIL_NOT_NULL)
+    @Email(message = ApplicationUserValidationMessages.EMAIL_NOT_VALID)
+    @Size(max = NAME_SIZE, message = ApplicationUserValidationMessages.EMAIL_SIZE_TOO_BIG)
     private String email;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = ApplicationUserValidationMessages.ADDRESS_NOT_BLANK)
+    @Size(max = ADDRESS_PASSWORD_SIZE, message = ApplicationUserValidationMessages.ADDRESS_SIZE_TOO_BIG)
     private String address;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = ApplicationUserValidationMessages.PASSWORD_NOT_BLANK)
+    @Size(max = ADDRESS_PASSWORD_SIZE, message = ApplicationUserValidationMessages.PASSWORD_SIZE_TOO_BIG)
     private String password;
 
-    @NotNull
+    @NotNull(message = ApplicationUserValidationMessages.ADMIN_NOT_NULL)
     private Boolean admin;
 
-    @NotNull
+    @NotNull(message = ApplicationUserValidationMessages.USER_ROLE_NOT_NULL)
     private UserRole userRole;
 
     public ApplicationUserDto(String userName, String name, String surname, String email, String address,

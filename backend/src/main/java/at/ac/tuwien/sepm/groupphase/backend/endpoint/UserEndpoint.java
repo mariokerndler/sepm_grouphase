@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
@@ -24,12 +25,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@Validated
 @RequestMapping(value = "api/v1/users")
 @RequiredArgsConstructor
 public class UserEndpoint {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
 
     @PermitAll
@@ -48,7 +49,7 @@ public class UserEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update user")
     public void updateUser(@Valid @RequestBody ApplicationUserDto userDto) {
-        log.info("A user is trying to updating an application user.");
+        log.info("A user is trying to update an application user.");
 
         userService.updateUser(userMapper.userDtoToUser(userDto));
     }
@@ -70,7 +71,7 @@ public class UserEndpoint {
     public ApplicationUserDto searchUsersByEmail(
         @RequestParam(name = "email", defaultValue = "") String email) {
         log.info("A user is trying to search an application user with email '{}'", email);
-        return userMapper.userToUserDto(userService.findUserByEmail(email));
+        return userMapper.userToUserDto(userService.findUserByEmail(email.toLowerCase()));
     }
 
     @PermitAll
@@ -128,5 +129,16 @@ public class UserEndpoint {
         log.info("A user is trying to delete the application user with id '{}'", id);
 
         userService.deleteUserById(id);
+    }
+
+    @PermitAll
+    @PutMapping("/{id}/upgrade")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Upgrade user to artist")
+    @Transactional
+    public void upgradeUser(@PathVariable Long id) {
+        log.info("A user is trying to upgrade application user with id {} to artist", id);
+
+        userService.upgradeUserToArtist(id);
     }
 }

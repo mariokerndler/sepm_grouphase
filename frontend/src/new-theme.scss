@@ -69,6 +69,6 @@ $new-theme: mat.define-light-theme((
 ));
 
 @include theme-color-grabber($new-theme);
-@include angular-material-theme($new-theme);
+
 
 @include mat.all-component-colors($new-theme);

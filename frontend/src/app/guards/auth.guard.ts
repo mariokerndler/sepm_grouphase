@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     if (this.authService.isLoggedIn() && this.authService.getUserId() === routeId) {
       return true;
     } else {
-      this.notificationService.displayErrorSnackbar('Edit of another artist\' profile page is prohibited.');
+      this.notificationService.displayErrorSnackbar('Edit of another user\' profile page is prohibited.');
       this.router.navigate(['/feed'])
         .catch(_ => this.notificationService.displayErrorSnackbar('Could not load login page.'));
       return false;

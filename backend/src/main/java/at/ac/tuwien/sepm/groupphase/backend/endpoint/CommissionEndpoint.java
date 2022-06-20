@@ -11,16 +11,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
 @RestController
+@Validated
 @RequestMapping("api/v1/commissions")
 public class CommissionEndpoint {
     private final CommissionService commissionService;
@@ -91,13 +94,13 @@ public class CommissionEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post commission")
-    public void postCommission(@RequestBody DetailedCommissionDto commissionDto) {
+    public void postCommission(@Valid @RequestBody DetailedCommissionDto commissionDto) {
         log.info("A user is trying to create a commission.");
         try {
             commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
-        } catch (Exception v) {
-            log.error(v.getMessage() + commissionDto);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
 
     }
@@ -107,12 +110,13 @@ public class CommissionEndpoint {
     @PutMapping
     @Operation(summary = "Update commission")
     @Transactional
-    public void updateCommission(@RequestBody DetailedCommissionDto commissionDto) {
+    public void updateCommission(@Valid @RequestBody DetailedCommissionDto commissionDto) {
         log.info("A user is trying to update a commission.");
+        log.info(commissionDto.toString());
         try {
             commissionService.updateCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
         } catch (Exception e) {
-            log.error(e.getMessage() + commissionDto);
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
@@ -126,9 +130,9 @@ public class CommissionEndpoint {
         log.info("A user is trying to delete a commission.");
         try {
             commissionService.deleteCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
-        } catch (Exception n) {
-            log.error(n.getMessage() + commissionDto);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 }

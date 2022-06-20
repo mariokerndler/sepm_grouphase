@@ -8,15 +8,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@Validated
 @RequestMapping(value = "api/v1/artists")
 public class ArtistEndpoint {
 
@@ -29,26 +32,6 @@ public class ArtistEndpoint {
         this.artistMapper = artistMapper;
     }
 
-    /*@PermitAll
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/{id}")
-    @Operation(summary = "Get Detailed informations about a specific user")
-    public ArtistDto findById(@PathVariable Long id) {
-        LOGGER.debug("Get /User/{}", id);
-        try {
-            Artist artist = artistService.findArtistById(id);
-            LOGGER.info(applicationUser.getUserName());
-            ArtistDto artistDto = artistMapper.artistToArtistDto(artist);
-            LOGGER.info(artistDto.toString());
-            return artistDto;
-        } catch (NotFoundException n) {
-            LOGGER.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
-    }*/
-
-    // TODO: ArtistDto includes infinite loop because of circular dependency between Entities (e.g. Artwork and Artist).
-    //  Configure Mapper to avoid this or remove entities that are responsible
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -58,53 +41,45 @@ public class ArtistEndpoint {
         log.info("A user requested all artists.");
         return artistService.getAllArtists().stream().map(artistMapper::artistToArtistDto).collect(Collectors.toList());
     }
-    //TODO: why does this return an artist o.^
 
     @PermitAll
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     @Operation(summary = "Post new artist")
     @Transactional
-    public ArtistDto saveArtist(@RequestBody ArtistDto artistDto) {
+    public ArtistDto saveArtist(@Valid @RequestBody ArtistDto artistDto) {
         log.info("A user is trying to save and artist.");
         try {
             return artistMapper.artistToArtistDto(artistService.saveArtist(artistMapper.artistDtoToArtist(artistDto)));
         } catch (Exception e) {
-            log.error(e.getMessage() + artistDto.toString());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
-
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
     @Operation(summary = "Update artist")
     @Transactional
-    public void updateArtist(@RequestBody ArtistDto artistDto) {
+    public void updateArtist(@Valid @RequestBody ArtistDto artistDto) {
         try {
             log.info("A user is trying to update an artist.");
             artistService.updateArtist(artistMapper.artistDtoToArtist(artistDto));
         } catch (Exception e) {
-            log.error(e.getMessage() + " : " + artistDto.toString());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }
 
-
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    @Operation(summary = "Get  artist by id")
+    @Operation(summary = "Get artist by id")
     @Transactional
     public ArtistDto getArtistById(@PathVariable Long id) {
-        try {
-            log.info("A user is requesting an artist with id '{}'", id);
-            return artistMapper.artistToArtistDto(artistService.findArtistById(id));
-        } catch (Exception e) {
-            log.error(e.getMessage() + id.toString());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
-        }
+        log.info("A user is requesting an artist with id '{}'", id);
+        return artistMapper.artistToArtistDto(artistService.findArtistById(id));
     }
 
     @PermitAll
@@ -117,7 +92,7 @@ public class ArtistEndpoint {
             log.info("A user is deleting an artist with id '{}'", id);
             artistService.deleteArtistById(id);
         } catch (Exception e) {
-            log.error(e.getMessage() + id.toString());
+            log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }
     }

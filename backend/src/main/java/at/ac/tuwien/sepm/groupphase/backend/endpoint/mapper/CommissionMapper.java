@@ -12,8 +12,10 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class, ReferenceMapper.class, ReceiptMapper.class, ReviewMapper.class, ArtworkMapper.class})
 public abstract class CommissionMapper {
 
+
     @Mapping(source = "artist.id", target = "artistId")
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "artwork.id", target = "artworkId")
     public abstract SimpleCommissionDto commissionToSimpleCommissionDto(Commission commission);
 
     @Mapping(source = "artistId", target = "artist", qualifiedByName = "idToArtist")
@@ -48,5 +50,6 @@ public abstract class CommissionMapper {
         }
         return commission;
     }
+
 
 }

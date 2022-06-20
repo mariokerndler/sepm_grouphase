@@ -344,8 +344,8 @@ public class UserDataGenerator {
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission");
-        commission.setSketchesShown(0);
-        commission.setFeedbackSent(0);
+        commission.setSketchesShown(2);
+        commission.setFeedbackSent(1);
         commission.setPrice((int) (Math.random() * 10000));
         commission.setFeedbackRounds(4);
         commission.setIssueDate(LocalDateTime.now());
@@ -371,14 +371,18 @@ public class UserDataGenerator {
                 a.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
                 a.setFileType(FileType.JPG);
             } else {
-                Sketch k = new Sketch();
-                k.setFileType(FileType.JPG);
-                k.setArtwork(a);
-                k.setImageData(getImageBytes(urls[i]));
-                k.setDescription("Sketch " + i);
-                k.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
-                k.setCustomerFeedback("nice work " + i);
-                sketches.add(k);
+                if (i % 2 != 0) {
+                    Sketch k = new Sketch();
+                    k.setFileType(FileType.JPG);
+                    k.setArtwork(a);
+                    k.setImageData(getImageBytes(urls[i]));
+                    k.setDescription("Sketch " + i);
+                    k.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
+                    if (i == 3) {
+                        k.setCustomerFeedback("nice work " + i);
+                    }
+                    sketches.add(k);
+                }
 
             }
         }

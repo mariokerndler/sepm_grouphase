@@ -13,7 +13,7 @@ export class CommissionTimelineComponent implements OnInit {
   data: CommissionDto;
   isPlaying = true;
   isReady = false;
-
+  public selectedArtwork: number = null;
 
   constructor(private commissionService: CommissionService, private route: ActivatedRoute) {
   }
@@ -27,10 +27,16 @@ export class CommissionTimelineComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe(
         (commission) => {
+          console.log(commission);
           this.data = commission;
-          console.log(this.data);
           this.isReady = true;
         }
       );
+  }
+
+  setSelectedArtwork(i: number) {
+    this.selectedArtwork = i;
+    console.log(this.selectedArtwork);
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 }

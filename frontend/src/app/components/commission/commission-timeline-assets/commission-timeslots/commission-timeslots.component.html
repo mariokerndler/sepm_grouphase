@@ -3,9 +3,9 @@
     <div [ngStyle]="{'top': '40px'}" class="text-container">
       <span><b>05.06.2021</b></span>
       <br>
-      <span><b>Your first sketch arrived</b></span>
+      <span><b>Your {{transformIndex(index/2)}} sketch arrived</b></span>
       <br><br>
-      <img alt="" class="image" src="/assets/{{sketch.imageUrl}}">
+      <img (click)="selectArtwork()" alt="" class="image" src="/assets/{{sketch.imageUrl}}">
     </div>
     <div [ngStyle]="{'top': '2px'}" class="line"></div>
     <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
@@ -17,9 +17,9 @@
     <div [ngStyle]="{'bottom': '40px'}" class="text-container">
       <span><b>05.06.2021</b></span>
       <br>
-      <span><b>Your first sketch arrived</b></span>
+      <span><b>Your {{transformIndex(index/2)}} sketch arrived</b></span>
       <br><br>
-      <img alt="" class="image" src="/assets/{{sketch.imageUrl}}">
+      <img (click)="selectArtwork()" alt="" class="image" src="/assets/{{sketch.imageUrl}}">
     </div>
   </div>
 </div>
@@ -28,7 +28,7 @@
     <div [ngStyle]="{'top': '40px'}" class="feedback-text-container">
       <span><b>30.05.2020</b></span>
       <br>
-      <span class=><b>You composed your first review</b></span>
+      <span class=><b>You composed your {{transformIndex((index-1)/2)}} feedback</b></span>
       <br><br>
       <p class="review-text">
         {{sketch.customerFeedback}}
@@ -44,7 +44,7 @@
     <div [ngStyle]="{'top': '40px'}" class="feedback-text-container">
       <span><b>30.05.2020</b></span>
       <br>
-      <span><b>You composed your first review</b></span>
+      <span><b>You composed your {{transformIndex((index-1)/2)}} feedback</b></span>
       <br><br>
       <p>
         {{sketch.customerFeedback}}
@@ -52,4 +52,5 @@
     </div>
   </div>
 </div>
+
 

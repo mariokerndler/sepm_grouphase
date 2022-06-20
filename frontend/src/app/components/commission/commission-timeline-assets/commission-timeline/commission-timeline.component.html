@@ -21,7 +21,7 @@
       </div>
       <!-- Midsection -->
         <div  *cdkVirtualFor="let sketch of data.artworkDto.sketchesDtos; let i = index" class="example-item">
-          <app-commission-timeslots
+          <app-commission-timeslots (selectArtworkEvent)="setSelectedArtwork(i)"
             [sketch]="data.artworkDto.sketchesDtos[i]" [index]="i"></app-commission-timeslots>
         </div>
 
@@ -77,4 +77,10 @@
 
     </cdk-virtual-scroll-viewport>
   </div>
+  <app-gallery-carousel
+    (closeCarousel)="selectedArtwork=null"
+    *ngIf="selectedArtwork!== null"
+    [artworks]="data.artworkDto.sketchesDtos"
+    [selectedArtworkId]="selectedArtwork">
+  </app-gallery-carousel>
 </div>

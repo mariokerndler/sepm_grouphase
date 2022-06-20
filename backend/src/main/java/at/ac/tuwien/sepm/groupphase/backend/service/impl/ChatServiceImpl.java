@@ -60,6 +60,12 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void postChat(Chat chat) {
 
+        Chat c2 = chat;
+        c2.setChatPartner(chat.getUser());
+        c2.setUser(chat.getChatPartner());
+        log.info(c2.toString());
+        log.info(chat.toString());
+        this.chatRepository.save(c2);
         this.chatRepository.save(chat);
     }
 

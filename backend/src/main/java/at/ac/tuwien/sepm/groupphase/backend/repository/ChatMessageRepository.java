@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
-    @Query(nativeQuery = true, value = "select * from CHAT_MESSAGE where CHAT_MESSAGE.CHAT=:chatId")
+    @Query(nativeQuery = true, value = "select DISTINCT * from CHAT_MESSAGE where CHAT_MESSAGE.CHAT=:chatId")
     List<ChatMessage> getChatMessagesByChatId(@Param("chatId") String chatId);
 }

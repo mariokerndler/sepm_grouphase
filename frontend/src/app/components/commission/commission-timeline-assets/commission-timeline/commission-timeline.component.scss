@@ -25,7 +25,12 @@
 
 .time-component {
   position: relative;
-  bottom: 134px
+  bottom: 133px;
+}
+
+.time-component-up{
+    position: relative;
+    bottom: 327px
 }
 
 .start-section {
@@ -58,6 +63,7 @@
   width: 300px;
   left: 60%;
   height: 130px;
+
 }
 
 .line {
@@ -65,6 +71,21 @@
   border-right: 1px solid #C57F82;
   position: relative;
   right: 50%;
+}
+
+.new-line {
+  height: 4rem;
+  border-right: 1px solid #C57F82;
+  position: relative;
+  right: 50%;
+}
+
+.new-main-line {
+
+  border-top: 2px solid #fb9fa4;
+  position: relative;
+  width: 20rem;
+  left: 55.5%;
 }
 
 .main-line {

@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.sepm.groupphase.backend.basetest.GetImageByteArray;
-import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtworkDto;
@@ -10,7 +9,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
-import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +35,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,10 +86,12 @@ public class ApplicationUserEndpointTest {
 
     @BeforeEach
     public void beforeEach() throws Exception {
+        artworkRepository.deleteAll();
+        artistRepository.deleteAll();
         userRepository.deleteAll();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
 
-        ApplicationUser anObject = getTestUser1();
+        ApplicationUserDto anObject = userMapper.userToUserDto(getTestUser1());
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(anObject);
@@ -250,7 +249,7 @@ public class ApplicationUserEndpointTest {
     @WithMockUser
     public void upgradeUserToArtist_upgradesRelevantFields() throws Exception {
 
-        ApplicationUserDto userDto = userMapper.userToUserDto(getTestUser1());
+        ApplicationUserDto userDto = userMapper.userToUserDto(getTestUser2());
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(userDto);
@@ -259,18 +258,32 @@ public class ApplicationUserEndpointTest {
                 .content(requestJson))
             .andExpect(status().isCreated()).andReturn();
 
-        assertEquals(1, allUsers().size());
-        assertEquals(0, allArtists().size());
+        List<ApplicationUserDto> users = allUsers();
+        List<ArtistDto> artists = allArtists();
 
-        userDto.setId(allUsers().get(0).getId());
+        assertEquals(2, users.size());
+        assertEquals(0, artists.size());
+
+        for (ApplicationUserDto u : users) {
+            if (u.getEmail().equals(userDto.getEmail())) {
+                userDto.setId(u.getId());
+            }
+        }
 
         mockMvc.perform(put("/api/v1/users/" + userDto.getId() + "/upgrade"))
             .andExpect(status().isOk()).andReturn();
 
-        assertEquals(1, allUsers().size());
-        assertEquals(1, allArtists().size());
+        users = allUsers();
+        artists = allArtists();
 
-        userDto = allUsers().get(0);
+        assertEquals(2, users.size());
+        assertEquals(1, artists.size());
+
+        for (ApplicationUserDto u : users) {
+            if (u.getEmail().equals(userDto.getEmail())) {
+                userDto = u;
+            }
+        }
         ArtistDto artistDto = allArtists().get(0);
 
         assertEquals(userDto.getId(), artistDto.getId());
@@ -288,7 +301,7 @@ public class ApplicationUserEndpointTest {
     @WithMockUser
     public void upgradeUserToArtist_makesArtworkUploadPossible() throws Exception {
 
-        ApplicationUserDto userDto = userMapper.userToUserDto(getTestUser1());
+        ApplicationUserDto userDto = userMapper.userToUserDto(getTestUser2());
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(userDto);
@@ -297,17 +310,26 @@ public class ApplicationUserEndpointTest {
                 .content(requestJson))
             .andExpect(status().isCreated()).andReturn();
 
+        List<ApplicationUserDto> users = allUsers();
+        List<ArtistDto> artists = allArtists();
 
-        assertEquals(1, allUsers().size());
-        assertEquals(0, allArtists().size());
+        assertEquals(2, users.size());
+        assertEquals(0, artists.size());
 
-        userDto.setId(allUsers().get(0).getId());
+        for (ApplicationUserDto u : users) {
+            if (u.getEmail().equals(userDto.getEmail())) {
+                userDto.setId(u.getId());
+            }
+        }
 
         mockMvc.perform(put("/api/v1/users/" + userDto.getId() + "/upgrade"))
             .andExpect(status().isOk()).andReturn();
 
-        assertEquals(1, allUsers().size());
-        assertEquals(1, allArtists().size());
+        users = allUsers();
+        artists = allArtists();
+
+        assertEquals(2, users.size());
+        assertEquals(1, artists.size());
 
         byte[] image = GetImageByteArray.getImageBytes("https://i.ibb.co/HTT7Ym3/image0.jpg");
         ArtworkDto artworkDto = new ArtworkDto("Artwork by new Artist",

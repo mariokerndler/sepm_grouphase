@@ -12,6 +12,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
@@ -63,6 +64,9 @@ public class CommissionEndpointTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private ArtworkRepository artworkRepository;
+
+    @Autowired
     private CommissionRepository commissionRepository;
 
     @Autowired
@@ -92,6 +96,7 @@ public class CommissionEndpointTest {
 
     @BeforeEach
     public void beforeEach() throws Exception {
+        artworkRepository.deleteAll();
         commissionRepository.deleteAll();
         artistRepository.deleteAll();
         userRepository.deleteAll();
@@ -129,7 +134,7 @@ public class CommissionEndpointTest {
 
         ApplicationUser user1 = ApplicationUser.builder().id(userId).userName("sunscreen98").name("Mike").surname("Regen").email("mikey98@gmail.com").address("Greatstreet").password("passwordhash2").admin(false).userRole(UserRole.User).build();
 
-        Commission commission = Commission.builder().artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).title("its yours").instructions("do the thing").status(CommissionStatus.OPEN).feedbackRounds(2).build();
+        Commission commission = Commission.builder().artist(artist1).customer(user1).sketchesShown(3).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).title("its yours").instructions("do the thing").status(CommissionStatus.LISTED).feedbackRounds(2).build();
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
@@ -230,7 +235,7 @@ public class CommissionEndpointTest {
             .deadlineDate(LocalDateTime.now().plusWeeks(12))
             .title("I want to be a french woman")
             .instructions("draw me like one of your french girls")
-            .status(CommissionStatus.OPEN)
+            .status(CommissionStatus.LISTED)
             .build();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
@@ -255,7 +260,7 @@ public class CommissionEndpointTest {
         List<SimpleCommissionDto> commissions1 = allCommissions();
         Commission commission = commissionMapper.simpleCommissionDtoToCommission(commissions1.get(0));
 
-        Commission modCommission = Commission.builder().id(commissions1.get(0).getId()).feedbackRounds(2).artist(artistMapper.artistDtoToArtist(artists.get(0))).customer(userMapper.userDtoToUser(users.get(0))).sketchesShown(3).feedbackSent(0).price(300).issueDate(commission.getIssueDate()).deadlineDate(commission.getDeadlineDate()).title("Drawing french").status(CommissionStatus.OPEN).instructions("draw me like one of your french boys").build();
+        Commission modCommission = Commission.builder().id(commissions1.get(0).getId()).feedbackRounds(2).artist(artistMapper.artistDtoToArtist(artists.get(0))).customer(userMapper.userDtoToUser(users.get(0))).sketchesShown(3).feedbackSent(0).price(300).issueDate(commission.getIssueDate()).deadlineDate(commission.getDeadlineDate()).title("Drawing french").status(CommissionStatus.LISTED).instructions("draw me like one of your french boys").build();
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CommissionTimelineComponent } from './commission-timeline.component';
+import {CommissionTimelineComponent} from './commission-timeline.component';
 
 describe('CommissionTimelineComponent', () => {
   let component: CommissionTimelineComponent;
@@ -8,9 +8,9 @@ describe('CommissionTimelineComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommissionTimelineComponent ]
+      declarations: [CommissionTimelineComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

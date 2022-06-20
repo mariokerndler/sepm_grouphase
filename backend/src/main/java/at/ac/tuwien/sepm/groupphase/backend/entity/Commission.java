@@ -54,7 +54,7 @@ public class Commission implements HasId {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column (name = "deadline_date")
+    @Column(name = "deadline_date")
     private LocalDateTime deadlineDate;
 
     @Column(nullable = false, length = 100)
@@ -113,7 +113,7 @@ public class Commission implements HasId {
             + "id=" + id
             + ", artistId=" + (artist == null ? null : artist.getId())
             + ", artistCandidatesIds=" + (artistCandidates == null ? null : artistCandidates.stream().map(Artist::getId).toList())
-            + ", customerId=" + customer.getId()
+            + ", customerId=" + (customer == null ? null : customer.getId())
             + ", status=" + status
             + ", sketchesShown=" + sketchesShown
             + ", feedbackSent=" + feedbackSent

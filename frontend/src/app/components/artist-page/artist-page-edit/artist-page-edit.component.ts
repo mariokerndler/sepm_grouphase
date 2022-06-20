@@ -5,7 +5,7 @@ import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {map, Observable, startWith, Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {LayoutComponent} from './layoutComponent';
+import {LayoutComponent, LayoutComponentType} from './layoutComponent';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {TagDto} from '../../../dtos/tagDto';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
@@ -15,13 +15,14 @@ import {TagService} from '../../../services/tag.service';
 import {Location} from '@angular/common';
 import {Color} from '@angular-material-components/color-picker';
 import {GlobalFunctions} from '../../../global/globalFunctions';
-import {AuthService} from '../../../services/auth.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {UserService} from '../../../services/user.service';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {FileType} from '../../../dtos/artworkDto';
 import {ProfilePictureDto} from '../../../dtos/profilePictureDto';
 import {Globals} from '../../../global/globals';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -49,14 +50,20 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   isReady = false;
 
   availableComponents: LayoutComponent[] = [
-    {componentName: 'Gallery', disabled: false, tags: []},
-    {componentName: 'Reviews', disabled: false, tags: []}
+    {componentName: 'Gallery', type: LayoutComponentType.gallery, disabled: false, tags: []},
+    {componentName: 'Reviews', type: LayoutComponentType.reviews, disabled: false, tags: []}
   ];
 
-  profileInfoComponent: LayoutComponent = {componentName: 'Profile information', disabled: true, tags: []};
-  chosenComponents: LayoutComponent[] = [];
+  profileInfoComponent: LayoutComponent = {
+    componentName: 'Profile information',
+    type: LayoutComponentType.information,
+    disabled: true,
+    tags: []
+  };
 
+  chosenComponents: LayoutComponent[] = [];
   selectedComponent: LayoutComponent;
+
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagForm = new FormControl();
   allTags: TagDto[] = [];
@@ -79,6 +86,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private globalFunctions: GlobalFunctions,
     public globals: Globals,
+    private dialog: MatDialog
   ) {
     this.fillFormValidators();
 
@@ -134,7 +142,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate([`artist/${this.user.id}`]);
   }
 
   updateUserInformation() {
@@ -236,6 +244,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const item = this.availableComponents[event.previousIndex];
       const newItem = {
         componentName: item.componentName,
+        type: item.type,
         disabled: item.disabled,
         tags: [...item.tags]
       };
@@ -339,6 +348,33 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     event.chipInput?.clear();
 
     this.tagForm.setValue(null);
+  }
+
+  validLayoutComponentName(): boolean {
+    if(this.selectedComponent) {
+      return this.selectedComponent.componentName.trim().length <= 0;
+    } else {
+      return false;
+    }
+  }
+
+  upgradeUser() {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Upgrade to artist account',
+        message: 'Are you sure you want to be an artist?'
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.userService.upgradeUser(this.user.id).subscribe(
+          data => {
+            this.router.navigate([`/artist/${this.user.id}`]).catch((_) =>
+              this.notificationService.displayErrorSnackbar('Could not navigate to artist list.'));
+          }
+        );
+      }
+    });
   }
 
   private filterTags(value: TagDto): TagDto[] {
@@ -467,7 +503,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       updatedArtist.description = description;
     }
 
-    if(this.oldProfilePicture !== this.profilePicture) {
+    if (this.oldProfilePicture !== this.profilePicture) {
       updatedArtist.profilePictureDto = this.createProfilePictureDto();
     }
 
@@ -504,7 +540,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       updatedUser.address = address.valueOf();
     }
 
-    if(this.oldProfilePicture !== this.profilePicture) {
+    if (this.oldProfilePicture !== this.profilePicture) {
       updatedUser.profilePictureDto = this.createProfilePictureDto();
     }
 
@@ -512,7 +548,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   private setProfilePicture() {
-    if(this.user.profilePictureDto) {
+    if (this.user.profilePictureDto) {
       this.oldProfilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
       this.profilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
     } else {

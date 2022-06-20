@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
       this.userId = this.authService.getUserId();
     }
 
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
       this.router.navigate(['/artist', this.userId]))
       .catch(_ => this.notificationService.displayErrorSnackbar('Could not navigate to user page.'));
   }
@@ -58,5 +58,9 @@ export class HeaderComponent implements OnInit {
     this.authService.logoutUser();
     this.router.navigate(['/feed'])
       .catch(_ => this.notificationService.displayErrorSnackbar('Could not navigate to frontpage.'));
+  }
+
+  navigateToChat() {
+    this.router.navigate(['/chat/' + this.userId]);
   }
 }

@@ -195,12 +195,9 @@ md-divider {
 }
 
 mat-menu.content {
-  color: gray;
+  //color: gray;
 }
 
-#tagMenuItems {
-  color: #536281;
-}
 
 .pagination {
 
@@ -228,8 +225,8 @@ mat-menu.content {
 }
 
 .mat-menu-panel {
-  background: lightgray;
   margin-top: .3rem;
+
 
   .mat-menu-content {
     display: flex;
@@ -255,7 +252,7 @@ mat-menu.content {
   border-radius: 10px;
 }
 
-.delete{
+.delete {
   position: relative;
   left: 92%;
 }

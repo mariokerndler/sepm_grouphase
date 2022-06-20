@@ -15,9 +15,9 @@
   <!-- Artist images-->
   <div fxFlex="85" class="artist-feed-card-image-container">
     <cdk-virtual-scroll-viewport class="viewport" itemSize="{{artworks.length}}" orientation="horizontal">
-      <div *ngFor="let artwork of artworks; let i = index;"
-           class="artist-feed-card-image-wrap"
-           (click)="setSelectedArtwork(i)">
+      <div (click)="setSelectedArtwork(i)"
+           *ngFor="let artwork of artworks; let i = index;"
+           class="artist-feed-card-image-wrap">
         <img
           [alt]="artwork.name"
           [src]="globals.assetsPath + artwork.imageUrl"

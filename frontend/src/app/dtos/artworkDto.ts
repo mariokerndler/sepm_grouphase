@@ -13,7 +13,7 @@ export class ArtworkDto {
   artistId: number;
   row: string;
   col: string;
-  tags: TagDto[];
+  tagsDtos: TagDto[];
 }
 
 export enum FileType {

@@ -64,7 +64,7 @@
           </mat-form-field>
         </form>
 
-        <div *ngIf="isArtist" class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center"
+        <div class="edit-page-pfp-wrapper" fxLayout="column" fxLayoutAlign="start center"
              fxLayoutGap="0.5rem">
           <h3 class="primary">Profile picture</h3>
           <img [src]="profilePicture" alt="" class="edit-page-pfp">
@@ -72,18 +72,18 @@
                  (change)="onFileChanged($event)"
                  accept="image/png, image/jpeg, image/gif" style="display: none;"
                  type="file">
-          <button (click)="fileInput.click()" color="accent" mat-button>
-            <mat-icon color="accent">upload</mat-icon>
+          <button (click)="fileInput.click()" color="primary" mat-button>
+            <mat-icon color="primary">upload</mat-icon>
             <span>Upload new profile picture</span>
           </button>
-          <button (click)="revertProfilePicture()" mat-button color="accent">
-            <mat-icon color="accent">history</mat-icon>
+          <button (click)="revertProfilePicture()" color="primary" mat-button>
+            <mat-icon color="primary">history</mat-icon>
             <span>Revert profile picture</span>
           </button>
         </div>
       </div>
 
-      <button (click)="updateUserInformation()" class="update-user-button" color="accent" mat-flat-button>Update user
+      <button (click)="updateUserInformation()" class="update-user-button" color="primary" mat-flat-button>Update
       </button>
     </mat-tab>
 
@@ -129,11 +129,20 @@
         </form>
 
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-          <button (click)="updatePassword()" color="accent" mat-flat-button>Update password</button>
+          <button (click)="updatePassword()" color="primary" mat-flat-button>Update password</button>
           <mat-checkbox [(ngModel)]="showPassword">Show Password</mat-checkbox>
         </div>
 
       </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="!isArtist" label="Upgrade to Artist">
+      <h2 class="primary">Upgrade from user to artist</h2>
+
+      <h3 class="primary">If you want to upload your art, take commissions, and participate as an artist, click this
+        button:</h3>
+      <button (click)="upgradeUser()" color="primary" mat-flat-button>Upgrade</button>
+
     </mat-tab>
 
     <mat-tab *ngIf="isArtist" label="Appearance">
@@ -208,8 +217,8 @@
                  [cdkDragDisabled]="item.disabled"
                  cdkDrag
                  class="element-box">
-              {{item.componentName}}
-
+              {{item.componentName}},
+              Tags:{{item?.tags.length}}
               <button (click)="deleteComponent(item)" *ngIf="item.componentName !== 'Profile information'" mat-button>
                 <mat-icon>close</mat-icon>
               </button>
@@ -221,16 +230,18 @@
         </div>
       </div>
 
-      <button (click)="updateAppearance()" class="artist-profile-elements-button update-user-button" color="accent"
-              mat-flat-button>Update appearance
+      <button (click)="updateAppearance()"
+              class="artist-profile-elements-button update-user-button"
+              color="primary"
+              mat-flat-button [disabled]="validLayoutComponentName()">Update appearance
       </button>
     </mat-tab>
   </mat-tab-group>
 </div>
 
 <div class="home-button">
-  <button (click)="goBack()" color="accent" mat-button>
-    <mat-icon color="accent">home</mat-icon>
+  <button (click)="goBack()" color="primary" mat-button>
+    <mat-icon color="primary">home</mat-icon>
     <span class="home-text">Go back</span>
   </button>
 </div>
@@ -240,12 +251,20 @@
 </ng-template>
 
 <ng-template #settingComponent>
-  <div *ngIf="selectedComponent.componentName.includes('Gallery') then gallery"></div>
+  <div *ngIf="selectedComponent.type.includes('Gallery') then gallery"></div>
 </ng-template>
 
 <ng-template #gallery>
-  <h3 class="primary">{{selectedComponent.componentName}} settings</h3>
-  <div class="gallery-settings">
+  <h3 class="primary">{{selectedComponent.type}} settings</h3>
+  <div class="gallery-settings" fxLayout="column">
+    <mat-form-field appearance="fill" class="gallery-settings-tags">
+      <mat-label class="primary">Name</mat-label>
+      <input type="text" matInput name="text" [(ngModel)]="selectedComponent.componentName" required>
+      <mat-error *ngIf="validLayoutComponentName()">
+        Name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
     <mat-form-field appearance="fill" class="gallery-settings-tags">
       <mat-label class="primary">Tags</mat-label>
       <input

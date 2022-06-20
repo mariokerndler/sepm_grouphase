@@ -14,7 +14,7 @@ export class CommissionCardComponent implements OnInit {
   userProfilePicture = 'https://picsum.photos/150/150';
   user: ApplicationUserDto;
 
-  constructor(private userService: UserService, public  globalFunctions: GlobalFunctions) {
+  constructor(private userService: UserService, public globalFunctions: GlobalFunctions) {
   }
 
   ngOnInit(): void {

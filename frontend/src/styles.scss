@@ -1,7 +1,19 @@
 //@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@use 'sass:map';
+@use 'node_modules/@angular/material/index' as mat;
 @import '~@angular/material/theming';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap');
-$background: #434F6A;
+
+
+@mixin background-color($theme){
+  body {
+    background: mat.get-color-from-palette($dark-blue-palette, 800);
+    color: mat.get-color-from-palette($light-pink-palette, 200);
+  }
+}
+
+
+/*
 
 @mixin theme-color-grabber($theme) {
   $primary: map-get($theme, primary);
@@ -20,12 +32,12 @@ $background: #434F6A;
     color: mat-color($accent) !important;
   }
   .primary {
-    background-color: mat-color($primary) !important;
-    color: mat-color($accent) !important;
+    //background-color: mat-color($primary) !important;
+    color: mat-color($primary) !important;
   }
   .accent {
-    background-color: mat-color($accent) !important;
-    color: mat-color($primary) !important;
+   // background-color: mat-color($accent) !important;
+    color: mat-color($accent) !important;
   }
   .secondary {
     color: #2f3a51 !important;
@@ -33,20 +45,24 @@ $background: #434F6A;
 
 }
 
+*/
+
 :root {
   --bgFilter: blur(0px);
 }
 
-/* You can add global styles to this file, and also import other style files */
-body {
-  background-color: $background;
-}
 
 
+
+
+
+/*
 * {
   font-family: 'Didact Gothic', sans-serif;
   font-size: 1rem;
 }
+*/
+
 
 html, body {
   height: 100%;

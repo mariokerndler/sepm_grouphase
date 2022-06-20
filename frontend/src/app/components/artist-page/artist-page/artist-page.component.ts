@@ -10,6 +10,8 @@ import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Location} from '@angular/common';
 import {Globals} from '../../../global/globals';
+import {NotificationDto, NotificationType} from '../../../dtos/notificationDto';
+import {Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-artist-page',
@@ -17,7 +19,6 @@ import {Globals} from '../../../global/globals';
   styleUrls: ['./artist-page.component.scss']
 })
 export class ArtistPageComponent implements OnInit, OnDestroy {
-
   artist: ArtistDto;
   user: ApplicationUserDto;
   profileSettings: ArtistProfileSettings;
@@ -26,6 +27,9 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   canEdit = false;
   tabIndex = 0;
   profilePicture;
+
+  hasUnreadNotifications: boolean;
+  notificationLength: number;
 
   private routeSubscription: Subscription;
 
@@ -47,7 +51,6 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
       (params) => this.userService.getUserById(params.id, () => this.navigateToArtistList())
         .subscribe((user) => {
           this.user = user;
-          console.log(user);
 
           this.setProfilePicture();
 
@@ -119,6 +122,13 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     this.tabIndex = $event;
   }
 
+  setUnreadNotifications($event: boolean) {
+    this.hasUnreadNotifications = $event;
+  }
+
+  setNotificationLength($event: number) {
+    this.notificationLength = $event;
+  }
 
   private navigateToArtistList() {
     this.router.navigate(['/artists'])
@@ -130,7 +140,7 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   }
 
   private setProfilePicture() {
-    if(!this.user.profilePictureDto) {
+    if (!this.user.profilePictureDto) {
       this.profilePicture = this.globals.defaultProfilePicture;
     } else {
       this.profilePicture = this.user.profilePictureDto.imageUrl;

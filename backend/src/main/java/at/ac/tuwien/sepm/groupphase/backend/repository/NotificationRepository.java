@@ -24,7 +24,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
      * Find all notifications based on the {@link ApplicationUser#getId()} and {@link Pageable page size}.
      *
      * @param applicationUserId The {@link ApplicationUser#getId()} that will be used in the search.
-     * @param pageSize A limit of how many notifications will be found.
+     * @param pageSize          A limit of how many notifications will be found.
      * @return The found notifications.
      */
     @Query("SELECT n FROM Notification n where n.user.id=:applicationUserId ORDER BY n.createdAt DESC")
@@ -42,7 +42,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
      * Find all notifications from a given {@link ApplicationUser user} and an {@link Notification#getId()}.
      *
      * @param user The {@link ApplicationUser user} that will be used as a search parameter.
-     * @param id The {@link Notification#getId()} that will be used as a search parameter.
+     * @param id   The {@link Notification#getId()} that will be used as a search parameter.
      * @return The found notification.
      */
     Notification findByUserAndId(ApplicationUser user, Long id);
@@ -59,8 +59,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     /**
      * Find all notifications from a given {@link ApplicationUser user}, {@link Notification#getType() type} and {@link Pageable page size}.
      *
-     * @param user The {@link ApplicationUser user} that will be used as a search parameter.
-     * @param type The {@link Notification#getType() type} that will be used as a search parameter.
+     * @param user     The {@link ApplicationUser user} that will be used as a search parameter.
+     * @param type     The {@link Notification#getType() type} that will be used as a search parameter.
      * @param pageSize A limit of how many notifications will be found.
      * @return The found notifications.
      */
@@ -69,7 +69,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     /**
      * Find all notifications from a given {@link ApplicationUser user} and {@link Notification#isRead()}.
      *
-     * @param user The {@link ApplicationUser user} that will be used as a search parameter.
+     * @param user   The {@link ApplicationUser user} that will be used as a search parameter.
      * @param isRead The {@link Notification#isRead()} that will be used as a search parameter.
      * @return The found notifications.
      */

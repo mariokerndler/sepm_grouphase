@@ -46,22 +46,11 @@ export class ArtistInformationComponent implements OnInit {
     const chat: ChatDto = {
       chatPartnerId: this.artist.id, userId: this.loggedInUserId
     };
-    const chat2: ChatDto = {
-      chatPartnerId: this.loggedInUserId.id, userId: this.artist.id
-    };
     console.log(chat);
     this.chatService.postChat(chat).subscribe(success => {
-      this.chatService.postChat(chat2).subscribe(ok => {
-        this.router.navigate(['/chat/' + this.loggedInUserId]);
-      }, error => {
-        this.router.navigate(['/chat/' + this.loggedInUserId]);
-      });
-
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
     }, error => {
-
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
     });
-
   }
-
-
 }

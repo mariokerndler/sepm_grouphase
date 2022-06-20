@@ -26,6 +26,7 @@ export class Adapter implements ChatAdapter {
   }
 
   onFriendsListChanged(participantsResponse: ParticipantResponse[]): void {
+    this.listFriends();
   }
 
   onMessageReceived(participant: IChatParticipant, message: Message): void {

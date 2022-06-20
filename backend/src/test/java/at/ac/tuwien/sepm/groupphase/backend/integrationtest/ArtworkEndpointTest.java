@@ -12,6 +12,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artwork;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtworkRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.CommissionRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
@@ -72,6 +73,9 @@ public class ArtworkEndpointTest {
     private ArtworkRepository artworkRepository;
 
     @Autowired
+    private CommissionRepository commissionRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -126,6 +130,7 @@ public class ArtworkEndpointTest {
     @BeforeEach
     public void beforeEach() throws Exception {
         artworkRepository.deleteAll();
+        commissionRepository.deleteAll();
         artistRepository.deleteAll();
         userRepository.deleteAll();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();

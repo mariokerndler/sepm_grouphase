@@ -9,9 +9,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class, ReferenceMapper.class, ReceiptMapper.class, ReviewMapper.class, ArtworkMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class, ReferenceMapper.class, ReceiptMapper.class, ReviewMapper.class, ArtworkMapper.class, HasIdMapper.class})
 public abstract class CommissionMapper {
-
 
     @Mapping(source = "artist.id", target = "artistId")
     @Mapping(source = "customer.id", target = "customerId")
@@ -50,6 +49,5 @@ public abstract class CommissionMapper {
         }
         return commission;
     }
-
 
 }

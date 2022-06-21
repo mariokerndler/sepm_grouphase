@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,7 @@ public class ChatEndpoint {
     @PermitAll
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     @Operation(summary = "Post Chat")
     public void postChat(@RequestBody ChatDto chatDto) {
         log.info(chatDto.toString());
@@ -91,6 +93,7 @@ public class ChatEndpoint {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
         }
     }
+
 
     @PermitAll
     @PostMapping

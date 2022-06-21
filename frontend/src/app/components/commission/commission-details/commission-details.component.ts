@@ -53,7 +53,7 @@ export class CommissionDetailsComponent implements OnInit {
 
   public selectedArtistId = 4;
   //Just dummy data.
-  artistIds = [4, 5, 6, 8, 10, 41];
+  artistIds = [];
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,

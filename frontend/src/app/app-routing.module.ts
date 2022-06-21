@@ -19,6 +19,7 @@ import {
 import {ChatComponent} from './chat/chat.component';
 import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
 import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy-policy.component';
+import {ContactComponent} from './components/footer/contact/contact.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -38,6 +39,7 @@ const routes: Routes = [
   {path: 'chat/:id', component: ChatComponent},
   {path: 'terms', component: TermsOfServiceComponent},
   {path: 'privacy-policy', component: PrivacyPolicyComponent},
+  {path: 'contact', component: ContactComponent},
   {path: '**', redirectTo: 'feed'},
 
 ];

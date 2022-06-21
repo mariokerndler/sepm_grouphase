@@ -77,6 +77,7 @@ import {ChatComponent} from './chat/chat.component';
 import { NotificationDisplayComponent } from './components/common/notification-display/notification-display.component';
 import { TermsOfServiceComponent } from './components/footer/terms-of-service/terms-of-service.component';
 import { PrivacyPolicyComponent } from './components/footer/privacy-policy/privacy-policy.component';
+import { ContactComponent } from './components/footer/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +118,8 @@ import { PrivacyPolicyComponent } from './components/footer/privacy-policy/priva
     ConfirmDialogComponent,
     NotificationDisplayComponent,
     TermsOfServiceComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

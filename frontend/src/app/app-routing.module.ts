@@ -18,7 +18,7 @@ import {
 } from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
 import {ChatComponent} from './chat/chat.component';
 import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
-import {PrivacyPolicyComponent} from "./components/footer/privacy-policy/privacy-policy.component";
+import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},

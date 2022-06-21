@@ -111,6 +111,11 @@ public class CommissionServiceImpl implements CommissionService {
         } else {
             log.info("SKETCHES EMPTY");
         }
+
+        if(c.getArtwork() != null){
+            this.ifm.writeCommissionArtwork(c, c.getArtwork());
+        }
+
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());
     }

@@ -5,7 +5,7 @@ import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {CommissionService} from '../../../services/commission.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FileType} from '../../../dtos/artworkDto';
+import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SketchDto} from '../../../dtos/sketchDto';
@@ -13,6 +13,8 @@ import {TagSearch} from '../../../dtos/tag-search';
 import {ArtistService} from '../../../services/artist.service';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {CommissionStatus} from '../../../global/CommissionStatus';
+import {UploadComponent} from '../../upload/upload.component';
+import {MatDialog} from '@angular/material/dialog';
 
 
 @Component({
@@ -42,7 +44,12 @@ export class CommissionDetailsComponent implements OnInit {
   items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   uploadedSketch: any;
   uploadedSketchDto: SketchDto;
+  finalImage: any;
+  finalImageDto: ArtworkDto;
   public selectedArtwork: number = null;
+  startDate: string;
+  endDate: string;
+  updatedEndDate: string;
 
   public selectedArtistId = 4;
   //Just dummy data.
@@ -52,7 +59,8 @@ export class CommissionDetailsComponent implements OnInit {
               private commissionService: CommissionService,
               private route: ActivatedRoute, private globalFunctions: GlobalFunctions,
               private artistService: ArtistService, private notificationService: NotificationService,
-              private router: Router) {
+              private router: Router,
+              private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -78,6 +86,9 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
           this.commission = commission;
+          this.startDate = new Date(commission.issueDate).toLocaleDateString();
+          this.endDate = new Date(commission.deadlineDate).toLocaleDateString();
+          this.updatedEndDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
           this.commission.artistCandidatesDtos = [];
           this.artistIds.forEach(a => {
             this.artistService.getArtistById(a).subscribe(result => {
@@ -175,9 +186,14 @@ export class CommissionDetailsComponent implements OnInit {
       this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1] = this.uploadedSketchDto;
     }
     console.log(this.commission);
-    this.commissionService.updateCommission(this.commission).subscribe();
+    this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1].description
+      += '%' + new Date().toLocaleDateString();
+    this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1].customerFeedback
+      += '%' + new Date().toLocaleDateString();
+    this.commissionService.updateCommission(this.commission).subscribe((commission) => console.log(commission));
     this.checkCommissionState(this.commission);
   }
+
 
 
   toggleFeedbackField() {
@@ -227,6 +243,15 @@ export class CommissionDetailsComponent implements OnInit {
     this.commission.status=CommissionStatus.inProgress;
     this.commissionService.updateCommission(this.commission).subscribe(success=>{
       this.notificationService.displaySuccessSnackbar('Commission is now in progress');
+    });
+  }
+
+  openDialog() {
+   this.dialog.open(UploadComponent, {
+      data: {
+        artist: this.commission.artistDto,
+        commission: this.commission
+      }
     });
   }
 }

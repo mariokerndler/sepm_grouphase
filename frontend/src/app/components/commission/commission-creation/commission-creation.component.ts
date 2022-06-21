@@ -104,7 +104,6 @@ export class CommissionCreationComponent implements OnInit {
 
   ngOnInit(): void {
 
-
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required],
     });
@@ -191,5 +190,9 @@ export class CommissionCreationComponent implements OnInit {
     if ($event.selectedIndex === 3) {
       this.createDto();
     }
+  }
+
+  formatEndDate(date: string) {
+    return (new Date(date)).toLocaleDateString();
   }
 }

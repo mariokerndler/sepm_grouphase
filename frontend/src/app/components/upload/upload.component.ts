@@ -13,6 +13,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {GlobalFunctions} from '../../global/globalFunctions';
 import {CommissionService} from '../../services/commission.service';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-upload',
@@ -119,6 +120,8 @@ export class UploadComponent implements OnInit {
     this.data.commission.artworkDto.imageData = imageData;
     this.data.commission.artworkDto.name = name;
     this.data.commission.artworkDto.description = description;
+    this.data.commission.deadlineDate =
+      formatDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
     this.data.commission.artworkDto.fileType = filetype;
     this.commissionService.updateCommission(this.data.commission).subscribe(() => {
         this.dialogRef.close();

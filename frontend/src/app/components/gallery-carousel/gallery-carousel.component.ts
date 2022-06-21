@@ -93,7 +93,9 @@ export class GalleryCarouselComponent implements OnInit {
 
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
-    //console.log(this.selectedArtworkId);
+    if(this.artworks[this.animArtwork].description) {
+      this.artworks[this.animArtwork].description = this.artworks[this.animArtwork].description.split('%', 1)[0];
+    }
     if (this.artworks[this.selectedArtworkId].artistId) {
       this.getImageArtistInfo();
     }

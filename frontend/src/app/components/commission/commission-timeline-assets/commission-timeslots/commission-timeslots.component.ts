@@ -11,13 +11,18 @@ export class CommissionTimeslotsComponent implements OnInit {
   @Input() index: number;
   @Input() sketch: SketchDto;
 
+
   @Output() selectArtworkEvent = new EventEmitter();
+  date: string;
+  feedbackDate: string;
 
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.date = this.sketch.description.split('%')[1];
+    this.feedbackDate = this.sketch.customerFeedback.split('%')[1];
   }
 
   transformIndex(index){

@@ -60,7 +60,7 @@
       <div [ngStyle]="{'bottom': '20px'}" class="main-line"></div>
      <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
       <div [ngStyle]="{'bottom': '40px'}" class="text-container">
-        <span><b>05.06.2021</b></span>
+        <span><b>{{date}}</b></span>
         <br>
         <span><b>Your {{transformIndex(index)}} sketch arrived</b></span>
         <br><br>
@@ -71,12 +71,12 @@
   <div class="time-component-up">
     <div class="upper-component">
       <div [ngStyle]="{'top': '40px'}" class="feedback-text-container">
-        <span><b>30.05.2020</b></span>
+        <span><b>{{feedbackDate}}</b></span>
         <br>
         <span class=><b>You composed your {{transformIndex(index)}} feedback</b></span>
         <br><br>
         <p class="review-text">
-          {{sketch.customerFeedback}}
+          {{sketch.customerFeedback.split("%")[0]}}
         </p>
       </div>
       <div [ngStyle]="{'top': '2px'}" class="line"></div>

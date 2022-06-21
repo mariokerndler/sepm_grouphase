@@ -34,8 +34,9 @@ export class CommissionTimelineComponent implements OnInit {
           this.data = commission;
           this.startDate = new Date(commission.issueDate).toLocaleDateString();
           this.endDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
-          this.artworks = this.data.artworkDto.sketchesDtos;
+          this.artworks = Array.from(this.data.artworkDto.sketchesDtos);
           this.artworks.push(this.data.artworkDto);
+          console.log(this.artworks);
           this.isReady = true;
         }
       );

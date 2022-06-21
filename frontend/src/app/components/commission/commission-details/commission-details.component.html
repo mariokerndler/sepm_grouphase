@@ -142,7 +142,7 @@
 
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch">
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
-        <div>
+        <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
           <button (click)="fileInput.click()" color="accent" mat-button>
             <input #fileInput (change)="fileSelected($event)"
                    accept=".png,.jpg,.gif,.jpeg" style="display: none;" type="file">
@@ -154,11 +154,12 @@
           <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
         </div>
         <br>
-        <button (click)="openDialog()" color="primary" mat-button>
+        <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
           <mat-icon color="primary">upload</mat-icon>
           <span>Upload finished image</span>
         </button>
       </form>
     </div>
+    <button *ngIf="commission.status.toString()==='COMPLETED'" color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/timeline">View Timeline</button>
   </div>
 </div>

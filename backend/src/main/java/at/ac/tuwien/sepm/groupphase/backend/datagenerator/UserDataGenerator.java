@@ -520,6 +520,13 @@ public class UserDataGenerator {
 
             }
         }
+        Sketch k = new Sketch();
+        k.setFileType(FileType.GIF);
+        k.setArtwork(a);
+        k.setImageData(getImageBytes(urls[8]));
+        k.setDescription("Sketch GIF");
+        k.setImageUrl("data\\com\\adminSample Commission4\\bGIF");
+        sketches.add(k);
         Reference reference = new Reference();
         reference.setImageUrl("data\\com\\adminSample Commission4\\bReference");
         reference.setImageData(getImageBytes(urls[1]));

@@ -17,6 +17,10 @@ import {
   CommissionTimelineComponent
 } from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
 import {ChatComponent} from './chat/chat.component';
+import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
+import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy-policy.component';
+import {ContactComponent} from './components/footer/contact/contact.component';
+import {AboutComponent} from './components/footer/about/about.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -34,8 +38,11 @@ const routes: Routes = [
   {path: 'commissions/:id/timeline', component: CommissionTimelineComponent},
   {path: 'commission-creation', component: CommissionCreationComponent},
   {path: 'chat/:id', component: ChatComponent},
+  {path: 'terms', component: TermsOfServiceComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
+  {path: 'contact', component: ContactComponent},
+  {path: 'about', component: AboutComponent},
   {path: '**', redirectTo: 'feed'},
-
 
 ];
 

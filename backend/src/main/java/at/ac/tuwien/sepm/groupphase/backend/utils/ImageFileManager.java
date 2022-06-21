@@ -256,5 +256,6 @@ public class ImageFileManager {
             log.error(e.getMessage(), e);
             throw new FileManagerException(e.getMessage(), e);
         }
+
     }
 }

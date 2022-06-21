@@ -18,6 +18,7 @@ import {
 } from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
 import {ChatComponent} from './chat/chat.component';
 import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
+import {PrivacyPolicyComponent} from "./components/footer/privacy-policy/privacy-policy.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -36,6 +37,7 @@ const routes: Routes = [
   {path: 'commission-creation', component: CommissionCreationComponent},
   {path: 'chat/:id', component: ChatComponent},
   {path: 'terms', component: TermsOfServiceComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
   {path: '**', redirectTo: 'feed'},
 
 ];

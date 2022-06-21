@@ -76,6 +76,7 @@ import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ChatComponent} from './chat/chat.component';
 import { NotificationDisplayComponent } from './components/common/notification-display/notification-display.component';
 import { TermsOfServiceComponent } from './components/footer/terms-of-service/terms-of-service.component';
+import { PrivacyPolicyComponent } from './components/footer/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { TermsOfServiceComponent } from './components/footer/terms-of-service/te
     ChatComponent,
     ConfirmDialogComponent,
     NotificationDisplayComponent,
-    TermsOfServiceComponent
+    TermsOfServiceComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     BrowserModule,

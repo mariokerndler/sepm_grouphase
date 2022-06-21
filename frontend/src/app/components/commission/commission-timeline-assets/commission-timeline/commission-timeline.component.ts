@@ -14,6 +14,7 @@ export class CommissionTimelineComponent implements OnInit {
   isPlaying = true;
   isReady = false;
   public selectedArtwork: number = null;
+  artworks;
 
   constructor(private commissionService: CommissionService, private route: ActivatedRoute) {
   }
@@ -29,6 +30,8 @@ export class CommissionTimelineComponent implements OnInit {
         (commission) => {
           console.log(commission);
           this.data = commission;
+          this.artworks = this.data.artworkDto.sketchesDtos;
+          this.artworks.push(this.data.artworkDto);
           this.isReady = true;
         }
       );

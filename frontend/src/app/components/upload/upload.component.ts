@@ -116,15 +116,14 @@ export class UploadComponent implements OnInit {
   }
 
   updateCommission(name, description, imageData, filetype){
-    this.data.commission.artworkDto = {
-      name, description, imageData,
-      imageUrl: '',
-      fileType: filetype,
-      artistId: this.data.artist.id,
-      sketchesDtos: this.data.commission.artworkDto.sketchesDtos
-    } as ArtworkDto;
-    console.log(this.data.commission.artworkDto);
-    this.commissionService.updateCommission(this.data.commission).subscribe();
+    this.data.commission.artworkDto.imageData = imageData;
+    this.data.commission.artworkDto.name = name;
+    this.data.commission.artworkDto.description = description;
+    this.data.commission.artworkDto.fileType = filetype;
+    this.commissionService.updateCommission(this.data.commission).subscribe(() => {
+        this.dialogRef.close();
+      }
+    );
   }
 
   triggerResize() {

@@ -5,7 +5,7 @@ import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {CommissionService} from '../../../services/commission.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FileType} from '../../../dtos/artworkDto';
+import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SketchDto} from '../../../dtos/sketchDto';
@@ -44,6 +44,8 @@ export class CommissionDetailsComponent implements OnInit {
   items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   uploadedSketch: any;
   uploadedSketchDto: SketchDto;
+  finalImage: any;
+  finalImageDto: ArtworkDto;
   public selectedArtwork: number = null;
 
   public selectedArtistId = 4;
@@ -178,12 +180,10 @@ export class CommissionDetailsComponent implements OnInit {
       this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1] = this.uploadedSketchDto;
     }
     console.log(this.commission);
-    this.commissionService.updateCommission(this.commission).subscribe();
+    this.commissionService.updateCommission(this.commission).subscribe((commission) => console.log(commission));
     this.checkCommissionState(this.commission);
   }
-  finalImageUpload(){
 
-  }
 
 
   toggleFeedbackField() {

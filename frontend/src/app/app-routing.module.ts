@@ -17,6 +17,7 @@ import {
   CommissionTimelineComponent
 } from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
 import {ChatComponent} from './chat/chat.component';
+import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -34,8 +35,8 @@ const routes: Routes = [
   {path: 'commissions/:id/timeline', component: CommissionTimelineComponent},
   {path: 'commission-creation', component: CommissionCreationComponent},
   {path: 'chat/:id', component: ChatComponent},
+  {path: 'terms', component: TermsOfServiceComponent},
   {path: '**', redirectTo: 'feed'},
-
 
 ];
 

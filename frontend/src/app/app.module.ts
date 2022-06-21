@@ -78,6 +78,7 @@ import { NotificationDisplayComponent } from './components/common/notification-d
 import { TermsOfServiceComponent } from './components/footer/terms-of-service/terms-of-service.component';
 import { PrivacyPolicyComponent } from './components/footer/privacy-policy/privacy-policy.component';
 import { ContactComponent } from './components/footer/contact/contact.component';
+import { AboutComponent } from './components/footer/about/about.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import { ContactComponent } from './components/footer/contact/contact.component'
     NotificationDisplayComponent,
     TermsOfServiceComponent,
     PrivacyPolicyComponent,
-    ContactComponent
+    ContactComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

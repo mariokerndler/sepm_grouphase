@@ -20,6 +20,7 @@ import {ChatComponent} from './chat/chat.component';
 import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
 import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy-policy.component';
 import {ContactComponent} from './components/footer/contact/contact.component';
+import {AboutComponent} from './components/footer/about/about.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -40,6 +41,7 @@ const routes: Routes = [
   {path: 'terms', component: TermsOfServiceComponent},
   {path: 'privacy-policy', component: PrivacyPolicyComponent},
   {path: 'contact', component: ContactComponent},
+  {path: 'about', component: AboutComponent},
   {path: '**', redirectTo: 'feed'},
 
 ];

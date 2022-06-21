@@ -33,6 +33,7 @@ export class CommissionDetailsComponent implements OnInit {
   hasSketches = false;
   allowFeedback = false;
   allowSketch = false;
+  allowPayment = false;
   artistEdit = false;
   userEdit = false;
   sketchForm = new FormGroup({
@@ -134,6 +135,10 @@ export class CommissionDetailsComponent implements OnInit {
 
       this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
       console.log(this.uploadedSketchDto);
+    }
+    // TODO: Implement better check for this. We need to wait until artist uploads artwork
+    if (commission.feedbackRounds === commission.feedbackSent) {
+      this.allowPayment = true;
     }
     this.hasLoaded = true;
     console.log(this.commission);

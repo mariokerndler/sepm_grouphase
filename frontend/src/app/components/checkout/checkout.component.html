@@ -1,13 +1,4 @@
-<mat-card class="example-card card">
-  <mat-card-header>
-    <div mat-card-avatar></div>
-    <mat-card-title>Iphone X</mat-card-title>
-  </mat-card-header>
-  <img mat-card-image src="assets/images/iphone.jpg" alt="image of an iphone"/>
-
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="pay()">
-      Buy it for $999
-    </button>
-  </mat-card-actions>
-</mat-card>
+<button (click)="pay()" color="accent" mat-button>
+  <mat-icon color="accent">payment</mat-icon>
+  <span class="edit-text">Pay for commission</span>
+</button>

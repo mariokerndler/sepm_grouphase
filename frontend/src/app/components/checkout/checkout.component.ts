@@ -1,7 +1,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {loadStripe} from '@stripe/stripe-js';
 import {Globals} from '../../global/globals';
+import {CommissionDto} from '../../dtos/commissionDto';
 
 @Component({
   selector: 'app-checkout',
@@ -10,6 +11,7 @@ import {Globals} from '../../global/globals';
 })
 export class CheckoutComponent {
 
+  @Input() commission: CommissionDto;
   // We load  Stripe
   stripePromise = loadStripe(this.globals.stripePublicKey);
   private paymentBaseURI = this.globals.backendUri + '/payments/checkout';

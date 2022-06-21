@@ -73,8 +73,11 @@
       <strong class="p-section">${{commission.price}}</strong>
       <br><br>
       <strong>Date: </strong>
-      <strong class="p-section">{{commission.issueDate.substring(0, 11)}}
-        - {{commission.deadlineDate.substring(0, 11)}}</strong>
+      <strong *ngIf="commission.status !== 'COMPLETED'" class="p-section">{{startDate}}
+        - {{endDate}}</strong>
+
+      <strong *ngIf="commission.status === 'COMPLETED'" class="p-section">{{startDate}}
+        - {{updatedEndDate}}</strong>
 
       <div *ngIf="hasSketches">
         <strong class="referenceImages">Sketches:</strong>
@@ -85,7 +88,7 @@
             <div *ngFor="let reference of commission.artworkDto.sketchesDtos; let i = index" class="image-container">
               <img (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
-              <span *ngIf="reference.customerFeedback">Customer Feedback: {{reference.customerFeedback}}</span>
+              <span *ngIf="reference.customerFeedback">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
               <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>
@@ -139,7 +142,7 @@
 
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch">
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
-        <div>
+        <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
           <button (click)="fileInput.click()" color="accent" mat-button>
             <input #fileInput (change)="fileSelected($event)"
                    accept=".png,.jpg,.gif,.jpeg" style="display: none;" type="file">
@@ -150,12 +153,13 @@
         <div *ngIf="this.uploadedSketchDto">
           <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
         </div>
-        <div>
-
-        </div>
+        <br>
+        <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
+          <mat-icon color="primary">upload</mat-icon>
+          <span>Upload finished image</span>
+        </button>
       </form>
     </div>
-
-
+    <button *ngIf="commission.status.toString()==='COMPLETED'" color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/timeline">View Timeline</button>
   </div>
 </div>

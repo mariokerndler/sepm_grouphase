@@ -158,7 +158,7 @@
         <mat-label class="accent-color">Feedback Rounds</mat-label>
         <p class="creation-p">{{commission.feedbackRounds}} </p>
         <mat-label class="accent-color">Delivery Date</mat-label>
-        <p class="creation-p">{{commissionForm.value.date}} </p>
+        <p class="creation-p">{{formatEndDate(commissionForm.value.date)}} </p>
         <div class="stepper_button">
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>

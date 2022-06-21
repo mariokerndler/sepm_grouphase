@@ -12,6 +12,8 @@ import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {GlobalFunctions} from '../../global/globalFunctions';
+import {CommissionService} from '../../services/commission.service';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-upload',
@@ -40,7 +42,8 @@ export class UploadComponent implements OnInit {
     public dialogRef: MatDialogRef<UploadComponent>,
     private _ngZone: NgZone,
     private notificationService: NotificationService,
-    private globalFunctions: GlobalFunctions) {
+    private globalFunctions: GlobalFunctions,
+    private commissionService: CommissionService) {
     this.uploadForm = this.formBuilder.group({
       artworkName: ['', [Validators.required]],
       description: [''],
@@ -63,7 +66,7 @@ export class UploadComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onFileChanged() {
+  onFileChanged(isCommission: boolean) {
     if (this.file.target.files && this.file.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -79,11 +82,19 @@ export class UploadComponent implements OnInit {
           return;
         }
         const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
-        this.uploadNewImage(
-          this.uploadForm.controls.artworkName.value,
-          this.uploadForm.controls.description.value,
-          extractedValues[1],
-          extractedValues[0]);
+        if(!isCommission) {
+          this.uploadNewImage(
+            this.uploadForm.controls.artworkName.value,
+            this.uploadForm.controls.description.value,
+            extractedValues[1],
+            extractedValues[0]);
+        } else {
+          this.updateCommission(
+            this.uploadForm.controls.artworkName.value,
+            this.uploadForm.controls.description.value,
+            extractedValues[1],
+            extractedValues[0]);
+        }
       };
     }
   }
@@ -103,6 +114,20 @@ export class UploadComponent implements OnInit {
           this.dialogRef.close();
         }
       );
+  }
+
+  updateCommission(name, description, imageData, filetype){
+    this.data.commission.artworkDto.imageData = imageData;
+    this.data.commission.artworkDto.name = name;
+    this.data.commission.artworkDto.description = description;
+    this.data.commission.status = 'COMPLETED';
+    this.data.commission.deadlineDate =
+      formatDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
+    this.data.commission.artworkDto.fileType = filetype;
+    this.commissionService.updateCommission(this.data.commission).subscribe(() => {
+        this.dialogRef.close();
+      }
+    );
   }
 
   triggerResize() {

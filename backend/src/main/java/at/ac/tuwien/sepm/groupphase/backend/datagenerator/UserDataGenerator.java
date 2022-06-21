@@ -98,7 +98,7 @@ public class UserDataGenerator {
             generateUsers(NUMBER_OF_USERS_TO_GENERATE);
         }
 
-        if (commissionRepository.findAll().size() < 2) {
+        if (commissionRepository.findAll().size() < 3) {
             generateTestCommissions();
         }
         generateChats();
@@ -283,6 +283,12 @@ public class UserDataGenerator {
         Commission d = generateCommission1(artists.get(1), users.get(1));
         commissionRepository.save(d);
 
+        ApplicationUser user = userRepository.findApplicationUserByEmail("testuser@test.com");
+        Artist artist = artistRepository.findApplicationUserByEmail("testartist@test.com");
+
+        Commission e = generateCommissionPaymentTest(user, artist);
+        commissionRepository.save(e);
+
     }
 
     private Commission generateCommission1(Artist artist, ApplicationUser user) {
@@ -367,6 +373,52 @@ public class UserDataGenerator {
                 k.setArtwork(a);
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission2\\b" + i);
+                sketches.add(k);
+
+            }
+        }
+        a.setSketches(sketches);
+        commission.setArtwork(a);
+        return commission;
+    }
+
+    private Commission generateCommissionPaymentTest(ApplicationUser user, Artist artist) {
+        Faker faker = new Faker();
+        Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.IN_PROGRESS);
+        commission.setArtist(artist);
+        commission.setCustomer(user);
+        commission.setTitle("Sample Commission that should be payed");
+        commission.setSketchesShown(3);
+        commission.setFeedbackSent(3);
+        commission.setPrice((int) (Math.random() * 10000));
+        commission.setFeedbackRounds(3);
+        commission.setIssueDate(LocalDateTime.now());
+        commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 10)));
+        String desc = faker.shakespeare().hamletQuote();
+        if (desc.length() > 50) {
+            desc = desc.substring(0, 49);
+        }
+        commission.setInstructions(desc);
+        Artwork a = new Artwork();
+        List<Sketch> sketches = new LinkedList<Sketch>();
+        for (int i = 1; i < 5; i++) {
+            if (i == 4) {
+                a.setArtist(artist);
+                a.setName("Sample Commission Art");
+                desc = faker.shakespeare().hamletQuote();
+                if (desc.length() > 50) {
+                    desc = desc.substring(0, 49);
+                }
+                a.setDescription(desc);
+                a.setImageUrl("data\\com\\adminSample Commission3\\artwork" + i);
+                a.setFileType(FileType.JPG);
+            } else {
+                Sketch k = new Sketch();
+                k.setFileType(FileType.JPG);
+                k.setArtwork(a);
+                k.setDescription("Sketch " + i);
+                k.setImageUrl("data\\com\\adminSample Commission3\\sketch" + i);
                 sketches.add(k);
 
             }

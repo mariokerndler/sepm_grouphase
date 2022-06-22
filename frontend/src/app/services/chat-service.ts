@@ -8,6 +8,7 @@ import {ChatParticipantStatus, ParticipantResponse} from 'ng-chat';
 import {ChatMessageDto} from '../dtos/chat-message-dto';
 import {tap} from 'rxjs/operators';
 import {ChatDto} from '../dtos/chatDto';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,11 @@ export class ChatService {
 
   constructor(private http: HttpClient,
               private globals: Globals,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService, public  userService: UserService,) {
   }
+
+
+
 
   chatListWrapper(id: string, errorAction?: () => void): Observable<ParticipantResponse[]> {
 

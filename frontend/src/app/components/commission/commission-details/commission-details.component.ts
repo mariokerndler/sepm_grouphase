@@ -16,6 +16,8 @@ import {CommissionStatus} from '../../../global/CommissionStatus';
 import {UploadComponent} from '../../upload/upload.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Globals} from '../../../global/globals';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-commission-details',
@@ -59,8 +61,11 @@ export class CommissionDetailsComponent implements OnInit {
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
-              private route: ActivatedRoute, private globalFunctions: GlobalFunctions,
-              private artistService: ArtistService, private notificationService: NotificationService,
+              private route: ActivatedRoute,
+              private location: Location,
+              private globalFunctions: GlobalFunctions,
+              private artistService: ArtistService,
+              private notificationService: NotificationService,
               private router: Router,
               private dialog: MatDialog,
               public globals: Globals) {
@@ -79,6 +84,13 @@ export class CommissionDetailsComponent implements OnInit {
     }
   }
 
+  getUserRole(): string {
+    const role = localStorage.getItem('userRole');
+    if (role !== null) {
+      return role;
+    }
+  }
+
   setSelectedArtwork(i: number, isReference: boolean) {
     if(isReference){
       this.selectedReference = i;
@@ -90,7 +102,7 @@ export class CommissionDetailsComponent implements OnInit {
 
   getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.commissionService.getCommissionById(id)
+    this.commissionService.getCommissionById(id, () => this.navigationError())
       .subscribe((commission) => {
           this.commission = commission;
            this.sketches = [];
@@ -127,6 +139,11 @@ export class CommissionDetailsComponent implements OnInit {
         this.setProfilePicture();
         }
       );
+  }
+
+  navigationError() {
+    this.location.back();
+    this.notificationService.displayErrorSnackbar('Could not find commission');
   }
 
   checkCommissionState(commission: CommissionDto): void {

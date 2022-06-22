@@ -29,7 +29,10 @@ mat-expansion-panel-header {
   color: #fb9fa4;
 }
 
-.mat-expansion-indicator {
+::ng-deep .mat-expansion-indicator::after {
   color: #fb9fa4;
-  background-color: #fb9fa4;
+}
+
+::ng-deep .mat-expansion-indicator {
+  color: #fb9fa4;
 }

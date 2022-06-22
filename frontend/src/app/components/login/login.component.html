@@ -14,7 +14,7 @@
   </div>
 
 
-  <div (ngSubmit)="loginUser()" [formGroup]="loginForm" fxLayout="column" mat-dialog-content>
+  <div (ngSubmit)="loginUser()" [formGroup]="loginForm" fxLayout="column" mat-dialog-content style="width: auto">
     <p *ngIf="!error">Welcome Back!</p>
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>E-mail</mat-label>

@@ -1,3 +1,36 @@
 .terms {
   margin: 2em 4em;
 }
+
+mat-expansion-panel {
+  background: transparent;
+  box-shadow: none;
+}
+
+mat-expansion-panel-header {
+  padding: 15px 5px 15px 5px;
+}
+
+.primary {
+  color: #fb9fa4;
+}
+
+::ng-deep .mat-expansion-indicator::after {
+  color: #fb9fa4;
+}
+
+::ng-deep .mat-expansion-indicator {
+  color: #fb9fa4;
+}
+
+.example-action-buttons {
+  padding-bottom: 20px;
+}
+
+.go-up-button {
+  position: sticky;
+  bottom: 10px;
+  text-align: right;
+  margin-right: 10px;
+  z-index: 100;
+}

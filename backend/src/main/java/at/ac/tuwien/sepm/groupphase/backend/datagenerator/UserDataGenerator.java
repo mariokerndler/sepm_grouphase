@@ -278,14 +278,15 @@ public class UserDataGenerator {
 
         List<ApplicationUser> users = userRepository.findAll();
         List<Artist> artists = artistService.getAllArtists();
+        ApplicationUser user = userRepository.findApplicationUserByEmail("testuser@test.com");
 
-        Commission c = generateCommission2(artists.get(0), users.get(0));
+        Commission c = generateCommission2(artists.get(0), user);
         commissionService.saveCommission(c);
-        Commission d = generateCommission1(artists.get(1), users.get(1));
+        Commission d = generateCommission1(artists.get(1), user);
         commissionService.saveCommission(d);
-        Commission e = generateCommission3(artists.get(0), users.get(3));
+        Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);
-        Commission f = generateCommission4(artists.get(0), users.get(4));
+        Commission f = generateCommission4(artists.get(0), user);
         commissionService.saveCommission(f);
         Artwork artwork = new Artwork();
         artwork.setCommission(f);
@@ -312,7 +313,7 @@ public class UserDataGenerator {
         artwork.setSketches(sketches);
         artworkRepo.save(artwork);
         f.setArtwork(artwork);
-        Commission g = generateCommission5(artists.get(0), users.get(6));
+        Commission g = generateCommission5(artists.get(0), user);
         commissionService.saveCommission(g);
 
 

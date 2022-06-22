@@ -278,14 +278,15 @@ public class UserDataGenerator {
 
         List<ApplicationUser> users = userRepository.findAll();
         List<Artist> artists = artistService.getAllArtists();
+        ApplicationUser user = userRepository.findApplicationUserByEmail("testuser@test.com");
 
-        Commission c = generateCommission2(artists.get(0), users.get(0));
+        Commission c = generateCommission2(artists.get(0), user);
         commissionService.saveCommission(c);
-        Commission d = generateCommission1(artists.get(1), users.get(1));
+        Commission d = generateCommission1(artists.get(1), user);
         commissionService.saveCommission(d);
-        Commission e = generateCommission3(artists.get(0), users.get(1));
+        Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);
-        Commission f = generateCommission4(artists.get(0), users.get(1));
+        Commission f = generateCommission4(artists.get(0), user);
         commissionService.saveCommission(f);
         Artwork artwork = new Artwork();
         artwork.setCommission(f);
@@ -297,9 +298,22 @@ public class UserDataGenerator {
         ImageFileManager ifm = new ImageFileManager();
         String s = ifm.writeCommissionArtwork(f, artwork);
         artwork.setImageUrl(s);
+        List<Sketch> sketches = new LinkedList<Sketch>();
+        for (int i = 4; i < 8; i++) {
+            Sketch k = new Sketch();
+            k.setDescription("Sketch " + i);
+            k.setFileType(FileType.JPG);
+            k.setImageData(getImageBytes(urls[i]));
+            k.setArtwork(artwork);
+            k.setCustomerFeedback("looks good, carry on :)");
+            String string = ifm.writeSketchImage(f, k);
+            k.setImageUrl(string);
+            sketches.add(k);
+        }
+        artwork.setSketches(sketches);
         artworkRepo.save(artwork);
         f.setArtwork(artwork);
-        Commission g = generateCommission5(artists.get(0), users.get(1));
+        Commission g = generateCommission5(artists.get(0), user);
         commissionService.saveCommission(g);
 
 

@@ -24,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -108,7 +107,7 @@ public class UserDataGenerator {
     private void generateChats() {
         List<ApplicationUser> users = this.userRepository.findAll();
 
-        ApplicationUser testUser = (ApplicationUser) users.stream().filter(a -> a.getUserName().toLowerCase().equals("testartist")).findAny().get();
+        ApplicationUser testUser = users.stream().filter(a -> a.getUserName().equalsIgnoreCase("testartist")).findAny().get();
         Faker f = new Faker();
         for (int i = 0; i < 5; i++) {
             Chat c = new Chat();
@@ -155,14 +154,11 @@ public class UserDataGenerator {
         log.info(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation);
         try (Stream<Path> walk = Files.walk(Paths.get(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation), 1)) {
 
-            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).collect(Collectors.toList());
-            int limit = numberOfProfiles;
-            if (numberOfProfiles > result.size() - 1) {
-                limit = result.size() - 1;
-            }
+            List<String> result = walk.filter(Files::isDirectory).map(Path::toString).toList();
+            int limit = Math.min(numberOfProfiles, result.size() - 1);
             result.subList(1, limit).forEach(
                 folder -> {
-                    log.info(folder.toString());
+                    log.info(folder);
                     File fldr = new File(folder);
                     Artist a = generateArtistProfile(fldr.getName());
 
@@ -252,7 +248,7 @@ public class UserDataGenerator {
         return user;
     }
 
-    private void generateArtistTestAccount(String username, String password) throws IOException {
+    private void generateArtistTestAccount(String username, String password) {
         Artist artist = generateArtistProfile(username);
         artist.setEmail(username.toLowerCase() + "@test.com");
         artist.setPassword(passwordEncoder.encode(password));
@@ -298,7 +294,7 @@ public class UserDataGenerator {
         ImageFileManager ifm = new ImageFileManager();
         String s = ifm.writeCommissionArtwork(f, artwork);
         artwork.setImageUrl(s);
-        List<Sketch> sketches = new LinkedList<Sketch>();
+        List<Sketch> sketches = new LinkedList<>();
         for (int i = 4; i < 8; i++) {
             Sketch k = new Sketch();
             k.setDescription("Sketch " + i);
@@ -333,18 +329,18 @@ public class UserDataGenerator {
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
-        String desc = faker.shakespeare().hamletQuote().toString();
+        String desc = faker.shakespeare().hamletQuote();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
         Artwork a = new Artwork();
-        List<Sketch> sketches = new LinkedList<Sketch>();
+        List<Sketch> sketches = new LinkedList<>();
         for (int i = 4; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-                a.setDescription(faker.harryPotter().quote().toString());
+                a.setDescription(faker.harryPotter().quote());
                 a.setImageUrl("data\\com\\adminSample Commission\\sketch" + i);
                 a.setFileType(FileType.JPG);
             } else {
@@ -377,14 +373,14 @@ public class UserDataGenerator {
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.IN_PROGRESS);
-        String desc = faker.shakespeare().hamletQuote().toString();
+        String desc = faker.shakespeare().hamletQuote();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
 
         Artwork a = new Artwork();
-        List<Sketch> sketches = new LinkedList<Sketch>();
+        List<Sketch> sketches = new LinkedList<>();
         for (int i = 5; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
@@ -417,7 +413,7 @@ public class UserDataGenerator {
         reference.setImageData(getImageBytes(urls[0]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
-        List<Reference> references = new LinkedList<Reference>();
+        List<Reference> references = new LinkedList<>();
         references.add(reference);
         a.setSketches(sketches);
         commission.setReferences(references);
@@ -439,14 +435,14 @@ public class UserDataGenerator {
         commission.setIssueDate(LocalDateTime.now().minusDays((int) (Math.random() * 100)));
         commission.setDeadlineDate(LocalDateTime.now());
         commission.setStatus(CommissionStatus.COMPLETED);
-        String desc = faker.shakespeare().hamletQuote().toString();
+        String desc = faker.shakespeare().hamletQuote();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
 
         Artwork a = new Artwork();
-        List<Sketch> sketches = new LinkedList<Sketch>();
+        List<Sketch> sketches = new LinkedList<>();
         ImageFileManager ifm = new ImageFileManager();
         String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
         ifm.createFolderIfNotExists(assetAbsoluteLocation + "data\\com\\adminSample Commission3\\");
@@ -454,7 +450,7 @@ public class UserDataGenerator {
             if (i == 4) {
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-                desc = faker.shakespeare().hamletQuote().toString();
+                desc = faker.shakespeare().hamletQuote();
                 if (desc.length() > 50) {
                     desc = desc.substring(0, 49);
                 }
@@ -478,7 +474,7 @@ public class UserDataGenerator {
         reference.setImageData(getImageBytes(urls[0]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
-        List<Reference> references = new LinkedList<Reference>();
+        List<Reference> references = new LinkedList<>();
         references.add(reference);
         Reference reference1 = new Reference();
         reference1.setImageUrl("data\\com\\adminSample Commission3\\bReference1");
@@ -508,14 +504,14 @@ public class UserDataGenerator {
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.COMPLETED);
-        String desc = faker.shakespeare().hamletQuote().toString();
+        String desc = faker.shakespeare().hamletQuote();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
 
         Artwork a = new Artwork();
-        List<Sketch> sketches = new LinkedList<Sketch>();
+        List<Sketch> sketches = new LinkedList<>();
         ImageFileManager ifm = new ImageFileManager();
         String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
         ifm.createFolderIfNotExists(assetAbsoluteLocation + "data\\com\\adminSample Commission4\\");
@@ -523,7 +519,7 @@ public class UserDataGenerator {
             if (i == 4) {
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-                desc = faker.shakespeare().hamletQuote().toString();
+                desc = faker.shakespeare().hamletQuote();
                 if (desc.length() > 50) {
                     desc = desc.substring(0, 49);
                 }
@@ -554,7 +550,7 @@ public class UserDataGenerator {
         reference.setImageData(getImageBytes(urls[1]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
-        List<Reference> references = new LinkedList<Reference>();
+        List<Reference> references = new LinkedList<>();
         references.add(reference);
         ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\adminSample Commission4\\bReference");
         a.setSketches(sketches);
@@ -577,7 +573,7 @@ public class UserDataGenerator {
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
-        String desc = faker.shakespeare().hamletQuote().toString();
+        String desc = faker.shakespeare().hamletQuote();
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
         }
@@ -585,12 +581,12 @@ public class UserDataGenerator {
         commission.setArtistCandidates(artists.subList(0, 5));
         commission.setInstructions(desc);
         Artwork a = new Artwork();
-        List<Sketch> sketches = new LinkedList<Sketch>();
+        List<Sketch> sketches = new LinkedList<>();
         for (int i = 4; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-                a.setDescription(faker.harryPotter().quote().toString());
+                a.setDescription(faker.harryPotter().quote());
                 a.setImageUrl("data\\com\\adminSample Commission5\\sketch" + i);
                 a.setFileType(FileType.JPG);
             } else {

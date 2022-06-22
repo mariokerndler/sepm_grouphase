@@ -27,7 +27,7 @@
       </div>
       <div *ngIf="this.commission.artistDto" class="description-section">
         <strong>Assigned Artist:</strong> <br><br>
-        <a (click)="navigateToArtist(this.commission.artistDto)">{{commission.artistDto.userName}}</a>
+        <a (click)="navigateToArtist(this.commission.artistDto)" style="cursor: pointer;">{{commission.artistDto.userName}}</a>
       </div>
       <br>
       <div *ngIf="hasReferences">
@@ -51,16 +51,21 @@
       </div>
 
 
-      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0">
+      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0" style="max-width: 40%">
         <mat-label>Commission Candidates</mat-label>
-        <mat-selection-list  [(ngModel)]="selectedArtistId" name="applicant"  [multiple]="false" style="width:20%">
-          <div *ngFor="let a of commission.artistCandidatesDtos" fxLayoutAlign="center center">
-            <mat-list-option [value]="a.id"
-                             >{{a.userName}}</mat-list-option>
-            <button (click)="navigateToArtist(a)" class="mat-primary" mat-flat-button>View Profile</button>
-          </div>
+        <mat-selection-list  [(ngModel)]="selectedArtistId" name="applicant"  [multiple]="false">
+            <mat-list-option *ngFor="let a of commission.artistCandidatesDtos" [value]="a.id">
+              <div fxLayout="row" fxLayoutAlign="start center">
+                  <mat-icon style="margin-right: 10px">person</mat-icon>
+                  <span fxFlex="auto">{{a.userName}}</span>
+                  <button mat-flat-button  (click)="navigateToArtist(a)" class="mat-primary">View Profile</button>
+              </div>
+            </mat-list-option>
+
         </mat-selection-list>
-        <button (click)="chooseArtist()" class="mat-primary" mat-flat-button>Choose this Artist</button>
+        <div style="margin-top: 10px">
+          <button (click)="chooseArtist()" class="mat-primary" mat-flat-button>Choose this Artist</button>
+        </div>
       </div>
 
       <br><br>

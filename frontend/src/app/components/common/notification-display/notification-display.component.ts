@@ -24,7 +24,7 @@ export class NotificationDisplayComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
   ) { }
 
   private static compare(a: number | string, b: number | string, isAsc: boolean) {

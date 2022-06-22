@@ -16,7 +16,7 @@
       <img (@slide-in.done)="animDone()" [@slide-in]="animState" [src]="url+ artworks[this.animArtwork].imageUrl">
       <div class=" carousel-button">
         <span (click)="previous()" (keyup.delete)="previous()" style="font-size: large" tabindex="1"><mat-icon
-          class="material-icons">chevron_leftt</mat-icon></span>
+          class="material-icons">chevron_left</mat-icon></span>
         <span></span>
         <span (click)="next()" (keyup.enter)="next()" style="font-size: large" tabindex="2"><mat-icon
           class="material-icons">chevron_right</mat-icon> </span>

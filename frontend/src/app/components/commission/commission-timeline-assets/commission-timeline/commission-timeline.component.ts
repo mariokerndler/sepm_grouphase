@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommissionService} from '../../../../services/commission.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommissionDto} from '../../../../dtos/commissionDto';
+import {SketchDto} from '../../../../dtos/sketchDto';
+
 
 @Component({
   selector: 'app-commission-timeline',
@@ -11,14 +13,15 @@ import {CommissionDto} from '../../../../dtos/commissionDto';
 })
 export class CommissionTimelineComponent implements OnInit {
   data: CommissionDto;
-  isPlaying = true;
+  isPlaying = false;
   isReady = false;
   public selectedArtwork: number = null;
   endDate: string;
   startDate: string;
+  timelapseGif: SketchDto;
   artworks;
 
-  constructor(private commissionService: CommissionService, private route: ActivatedRoute) {
+  constructor(private commissionService: CommissionService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -32,9 +35,21 @@ export class CommissionTimelineComponent implements OnInit {
         (commission) => {
           console.log(commission);
           this.data = commission;
+          if(commission.status !== 'COMPLETED'){
+            this.router.navigate(['/commissions', id]);
+            return;
+          }
           this.startDate = new Date(commission.issueDate).toLocaleDateString();
           this.endDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
-          this.artworks = Array.from(this.data.artworkDto.sketchesDtos);
+          this.artworks = [];
+          const sketches = this.data.artworkDto.sketchesDtos;
+          for (const sketch of sketches) {
+            if(sketch.fileType !== 'GIF') {
+              this.artworks.push(sketch);
+            } else {
+              this.timelapseGif = sketch;
+            }
+          }
           this.artworks.push(this.data.artworkDto);
           console.log(this.artworks);
           this.isReady = true;

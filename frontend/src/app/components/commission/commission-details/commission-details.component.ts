@@ -47,9 +47,11 @@ export class CommissionDetailsComponent implements OnInit {
   finalImage: any;
   finalImageDto: ArtworkDto;
   public selectedArtwork: number = null;
+  public selectedReference: number = null;
   startDate: string;
   endDate: string;
   updatedEndDate: string;
+  sketches;
 
   public selectedArtistId = 4;
   //Just dummy data.
@@ -76,8 +78,12 @@ export class CommissionDetailsComponent implements OnInit {
     }
   }
 
-  setSelectedArtwork(i: number) {
-    this.selectedArtwork = i;
+  setSelectedArtwork(i: number, isReference: boolean) {
+    if(isReference){
+      this.selectedReference = i;
+    } else {
+      this.selectedArtwork = i;
+    }
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
@@ -86,6 +92,14 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
           this.commission = commission;
+           this.sketches = [];
+           const sketches = commission.artworkDto.sketchesDtos;
+           for (const sketch of sketches) {
+              if(sketch.fileType !== 'GIF') {
+                this.sketches.push(sketch);
+              }
+           }
+
           this.startDate = new Date(commission.issueDate).toLocaleDateString();
           this.endDate = new Date(commission.deadlineDate).toLocaleDateString();
           this.updatedEndDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
@@ -95,7 +109,6 @@ export class CommissionDetailsComponent implements OnInit {
               this.commission.artistCandidatesDtos.push(result);
             });
           });
-          console.log(commission.artworkDto);
           if (this.commission.artworkDto == null) {
             const searchPar: TagSearch = {
               artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
@@ -247,11 +260,21 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   openDialog() {
-   this.dialog.open(UploadComponent, {
+   const dialogRef = this.dialog.open(UploadComponent, {
       data: {
         artist: this.commission.artistDto,
         commission: this.commission
       }
     });
+
+    dialogRef.afterClosed().subscribe(
+      () => this.dialog.open(UploadComponent, {
+        data: {
+          artist: this.commission.artistDto,
+          commission: this.commission,
+          timelapse: true,
+        }
+      })
+    );
   }
 }

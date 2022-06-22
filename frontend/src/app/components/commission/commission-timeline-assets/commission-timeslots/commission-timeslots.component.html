@@ -53,7 +53,7 @@
   </div>
 </div>
 -->
-<div class="slot" fxFlex="auto" fxLayoutAlign="row">
+<div *ngIf="sketch.fileType !== 'GIF'" class="slot" fxFlex="auto" fxLayoutAlign="row">
   <div class="time-component">
     <mat-icon class="accent icon">brush</mat-icon>
     <div class="lower-component">

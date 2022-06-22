@@ -117,6 +117,7 @@ export class UploadComponent implements OnInit {
   }
 
   updateCommission(name, description, imageData, filetype){
+    if(!this.data.timelapse){
     this.data.commission.artworkDto.imageData = imageData;
     this.data.commission.artworkDto.name = name;
     this.data.commission.artworkDto.description = description;
@@ -124,6 +125,18 @@ export class UploadComponent implements OnInit {
     this.data.commission.deadlineDate =
       formatDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
     this.data.commission.artworkDto.fileType = filetype;
+    } else {
+      const sketch = {
+        name,
+        imageData,
+        description,
+        fileType: FileType.gif,
+        imageUrl: 'default',
+        artworkId: this.data.commission.artworkDto.id
+      };
+      this.data.commission.sketchesShown = this.data.commission.feedbackSent + 1;
+      this.data.commission.artworkDto.sketchesDtos.push(sketch);
+    }
     this.commissionService.updateCommission(this.data.commission).subscribe(() => {
         this.dialogRef.close();
       }

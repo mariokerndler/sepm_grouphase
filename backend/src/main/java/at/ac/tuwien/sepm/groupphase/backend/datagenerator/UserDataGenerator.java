@@ -287,6 +287,16 @@ public class UserDataGenerator {
         commissionService.saveCommission(e);
         Commission f = generateCommission4(artists.get(0), users.get(1));
         commissionService.saveCommission(f);
+        Artwork artwork = new Artwork();
+        artwork.setImageData(getImageBytes(urls[7]));
+        artwork.setCommission(f);
+        artwork.setArtist(artists.get(0));
+        artwork.setFileType(FileType.JPG);
+        artwork.setDescription("Artwork description");
+        artwork.setImageUrl("data\\com\\adminSample Commission4\\Artwork");
+        artwork.setName("Artwork");
+        artworkRepo.save(artwork);
+        f.setArtwork(artwork);
         Commission g = generateCommission5(artists.get(0), users.get(1));
         commissionService.saveCommission(g);
 
@@ -535,6 +545,7 @@ public class UserDataGenerator {
         references.add(reference);
         ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\adminSample Commission4\\bReference");
         a.setSketches(sketches);
+        List<Artist> artists = artistService.getAllArtists();
         commission.setArtistCandidates(null);
         commission.setReferences(references);
         commission.setArtwork(a);

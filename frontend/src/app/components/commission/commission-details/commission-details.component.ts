@@ -15,7 +15,7 @@ import {NotificationService} from '../../../services/notification/notification.s
 import {CommissionStatus} from '../../../global/CommissionStatus';
 import {UploadComponent} from '../../upload/upload.component';
 import {MatDialog} from '@angular/material/dialog';
-
+import {Globals} from '../../../global/globals';
 
 @Component({
   selector: 'app-commission-details',
@@ -25,7 +25,7 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class CommissionDetailsComponent implements OnInit {
 
-  userProfilePicture = 'https://picsum.photos/150/150';
+  profilePicture;
   commission: CommissionDto;
   user: ApplicationUserDto;
   userId: string;
@@ -62,7 +62,8 @@ export class CommissionDetailsComponent implements OnInit {
               private route: ActivatedRoute, private globalFunctions: GlobalFunctions,
               private artistService: ArtistService, private notificationService: NotificationService,
               private router: Router,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              public globals: Globals) {
   }
 
   ngOnInit(): void {
@@ -123,7 +124,7 @@ export class CommissionDetailsComponent implements OnInit {
             this.user = commission.customerDto;
             this.checkCommissionState(this.commission);
           }
-
+        this.setProfilePicture();
         }
       );
   }
@@ -279,5 +280,13 @@ export class CommissionDetailsComponent implements OnInit {
         }
       })
     );
+  }
+
+  private setProfilePicture() {
+    if (!this.user.profilePictureDto) {
+      this.profilePicture = this.globals.defaultProfilePicture;
+    } else {
+      this.profilePicture = this.user.profilePictureDto.imageUrl;
+    }
   }
 }

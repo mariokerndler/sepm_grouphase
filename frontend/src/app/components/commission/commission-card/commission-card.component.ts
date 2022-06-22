@@ -3,6 +3,7 @@ import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
+import {Globals} from '../../../global/globals';
 
 @Component({
   selector: 'app-commission-card',
@@ -11,10 +12,10 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 })
 export class CommissionCardComponent implements OnInit {
   @Input() commission: SimpleCommissionDto;
-  userProfilePicture = 'https://picsum.photos/150/150';
+  profilePicture;
   user: ApplicationUserDto;
 
-  constructor(private userService: UserService, public globalFunctions: GlobalFunctions) {
+  constructor(private userService: UserService, public globalFunctions: GlobalFunctions, public globals: Globals) {
   }
 
   ngOnInit(): void {
@@ -25,8 +26,16 @@ export class CommissionCardComponent implements OnInit {
     this.userService.getUserById(userId).subscribe({
       next: (loadedUser) => {
         this.user = loadedUser;
+        this.setProfilePicture();
       }
     });
   }
 
+  private setProfilePicture() {
+    if (!this.user.profilePictureDto) {
+      this.profilePicture = this.globals.defaultProfilePicture;
+    } else {
+      this.profilePicture = this.user.profilePictureDto.imageUrl;
+    }
+  }
 }

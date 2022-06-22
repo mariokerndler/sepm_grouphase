@@ -7,6 +7,7 @@ import {ArtistService} from '../../../services/artist.service';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {LabelType, Options} from '@angular-slider/ngx-slider';
 import {SearchConstraint} from '../../../global/SearchConstraint';
+import {CommissionStatus} from '../../../global/CommissionStatus';
 
 @Component({
   selector: 'app-commission-feed',
@@ -63,6 +64,10 @@ export class CommissionFeedComponent implements OnInit {
 
   public routeToCommissionCreation(): void {
     this.router.navigate(['/commisson-create']);
+  }
+
+  public isListed(status: CommissionStatus): boolean {
+    return status === CommissionStatus.listed;
   }
 
   private loadAllArtists() {

@@ -93,17 +93,19 @@ export class CommissionDetailsComponent implements OnInit {
       .subscribe((commission) => {
           this.commission = commission;
            this.sketches = [];
-           const sketches = commission.artworkDto.sketchesDtos;
-           for (const sketch of sketches) {
-              if(sketch.fileType !== 'GIF') {
-                this.sketches.push(sketch);
-              }
+           if(commission.artworkDto) {
+             const sketches = commission.artworkDto.sketchesDtos;
+             for (const sketch of sketches) {
+               if (sketch.fileType !== 'GIF') {
+                 this.sketches.push(sketch);
+               }
+             }
            }
 
           this.startDate = new Date(commission.issueDate).toLocaleDateString();
           this.endDate = new Date(commission.deadlineDate).toLocaleDateString();
           this.updatedEndDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
-          this.commission.artistCandidatesDtos = [];
+          //this.commission.artistCandidatesDtos = [];
           this.artistIds.forEach(a => {
             this.artistService.getArtistById(a).subscribe(result => {
               this.commission.artistCandidatesDtos.push(result);
@@ -235,16 +237,17 @@ export class CommissionDetailsComponent implements OnInit {
 
   //triggered by Artist
   applyArtist() {
+
     if (this.commission.artistCandidatesDtos === null) {
       this.commission.artistCandidatesDtos = [];
     }
 
     this.artistService.getArtistById(Number.parseInt(this.userId, 10)).subscribe(data => {
-      if (this.commission.artistCandidatesDtos.filter(a => a.id === data.id)) {
+      if (this.commission.artistCandidatesDtos.filter(a => a.id === data.id).length > 0) {
         this.notificationService.displaySimpleDialog('', 'You have already applied for this commission');
       } else {
         this.commission.artistCandidatesDtos.push(data);
-        this.commissionService.updateCommission(this.commission).subscribe(success => {
+        this.commissionService.updateCommission(this.commission).subscribe(() => {
           this.notificationService.displaySuccessSnackbar('You have applied for this commission');
         });
       }

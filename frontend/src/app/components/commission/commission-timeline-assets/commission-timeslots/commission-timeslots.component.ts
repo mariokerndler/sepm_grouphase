@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ReviewDto} from '../../../../dtos/reviewDto';
 import {SketchDto} from '../../../../dtos/sketchDto';
+import {FileType} from '../../../../dtos/artworkDto';
 
 @Component({
   selector: 'app-commission-timeslots',
@@ -21,8 +21,10 @@ export class CommissionTimeslotsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.date = this.sketch.description.split('%')[1];
-    this.feedbackDate = this.sketch.customerFeedback.split('%')[1];
+    if(this.sketch.fileType !== FileType.gif) {
+      this.date = this.sketch.description.split('%')[1];
+      this.feedbackDate = this.sketch.customerFeedback.split('%')[1];
+    }
   }
 
   transformIndex(index){

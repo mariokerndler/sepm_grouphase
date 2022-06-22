@@ -37,21 +37,21 @@
           <cdk-virtual-scroll-viewport class="viewport" itemSize="{{commission.referencesDtos.length}}"
                                        orientation="horizontal">
             <div *ngFor="let reference of commission.referencesDtos; let i = index" class="image-container">
-              <img (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt=""
+              <img (click)="setSelectedArtwork(i, true) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
             </div>
           </cdk-virtual-scroll-viewport>
         </div>
         <app-gallery-carousel
-          (closeCarousel)="selectedArtwork=null"
-          *ngIf="selectedArtwork!== null"
+          (closeCarousel)="selectedReference=null"
+          *ngIf="selectedReference!== null"
           [artworks]="commission.referencesDtos"
-          [selectedArtworkId]="selectedArtwork">
+          [selectedArtworkId]="selectedReference">
         </app-gallery-carousel>
       </div>
 
 
-      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos !== null">
+      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0">
         <mat-label>Commission Candidates</mat-label>
         <mat-selection-list  [(ngModel)]="selectedArtistId" name="applicant"  [multiple]="false" style="width:20%">
           <div *ngFor="let a of commission.artistCandidatesDtos" fxLayoutAlign="center center">
@@ -85,8 +85,8 @@
         <div class="scrolling-container">
           <cdk-virtual-scroll-viewport class="viewport" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
                                        orientation="horizontal">
-            <div *ngFor="let reference of commission.artworkDto.sketchesDtos; let i = index" class="image-container">
-              <img (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt=""
+            <div *ngFor="let reference of sketches; let i = index" class="image-container">
+              <img (click)="setSelectedArtwork(i, false) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
               <span *ngIf="reference.customerFeedback">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
               <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
@@ -97,7 +97,7 @@
         <app-gallery-carousel
           (closeCarousel)="selectedArtwork=null"
           *ngIf="selectedArtwork!== null"
-          [artworks]="commission.artworkDto.sketchesDtos"
+          [artworks]="sketches"
           [selectedArtworkId]="selectedArtwork">
         </app-gallery-carousel>
       </div>
@@ -145,7 +145,7 @@
         <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
           <button (click)="fileInput.click()" color="accent" mat-button>
             <input #fileInput (change)="fileSelected($event)"
-                   accept=".png,.jpg,.gif,.jpeg" style="display: none;" type="file">
+                   accept=".png,.jpg,.jpeg" style="display: none;" type="file">
             <mat-icon color="accent">upload</mat-icon>
             <span>Upload new Sketch</span>
           </button>

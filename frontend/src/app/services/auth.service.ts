@@ -8,7 +8,6 @@ import jwt_decode from 'jwt-decode';
 import {Globals} from '../global/globals';
 import {NotificationService} from './notification/notification.service';
 import {ApplicationUserDto} from '../dtos/applicationUserDto';
-import {UserRole} from "../dtos/artistDto";
 
 @Injectable({
   providedIn: 'root'

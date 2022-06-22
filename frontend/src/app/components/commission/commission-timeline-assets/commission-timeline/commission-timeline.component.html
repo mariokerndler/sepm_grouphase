@@ -63,13 +63,17 @@
         <h1>Your final image</h1>
         <div class="final-image-subsection">
           <h2>{{data.artworkDto.name}}</h2>
-          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="!isPlaying || !timelapseGif" alt="{{data.artworkDto.name}}" class="final-image" src="/assets/{{data.artworkDto.imageUrl}}">
-          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="isPlaying && timelapseGif" alt="{{data.artworkDto.name}}" class="final-image" src="/assets/{{timelapseGif.imageUrl}}">
+          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="!isPlaying" alt="{{data.artworkDto.name}}" class="final-image" src="/assets/{{data.artworkDto.imageUrl}}">
+          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="isPlaying" alt="{{data.artworkDto.name}}" class="final-image" src="/assets/{{timelapseGif.imageUrl}}">
           <br><br>
-          <span>Rewind the whole process</span> <br>
+          <div *ngIf="timelapseGif">
+          <span>Rewind the whole process</span>
+          <br>
+          </div>
+          <span *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
           <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="accent" mat-icon-button>
-            <mat-icon *ngIf="!isPlaying">play_arrows</mat-icon>
-            <mat-icon *ngIf="isPlaying">stop</mat-icon>
+            <mat-icon *ngIf="!isPlaying && timelapseGif">play_arrows</mat-icon>
+            <mat-icon *ngIf="isPlaying && timelapseGif">stop</mat-icon>
           </button>
         </div>
       </div>

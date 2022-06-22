@@ -3,6 +3,8 @@ import {CommissionService} from '../../../../services/commission.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommissionDto} from '../../../../dtos/commissionDto';
 import {SketchDto} from '../../../../dtos/sketchDto';
+import {ArtworkDto} from '../../../../dtos/artworkDto';
+
 
 
 @Component({
@@ -19,6 +21,7 @@ export class CommissionTimelineComponent implements OnInit {
   endDate: string;
   startDate: string;
   timelapseGif: SketchDto;
+  dia: SketchDto;
   artworks;
 
   constructor(private commissionService: CommissionService, private route: ActivatedRoute, private router: Router) {
@@ -27,6 +30,7 @@ export class CommissionTimelineComponent implements OnInit {
   ngOnInit(): void {
     this.getCommission();
   }
+
 
   getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
@@ -56,6 +60,7 @@ export class CommissionTimelineComponent implements OnInit {
         }
       );
   }
+
 
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;

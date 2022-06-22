@@ -34,7 +34,7 @@ public class ChatServiceImpl implements ChatService {
             partners.add(a.getChatPartner());
             partners.add(a.getUser());
         }
-        return partners.stream().filter(a-> a.getId()!=id).collect(Collectors.toList());
+        return partners.stream().filter(a -> a.getId() != id).collect(Collectors.toList());
 
     }
 

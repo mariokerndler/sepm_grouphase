@@ -86,7 +86,7 @@ public class Chat {
     }
 
     public void setChatPartner(ApplicationUser chatPartner) {
-            log.info("Setting ChatPartner" + chatPartner.getUserName());
-            this.chatPartner = chatPartner;
+        log.info("Setting ChatPartner" + chatPartner.getUserName());
+        this.chatPartner = chatPartner;
     }
 }

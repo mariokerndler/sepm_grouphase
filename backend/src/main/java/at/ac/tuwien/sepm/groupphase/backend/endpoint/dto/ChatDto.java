@@ -13,9 +13,8 @@ public class ChatDto {
 
     @Override
     public String toString() {
-        return "ChatDto{" +
-            "userId=" + userId +
-            ", chatPartnerId=" + chatPartnerId +
-            '}';
+        return "ChatDto{"
+            + "userId=" + userId
+            + ", chatPartnerId=" + chatPartnerId + '}';
     }
 }

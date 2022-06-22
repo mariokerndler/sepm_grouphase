@@ -112,7 +112,7 @@ public class CommissionServiceImpl implements CommissionService {
             log.info("SKETCHES EMPTY");
         }
 
-        if(c.getArtwork() != null){
+        if (c.getArtwork() != null) {
             this.ifm.writeCommissionArtwork(c, c.getArtwork());
         }
 

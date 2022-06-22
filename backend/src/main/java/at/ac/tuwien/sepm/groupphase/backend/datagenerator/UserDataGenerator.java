@@ -382,14 +382,14 @@ public class UserDataGenerator {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
-        List<Reference> references = new LinkedList<Reference>();
+
         Artwork a = new Artwork();
         List<Sketch> sketches = new LinkedList<Sketch>();
         for (int i = 5; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
                 a.setName("Sample Commission Art");
-                desc = faker.shakespeare().hamletQuote().toString();
+                desc = faker.shakespeare().hamletQuote();
                 if (desc.length() > 50) {
                     desc = desc.substring(0, 49);
                 }
@@ -417,6 +417,7 @@ public class UserDataGenerator {
         reference.setImageData(getImageBytes(urls[0]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
+        List<Reference> references = new LinkedList<Reference>();
         references.add(reference);
         a.setSketches(sketches);
         commission.setReferences(references);
@@ -443,12 +444,12 @@ public class UserDataGenerator {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
-        List<Reference> references = new LinkedList<Reference>();
+
         Artwork a = new Artwork();
         List<Sketch> sketches = new LinkedList<Sketch>();
         ImageFileManager ifm = new ImageFileManager();
         String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
-        ifm.createFolderIfNotExists(assetAbsoluteLocation+"data\\com\\adminSample Commission3\\");
+        ifm.createFolderIfNotExists(assetAbsoluteLocation + "data\\com\\adminSample Commission3\\");
         for (int i = 5; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
@@ -477,6 +478,7 @@ public class UserDataGenerator {
         reference.setImageData(getImageBytes(urls[0]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
+        List<Reference> references = new LinkedList<Reference>();
         references.add(reference);
         Reference reference1 = new Reference();
         reference1.setImageUrl("data\\com\\adminSample Commission3\\bReference1");
@@ -511,12 +513,12 @@ public class UserDataGenerator {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
-        List<Reference> references = new LinkedList<Reference>();
+
         Artwork a = new Artwork();
         List<Sketch> sketches = new LinkedList<Sketch>();
         ImageFileManager ifm = new ImageFileManager();
         String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
-        ifm.createFolderIfNotExists(assetAbsoluteLocation+"data\\com\\adminSample Commission4\\");
+        ifm.createFolderIfNotExists(assetAbsoluteLocation + "data\\com\\adminSample Commission4\\");
         for (int i = 5; i > 1; i--) {
             if (i == 4) {
                 a.setArtist(artist);
@@ -532,7 +534,7 @@ public class UserDataGenerator {
                 Sketch k = new Sketch();
                 k.setFileType(FileType.JPG);
                 k.setArtwork(a);
-                k.setImageData(getImageBytes(urls[i+3]));
+                k.setImageData(getImageBytes(urls[i + 3]));
                 k.setDescription("Sketch " + i);
                 k.setImageUrl("data\\com\\adminSample Commission4\\b" + i);
                 k.setCustomerFeedback("looks good " + i);
@@ -552,6 +554,7 @@ public class UserDataGenerator {
         reference.setImageData(getImageBytes(urls[1]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
+        List<Reference> references = new LinkedList<Reference>();
         references.add(reference);
         ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\adminSample Commission4\\bReference");
         a.setSketches(sketches);
@@ -562,7 +565,6 @@ public class UserDataGenerator {
     }
 
     private Commission generateCommission5(Artist artist, ApplicationUser user) {
-        List<Artist> artists = artistService.getAllArtists();
         Faker faker = new Faker();
         Commission commission = new Commission();
         commission.setStatus(CommissionStatus.IN_PROGRESS);
@@ -579,7 +581,8 @@ public class UserDataGenerator {
         if (desc.length() > 50) {
             desc = desc.substring(0, 49);
         }
-        commission.setArtistCandidates(artists.subList(0,5));
+        List<Artist> artists = artistService.getAllArtists();
+        commission.setArtistCandidates(artists.subList(0, 5));
         commission.setInstructions(desc);
         Artwork a = new Artwork();
         List<Sketch> sketches = new LinkedList<Sketch>();

@@ -33,7 +33,7 @@
     <span *ngIf="!file">Select File</span>
     <span *ngIf="file">Change Picture</span>
   </button>
-  <mat-form-field *ngIf="file" appearance="fill" class="form-group">
+  <mat-form-field *ngIf="file && !this.data.commission" appearance="fill" class="form-group">
     <mat-label>Tags</mat-label>
     <input
       #tagInput
@@ -58,7 +58,11 @@
   </mat-form-field>
 
 
-  <button (click)="onFileChanged()" *ngIf="file" cdkFocusInitial class="upload-button" mat-button name="upload-button">
+  <button *ngIf="file && !this.data.commission" (click)="onFileChanged(false)" cdkFocusInitial class="upload-button" mat-button name="upload-button">
+    Upload
+  </button>
+
+  <button *ngIf="file && this.data.commission" (click)= "onFileChanged(true)" cdkFocusInitial class="upload-button" mat-button name="upload-button">
     Upload
   </button>
 

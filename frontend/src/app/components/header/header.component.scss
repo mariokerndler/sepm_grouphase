@@ -3,6 +3,11 @@
   padding-right: 5rem;
 }
 
+.toolbar{
+  position: relative;
+  z-index: 1;
+}
+
 .mat-drawer {
   //background-color: #2f3a51;
 }

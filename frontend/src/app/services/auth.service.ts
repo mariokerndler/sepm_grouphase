@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode';
 import {Globals} from '../global/globals';
 import {NotificationService} from './notification/notification.service';
 import {ApplicationUserDto} from '../dtos/applicationUserDto';
+import {UserRole} from "../dtos/artistDto";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,10 @@ export class AuthService {
     localStorage.setItem('userId', String(id));
   }
 
+  private static setUserRole(userRole: string) {
+    localStorage.setItem('userRole', userRole);
+  }
+
   /**
    * Login in the user. If it was successful, a valid JWT token will be stored
    *
@@ -54,6 +59,7 @@ export class AuthService {
           console.log(authResponse);
           AuthService.setToken(authResponse);
           AuthService.setUserId(authorizedUser.id);
+          AuthService.setUserRole(authorizedUser.userRole);
           this.notificationService.displaySuccessSnackbar('Successfully logged in.');
         })
       );
@@ -99,6 +105,14 @@ export class AuthService {
       const decoded: any = jwt_decode(this.getToken());
 
       return decoded.sub;
+    }
+  }
+
+  getApplicationUserRole() {
+    const role = localStorage.getItem('userRole');
+
+    if (role != null) {
+      return String(role);
     }
   }
 

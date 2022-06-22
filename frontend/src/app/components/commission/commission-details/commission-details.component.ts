@@ -78,6 +78,13 @@ export class CommissionDetailsComponent implements OnInit {
     }
   }
 
+  getUserRole(): string {
+    const role = localStorage.getItem('userRole');
+    if (role !== null) {
+      return role;
+    }
+  }
+
   setSelectedArtwork(i: number, isReference: boolean) {
     if(isReference){
       this.selectedReference = i;

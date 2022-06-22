@@ -117,7 +117,7 @@
 
       </div>
     </div>
-    <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId" fxLayout="col" fxLayoutAlign="center start">
+    <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId && getUserRole() === 'Artist'" fxLayout="col" fxLayoutAlign="center start">
       <button color="primary" fxLayoutAlign="center" mat-flat-button (click)="applyArtist()">Apply</button>
     </div>
     <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center start">

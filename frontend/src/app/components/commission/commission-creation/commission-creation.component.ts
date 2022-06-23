@@ -22,6 +22,7 @@ import {CommissionStatus} from '../../../global/CommissionStatus';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -89,10 +90,15 @@ export class CommissionCreationComponent implements OnInit {
               private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
               public globalFunctions: GlobalFunctions,
               private commissionService: CommissionService, private notificationService: NotificationService,
-              private userService: UserService) {
+              private userService: UserService,
+              private router: Router) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
+  }
+
+  goToCommissions(): void {
+    this.router.navigate([`commissions`]);
   }
 
   getUserId(): void {
@@ -161,7 +167,7 @@ export class CommissionCreationComponent implements OnInit {
         this.notificationService.displayErrorSnackbar(error.error);
       }, () => {
         this.notificationService.displaySuccessSnackbar('Commission created successfully');
-
+        this.goToCommissions();
       }
     );
   }

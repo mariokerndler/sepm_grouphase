@@ -41,9 +41,17 @@
     }
   }
 
+  .mat-step-icon-state-error {
+    background-color: transparent !important;
+    color: #F44336 !important;
+  }
 
-
-
+  .mat-step-label.mat-step-label-error {
+    color: #F44336 !important;
+    .mat-step-text-label {
+      color: #F44336 !important;
+    }
+  }
 
 }
 

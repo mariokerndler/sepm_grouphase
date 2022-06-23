@@ -52,11 +52,11 @@ public class SimpleCommissionDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadlineDate;
 
-    @Size(max = 50, message = CommissionValidationMessages.TILE_LENGTH_TOO_LONG)
+    @Size(max = 100, message = CommissionValidationMessages.TILE_LENGTH_TOO_LONG)
     @ValidAlphaNumericWithSpaces(message = CommissionValidationMessages.TITLE_NON_ALPHA_NUMERIC_SPACES)
     private String title;
 
-    @Size(max = 255, message = CommissionValidationMessages.INSTRUCTIONS_TOO_LONG)
+    @Size(max = 512, message = CommissionValidationMessages.INSTRUCTIONS_TOO_LONG)
     private String instructions;
 
     private List<Long> referencesIds;

@@ -45,6 +45,7 @@ public class UserDataGenerator {
     private final ChatMessageRepository chatMessageRepository;
     private final CommissionRepository commissionRepository;
     private final CommissionService commissionService;
+    private final ImageFileManager imageFileManager;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
         "https://i.ibb.co/7yHp276/image1.jpg",
@@ -63,7 +64,11 @@ public class UserDataGenerator {
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
-                             ChatRepository chatRepository, ChatMessageRepository chatMessageRepository, CommissionRepository commissionRepository, CommissionService commissionService) {
+                             ChatRepository chatRepository,
+                             ChatMessageRepository chatMessageRepository,
+                             CommissionRepository commissionRepository,
+                             CommissionService commissionService,
+                             ImageFileManager imageFileManager) {
         this.artistService = artistService;
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
@@ -74,6 +79,7 @@ public class UserDataGenerator {
         this.chatMessageRepository = chatMessageRepository;
         this.commissionRepository = commissionRepository;
         this.commissionService = commissionService;
+        this.imageFileManager = imageFileManager;
     }
 
     @PostConstruct
@@ -291,8 +297,7 @@ public class UserDataGenerator {
         artwork.setDescription("Artwork description");
         artwork.setName("Artwork");
         artwork.setImageData(getImageBytes(urls[7]));
-        ImageFileManager ifm = new ImageFileManager();
-        String s = ifm.writeCommissionArtwork(f, artwork);
+        String s = imageFileManager.writeCommissionArtwork(f, artwork);
         artwork.setImageUrl(s);
         List<Sketch> sketches = new LinkedList<>();
         for (int i = 4; i < 8; i++) {
@@ -302,7 +307,7 @@ public class UserDataGenerator {
             k.setImageData(getImageBytes(urls[i]));
             k.setArtwork(artwork);
             k.setCustomerFeedback("looks good, carry on :)");
-            String string = ifm.writeSketchImage(f, k);
+            String string = imageFileManager.writeSketchImage(f, k);
             k.setImageUrl(string);
             sketches.add(k);
         }
@@ -313,10 +318,10 @@ public class UserDataGenerator {
         commissionService.saveCommission(g);
 
 
-        ApplicationUser user = userRepository.findApplicationUserByEmail("testuser@test.com");
+        user = userRepository.findApplicationUserByEmail("testuser@test.com");
         Artist artist = artistRepository.findApplicationUserByEmail("testartist@test.com");
 
-        Commission e = generateCommissionPaymentTest(user, artist);
+        e = generateCommissionPaymentTest(user, artist);
         commissionRepository.save(e);
 
     }
@@ -613,7 +618,7 @@ public class UserDataGenerator {
     private Commission generateCommissionPaymentTest(ApplicationUser user, Artist artist) {
         Faker faker = new Faker();
         Commission commission = new Commission();
-        commission.setStatus(CommissionStatus.IN_PROGRESS);
+        commission.setStatus(CommissionStatus.AWAITING_PAYMENT);
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission that should be payed");

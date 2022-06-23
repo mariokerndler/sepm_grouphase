@@ -25,8 +25,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public void updateCommissionAfterPayment(Session stripeObject) {
-        Long commissionId = Long.valueOf(stripeObject.getMetadata().get("commission_id"));
+    public void updateCommissionAfterPayment(Session stripeSession) {
+        Long commissionId = Long.valueOf(stripeSession.getMetadata().get("commission_id"));
 
         Commission commission = commissionService.findById(commissionId);
 

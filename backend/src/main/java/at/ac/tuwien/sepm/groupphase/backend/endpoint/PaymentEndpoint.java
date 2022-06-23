@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.CheckoutPaymentDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
+import at.ac.tuwien.sepm.groupphase.backend.exception.PaymentException;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PaymentService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator;
@@ -18,7 +19,6 @@ import io.micrometer.core.instrument.util.IOUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class PaymentEndpoint {
 
     // TODO: Change this to real endpoint key after finishing to test with cli
-    private static final String endpointSecret = "whsec_bb6e0c9d52dcbe770935f0618a4aabc30223c2a3c3bde5273510edb2dbb5fc2b";
+    private static final String webhookEndpointSecret = "whsec_bb6e0c9d52dcbe770935f0618a4aabc30223c2a3c3bde5273510edb2dbb5fc2b";
     private final CommissionService commissionService;
     private final CommissionValidator commissionValidator;
     private final PaymentService paymentService;
@@ -43,14 +43,12 @@ public class PaymentEndpoint {
     }
 
     /**
-     * Payment with Stripe checkout page.
-     *
-     * @throws StripeException Error that is thrown in case payment fails.
+     * Payment with Stripe checkout page. Creates Stripe session and returns sessionID to frontend.
      */
     @PermitAll
     @PostMapping("/checkout")
     @Operation(summary = "Authenticate and redirect to stripe checkout page")
-    public Map<String, String> paymentWithCheckoutPage(@RequestBody CheckoutPaymentDto payment) throws StripeException {
+    public Map<String, String> paymentWithCheckoutPage(@RequestBody CheckoutPaymentDto payment) {
 
         Commission commission = commissionService.findById(payment.getCommissionId());
 
@@ -80,7 +78,12 @@ public class PaymentEndpoint {
             .putMetadata("commission_id", commission.getId().toString())
             .build();
         // create a stripe session
-        Session session = Session.create(params);
+        Session session;
+        try {
+            session = Session.create(params);
+        } catch (StripeException ex) {
+            throw new PaymentException(ex.getMessage(), ex);
+        }
         Map<String, String> responseData = new HashMap<>();
         responseData.put("id", session.getId());
         // We return the sessionId as a String
@@ -88,29 +91,36 @@ public class PaymentEndpoint {
     }
 
     /**
-     * Payment with Stripe checkout page.
-     *
-     * @throws StripeException Error that is thrown in case payment fails.
+     * Webhook to handle checkout session completed event. If checkout was completed and
+     * commission was paid for, the method calls PaymentService method updateCommissionAfterPayment.
+     * The session saves the commission id in its metadata, so webhooks can easily reference it.
      */
     @PermitAll
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/webhook")
     @Operation(summary = "Receive information from webhook after user finishes payment")
-    public void receiveWebhook(HttpServletRequest request) throws StripeException, IOException {
-        String payload = IOUtils.toString(request.getInputStream());
+    public void receiveWebhook(HttpServletRequest request) {
         String sigHeader = request.getHeader("Stripe-Signature");
-        Event event = null;
+        String payload;
+        Event event;
 
         if (sigHeader == null) {
-            // TODO: Think of appropriate error handling for stripe backend
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stripe-Signature Header is missing!");
+            throw new PaymentException("Webhook could not parse request! Stripe-Signature Header is missing!");
         }
 
+        // Read request body
         try {
-            event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
+            payload = IOUtils.toString(request.getInputStream());
+        } catch (IOException e) {
+            throw new PaymentException(e.getMessage(), e);
+        }
+
+        // Construct stripe event
+        try {
+            event = Webhook.constructEvent(payload, sigHeader, webhookEndpointSecret);
         } catch (SignatureVerificationException e) {
             // Invalid signature
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new PaymentException(e.getMessage(), e);
         }
 
         // Handle the checkout.session.completed event
@@ -120,8 +130,7 @@ public class PaymentEndpoint {
                 StripeObject stripeObject = dataObjectDeserializer.getObject().get();
                 paymentService.updateCommissionAfterPayment((Session) stripeObject);
             } else {
-                throw new IllegalStateException(
-                    String.format("Unable to deserialize event data object for %s", event));
+                throw new PaymentException(String.format("Webhook was unable to deserialize event data object for %s", event));
             }
         }
     }

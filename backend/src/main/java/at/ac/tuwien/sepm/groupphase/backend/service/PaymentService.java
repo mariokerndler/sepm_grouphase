@@ -7,5 +7,5 @@ public interface PaymentService {
     /**
      * Updates commission after successful payment.
      */
-    void updateCommissionAfterPayment(Session stripeObject);
+    void updateCommissionAfterPayment(Session stripeSession);
 }

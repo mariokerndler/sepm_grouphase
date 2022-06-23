@@ -1,14 +1,19 @@
 <div *ngIf="isReady" class="artist-feed-card-container" fxLayout="row">
   <!-- Profile -->
-  <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="0.5rem">
-    <img [src]="artistPfp" alt="{{artist.userName}} profile picture" class="artist-feed-card-pfp">
-    <span class="artist-feed-card-fullName accent-color">{{artist.name}} {{artist.surname}}</span>
-    <span class="artist-feed-card-userName">{{artist.userName}}</span>
-    <button (click)="navigateToArtist(artist)" color="accent" mat-button>Go to profile page</button>
+  <div fxFlex="15" fxLayout="column" fxLayoutAlign="space-evenly center">
+    <span fxFlex="10"></span>
+    <img fxFlex="30" [src]="artistPfp" alt="{{artist.userName}} profile picture" class="artist-feed-card-pfp">
+    <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="0.5rem" fxFlex="40">
+    <span fxFlex="10"></span>
+    <span fxFlex="20" class="artist-feed-card-userName accent-color">{{artist.userName}}</span>
+    <span fxFlex="20" class="artist-feed-card-fullName accent-color">{{artist.name}} {{artist.surname}}</span>
+    </div>
+    <button fxFlex="15" (click)="navigateToArtist(artist)" color="accent" mat-button>Show me more</button>
+    <span fxFlex="5"></span>
   </div>
 
   <!-- Artist images-->
-  <div class="artist-feed-card-image-container">
+  <div fxFlex="85" class="artist-feed-card-image-container">
     <cdk-virtual-scroll-viewport class="viewport" itemSize="{{artworks.length}}" orientation="horizontal">
       <div (click)="setSelectedArtwork(i)"
            *ngFor="let artwork of artworks; let i = index;"

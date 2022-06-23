@@ -142,7 +142,7 @@ public class NotificationServiceImpl implements NotificationService {
         // Need to copy list objects and use the toBuilder() from lombok to make a copy constructor.
         List<Artist> candidates = newCandidates.stream()
             .map(artist -> artist == null ? null : artist.toBuilder().build())
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
 
         candidates.removeAll(oldCandidates);
 
@@ -245,7 +245,8 @@ public class NotificationServiceImpl implements NotificationService {
                             commissionId,
                             artist));
                 }
-                case LISTED, NEGOTIATING -> { }
+                case LISTED, NEGOTIATING -> {
+                }
                 default -> throw new IllegalStateException("Unexpected value: " + newCommission.getStatus());
             }
         } else if (oldCommission.getStatus() == CommissionStatus.NEGOTIATING
@@ -267,9 +268,9 @@ public class NotificationServiceImpl implements NotificationService {
     private boolean commissionInformationChanged(Commission oldCommission, Commission newCommission) {
         return (
             oldCommission.getPrice() != newCommission.getPrice()
-            || !oldCommission.getDeadlineDate().equals(newCommission.getDeadlineDate())
-            || !oldCommission.getInstructions().equals(newCommission.getInstructions())
-            || commissionReferencesChanged(oldCommission.getReferences(), newCommission.getReferences()));
+                || !oldCommission.getDeadlineDate().equals(newCommission.getDeadlineDate())
+                || !oldCommission.getInstructions().equals(newCommission.getInstructions())
+                || commissionReferencesChanged(oldCommission.getReferences(), newCommission.getReferences()));
     }
 
     private boolean commissionReferencesChanged(List<Reference> oldReferences, List<Reference> newReferences) {

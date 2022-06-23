@@ -5,13 +5,18 @@ import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtworkService} from '../../../services/artwork.service';
 import {CommissionService} from '../../../services/commission.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FileType} from '../../../dtos/artworkDto';
+import {ArtworkDto, FileType} from '../../../dtos/artworkDto';
 import {GlobalFunctions} from '../../../global/globalFunctions';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SketchDto} from '../../../dtos/sketchDto';
 import {TagSearch} from '../../../dtos/tag-search';
 import {ArtistService} from '../../../services/artist.service';
 import {NotificationService} from '../../../services/notification/notification.service';
+import {CommissionStatus} from '../../../global/CommissionStatus';
+import {UploadComponent} from '../../upload/upload.component';
+import {MatDialog} from '@angular/material/dialog';
+import {Globals} from '../../../global/globals';
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -22,7 +27,7 @@ import {NotificationService} from '../../../services/notification/notification.s
 })
 export class CommissionDetailsComponent implements OnInit {
 
-  userProfilePicture = 'https://picsum.photos/150/150';
+  profilePicture;
   commission: CommissionDto;
   user: ApplicationUserDto;
   userId: string;
@@ -42,18 +47,29 @@ export class CommissionDetailsComponent implements OnInit {
   items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   uploadedSketch: any;
   uploadedSketchDto: SketchDto;
+  finalImage: any;
+  finalImageDto: ArtworkDto;
   public selectedArtwork: number = null;
+  public selectedReference: number = null;
+  startDate: string;
+  endDate: string;
+  updatedEndDate: string;
+  sketches;
 
   public selectedArtistId = 4;
   //Just dummy data.
-  artistIds = [4, 5, 6, 8, 10, 39];
-
+  artistIds = [];
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
-              private route: ActivatedRoute, private globalFunctions: GlobalFunctions,
-              private artistService: ArtistService, private notificationService: NotificationService,
-              private router: Router) {
+              private route: ActivatedRoute,
+              private location: Location,
+              private globalFunctions: GlobalFunctions,
+              private artistService: ArtistService,
+              private notificationService: NotificationService,
+              private router: Router,
+              private dialog: MatDialog,
+              public globals: Globals) {
   }
 
   ngOnInit(): void {
@@ -69,52 +85,82 @@ export class CommissionDetailsComponent implements OnInit {
     }
   }
 
-  setSelectedArtwork(i: number) {
-    this.selectedArtwork = i;
+  getUserRole(): string {
+    const role = localStorage.getItem('userRole');
+    if (role !== null) {
+      return role;
+    }
+  }
+
+  setSelectedArtwork(i: number, isReference: boolean) {
+    if(isReference){
+      this.selectedReference = i;
+    } else {
+      this.selectedArtwork = i;
+    }
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
   getCommission() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.commissionService.getCommissionById(id)
+    this.commissionService.getCommissionById(id, () => this.navigationError())
       .subscribe((commission) => {
           this.commission = commission;
-          this.commission.artistCandidatesDtos = [];
+           this.sketches = [];
+           if(commission.artworkDto) {
+             const sketches = commission.artworkDto.sketchesDtos;
+             for (const sketch of sketches) {
+               if (sketch.fileType !== 'GIF') {
+                 this.sketches.push(sketch);
+               }
+             }
+           }
+
+          this.startDate = new Date(commission.issueDate).toLocaleDateString();
+          this.endDate = new Date(commission.deadlineDate).toLocaleDateString();
+          this.updatedEndDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
+          //this.commission.artistCandidatesDtos = [];
           this.artistIds.forEach(a => {
             this.artistService.getArtistById(a).subscribe(result => {
               this.commission.artistCandidatesDtos.push(result);
             });
           });
-          console.log(commission.artworkDto);
           if (this.commission.artworkDto == null) {
             const searchPar: TagSearch = {
               artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
             };
             //this would be a temporary fix but sadly artworks are bugged rn so idk
-            this.artworkService.search(searchPar).subscribe(aw => {
-                console.log(aw);
-                this.commission.artworkDto = aw[0];
                 this.user = commission.customerDto;
                 this.checkCommissionState(this.commission);
-              }
-            );
           } else {
 
             this.user = commission.customerDto;
             this.checkCommissionState(this.commission);
           }
-
+        this.setProfilePicture();
         }
       );
+  }
+
+  navigationError() {
+    this.location.back();
+    this.notificationService.displayErrorSnackbar('Could not find commission');
   }
 
   checkCommissionState(commission: CommissionDto): void {
     if (commission.referencesDtos.length !== 0) {
       this.hasReferences = true;
     }
+    if (this.commission.artworkDto !== null) {
     if (commission.artworkDto.sketchesDtos != null) {
       if (commission.artworkDto.sketchesDtos.length !== 0) {
         this.hasSketches = true;
+      }
+    }
+      if (this.commission.sketchesShown > this.commission.feedbackSent) {
+
+        this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
+        console.log(this.uploadedSketchDto);
       }
     }
     if (this.userId === this.commission.customerDto.id.toString()) {
@@ -130,11 +176,6 @@ export class CommissionDetailsComponent implements OnInit {
       this.allowSketch = false;
     } else {
       this.allowSketch = true;
-    }
-    if (this.commission.sketchesShown > this.commission.feedbackSent) {
-
-      this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
-      console.log(this.uploadedSketchDto);
     }
     // TODO: Implement better check for this. We need to wait until artist uploads artwork
     if (commission.feedbackRounds === commission.feedbackSent) {
@@ -158,14 +199,13 @@ export class CommissionDetailsComponent implements OnInit {
     reader.onload = (event) => {
       const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
       sketch.imageData = extractedValues[1];
-      sketch.description = 'aaaa';
+      sketch.description = 'Sketch';
       sketch.fileType = extractedValues[0];
       sketch.imageUrl = 'default';
       sketch.artworkId = this.commission.artworkDto.id;
       this.uploadedSketchDto = sketch;
     };
   }
-
   updateCommission() {
     //artist added sketch
     if (this.uploadedSketchDto !== null && this.artistEdit) {
@@ -184,9 +224,14 @@ export class CommissionDetailsComponent implements OnInit {
       this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1] = this.uploadedSketchDto;
     }
     console.log(this.commission);
-    this.commissionService.updateCommission(this.commission).subscribe();
+    this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1].description
+      += '%' + new Date().toLocaleDateString();
+    this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1].customerFeedback
+      += '%' + new Date().toLocaleDateString();
+    this.commissionService.updateCommission(this.commission).subscribe((commission) => console.log(commission));
     this.checkCommissionState(this.commission);
   }
+
 
 
   toggleFeedbackField() {
@@ -203,6 +248,67 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   chooseArtist() {
+      this.commission.status = CommissionStatus.negotiating;
+      this.artistService.getArtistById(this.selectedArtistId).subscribe(artist => {
+      this.commission.artistDto = artist;
+      console.log(this.selectedArtistId);
+      this.commissionService.updateCommission(this.commission).subscribe(ok => {
+      this.notificationService.displaySuccessSnackbar('Artist selected successfully');
+      });
+    });
+  }
 
+  //triggered by Artist
+  applyArtist() {
+
+    if (this.commission.artistCandidatesDtos === null) {
+      this.commission.artistCandidatesDtos = [];
+    }
+
+    this.artistService.getArtistById(Number.parseInt(this.userId, 10)).subscribe(data => {
+      if (this.commission.artistCandidatesDtos.filter(a => a.id === data.id).length > 0) {
+        this.notificationService.displaySimpleDialog('', 'You have already applied for this commission');
+      } else {
+        this.commission.artistCandidatesDtos.push(data);
+        this.commissionService.updateCommission(this.commission).subscribe(() => {
+          this.notificationService.displaySuccessSnackbar('You have applied for this commission');
+        });
+      }
+    });
+  }
+
+  //triggered by User
+  startCommission() {
+    this.commission.status=CommissionStatus.inProgress;
+    this.commissionService.updateCommission(this.commission).subscribe(success=>{
+      this.notificationService.displaySuccessSnackbar('Commission is now in progress');
+    });
+  }
+
+  openDialog() {
+   const dialogRef = this.dialog.open(UploadComponent, {
+      data: {
+        artist: this.commission.artistDto,
+        commission: this.commission
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(
+      () => this.dialog.open(UploadComponent, {
+        data: {
+          artist: this.commission.artistDto,
+          commission: this.commission,
+          timelapse: true,
+        }
+      })
+    );
+  }
+
+  private setProfilePicture() {
+    if (!this.user.profilePictureDto) {
+      this.profilePicture = this.globals.defaultProfilePicture;
+    } else {
+      this.profilePicture = this.user.profilePictureDto.imageUrl;
+    }
   }
 }

@@ -76,10 +76,14 @@ import {
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 // @ts-ignore
 import {ChatComponent} from './chat/chat.component';
+import { NotificationDisplayComponent } from './components/common/notification-display/notification-display.component';
+import { TermsOfServiceComponent } from './components/footer/terms-of-service/terms-of-service.component';
+import { PrivacyPolicyComponent } from './components/footer/privacy-policy/privacy-policy.component';
+import { ContactComponent } from './components/footer/contact/contact.component';
+import { AboutComponent } from './components/footer/about/about.component';
 import {SuccessComponent} from './components/success/success.component';
 import {CancelComponent} from './components/cancel/cancel.component';
 import {CheckoutComponent} from './components/checkout/checkout.component';
-
 
 @NgModule({
   declarations: [
@@ -118,6 +122,11 @@ import {CheckoutComponent} from './components/checkout/checkout.component';
     CommissionTimeslotsComponent,
     ChatComponent,
     ConfirmDialogComponent,
+    NotificationDisplayComponent,
+    TermsOfServiceComponent,
+    PrivacyPolicyComponent,
+    ContactComponent,
+    AboutComponent,
     CancelComponent,
     SuccessComponent,
     CheckoutComponent

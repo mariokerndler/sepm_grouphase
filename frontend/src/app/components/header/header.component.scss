@@ -3,8 +3,13 @@
   padding-right: 5rem;
 }
 
+.toolbar{
+  position: relative;
+  z-index: 1;
+}
+
 .mat-drawer {
-  background-color: #2f3a51;
+  //background-color: #2f3a51;
 }
 
 
@@ -15,6 +20,8 @@
 
 .title {
   font-size: 1.5em;
+  position: relative;
+  left: 3%;
 }
 
 .title:hover {

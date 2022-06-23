@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,16 +89,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
         log.warn(ex.getMessage(), ex);
-        Map<String, Object> body = new LinkedHashMap<>();
-        //Get all errors
-        List<String> errors = ex.getBindingResult()
-            .getFieldErrors()
-            .stream()
-            .map(err -> err.getField() + " " + err.getDefaultMessage())
-            .collect(Collectors.toList());
-        body.put("Validation errors", errors);
 
-        return new ResponseEntity<>(body.toString(), headers, status);
+        var errorMap = new HashMap<>();
+        for (var error : ex.getFieldErrors()) {
+            var field = error.getField();
+            var errorMsg = (errorMap.containsKey(field) ? (errorMap.get(field) + " ") : "");
+            errorMsg += error.getDefaultMessage();
+            errorMap.put(field, errorMsg);
+        }
+
+        return ResponseEntity.unprocessableEntity().body(errorMap);
 
     }
 }

@@ -3,7 +3,13 @@
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   width: 100%;
+
+  span{
+    color: #fb9fa4 !important;
+  }
+
 }
+
 
 .viewport {
   max-height: 300px;
@@ -17,10 +23,12 @@
 }
 
 .artist-feed-card-fullName {
-  font-weight: bold;
 }
 
 .artist-feed-card-userName {
+  font-weight: bold;
+  font-size: 20px;
+  position: relative;
 }
 
 .artist-feed-card-image-preview {
@@ -111,19 +119,22 @@
   flex-direction: row;
 }
 
-/* width */
+
+//width
+
 ::-webkit-scrollbar {
   height: 10px;
 }
 
-/* Track */
+// Track
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
 }
 
-/* Handle */
+// Handle
 ::-webkit-scrollbar-thumb {
   background: #fb9fa4;
   border-radius: 10px;
 }
+

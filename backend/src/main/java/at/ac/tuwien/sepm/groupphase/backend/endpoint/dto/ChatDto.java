@@ -10,4 +10,11 @@ import lombok.*;
 public class ChatDto {
     Long userId;
     Long chatPartnerId;
+
+    @Override
+    public String toString() {
+        return "ChatDto{"
+            + "userId=" + userId
+            + ", chatPartnerId=" + chatPartnerId + '}';
+    }
 }

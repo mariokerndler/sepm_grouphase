@@ -4,7 +4,7 @@
       <mat-icon>menu</mat-icon>
     </button>
   </div>
-  <span class="title" routerLink="/">{{globals.projectName}}</span>
+  <span class="title" fxFlex="auto" fxLayoutAlign="center" routerLink="/">{{globals.projectName}}</span>
   <div class="navigation-items" fxFlex="auto" fxLayout="row" fxLayoutAlign="end">
     <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button>Login</button>
     <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button>Register</button>

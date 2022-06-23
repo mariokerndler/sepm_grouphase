@@ -3,7 +3,9 @@
   width: 100%;
   position: absolute;
   bottom: 10%;
+  z-index: 0;
 }
+
 
 .timeline-p {
   //color: #C57F82;
@@ -23,7 +25,12 @@
 
 .time-component {
   position: relative;
-  bottom: 134px
+  bottom: 133px;
+}
+
+.time-component-up{
+    position: relative;
+    bottom: 327px
 }
 
 .start-section {
@@ -39,6 +46,8 @@
 
 .icon {
   margin: 0 10rem 0 10rem;
+  background-color: #fb9fa4 ;
+  color: #434f6a;
   padding: 0.5rem;
   border-radius: 100%;
 }
@@ -49,11 +58,34 @@
   left: 60%;
 }
 
+.start-text-container {
+  position: relative;
+  width: 300px;
+  left: 60%;
+  height: 130px;
+
+}
+
 .line {
   height: 4rem;
   border-right: 1px solid #C57F82;
   position: relative;
   right: 50%;
+}
+
+.new-line {
+  height: 4rem;
+  border-right: 1px solid #C57F82;
+  position: relative;
+  right: 50%;
+}
+
+.new-main-line {
+
+  border-top: 2px solid #fb9fa4;
+  position: relative;
+  width: 20rem;
+  left: 55.5%;
 }
 
 .main-line {

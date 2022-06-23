@@ -278,7 +278,7 @@ public class UserDataGenerator {
 
         Commission c = generateCommission2(artists.get(0), user);
         commissionService.saveCommission(c);
-        Commission d = generateCommission1(artists.get(1), user);
+        Commission d = generateCommission1(artists.get(1), users.get(4));
         commissionService.saveCommission(d);
         Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);
@@ -309,7 +309,7 @@ public class UserDataGenerator {
         artwork.setSketches(sketches);
         artworkRepo.save(artwork);
         f.setArtwork(artwork);
-        Commission g = generateCommission5(artists.get(0), user);
+        Commission g = generateCommission5(artists.get(0), users.get(4));
         commissionService.saveCommission(g);
 
 
@@ -323,8 +323,9 @@ public class UserDataGenerator {
         commission.setArtist(null);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission1");
-        commission.setSketchesShown((int) (Math.random() * 10));
-        commission.setFeedbackSent((int) (Math.random() * 10));
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
+        commission.setFeedbackRounds(2);
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
@@ -568,7 +569,8 @@ public class UserDataGenerator {
         commission.setCustomer(user);
         commission.setTitle("Sample Commission5");
         commission.setSketchesShown(0);
-        commission.setFeedbackSent(3);
+        commission.setFeedbackSent(0);
+        commission.setFeedbackRounds(5);
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));

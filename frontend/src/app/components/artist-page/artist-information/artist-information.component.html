@@ -14,25 +14,6 @@
     </div>
   </div>
   <br>
-  <!--
-  <div>
-    <span class="accent-color artist-about-header">Gallery</span>
-    <div fxFlex="auto" fxLayoutAlign="end">
-      <button (click)="switchTab(1)" color="accent" mat-button>See More</button>
-    </div>
-  </div>
-
-  <app-artist-gallery-subsections [artist]="artist" [tags]="[]"></app-artist-gallery-subsections>
-  <br>
-  <div>
-    <span class="accent-color artist-about-header">Reviews</span>
-    <div fxFlex fxLayout fxLayoutAlign="end">
-      <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
-    </div>
-    <p class="accent-color artist-about-description">
-    </p>
-  </div>
-  -->
 </div>
 <div *ngIf="profileSettings">
   <div>
@@ -55,13 +36,16 @@
                                       [tags]="profileSettings.layout[i].tags"></app-artist-gallery-subsections>
       <br>
     </div>
+
     <div *ngIf="element.componentName.substring(0,6) === 'Review'">
-      <span class="accent-color artist-about-header">{{element.componentName}}</span>
-      <div fxFlex="auto" fxLayoutAlign="end">
-        <button (click)="switchTab(2)" color="accent" mat-button>See More</button>
+      <div>
+        <span class="accent-color artist-about-header">{{element.componentName}}</span>
+        <div fxFlex="auto" fxLayoutAlign="end">
+          <button (click)="switchTab(2)" color="primary" mat-button>See More</button>
+        </div>
       </div>
-      <p class="accent-color artist-about-description">
-      </p>
+      <app-review-page [user]="artist"></app-review-page>
+      <br>
     </div>
 
   </div>

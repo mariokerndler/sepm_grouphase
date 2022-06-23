@@ -31,11 +31,15 @@
               <app-artist-gallery [artist]="artist"></app-artist-gallery>
             </mat-tab>
             <mat-tab label="Reviews">
+              <br>
+              <app-review-page [user]="artist"></app-review-page>
             </mat-tab>
             <mat-tab *ngIf="canEdit" label="My Commissions">
+              <br>
               <app-commission-page [user]="artist"></app-commission-page>
             </mat-tab>
             <mat-tab *ngIf="canEdit">
+              <br>
               <ng-template mat-tab-label>
                 <span [matBadgeHidden]="!hasUnreadNotifications"
                       [matBadge]="notificationLength > 9 ? '9+' : notificationLength"
@@ -43,7 +47,9 @@
                       matBadgeOverlap="false">Notifications
                 </span>
               </ng-template>
-              <br>
+              <div>
+                <span style="font-weight: bold;font-size: 1.3rem;">Notifications</span>
+              </div>
               <app-notification-display
                 [user]="user"
                 (unreadEvent)="setUnreadNotifications($event)"

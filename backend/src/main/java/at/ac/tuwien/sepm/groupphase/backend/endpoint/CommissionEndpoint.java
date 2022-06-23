@@ -61,24 +61,28 @@ public class CommissionEndpoint {
                                                        @RequestParam(defaultValue = "None", name = "date") String dateConstraint
     ) {
         log.info("A user is trying to search for a commission.");
-        CommissionSearchDto cs = new CommissionSearchDto();
-        cs.setName(name.toLowerCase());
-        cs.setArtistId(artistId);
-
-        if (dateConstraint.toLowerCase().contains(SearchConstraint.ASC.toString().toLowerCase())) {
-            cs.setSearchConstraint(SearchConstraint.ASC);
-        } else if (dateConstraint.toLowerCase().contains(SearchConstraint.DESC.toString().toLowerCase())) {
-            cs.setSearchConstraint(SearchConstraint.DESC);
-        } else {
-            cs.setSearchConstraint(SearchConstraint.None);
-        }
-
-        cs.setPriceRangeLower(priceRangeLower);
-        cs.setPriceRangeUpper(priceRangeUpper);
-        cs.setPageNr(pageNr);
-        cs.setUserId(userId);
+        CommissionSearchDto cs = generateSearchDto(name, artistId, dateConstraint, priceRangeLower, priceRangeUpper, pageNr, userId);
 
         return commissionService.searchCommissions(cs).stream().map(commissionMapper::commissionToSimpleCommissionDto).collect(Collectors.toList());
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/search/detailed")
+    @Operation(summary = "Get all detailed commissions filtered")
+    @Transactional
+    public List<DetailedCommissionDto> searchDetailed(@RequestParam(defaultValue = "", name = "name") String name,
+                                                       @RequestParam(defaultValue = "0", name = "pageNr") String pageNr,
+                                                       @RequestParam(defaultValue = "50000", name = "priceRangeUpper") String priceRangeUpper,
+                                                       @RequestParam(defaultValue = "0", name = "priceRangeLower") String priceRangeLower,
+                                                       @RequestParam(defaultValue = "", name = "artistId") String artistId,
+                                                       @RequestParam(defaultValue = "", name = "userId") String userId,
+                                                       @RequestParam(defaultValue = "None", name = "date") String dateConstraint
+    ) {
+        log.info("A user is trying to search for detailed commissions.");
+        CommissionSearchDto cs = generateSearchDto(name, artistId, dateConstraint, priceRangeLower, priceRangeUpper, pageNr, userId);
+
+        return commissionService.searchCommissions(cs).stream().map(commissionMapper::commissionToDetailedCommissionDto).collect(Collectors.toList());
     }
 
     @PermitAll
@@ -134,5 +138,25 @@ public class CommissionEndpoint {
             log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    private CommissionSearchDto generateSearchDto(String name, String artistId, String dateConstraint, String priceRangeLower, String priceRangeUpper, String pageNr, String userId) {
+        CommissionSearchDto cs = new CommissionSearchDto();
+        cs.setName(name.toLowerCase());
+        cs.setArtistId(artistId);
+
+        if (dateConstraint.toLowerCase().contains(SearchConstraint.ASC.toString().toLowerCase())) {
+            cs.setSearchConstraint(SearchConstraint.ASC);
+        } else if (dateConstraint.toLowerCase().contains(SearchConstraint.DESC.toString().toLowerCase())) {
+            cs.setSearchConstraint(SearchConstraint.DESC);
+        } else {
+            cs.setSearchConstraint(SearchConstraint.None);
+        }
+
+        cs.setPriceRangeLower(priceRangeLower);
+        cs.setPriceRangeUpper(priceRangeUpper);
+        cs.setPageNr(pageNr);
+        cs.setUserId(userId);
+        return cs;
     }
 }

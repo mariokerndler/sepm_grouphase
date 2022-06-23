@@ -1,0 +1,13 @@
+<div>
+  <span style="font-weight: bold;font-size: 1.3rem;">Reviews</span>
+</div>
+
+<div *ngIf="!hasReviews">
+  <span class="accent-color notification-header">You dont have any notifications!</span>
+</div>
+
+<div *ngIf="hasReviews">
+  <div *ngFor="let review of reviews">
+    <app-review-card [review]="review"></app-review-card>
+  </div>
+</div>

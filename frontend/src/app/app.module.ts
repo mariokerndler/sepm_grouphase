@@ -79,6 +79,9 @@ import { TermsOfServiceComponent } from './components/footer/terms-of-service/te
 import { PrivacyPolicyComponent } from './components/footer/privacy-policy/privacy-policy.component';
 import { ContactComponent } from './components/footer/contact/contact.component';
 import { AboutComponent } from './components/footer/about/about.component';
+import { ReviewDialogComponent } from './components/artist-page/review-dialog/review-dialog.component';
+import { ReviewPageComponent } from './components/artist-page/review-page/review-page.component';
+import { ReviewCardComponent } from './components/artist-page/review-page/review-card/review-card.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +124,10 @@ import { AboutComponent } from './components/footer/about/about.component';
     TermsOfServiceComponent,
     PrivacyPolicyComponent,
     ContactComponent,
-    AboutComponent
+    AboutComponent,
+    ReviewDialogComponent,
+    ReviewPageComponent,
+    ReviewCardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {CommissionService} from '../../../services/commission.service';
-import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 import {CommissionSearchDto} from '../../../dtos/commissionSearchDto';
 import {ArtistService} from '../../../services/artist.service';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {LabelType, Options} from '@angular-slider/ngx-slider';
 import {SearchConstraint} from '../../../global/SearchConstraint';
 import {CommissionStatus} from '../../../global/CommissionStatus';
+import {CommissionDto} from '../../../dtos/commissionDto';
 
 @Component({
   selector: 'app-commission-feed',
@@ -41,13 +41,16 @@ export class CommissionFeedComponent implements OnInit {
 
 
   searchCom: CommissionSearchDto = {
-    date: SearchConstraint.none, name: '', priceRange: [0, 5000], artistId: '', userId: '', pageNr: 0
+    date: SearchConstraint.none, name: '', priceRange: [0, 10000], artistId: '', userId: '', pageNr: 0
   };
-  commissions: SimpleCommissionDto[];
+  commissions: CommissionDto[];
   hasLoaded = false;
   artists: ArtistDto[];
 
-  constructor(private commissionService: CommissionService, private router: Router, private artistService: ArtistService) {
+  constructor(
+    private commissionService: CommissionService,
+    private router: Router,
+    private artistService: ArtistService) {
   }
 
   ngOnInit(): void {
@@ -56,14 +59,9 @@ export class CommissionFeedComponent implements OnInit {
   }
 
   public search(): void {
-    console.log(this.searchCom);
-    this.commissionService.filterCommissions(this.searchCom).subscribe(data => {
+    this.commissionService.filterDetailedCommissions(this.searchCom).subscribe(data => {
       this.commissions = data;
     });
-  }
-
-  public routeToCommissionCreation(): void {
-    this.router.navigate(['/commisson-create']);
   }
 
   public isListed(status: CommissionStatus): boolean {
@@ -77,7 +75,7 @@ export class CommissionFeedComponent implements OnInit {
   }
 
   private fetchCommissions() {
-    this.commissionService.getAllCommissions().subscribe({
+    this.commissionService.filterDetailedCommissions(this.searchCom).subscribe({
       next: (loadedCommissions) => {
         this.commissions = loadedCommissions;
         this.hasLoaded = true;

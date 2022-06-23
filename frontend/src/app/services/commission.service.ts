@@ -27,6 +27,15 @@ export class CommissionService {
               private globals: Globals) {
   }
 
+  private static generateSearchParams(searchCom: CommissionSearchDto): HttpParams {
+    return new HttpParams()
+      .set('priceRangeUpper', searchCom.priceRange[1])
+      .set('priceRangeLower', searchCom.priceRange[0])
+      .set('dateSearch', searchCom.date.toString())
+      .set('name', searchCom.name)
+      .set('pageNr', searchCom.pageNr == null ? '0' : searchCom.pageNr)
+      .set('artistId', searchCom.artistId);
+  }
 
   /**
    * Fetches all commissions stored in the system
@@ -100,13 +109,7 @@ export class CommissionService {
 
 
   filterCommissions(searchCom: CommissionSearchDto, errorAction?: () => void): Observable<SimpleCommissionDto[]> {
-    const params = new HttpParams()
-      .set('priceRangeUpper', searchCom.priceRange[1])
-      .set('priceRangeLower', searchCom.priceRange[0])
-      .set('dateSearch', searchCom.date.toString())
-      .set('name', searchCom.name)
-      .set('pageNr', searchCom.pageNr == null ? '0' : searchCom.pageNr)
-      .set('artistId', searchCom.artistId);
+    const params = CommissionService.generateSearchParams(searchCom);
     const searchOptions = {
       headers: this.headers,
       params
@@ -117,8 +120,20 @@ export class CommissionService {
           if (errorAction != null) {
             errorAction();
           }
-          return this.notificationService.notifyUserAboutFailedOperation<SimpleCommissionDto[]>('Searching Commissions')(err);
+          return this.notificationService.notifyUserAboutFailedOperation<SimpleCommissionDto[]>('Searching commissions')(err);
         })
       );
   }
+
+  filterDetailedCommissions = (searchCom: CommissionSearchDto): Observable<CommissionDto[]> => {
+    const params = CommissionService.generateSearchParams(searchCom);
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+    return this.http.get<CommissionDto[]>(this.commissionBaseUri + '/search/detailed', searchOptions)
+      .pipe(
+        catchError((err) => this.notificationService.notifyUserAboutFailedOperation<CommissionDto[]>('Searching detailed commissions')(err))
+      );
+  };
 }

@@ -1,12 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommissionService} from '../../../services/commission.service';
-import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 import {CommissionSearchDto} from '../../../dtos/commissionSearchDto';
 import {SearchConstraint} from '../../../global/SearchConstraint';
-
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ArtistDto, UserRole} from '../../../dtos/artistDto';
-
+import {CommissionDto} from '../../../dtos/commissionDto';
 
 @Component({
   selector: 'app-commission-page',
@@ -16,33 +14,31 @@ import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 export class CommissionPageComponent implements OnInit {
   @Input() user: ApplicationUserDto;
   @Input() artist: ArtistDto;
-  commissions: SimpleCommissionDto[];
+  commissions: CommissionDto[];
   hasLoaded = false;
   searchCom: CommissionSearchDto = {
     date: SearchConstraint.asc, name: '', priceRange: [0, 500000], userId: '', artistId: '', pageNr: 0
   };
 
-  constructor(private commissionService: CommissionService) {
+  constructor(
+    private commissionService: CommissionService) {
   }
 
   ngOnInit(): void {
     if (this.user.userRole === UserRole.artist) {
       //search for artist  field
       this.searchCom.artistId = this.user.id.toString();
-      console.log('searching for ' + this.searchCom.artistId + ' as artist');
     } else if (this.user.userRole === UserRole.user) {
       //search for customer field
       this.searchCom.userId = this.user.id.toString();
-      console.log('searching for ' + this.searchCom.userId + ' as user');
     }
     this.searchCommissions();
   }
 
-  public searchCommissions(): void {
-    //console.log(this.searchCom);
-    this.commissionService.filterCommissions(this.searchCom).subscribe(data => {
-      console.log(this.searchCom);
-      this.commissions = data;
-    });
+  searchCommissions(): void {
+    this.commissionService.filterDetailedCommissions(this.searchCom).subscribe(
+      (data) => {
+        this.commissions = data;
+      });
   }
 }

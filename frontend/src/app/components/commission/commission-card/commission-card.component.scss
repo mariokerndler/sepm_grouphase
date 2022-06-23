@@ -22,9 +22,8 @@
   border: 4px #fb9fa4 solid;
   background: #fb9fa4;
   color: #434F6A;
-  cursor: pointer;
+  //cursor: pointer;
   transform: scale(1.05);
-
 }
 
 mat-card-title {
@@ -34,7 +33,7 @@ mat-card-title {
 }
 
 .mat-card-content {
-  height: 180px;
+  height: 160px;
 }
 
 mat-card-actions {

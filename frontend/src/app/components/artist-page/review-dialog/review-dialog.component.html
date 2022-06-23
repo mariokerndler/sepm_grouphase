@@ -1,0 +1,33 @@
+<h1>Write your review</h1>
+<div fxLayout="column" fxLayoutGap="10px">
+  <div>
+    <button
+      mat-icon-button color="primary"
+      *ngFor="let ratingId of ratingArr; index as i"
+      [id]="'star_' + i"
+      (click)="onClick(i + 1)"
+      [matTooltip]="ratingId + 1"
+      matTooltipPosition="above">
+      <mat-icon>
+        {{showIcon(i)}}
+      </mat-icon>
+    </button>
+    <p class="body-2">
+      Your rated <span class="body-2">{{rating}}</span> / <span class="body-2">{{globals.maxStarRating}}</span>
+    </p>
+  </div>
+
+  <div>
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Review text</mat-label>
+      <textarea matInput rows="5" required [(ngModel)]="reviewText"></textarea>
+      <mat-error *ngIf="!isValidReviewText()">
+        Review text is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <button [disabled]="!isValidReviewText()" mat-flat-button color="primary" (click)="submitReview()">Submit review</button>
+</div>
+
+

@@ -31,5 +31,6 @@ public final class NotificationMessages {
     public static final String COMMISSION_STATUS_COMPLETED_TITLE = "The commission has been completed.";
     public static final String COMMISSION_STATUS_IN_PROGRESS_TITLE = "The commission is now in progress.";
     public static final String COMMISSION_STATUS_NEGOTIATING = "The commission information has been edited.";
+    public static final String COMMISSION_PAID_FOR = "The commission has been paid for.";
 
 }

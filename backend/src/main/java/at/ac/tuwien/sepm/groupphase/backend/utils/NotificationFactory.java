@@ -55,6 +55,10 @@ public final class NotificationFactory {
                 return createNotification(
                     NotificationMessages.COMMISSION_STATUS_NEGOTIATING);
             }
+            case COMMISSION_PAID_FOR -> {
+                return createNotification(
+                    NotificationMessages.COMMISSION_PAID_FOR);
+            }
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
     }

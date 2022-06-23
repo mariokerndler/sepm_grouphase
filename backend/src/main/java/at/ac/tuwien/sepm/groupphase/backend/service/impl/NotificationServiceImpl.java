@@ -132,6 +132,16 @@ public class NotificationServiceImpl implements NotificationService {
         notifications.forEach(this::saveNotification);
     }
 
+    @Override
+    public void createNotificationByCommissionAfterPayment(Commission commission) {
+        Notification notification = NotificationFactory.createNotification(
+            NotificationType.COMMISSION_PAID_FOR,
+            commission.getId(),
+            commission.getArtist());
+
+        saveNotification(notification);
+    }
+
     private List<Notification> addNewNotificationsIfCandidateAddedRemoved(
         List<Artist> oldCandidates,
         List<Artist> newCandidates,

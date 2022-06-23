@@ -34,7 +34,8 @@ export class CommissionService {
       .set('dateSearch', searchCom.date.toString())
       .set('name', searchCom.name)
       .set('pageNr', searchCom.pageNr == null ? '0' : searchCom.pageNr)
-      .set('artistId', searchCom.artistId);
+      .set('artistId', searchCom.artistId)
+      .set('userId', searchCom.userId);
   }
 
   /**

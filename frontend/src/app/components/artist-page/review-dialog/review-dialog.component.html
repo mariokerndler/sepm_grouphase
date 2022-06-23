@@ -1,21 +1,6 @@
 <h1>Write your review</h1>
 <div fxLayout="column" fxLayoutGap="10px">
-  <div>
-    <button
-      mat-icon-button color="primary"
-      *ngFor="let ratingId of ratingArr; index as i"
-      [id]="'star_' + i"
-      (click)="onClick(i + 1)"
-      [matTooltip]="ratingId + 1"
-      matTooltipPosition="above">
-      <mat-icon>
-        {{showIcon(i)}}
-      </mat-icon>
-    </button>
-    <p class="body-2">
-      Your rated <span class="body-2">{{rating}}</span> / <span class="body-2">{{globals.maxStarRating}}</span>
-    </p>
-  </div>
+  <app-review-star (ratingUpdated)="updateRating($event)" [disableInteraction]=false></app-review-star>
 
   <div>
     <mat-form-field class="full-width" appearance="fill">

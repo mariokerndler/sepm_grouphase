@@ -59,7 +59,7 @@
           <mat-label class="accent-color" color="accent-color">Your offer (in Euro)</mat-label>
 
           <input formControlName="price" matInput min="0" placeholder="Price"
-                 required step="any" type="number">
+                 required step="any" type="number" [max]="globals.maxCommissionPrice">
         </mat-form-field>
         <br>
         <p class="creation-p">A commission can contain multiple feedback rounds. This means, during the art creation

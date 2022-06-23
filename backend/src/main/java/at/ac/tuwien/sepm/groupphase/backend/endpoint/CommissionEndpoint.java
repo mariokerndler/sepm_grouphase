@@ -98,10 +98,10 @@ public class CommissionEndpoint {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post commission")
-    public void postCommission(@Valid @RequestBody DetailedCommissionDto commissionDto) {
+    public DetailedCommissionDto postCommission(@Valid @RequestBody DetailedCommissionDto commissionDto) {
         log.info("A user is trying to create a commission.");
         try {
-            commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto));
+            return commissionMapper.commissionToDetailedCommissionDto(commissionService.saveCommission(commissionMapper.detailedCommissionDtoToCommission(commissionDto)));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());

@@ -2,12 +2,14 @@
   <span style="font-weight: bold;font-size: 1.3rem;">Reviews</span>
 </div>
 
+<br>
+
 <div *ngIf="!hasReviews">
-  <span class="accent-color notification-header">You dont have any notifications!</span>
+  <span class="accent-color notification-header">You dont have any reviews!</span>
 </div>
 
-<div *ngIf="hasReviews">
-  <div *ngFor="let review of reviews">
+<div *ngIf="hasReviews" fxLayout="row grid" fxLayoutGap="10px">
+  <div *ngFor="let review of reviews" fxFlex="auto" class="review-page-card">
     <app-review-card [review]="review"></app-review-card>
   </div>
 </div>

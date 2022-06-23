@@ -278,7 +278,7 @@ public class UserDataGenerator {
 
         Commission c = generateCommission2(artists.get(0), user);
         commissionService.saveCommission(c);
-        Commission d = generateCommission1(artists.get(1), user);
+        Commission d = generateCommission1(artists.get(1), users.get(4));
         commissionService.saveCommission(d);
         Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);

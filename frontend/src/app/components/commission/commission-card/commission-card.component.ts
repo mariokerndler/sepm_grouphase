@@ -7,6 +7,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ReviewDialogComponent} from '../../artist-page/review-dialog/review-dialog.component';
 import {AuthService} from '../../../services/auth.service';
 import {CommissionDto} from '../../../dtos/commissionDto';
+import {CommissionStatus} from '../../../global/CommissionStatus';
 
 @Component({
   selector: 'app-commission-card',
@@ -32,8 +33,8 @@ export class CommissionCardComponent implements OnInit {
   }
 
   canWriteReview(): boolean {
-    return (this.auth.getUserId() === this.commission.customerDto.id);
-    //return this.commission.status === CommissionStatus.completed;
+    return (this.auth.getUserId() === this.commission.customerDto.id)
+      && this.commission.status === CommissionStatus.completed;
   }
 
   openReviewDialog() {

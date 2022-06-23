@@ -22,6 +22,8 @@ import {CommissionStatus} from '../../../global/CommissionStatus';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
+import {Globals} from '../../../global/globals';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -85,11 +87,17 @@ export class CommissionCreationComponent implements OnInit {
   userId: string;
   customer: ApplicationUserDto;
 
-  constructor(private artworkService: ArtworkService, private artistService: ArtistService,
-              private tagService: TagService, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
+  constructor(private artworkService: ArtworkService,
+              private artistService: ArtistService,
+              private tagService: TagService,
+              private _formBuilder: FormBuilder,
+              breakpointObserver: BreakpointObserver,
               public globalFunctions: GlobalFunctions,
-              private commissionService: CommissionService, private notificationService: NotificationService,
-              private userService: UserService) {
+              private commissionService: CommissionService,
+              private notificationService: NotificationService,
+              private userService: UserService,
+              public globals: Globals,
+              private router: Router) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
@@ -145,9 +153,7 @@ export class CommissionCreationComponent implements OnInit {
     }
   }
 
-
   submitCommission() {
-
     this.commission.title = this.commissionForm.value.title;
     this.commission.instructions = this.commissionForm.value.description;
     this.commission.price = this.commissionForm.value.price;
@@ -155,13 +161,14 @@ export class CommissionCreationComponent implements OnInit {
     this.commission.customerDto = this.customer;
     this.commission.referencesDtos.forEach(r=> r.imageUrl='');
     this.commission.deadlineDate = formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
-    this.commissionService.createCommission(this.commission).subscribe(ret => {
-
-      }, (error: HttpErrorResponse) => {
+    this.commissionService.createCommission(this.commission).subscribe(
+      ret => {
+        this.navigateToCommissionDetails(ret.id);
+      },
+      (error: HttpErrorResponse) => {
         this.notificationService.displayErrorSnackbar(error.error);
       }, () => {
         this.notificationService.displaySuccessSnackbar('Commission created successfully');
-
       }
     );
   }
@@ -194,5 +201,12 @@ export class CommissionCreationComponent implements OnInit {
 
   formatEndDate(date: string) {
     return (new Date(date)).toLocaleDateString();
+  }
+
+  private navigateToCommissionDetails(id: number) {
+    this.router.navigate(['/commissions', id])
+      .catch((_) => {
+        this.notificationService.displayErrorSnackbar('Could not route to this site.');
+      });
   }
 }

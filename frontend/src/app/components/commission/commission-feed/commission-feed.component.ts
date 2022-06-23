@@ -8,6 +8,7 @@ import {LabelType, Options} from '@angular-slider/ngx-slider';
 import {SearchConstraint} from '../../../global/SearchConstraint';
 import {CommissionStatus} from '../../../global/CommissionStatus';
 import {CommissionDto} from '../../../dtos/commissionDto';
+import {Globals} from '../../../global/globals';
 
 @Component({
   selector: 'app-commission-feed',
@@ -41,7 +42,7 @@ export class CommissionFeedComponent implements OnInit {
 
 
   searchCom: CommissionSearchDto = {
-    date: SearchConstraint.none, name: '', priceRange: [0, 10000], artistId: '', userId: '', pageNr: 0
+    date: SearchConstraint.none, name: '', priceRange: [0, 100000], artistId: '', userId: '', pageNr: 0
   };
   commissions: CommissionDto[];
   hasLoaded = false;
@@ -50,10 +51,13 @@ export class CommissionFeedComponent implements OnInit {
   constructor(
     private commissionService: CommissionService,
     private router: Router,
-    private artistService: ArtistService) {
+    private artistService: ArtistService,
+    public globals: Globals) {
   }
 
   ngOnInit(): void {
+    this.options.ceil = this.globals.maxCommissionPrice;
+
     this.fetchCommissions();
     this.loadAllArtists();
   }
@@ -75,6 +79,8 @@ export class CommissionFeedComponent implements OnInit {
   }
 
   private fetchCommissions() {
+    this.searchCom.priceRange = [0, this.globals.maxCommissionPrice];
+
     this.commissionService.filterDetailedCommissions(this.searchCom).subscribe({
       next: (loadedCommissions) => {
         this.commissions = loadedCommissions;

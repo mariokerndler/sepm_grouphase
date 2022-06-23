@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Globals} from '../../../global/globals';
 import {CommissionService} from '../../../services/commission.service';
 import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-review-dialog',
@@ -11,7 +12,7 @@ import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 })
 export class ReviewDialogComponent{
 
-  rating = 0;
+  rating = 5;
 
   reviewText = '';
   private simpleCommission: SimpleCommissionDto;
@@ -31,6 +32,7 @@ export class ReviewDialogComponent{
 
   onNoClick(): void {
     this.dialogRef.close();
+    window.location.reload();
   }
 
   isValidReviewText(): boolean {

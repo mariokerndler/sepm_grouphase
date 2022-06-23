@@ -74,6 +74,7 @@ export class CommissionDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getCommission();
     this.getUserId();
+    this.getUserRole();
 
   }
 
@@ -81,6 +82,7 @@ export class CommissionDetailsComponent implements OnInit {
     const id = localStorage.getItem('userId');
     if (id !== null) {
       this.userId = id;
+      console.log(id);
     }
   }
 

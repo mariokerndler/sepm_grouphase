@@ -10,16 +10,16 @@
         <p class="creation-p">Start of by giving your commission a fitting title. The title should represent your idea
           and give a short glimpse into your concept</p>
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color" color="accent-color">Title</mat-label>
-          <input formControlName="title" matInput placeholder="Title" required>
+          <mat-label>Title</mat-label>
+          <input formControlName="title" matInput required>
         </mat-form-field>
 
         <br>
         <p class="creation-p">Now its time to describe the Artwork that you envision. Try to portray your wishes as
           accurate and precise as possible, so that the artists can understand and visualize your thoughts.</p>
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color" color="accent-color">Description</mat-label>
-          <textarea formControlName="description" matInput placeholder="Description" required rows="8">
+          <mat-label>Description</mat-label>
+          <textarea formControlName="description" matInput  required rows="8">
         </textarea>
         </mat-form-field>
         <div class="stepper_button">
@@ -35,17 +35,9 @@
           these values, can still be altered at a later stage of the commission.</p>
 
         <p class="creation-p">At first fill in the date which may be the deadline of the commission.</p>
-        <!--
-        <mat-form-field class="input-field" appearance="fill">
-          <mat-label class="accent-color" color="accent-color">Delivery Date</mat-label>
-          <input formControlName="date" matInput placeholder=" " required
-                 type="date">
-        </mat-form-field>
-
-        -->
 
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color">Delivery Date</mat-label>
+          <mat-label>Delivery Date</mat-label>
           <input [matDatepicker]="picker" [min]="startDate" formControlName="date" matInput required>
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
@@ -56,9 +48,9 @@
         <p class="creation-p">Now enter the amount of money, that you can offer the artist for their service. (in
           Euro)</p>
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color" color="accent-color">Your offer (in Euro)</mat-label>
+          <mat-label >Your offer (in Euro)</mat-label>
 
-          <input formControlName="price" matInput min="0" placeholder="Price"
+          <input formControlName="price" matInput min="0"
                  required step="any" type="number">
         </mat-form-field>
         <br>
@@ -69,12 +61,12 @@
           beneficial.</p>
         <br>
         <div class="slider">
-          <mat-label class="accent-color" color="accent-color">Feed back rounds:</mat-label>
+          <mat-label class="accent-color" >Feed back rounds:</mat-label>
           <br>
-          <mat-label class="accent-color">0</mat-label>
-          <mat-slider [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
+          <mat-label class="accent-color" >0</mat-label>
+          <mat-slider color="primary" [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
                       max="5" min="0" thumbLabel tickInterval="1"></mat-slider>
-          <mat-label class="accent-color">5</mat-label>
+          <mat-label class="accent-color" >5</mat-label>
         </div>
         <div class="stepper_button">
           <button mat-button matStepperPrevious>
@@ -112,7 +104,7 @@
                    fxLayoutAlign="stretch"
               >
 
-                <button (click)="removeReference(i)" class="close-button" color="accent" mat-flat-button>
+                <button (click)="removeReference(i)" class="close-button" color="primary" mat-flat-button>
                   <mat-icon>delete</mat-icon>
                 </button>
                 <div class="image">

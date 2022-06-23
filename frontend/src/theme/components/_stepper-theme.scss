@@ -34,7 +34,11 @@
  }
 
   .mat-horizontal-stepper-content{
-    color: mat.get-color-from-palette($primary-palette, 100) !important;
+    color: mat.get-color-from-palette($primary-palette, 100);
+
+    .mat-form-field{
+      color: mat.get-color-from-palette($primary-palette, 200) !important;
+    }
   }
 
 

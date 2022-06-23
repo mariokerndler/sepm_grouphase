@@ -34,7 +34,8 @@ export class CommissionCardComponent implements OnInit {
 
   canWriteReview(): boolean {
     return (this.auth.getUserId() === this.commission.customerDto.id)
-      && this.commission.status === CommissionStatus.completed;
+      && this.commission.status === CommissionStatus.completed
+      && this.commission.reviewDto == null;
   }
 
   openReviewDialog() {

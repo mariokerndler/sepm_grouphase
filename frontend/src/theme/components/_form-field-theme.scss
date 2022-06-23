@@ -46,9 +46,15 @@
     }
   }
 
+  mat-datepicker-toggle{
+    color: mat.get-color-from-palette($primary-palette, 200) !important;
+  }
+
   .mat-hint{
     color: mat.get-color-from-palette($primary-palette, 100) !important;
   }
+
+
 
 
 

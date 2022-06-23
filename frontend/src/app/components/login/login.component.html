@@ -21,8 +21,9 @@
       <input aria-describedby="emailHelp" class="form-control" formControlName="email" id="inputEmail" matInput
              name="email">
       <mat-error *ngIf="loginForm.controls.email.errors">
-        <small *ngIf="loginForm.controls.email.errors.required">Your email is required! </small>
-        <small *ngIf="loginForm.controls.email.errors.email">The email you entered is invalid! </small>
+        <mat-error *ngIf="loginForm.controls.email.errors.required">Your email is required! </mat-error>
+        <mat-error *ngIf="loginForm.controls.email.errors.email">The email you entered is invalid! </mat-error>
+        <mat-error *ngIf="loginForm.controls.email.errors.maxlength">Your email is too long!</mat-error>
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-group">
@@ -35,9 +36,10 @@
         <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
       <mat-error *ngIf="loginForm.controls.password.errors">
-        <small *ngIf="loginForm.controls.password.errors.required">Your password is required!</small>
-        <small *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters
-          long!</small>
+        <mat-error *ngIf="loginForm.controls.password.errors.required">Your password is required!</mat-error>
+        <mat-error *ngIf="loginForm.controls.password.errors.minlength">Your password must be at least 8 characters
+          long!</mat-error>
+        <mat-error *ngIf="loginForm.controls.password.errors.maxlength">Your password is too long!</mat-error>
       </mat-error>
     </mat-form-field>
     <button (click)="loginUser()" cdkFocusInitial class="submit-button" color="primary" mat-flat-button

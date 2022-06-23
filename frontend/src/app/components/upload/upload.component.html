@@ -20,7 +20,9 @@
            name="artworkName"
            type="text">
     <mat-error *ngIf="uploadForm.controls.artworkName.errors">
-      <small *ngIf="uploadForm.controls.artworkName.errors.required">An artwork name is required! </small>
+      <span *ngIf="uploadForm.controls.artworkName.errors.required">An artwork name is required! </span>
+      <span *ngIf="uploadForm.controls.artworkName.errors.pattern">The artwork name contains invalid symbols! </span>
+      <span *ngIf="uploadForm.controls.artworkName.errors.maxlength">The name you entered is too long, only 50 Characters are allowed! </span>
     </mat-error>
   </mat-form-field>
   <br>
@@ -34,6 +36,11 @@
               formControlName="description"
               matInput
     ></textarea>
+    <mat-error *ngIf="uploadForm.controls.description.errors">
+      <span *ngIf="uploadForm.controls.description.errors.required">An artwork description is required! </span>
+      <span *ngIf="uploadForm.controls.description.errors.pattern">The artwork description contains invalid symbols! </span>
+      <span *ngIf="uploadForm.controls.description.errors.maxlength">The description you entered is too long, only 250 Characters are allowed! </span>
+    </mat-error>
   </mat-form-field>
   <input #fileInput
          (change)="fileSelected($event)"

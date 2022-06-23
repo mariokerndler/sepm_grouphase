@@ -1,6 +1,11 @@
+import {ArtistDto} from './artistDto';
+import {ApplicationUserDto} from './applicationUserDto';
+
 export class ReviewDto {
-  id: number;
-  reviewText: string;
+  id?: number;
+  artistDto: ArtistDto;
+  customerDto: ApplicationUserDto;
+  text: string;
   commissionId: number;
-  rating: number;
+  starRating: number;
 }

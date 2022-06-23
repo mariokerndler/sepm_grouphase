@@ -75,7 +75,7 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Override
-    public void saveCommission(Commission c) throws IOException {
+    public Commission saveCommission(Commission c) throws IOException {
         log.trace("calling saveCommission() ...");
         commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
 
@@ -86,8 +86,9 @@ public class CommissionServiceImpl implements CommissionService {
                 r.setImageUrl(this.ifm.writeReferenceImage(c, r));
             }
         }
-        this.commissionRepo.save(c);
+        var commission = this.commissionRepo.save(c);
         log.info("Saved commission with id='{}'", c.getId());
+        return commission;
     }
 
     @Override

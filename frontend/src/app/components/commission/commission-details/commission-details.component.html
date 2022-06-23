@@ -160,15 +160,18 @@
           <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
         </div>
         <br>
-        <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
+        <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary"
+                mat-button>
           <mat-icon color="primary">upload</mat-icon>
           <span>Upload finished image</span>
         </button>
       </form>
     </div>
-    <button *ngIf="commission.status.toString()==='COMPLETED'" color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/timeline">View Timeline</button>
-    <div *ngIf="allowPayment">
-      <app-checkout></app-checkout>
+    <button *ngIf="commission.status.toString()==='COMPLETED'" color="primary" mat-flat-button
+            routerLink="/commissions/{{commission.id}}/timeline">View Timeline
+    </button>
+    <div>
+      <app-checkout [commission]="commission"></app-checkout>
     </div>
   </div>
 </div>

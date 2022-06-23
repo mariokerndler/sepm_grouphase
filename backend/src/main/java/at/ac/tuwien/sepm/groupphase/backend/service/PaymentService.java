@@ -1,9 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import com.stripe.model.checkout.Session;
+
 public interface PaymentService {
 
     /**
-     * Fetches all artists saved in the database and returns them.
+     * Updates commission after successful payment.
      */
-    void fulfillOrder();
+    void updateCommissionAfterPayment(Session stripeObject);
 }

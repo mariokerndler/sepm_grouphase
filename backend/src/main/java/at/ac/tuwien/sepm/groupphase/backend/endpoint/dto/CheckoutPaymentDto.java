@@ -9,13 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 public class CheckoutPaymentDto {
 
-    // the product name
-    private String name;
+    // Commission that should be paid
+    private Long commissionId;
     //  currency like usd, eur ...
     private String currency;
     // our success and cancel url stripe will redirect to this links
     private String successUrl;
     private String cancelUrl;
-    private long amount;
-    private long quantity;
 }

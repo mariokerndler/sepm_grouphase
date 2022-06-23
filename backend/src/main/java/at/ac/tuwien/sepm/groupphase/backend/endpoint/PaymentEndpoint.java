@@ -1,10 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.CheckoutPaymentDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
+import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
+import at.ac.tuwien.sepm.groupphase.backend.service.PaymentService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
+import com.stripe.model.EventDataObjectDeserializer;
+import com.stripe.model.StripeObject;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -26,6 +32,15 @@ public class PaymentEndpoint {
 
     // TODO: Change this to real endpoint key after finishing to test with cli
     private static final String endpointSecret = "whsec_bb6e0c9d52dcbe770935f0618a4aabc30223c2a3c3bde5273510edb2dbb5fc2b";
+    private final CommissionService commissionService;
+    private final CommissionValidator commissionValidator;
+    private final PaymentService paymentService;
+
+    public PaymentEndpoint(CommissionService commissionService, CommissionValidator commissionValidator, PaymentService paymentService) {
+        this.commissionService = commissionService;
+        this.commissionValidator = commissionValidator;
+        this.paymentService = paymentService;
+    }
 
     /**
      * Payment with Stripe checkout page.
@@ -36,6 +51,14 @@ public class PaymentEndpoint {
     @PostMapping("/checkout")
     @Operation(summary = "Authenticate and redirect to stripe checkout page")
     public Map<String, String> paymentWithCheckoutPage(@RequestBody CheckoutPaymentDto payment) throws StripeException {
+
+        Commission commission = commissionService.findById(payment.getCommissionId());
+
+        // Check that commission can be paid for
+        commissionValidator.throwExceptionIfCommissionCanNotBePayed(commission);
+
+        // TODO: Differentiate between big and small commissions concerning price and name ?
+
         // We initialize stripe object with the api key
         init();
         // We create a stripe session parameters object
@@ -46,14 +69,15 @@ public class PaymentEndpoint {
             .setCancelUrl(
                 payment.getCancelUrl())
             .addLineItem(
-                SessionCreateParams.LineItem.builder().setQuantity(payment.getQuantity())
+                SessionCreateParams.LineItem.builder().setQuantity(1L)
                     .setPriceData(
                         SessionCreateParams.LineItem.PriceData.builder()
-                            .setCurrency(payment.getCurrency()).setUnitAmount(payment.getAmount())
+                            .setCurrency(payment.getCurrency()).setUnitAmount((long) commission.getPrice() * 100)
                             .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
-                                .builder().setName(payment.getName()).build())
+                                .builder().setName(commission.getTitle()).build())
                             .build())
                     .build())
+            .putMetadata("commission_id", commission.getId().toString())
             .build();
         // create a stripe session
         Session session = Session.create(params);
@@ -90,12 +114,16 @@ public class PaymentEndpoint {
         }
 
         // Handle the checkout.session.completed event
-        /*if ("checkout.session.completed".equals(event.getType())) {
-            Session session = (Session) event.getDataObjectDeserializer().getObject();
-
-            // Fulfill the purchase...
-            fulfillOrder(session);
-        }*/
+        if ("checkout.session.completed".equals(event.getType())) {
+            EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
+            if (dataObjectDeserializer.getObject().isPresent()) {
+                StripeObject stripeObject = dataObjectDeserializer.getObject().get();
+                paymentService.updateCommissionAfterPayment((Session) stripeObject);
+            } else {
+                throw new IllegalStateException(
+                    String.format("Unable to deserialize event data object for %s", event));
+            }
+        }
     }
 
     private static void init() {

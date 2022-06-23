@@ -68,7 +68,7 @@ public class ImageFileManager {
         log.trace("calling writeReferenceImage() ...");
 
 
-        String relPath = url;
+        String relPath = url  + "." + r.getFileType().toString().toLowerCase(Locale.ROOT);
         log.info(relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             outputStream.write(r.getImageData());
@@ -84,7 +84,7 @@ public class ImageFileManager {
         log.trace("calling writeSketchImage() ...");
         log.info("calling writeReferenceImage() ...");
         String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
-        relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath);
+        relPath += "\\" + ImageDataPaths.sketchIdentifier + countFiles(ImageDataPaths.assetAbsoluteLocation + relPath)  + "." + s.getFileType().toString().toLowerCase(Locale.ROOT);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             log.info(s.toString() + " " + s.getImageData().length);
             outputStream.write(s.getImageData());
@@ -99,7 +99,7 @@ public class ImageFileManager {
     public String writeCommissionArtwork(Commission c, Artwork aw) {
         log.trace("calling writeArtworkImage() ...");
         String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
-        relPath += "\\" + c.getTitle();
+        relPath += "\\" + c.getTitle()  + "." + aw .getFileType().toString().toLowerCase(Locale.ROOT);
         if (aw.getImageData() == null) {
             log.info(ImageDataPaths.assetAbsoluteLocation + relPath);
             log.info("Creating empty image");

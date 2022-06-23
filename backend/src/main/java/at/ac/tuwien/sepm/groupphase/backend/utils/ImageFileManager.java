@@ -33,7 +33,7 @@ public class ImageFileManager {
         }
     }
 
-    public void createCommission(Commission c) throws IOException {
+    public void createCommission(Commission c) {
         log.trace("calling createCommission() ...");
         createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.commissionLocation + c.getCustomer().getId() + c.getTitle());
     }

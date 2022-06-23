@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +74,7 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Override
-    public void saveCommission(Commission c) throws IOException {
+    public void saveCommission(Commission c) {
         log.trace("calling saveCommission() ...");
         commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
 

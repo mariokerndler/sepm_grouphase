@@ -2,7 +2,7 @@
   <mat-horizontal-stepper #stepper (selectionChange)="setIndex($event)" class="comm_stepper"
                           fxLayout="column"
                           fxLayoutAlign="center stretch">
-    <mat-step [stepControl]="commissionForm" fxLayout="column">
+    <mat-step [stepControl]="commissionForm" fxLayout="column" [hasError]="(commissionForm.controls.title.errors || commissionForm.controls.description.errors) && hasSubmitted" errorMessage="An error occurred on this page">
       <form [formGroup]="commissionForm">
         <ng-template matStepLabel>Commission Details</ng-template>
 
@@ -10,17 +10,26 @@
         <p class="creation-p">Start of by giving your commission a fitting title. The title should represent your idea
           and give a short glimpse into your concept</p>
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color" color="accent-color">Title</mat-label>
-          <input formControlName="title" matInput placeholder="Title" required>
+          <mat-label>Title</mat-label>
+          <input formControlName="title" matInput required>
+          <mat-error *ngIf="commissionForm.controls.title.errors">
+            <span *ngIf="commissionForm.controls.title.errors.required">The title is required! </span>
+            <span *ngIf="commissionForm.controls.title.errors.maxlength">The title you entered is too long, only 100 Characters are allowed! </span>
+            <span *ngIf="commissionForm.controls.title.errors.pattern">Your first name contains invalid symbols!</span>
+          </mat-error>
         </mat-form-field>
 
-        <br>
+        <br><br>
         <p class="creation-p">Now its time to describe the Artwork that you envision. Try to portray your wishes as
           accurate and precise as possible, so that the artists can understand and visualize your thoughts.</p>
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color" color="accent-color">Description</mat-label>
-          <textarea formControlName="description" matInput placeholder="Description" required rows="8">
+          <mat-label>Description</mat-label>
+          <textarea formControlName="description" matInput  required rows="8">
         </textarea>
+          <mat-error *ngIf="commissionForm.controls.description.errors">
+            <span *ngIf="commissionForm.controls.description.errors.required">The description is required! </span>
+            <span *ngIf="commissionForm.controls.description.errors.maxlength">The description you entered is too long, only 500 Characters are allowed! </span>
+          </mat-error>
         </mat-form-field>
         <div class="stepper_button">
           <button mat-button matStepperNext>
@@ -35,33 +44,33 @@
           these values, can still be altered at a later stage of the commission.</p>
 
         <p class="creation-p">At first fill in the date which may be the deadline of the commission.</p>
-        <!--
-        <mat-form-field class="input-field" appearance="fill">
-          <mat-label class="accent-color" color="accent-color">Delivery Date</mat-label>
-          <input formControlName="date" matInput placeholder=" " required
-                 type="date">
-        </mat-form-field>
-
-        -->
 
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color">Delivery Date</mat-label>
+          <mat-label>Delivery Date</mat-label>
           <input [matDatepicker]="picker" [min]="startDate" formControlName="date" matInput required>
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="commissionForm.controls.date.errors">
+            <span> This date is invalid! </span>
+          </mat-error>
         </mat-form-field>
         <br><br>
 
         <p class="creation-p">Now enter the amount of money, that you can offer the artist for their service. (in
           Euro)</p>
         <mat-form-field appearance="fill" class="input-field">
-          <mat-label class="accent-color" color="accent-color">Your offer (in Euro)</mat-label>
+          <mat-label >Your offer (in Euro)</mat-label>
 
-          <input formControlName="price" matInput min="0" placeholder="Price"
-                 required step="any" type="number" [max]="globals.maxCommissionPrice">
+          <input formControlName="price" matInput min="0"
+                 [max]="globals.maxCommissionPrice"
+                 required step="any" type="number">
+          <mat-error *ngIf="commissionForm.controls.price.errors">
+            <span *ngIf="commissionForm.controls.price.errors.required">The price is required! </span>
+          </mat-error>
         </mat-form-field>
-        <br>
+
+        <br><br>
         <p class="creation-p">A commission can contain multiple feedback rounds. This means, during the art creation
           process,
           the artist will show you one sketch per round and you can give feedback to alter the final result.
@@ -69,12 +78,12 @@
           beneficial.</p>
         <br>
         <div class="slider">
-          <mat-label class="accent-color" color="accent-color">Feed back rounds:</mat-label>
+          <mat-label class="accent-color" >Feed back rounds:</mat-label>
           <br>
-          <mat-label class="accent-color">0</mat-label>
-          <mat-slider [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
+          <mat-label class="accent-color" >0</mat-label>
+          <mat-slider color="primary" [(ngModel)]="commission.feedbackRounds" formControlName="feedbackRounds"
                       max="5" min="0" thumbLabel tickInterval="1"></mat-slider>
-          <mat-label class="accent-color">5</mat-label>
+          <mat-label class="accent-color" >5</mat-label>
         </div>
         <div class="stepper_button">
           <button mat-button matStepperPrevious>
@@ -88,7 +97,7 @@
 
       </form>
     </mat-step>
-    <mat-step [stepControl]="commissionForm" label="References">
+    <mat-step [stepControl]="commissionForm" label="References" [hasError]="false">
       <form [formGroup]="commissionForm">
         <p class="creation-p">If possible provide reference pictures for your artwork. This can further assist the
           artists with understanding and visualizing your concept.</p>
@@ -112,7 +121,7 @@
                    fxLayoutAlign="stretch"
               >
 
-                <button (click)="removeReference(i)" class="close-button" color="accent" mat-flat-button>
+                <button (click)="removeReference(i)" class="close-button" color="primary" mat-flat-button>
                   <mat-icon>delete</mat-icon>
                 </button>
                 <div class="image">
@@ -163,7 +172,7 @@
           <button mat-button matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
-          <button (click)="submitCommission()" class="primary" color="primary" mat-flat-button matStepperNext> Submit
+          <button (click)="submitCommission()"  class="primary" color="primary" mat-flat-button matStepperNext> Submit
             Commission
           </button>
 

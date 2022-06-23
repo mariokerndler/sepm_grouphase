@@ -110,6 +110,10 @@ export class CommissionCreationComponent implements OnInit {
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
 
+  goToCommissions(): void {
+    this.router.navigate([`commissions`]);
+  }
+
   getUserId(): void {
     const id = localStorage.getItem('userId');
     if (id !== null) {
@@ -178,7 +182,7 @@ export class CommissionCreationComponent implements OnInit {
           this.notificationService.displayErrorSnackbar(error.error);
         }, () => {
           this.notificationService.displaySuccessSnackbar('Commission created successfully');
-
+          this.goToCommissions();
         }
       );
     }

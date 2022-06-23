@@ -55,7 +55,7 @@ export class CommissionDetailsComponent implements OnInit {
   updatedEndDate: string;
   sketches;
 
-  public selectedArtistId = 4;
+  public selectedArtistId;
   //Just dummy data.
   artistIds = [];
   constructor(private userService: UserService,
@@ -245,14 +245,18 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   chooseArtist() {
+    if (this.selectedArtistId != null) {
       this.commission.status = CommissionStatus.negotiating;
       this.artistService.getArtistById(this.selectedArtistId).subscribe(artist => {
-      this.commission.artistDto = artist;
-      console.log(this.selectedArtistId);
-      this.commissionService.updateCommission(this.commission).subscribe(ok => {
-      this.notificationService.displaySuccessSnackbar('Artist selected successfully');
+        this.commission.artistDto = artist;
+        console.log(this.selectedArtistId);
+        this.commissionService.updateCommission(this.commission).subscribe(ok => {
+          this.notificationService.displaySuccessSnackbar('Artist selected successfully');
+        });
       });
-    });
+    } else {
+      this.notificationService.displaySuccessSnackbar('Please choose an artist by clicking on them');
+    }
   }
 
   //triggered by Artist

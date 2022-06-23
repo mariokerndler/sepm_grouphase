@@ -47,7 +47,7 @@ export class CommissionCreationComponent implements OnInit {
 
 
   commissionForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]),
+    title: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.pattern('^[a-zA-Z0-9 ]*$')]),
     description: new FormControl('', [Validators.required, Validators.maxLength(512)]),
     price: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),

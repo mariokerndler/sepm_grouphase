@@ -45,8 +45,8 @@ export class UploadComponent implements OnInit {
     private globalFunctions: GlobalFunctions,
     private commissionService: CommissionService) {
     this.uploadForm = this.formBuilder.group({
-      artworkName: ['', [Validators.required]],
-      description: [''],
+      artworkName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(255)]],
     });
     this.filteredTags = this.tagForm.valueChanges.pipe(
       startWith(null),

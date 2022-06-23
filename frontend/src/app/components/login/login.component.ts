@@ -32,8 +32,8 @@ export class LoginComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router) {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]]
     });
   }
 

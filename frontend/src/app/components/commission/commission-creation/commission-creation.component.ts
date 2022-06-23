@@ -15,7 +15,7 @@ import {ReferenceDto} from '../../../dtos/referenceDto';
 import {CommissionService} from '../../../services/commission.service';
 import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {formatDate} from '@angular/common';
-import {StepperSelectionEvent} from '@angular/cdk/stepper';
+import {STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent} from '@angular/cdk/stepper';
 import {HttpErrorResponse} from '@angular/common/http';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {CommissionStatus} from '../../../global/CommissionStatus';
@@ -29,6 +29,12 @@ import {Router} from '@angular/router';
   selector: 'app-commission-creation',
   templateUrl: './commission-creation.component.html',
   styleUrls: ['./commission-creation.component.scss'],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {showError: true},
+    },
+  ],
   encapsulation: ViewEncapsulation.None,
 
 })
@@ -37,14 +43,15 @@ export class CommissionCreationComponent implements OnInit {
   artists: ArtistDto[];
   previewImages: any[] = [];
   selectedReferences = [];
-  startDate = new Date(Date.now());
+  startDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  hasSubmitted = false;
 
 
   commissionForm = new FormGroup({
-    title: new FormControl(''),
-    description: new FormControl(''),
-    price: new FormControl(''),
-    date: new FormControl(''),
+    title: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.pattern('^[a-zA-Z0-9 ]*$')]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(512)]),
+    price: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
     references: new FormControl(''),
     feedbackRounds: new FormControl('')
   });
@@ -153,23 +160,25 @@ export class CommissionCreationComponent implements OnInit {
 
 
   submitCommission() {
+    this.hasSubmitted = true;
+    if(this.commissionForm.valid) {
+      this.commission.title = this.commissionForm.value.title;
+      this.commission.instructions = this.commissionForm.value.description;
+      this.commission.price = this.commissionForm.value.price;
+      this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
+      this.commission.customerDto = this.customer;
+      this.commission.referencesDtos.forEach(r => r.imageUrl = '');
+      this.commission.deadlineDate = formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
+      this.commissionService.createCommission(this.commission).subscribe(ret => {
 
-    this.commission.title = this.commissionForm.value.title;
-    this.commission.instructions = this.commissionForm.value.description;
-    this.commission.price = this.commissionForm.value.price;
-    this.commission.deadlineDate = this.commissionForm.value.date + ' 01:01:01';
-    this.commission.customerDto = this.customer;
-    this.commission.referencesDtos.forEach(r=> r.imageUrl='');
-    this.commission.deadlineDate = formatDate(this.commissionForm.value.date, 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
-    this.commissionService.createCommission(this.commission).subscribe(ret => {
-
-      }, (error: HttpErrorResponse) => {
-        this.notificationService.displayErrorSnackbar(error.error);
-      }, () => {
-        this.notificationService.displaySuccessSnackbar('Commission created successfully');
-        this.goToCommissions();
-      }
-    );
+        }, (error: HttpErrorResponse) => {
+          this.notificationService.displayErrorSnackbar(error.error);
+        }, () => {
+          this.notificationService.displaySuccessSnackbar('Commission created successfully');
+          this.goToCommissions();
+        }
+      );
+    }
   }
 
   formatDate() {

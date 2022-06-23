@@ -71,9 +71,11 @@ public class PaymentEndpoint {
                     .setPriceData(
                         SessionCreateParams.LineItem.PriceData.builder()
                             .setCurrency(payment.getCurrency()).setUnitAmount((long) commission.getPrice() * 100)
-                            .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
-                                .builder().setName(commission.getTitle()).build())
+                            .setProductData(
+                                SessionCreateParams.LineItem.PriceData.ProductData
+                                    .builder().setName(commission.getTitle()).build())
                             .build())
+                    .setDescription(commission.getInstructions())
                     .build())
             .putMetadata("commission_id", commission.getId().toString())
             .build();

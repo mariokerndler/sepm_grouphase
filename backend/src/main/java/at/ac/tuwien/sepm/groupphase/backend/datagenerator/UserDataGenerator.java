@@ -322,7 +322,7 @@ public class UserDataGenerator {
         Artist artist = artistRepository.findApplicationUserByEmail("testartist@test.com");
 
         e = generateCommissionPaymentTest(user, artist);
-        commissionRepository.save(e);
+        commissionService.saveCommission(e);
 
     }
 
@@ -621,7 +621,7 @@ public class UserDataGenerator {
         commission.setStatus(CommissionStatus.AWAITING_PAYMENT);
         commission.setArtist(artist);
         commission.setCustomer(user);
-        commission.setTitle("Sample Commission that should be payed");
+        commission.setTitle("Payable Sample Commission");
         commission.setSketchesShown(3);
         commission.setFeedbackSent(3);
         commission.setPrice((int) (Math.random() * 10000));
@@ -638,20 +638,21 @@ public class UserDataGenerator {
         for (int i = 1; i < 5; i++) {
             if (i == 4) {
                 a.setArtist(artist);
-                a.setName("Sample Commission Art");
+                a.setName("Payable Sample Commission Art");
                 desc = faker.shakespeare().hamletQuote();
                 if (desc.length() > 50) {
                     desc = desc.substring(0, 49);
                 }
                 a.setDescription(desc);
-                a.setImageUrl("data\\com\\adminSample Commission3\\artwork" + i);
+                a.setImageUrl("data\\com\\42payableSampleCommission\\payableArtwork");
                 a.setFileType(FileType.JPG);
+                a.setCommission(commission);
             } else {
                 Sketch k = new Sketch();
                 k.setFileType(FileType.JPG);
                 k.setArtwork(a);
                 k.setDescription("Sketch " + i);
-                k.setImageUrl("data\\com\\adminSample Commission3\\sketch" + i);
+                k.setImageUrl("data\\com\\42payableSampleCommission\\payableSketch" + i);
                 sketches.add(k);
 
             }

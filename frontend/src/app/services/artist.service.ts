@@ -30,10 +30,7 @@ export class ArtistService {
    * @return observable list of found artists.
    */
   getAllArtists(): Observable<ArtistDto[]> {
-    return this.http.get<ArtistDto[]>(this.artistBaseUri, this.options)
-      .pipe(
-        catchError(this.notificationService.notifyUserAboutFailedOperation<ArtistDto[]>('Fetching all artists'))
-      );
+    return this.http.get<ArtistDto[]>(this.artistBaseUri, this.options);
   }
 
   /**

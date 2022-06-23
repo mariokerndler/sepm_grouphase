@@ -32,13 +32,13 @@ export class RegistrationComponent implements OnInit {
     private router: Router,
     private globalFunctions: GlobalFunctions) {
     this.registerForm = this.formBuilder.group({
-      firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
-      lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
-      email: ['', [Validators.required, Validators.email]],
-      address: ['', [Validators.required]],
-      username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirm: ['', [Validators.required, Validators.minLength(8)]],
+      firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*'), Validators.maxLength(50)]],
+      lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*'), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      address: ['', [Validators.required, Validators.maxLength(100)]],
+      username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*'), Validators.maxLength(50)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
+      confirm: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
     }, {
       validator: globalFunctions.mustMatch('password', 'confirm')
     });

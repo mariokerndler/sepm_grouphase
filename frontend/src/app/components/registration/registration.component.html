@@ -24,8 +24,8 @@
              name="firstname">
       <mat-error *ngIf="registerForm.controls.firstname.errors">
         <mat-error *ngIf="registerForm.controls.firstname.errors.required">Your first name is required!</mat-error>
-        <mat-error *ngIf="registerForm.controls.firstname.errors.pattern">Your first name contains invalid symbols!
-        </mat-error>
+        <mat-error *ngIf="registerForm.controls.firstname.errors.pattern">Your first name contains invalid symbols!</mat-error>
+        <mat-error *ngIf="registerForm.controls.firstname.errors.maxlength">Your first name is too long!</mat-error>
       </mat-error>
     </mat-form-field>
 
@@ -36,6 +36,7 @@
       <mat-error *ngIf="registerForm.controls.lastname.errors">
         <small *ngIf="registerForm.controls.lastname.errors.required">Your last name is required! </small>
         <small *ngIf="registerForm.controls.lastname.errors.pattern">Your last name contains invalid symbols! </small>
+        <mat-error *ngIf="registerForm.controls.lastname.errors.maxlength">Your last name is too long!</mat-error>
       </mat-error>
     </mat-form-field>
   </div>
@@ -45,8 +46,9 @@
     <input aria-describedby="emailHelp" class="form-control" formControlName="email" id="inputEmail" matInput
            name="email">
     <mat-error *ngIf="registerForm.controls.email.errors">
-      <small *ngIf="registerForm.controls.email.errors.required">Your email is required! </small>
-      <small *ngIf="registerForm.controls.email.errors.email">The email you entered is invalid! </small>
+      <mat-error *ngIf="registerForm.controls.email.errors.required">Your email is required! </mat-error>
+      <mat-error *ngIf="registerForm.controls.email.errors.email">The email you entered is invalid! </mat-error>
+      <mat-error *ngIf="registerForm.controls.email.errors.maxlength">Your email is too long!</mat-error>
     </mat-error>
   </mat-form-field>
 
@@ -55,7 +57,8 @@
     <input aria-describedby="address-help" class="form-control" formControlName="address" id="inputAddress" matInput
            name="address">
     <mat-error *ngIf="registerForm.controls.address.errors">
-      <small *ngIf="registerForm.controls.address.errors.required">Your address is required! </small>
+      <mat-error *ngIf="registerForm.controls.address.errors.required">Your address is required! </mat-error>
+      <mat-error *ngIf="registerForm.controls.address.errors.maxlength">Your address is too long!</mat-error>
     </mat-error>
   </mat-form-field>
 
@@ -67,6 +70,7 @@
     <mat-error *ngIf="registerForm.controls.username.errors">
       <small *ngIf="registerForm.controls.username.errors.required">Your username is required! </small>
       <small *ngIf="registerForm.controls.username.errors.pattern">Your username contains invalid symbols! </small>
+      <mat-error *ngIf="registerForm.controls.username.errors.maxlength">Your username is too long!</mat-error>
     </mat-error>
   </mat-form-field>
 
@@ -80,9 +84,10 @@
       <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
     <mat-error *ngIf="registerForm.controls.password.errors">
-      <small *ngIf="registerForm.controls.password.errors.required">Your password is required!</small>
-      <small *ngIf="registerForm.controls.password.errors.minlength">Your password must be at least 8 characters
-        long!</small>
+      <mat-error *ngIf="registerForm.controls.password.errors.required">Your password is required!</mat-error>
+      <mat-error *ngIf="registerForm.controls.password.errors.minlength">Your password must be at least 8 characters
+        long!</mat-error>
+      <mat-error *ngIf="registerForm.controls.password.errors.maxlength">Your password is too long!</mat-error>
     </mat-error>
   </mat-form-field>
 
@@ -99,10 +104,11 @@
     </button>
 
     <mat-error *ngIf="registerForm.controls.confirm.errors">
-      <small *ngIf="registerForm.controls.confirm.errors.required">Your password is required!</small>
-      <small *ngIf="registerForm.controls.confirm.errors.minlength">Your password must be at least 8 characters
-        long!</small>
-      <small *ngIf="registerForm.controls.confirm.errors.mustMatch">Password and Confirm Password must be match.</small>
+      <mat-error *ngIf="registerForm.controls.confirm.errors.required">Your password is required!</mat-error>
+      <mat-error *ngIf="registerForm.controls.confirm.errors.minlength">Your password must be at least 8 characters
+        long!</mat-error>
+      <mat-error *ngIf="registerForm.controls.confirm.errors.mustMatch">Password and Confirm Password must be match.</mat-error>
+      <mat-error *ngIf="registerForm.controls.confirm.errors.maxlength">Your password is too long!</mat-error>
     </mat-error>
   </mat-form-field>
 

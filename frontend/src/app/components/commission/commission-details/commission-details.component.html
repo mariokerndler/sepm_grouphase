@@ -51,7 +51,7 @@
       </div>
 
 
-      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0" style="max-width: 40%">
+      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0 && this.userId === commission.customerDto.id.toString()" style="max-width: 40%">
         <mat-label>Commission Candidates</mat-label>
         <mat-selection-list  [(ngModel)]="selectedArtistId" name="applicant"  [multiple]="false">
             <mat-list-option *ngFor="let a of commission.artistCandidatesDtos" [value]="a.id">

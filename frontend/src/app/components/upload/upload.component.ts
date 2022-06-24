@@ -143,6 +143,10 @@ export class UploadComponent implements OnInit {
     );
   }
 
+  addNewSketch(){
+
+  }
+
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));

@@ -305,6 +305,16 @@ export class CommissionDetailsComponent implements OnInit {
     );
   }
 
+  openSketchDialog() {
+    this.dialog.open(UploadComponent, {
+      data: {
+        artist: this.commission.artistDto,
+        commission: this.commission,
+        sketch: true,
+      }
+    });
+  }
+
   calculateProgress(): number{
 
     let negValue = 33;

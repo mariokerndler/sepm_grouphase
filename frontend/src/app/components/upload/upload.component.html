@@ -2,7 +2,8 @@
   <mat-icon>close</mat-icon>
 </button>
 <h1 *ngIf="!data.commission" mat-dialog-title>Upload new image</h1>
-<h1 *ngIf="data.commission && !data.timelapse" mat-dialog-title>Upload final image</h1>
+<h1 *ngIf="data.commission && !data.timelapse && !data.sketch" mat-dialog-title>Upload final image</h1>
+<h1 *ngIf="data.commission && data.sketch" mat-dialog-title>Upload Sketch</h1>
 <h1 *ngIf="data.commission && data.timelapse" mat-dialog-title>Upload timelapse</h1>
 
 <div [formGroup]="uploadForm" fxLayout="column">

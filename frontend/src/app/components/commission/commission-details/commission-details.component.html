@@ -149,10 +149,10 @@
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch">
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
         <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
-          <button (click)="fileInput.click()" color="accent" mat-button>
-            <input #fileInput (change)="fileSelected($event)"
-                   accept=".png,.jpg,.jpeg" style="display: none;" type="file">
-            <mat-icon color="accent">upload</mat-icon>
+          <button (click)="openSketchDialog()" color="primary" mat-button>
+            <!--<input #fileInput (change)="fileSelected($event)"
+                   accept=".png,.jpg,.jpeg" style="display: none;" type="file"> -->
+            <mat-icon color="primary">upload</mat-icon>
             <span>Upload new Sketch</span>
           </button>
         </div>

@@ -21,6 +21,7 @@ export class ArtistFeedComponent implements OnInit, AfterViewInit {
 
   searchFormControl = new FormControl();
   filteredOptions: Observable<ArtistDto[]>;
+  shown: boolean;
 
   dataSource: MatTableDataSource<ArtistDto>;
   private artists: ArtistDto[];
@@ -32,6 +33,7 @@ export class ArtistFeedComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Test
+    this.shown = false;
     this.artistService.getAllArtists()
       .subscribe((artists) => {
         this.artists = artists;
@@ -69,6 +71,16 @@ export class ArtistFeedComponent implements OnInit, AfterViewInit {
 
   searchFieldHasValue(): boolean {
     return this.searchFormControl.value !== null;
+  }
+
+  blurBackground(): boolean {
+    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+    this.shown = true;
+    return this.shown;
+  }
+
+  resetShown() {
+    this.shown = !this.shown;
   }
 
   private _filter(value: string): ArtistDto[] {

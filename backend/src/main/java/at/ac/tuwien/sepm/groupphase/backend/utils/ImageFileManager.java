@@ -97,7 +97,7 @@ public class ImageFileManager {
     public String writeCommissionArtwork(Commission c, Artwork aw) {
         log.trace("calling writeArtworkImage() ...");
         String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
-        relPath += "\\" + c.getTitle()  + "." + aw .getFileType().toString().toLowerCase(Locale.ENGLISH);
+        relPath += "\\" + c.getTitle()  + "." + aw.getFileType().toString().toLowerCase(Locale.ENGLISH);
         if (aw.getImageData() == null) {
             log.info(ImageDataPaths.assetAbsoluteLocation + relPath);
             log.info("Creating empty image");

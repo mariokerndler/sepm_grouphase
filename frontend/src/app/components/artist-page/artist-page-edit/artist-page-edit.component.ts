@@ -249,7 +249,9 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
         tags: [...item.tags]
       };
 
-      newItem.componentName += this.chosenComponents.length;
+      if (newItem.type !== LayoutComponentType.reviews) {
+        newItem.componentName += this.chosenComponents.length;
+      }
       this.chosenComponents.splice(event.currentIndex, 0, newItem);
     }
   }

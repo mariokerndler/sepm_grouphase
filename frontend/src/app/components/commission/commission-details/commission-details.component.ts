@@ -186,8 +186,7 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
 
-  fileSelected(fileInput: any
-  ) {
+  fileSelected(fileInput: any, description: string) {
     this.uploadedSketch = fileInput.target.files[0];
     console.log(this.uploadedSketch);
     const sketch = new SketchDto();
@@ -196,11 +195,12 @@ export class CommissionDetailsComponent implements OnInit {
     reader.onload = (event) => {
       const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
       sketch.imageData = extractedValues[1];
-      sketch.description = 'Sketch';
+      sketch.description = description;
       sketch.fileType = extractedValues[0];
       sketch.imageUrl = 'default';
       sketch.artworkId = this.commission.artworkDto.id;
       this.uploadedSketchDto = sketch;
+      this.updateCommission();
     };
   }
   updateCommission() {
@@ -306,11 +306,17 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   openSketchDialog() {
-    this.dialog.open(UploadComponent, {
+    const dialogRef = this.dialog.open(UploadComponent, {
       data: {
         artist: this.commission.artistDto,
         commission: this.commission,
         sketch: true,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.event === 'sketchSelected'){
+        this.fileSelected(result.data, result.feedback);
       }
     });
   }
@@ -318,13 +324,9 @@ export class CommissionDetailsComponent implements OnInit {
   calculateProgress(): number{
 
     let negValue = 33;
-    let inProgValue = 66;
-    let inProgressAdder = 20;
 
     if(this.commission.feedbackRounds !== 0){
       negValue = negValue / this.commission.feedbackRounds;
-      inProgValue = inProgValue / this.commission.feedbackRounds;
-      inProgressAdder = inProgressAdder / this.commission.feedbackRounds;
     }
 
     switch (this.commission.status){

@@ -131,7 +131,6 @@
         <button *ngIf="this.userEdit" (click)="startCommission()" color="primary" mat-flat-button>Start Commission</button>
         <label *ngIf="this.artistEdit">Waiting for user to accept</label>
     </div>
-
     <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start">
       <mat-form-field style="width: 60%; padding-top: 1em">
         <textarea [(ngModel)]="this.uploadedSketchDto.customerFeedback" class="feedbackBox" color="secondary" matInput
@@ -156,9 +155,9 @@
             <span>Upload new Sketch</span>
           </button>
         </div>
-        <div *ngIf="this.uploadedSketchDto">
+        <!--<div *ngIf="this.uploadedSketchDto">
           <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
-        </div>
+        </div> -->
         <br>
         <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
           <mat-icon color="primary">upload</mat-icon>

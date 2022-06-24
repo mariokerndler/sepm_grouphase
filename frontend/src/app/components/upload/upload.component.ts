@@ -89,6 +89,10 @@ export class UploadComponent implements OnInit {
             extractedValues[1],
             extractedValues[0]);
         } else {
+          if(this.data.sketch){
+            this.dialogRef.close({event: 'sketchSelected', data: this.file, feedback: this.uploadForm.controls.description.value});
+            return;
+          }
           this.updateCommission(
             this.uploadForm.controls.artworkName.value,
             this.uploadForm.controls.description.value,
@@ -143,9 +147,6 @@ export class UploadComponent implements OnInit {
     );
   }
 
-  addNewSketch(){
-
-  }
 
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.

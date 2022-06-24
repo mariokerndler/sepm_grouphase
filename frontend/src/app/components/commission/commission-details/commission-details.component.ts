@@ -93,7 +93,7 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   setSelectedArtwork(i: number, isReference: boolean) {
-    if(isReference){
+    if (isReference) {
       this.selectedReference = i;
     } else {
       this.selectedArtwork = i;
@@ -106,15 +106,15 @@ export class CommissionDetailsComponent implements OnInit {
     this.commissionService.getCommissionById(id, () => this.navigationError())
       .subscribe((commission) => {
           this.commission = commission;
-           this.sketches = [];
-           if(commission.artworkDto) {
-             const sketches = commission.artworkDto.sketchesDtos;
-             for (const sketch of sketches) {
-               if (sketch.fileType !== 'GIF') {
-                 this.sketches.push(sketch);
-               }
-             }
-           }
+          this.sketches = [];
+          if (commission.artworkDto) {
+            const sketches = commission.artworkDto.sketchesDtos;
+            for (const sketch of sketches) {
+              if (sketch.fileType !== 'GIF') {
+                this.sketches.push(sketch);
+              }
+            }
+          }
 
           this.startDate = new Date(commission.issueDate).toLocaleDateString();
           this.endDate = new Date(commission.deadlineDate).toLocaleDateString();
@@ -125,14 +125,14 @@ export class CommissionDetailsComponent implements OnInit {
               artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
             };
             //this would be a temporary fix but sadly artworks are bugged rn so idk
-                this.user = commission.customerDto;
-                this.checkCommissionState(this.commission);
+            this.user = commission.customerDto;
+            this.checkCommissionState(this.commission);
           } else {
 
             this.user = commission.customerDto;
             this.checkCommissionState(this.commission);
           }
-        this.setProfilePicture();
+          this.setProfilePicture();
         }
       );
   }
@@ -147,15 +147,15 @@ export class CommissionDetailsComponent implements OnInit {
       this.hasReferences = true;
     }
     if (this.commission.artworkDto !== null) {
-    if (commission.artworkDto.sketchesDtos != null) {
-      if (commission.artworkDto.sketchesDtos.length !== 0) {
-        this.hasSketches = true;
+      if (commission.artworkDto.sketchesDtos != null) {
+        if (commission.artworkDto.sketchesDtos.length !== 0) {
+          this.hasSketches = true;
+        }
       }
-    }
       if (this.commission.sketchesShown > this.commission.feedbackSent) {
 
         this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
-        this.uploadedSketchDto.customerFeedback='';
+        this.uploadedSketchDto.customerFeedback = '';
         console.log(this.uploadedSketchDto);
       }
     }
@@ -198,6 +198,7 @@ export class CommissionDetailsComponent implements OnInit {
       this.uploadedSketchDto = sketch;
     };
   }
+
   updateCommission() {
     //artist added sketch
     if (this.uploadedSketchDto !== null && this.artistEdit) {
@@ -214,16 +215,18 @@ export class CommissionDetailsComponent implements OnInit {
       this.uploadedSketchDto.artworkId = this.commission.artworkDto.id;
       this.commission.feedbackSent++;
       this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1] = this.uploadedSketchDto;
+      this.toggleFeedbackField();
     }
     console.log(this.commission);
-    this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1].description
+    const c = this.commission;
+    c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].description
       += '%' + new Date().toLocaleDateString();
-    this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length-1].customerFeedback
+    c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].customerFeedback
       += '%' + new Date().toLocaleDateString();
-    this.commissionService.updateCommission(this.commission).subscribe((commission) => console.log(commission));
+    this.commissionService.updateCommission(c).subscribe((commission) => console.log(commission));
+
     this.checkCommissionState(this.commission);
   }
-
 
 
   toggleFeedbackField() {
@@ -275,14 +278,14 @@ export class CommissionDetailsComponent implements OnInit {
 
   //triggered by User
   startCommission() {
-    this.commission.status=CommissionStatus.inProgress;
-    this.commissionService.updateCommission(this.commission).subscribe(success=>{
+    this.commission.status = CommissionStatus.inProgress;
+    this.commissionService.updateCommission(this.commission).subscribe(success => {
       this.notificationService.displaySuccessSnackbar('Commission is now in progress');
     });
   }
 
   openDialog() {
-   const dialogRef = this.dialog.open(UploadComponent, {
+    const dialogRef = this.dialog.open(UploadComponent, {
       data: {
         artist: this.commission.artistDto,
         commission: this.commission

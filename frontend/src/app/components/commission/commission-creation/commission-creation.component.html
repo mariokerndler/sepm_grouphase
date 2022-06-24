@@ -38,7 +38,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column" label="Organisation">
+    <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column" label="Organisation" [hasError]="(commissionForm.controls.date.errors || commissionForm.controls.price.errors) && hasSubmitted" errorMessage="An error occurred on this page">
       <form [formGroup]="commissionForm">
         <p class="creation-p">On this page you can fill in some information for the organization of the project. All of
           these values, can still be altered at a later stage of the commission.</p>

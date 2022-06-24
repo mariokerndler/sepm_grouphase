@@ -55,9 +55,8 @@ export class CommissionDetailsComponent implements OnInit {
   updatedEndDate: string;
   sketches;
 
-  public selectedArtistId = 4;
-  //Just dummy data.
-  artistIds = [];
+  public selectedArtistId;
+
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
@@ -121,11 +120,6 @@ export class CommissionDetailsComponent implements OnInit {
           this.endDate = new Date(commission.deadlineDate).toLocaleDateString();
           this.updatedEndDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
           //this.commission.artistCandidatesDtos = [];
-          this.artistIds.forEach(a => {
-            this.artistService.getArtistById(a).subscribe(result => {
-              this.commission.artistCandidatesDtos.push(result);
-            });
-          });
           if (this.commission.artworkDto == null) {
             const searchPar: TagSearch = {
               artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
@@ -161,6 +155,7 @@ export class CommissionDetailsComponent implements OnInit {
       if (this.commission.sketchesShown > this.commission.feedbackSent) {
 
         this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
+        this.uploadedSketchDto.customerFeedback='';
         console.log(this.uploadedSketchDto);
       }
     }
@@ -245,14 +240,18 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   chooseArtist() {
+    if (this.selectedArtistId != null) {
       this.commission.status = CommissionStatus.negotiating;
       this.artistService.getArtistById(this.selectedArtistId).subscribe(artist => {
-      this.commission.artistDto = artist;
-      console.log(this.selectedArtistId);
-      this.commissionService.updateCommission(this.commission).subscribe(ok => {
-      this.notificationService.displaySuccessSnackbar('Artist selected successfully');
+        this.commission.artistDto = artist;
+        console.log(this.selectedArtistId);
+        this.commissionService.updateCommission(this.commission).subscribe(ok => {
+          this.notificationService.displaySuccessSnackbar('Artist selected successfully');
+        });
       });
-    });
+    } else {
+      this.notificationService.displaySuccessSnackbar('Please choose an artist by clicking on them');
+    }
   }
 
   //triggered by Artist

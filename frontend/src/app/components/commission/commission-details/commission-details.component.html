@@ -70,7 +70,13 @@
 
       <br><br>
       <strong>Feedback-Rounds: </strong>
-      <strong class="p-section"> {{commission.feedbackRounds}}</strong> <br><br>
+      <div *ngIf="commission.status.toString()==='In_PROGRESS' || commission.status.toString()==='COMPLETED'">
+      <strong class="p-section"> {{commission.feedbackSent}}/{{commission.feedbackRounds}}</strong>
+      </div>
+      <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
+      <strong class="p-section"> {{commission.feedbackRounds}}</strong>
+    </div>
+        <br><br>
       <strong>Status:</strong>
       <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
       <br><br>
@@ -94,7 +100,7 @@
               <img (click)="setSelectedArtwork(i, false) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
               <br>
-              <span *ngIf="reference.customerFeedback">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
+              <span *ngIf="reference.customerFeedback!==undefined">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
               <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>

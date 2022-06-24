@@ -1,0 +1,27 @@
+<div>
+  <ng-container *ngIf="disableInteraction === true; then NonInteract; else Interact;"></ng-container>
+  <p class="primary">
+    Rating {{rating}} / {{globals.maxStarRating}}
+  </p>
+</div>
+
+<ng-template #Interact>
+  <button
+    mat-icon-button
+    color="primary"
+    *ngFor="let ratingId of ratingArr; index as i"
+    [id]="'star_' + i"
+    (click)="onClick(i + 1)"
+    [matTooltip]="ratingId + 1"
+    matTooltipPosition="above">
+    <mat-icon>
+      {{showIcon(i)}}
+    </mat-icon>
+  </button>
+</ng-template>
+
+<ng-template #NonInteract>
+  <mat-icon color="primary" *ngFor="let ratingId of ratingArr; index as i">
+    {{showIcon(i)}}
+  </mat-icon>
+</ng-template>

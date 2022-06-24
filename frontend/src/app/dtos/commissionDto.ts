@@ -3,6 +3,7 @@ import {ApplicationUserDto} from './applicationUserDto';
 import {ReferenceDto} from './referenceDto';
 import {CommissionStatus} from '../global/CommissionStatus';
 import {ArtworkDto} from './artworkDto';
+import {ReviewDto} from './reviewDto';
 
 export class CommissionDto {
   id: number;
@@ -20,4 +21,5 @@ export class CommissionDto {
   artistCandidatesDtos: ArtistDto[];
   referencesDtos: ReferenceDto[];
   status: CommissionStatus;
+  reviewDto?: ReviewDto;
 }

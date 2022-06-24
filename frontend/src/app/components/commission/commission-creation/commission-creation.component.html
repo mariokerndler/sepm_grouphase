@@ -38,7 +38,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column" label="Organisation" [hasError]="(commissionForm.controls.date.errors || commissionForm.controls.price.errors) && hasSubmitted" errorMessage="An error occurred on this page">
+    <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column" label="Organisation">
       <form [formGroup]="commissionForm">
         <p class="creation-p">On this page you can fill in some information for the organization of the project. All of
           these values, can still be altered at a later stage of the commission.</p>
@@ -63,6 +63,7 @@
           <mat-label >Your offer (in Euro)</mat-label>
 
           <input formControlName="price" matInput min="0"
+                 [max]="globals.maxCommissionPrice"
                  required step="any" type="number">
           <mat-error *ngIf="commissionForm.controls.price.errors">
             <span *ngIf="commissionForm.controls.price.errors.required">The price is required! </span>

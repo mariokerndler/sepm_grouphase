@@ -38,7 +38,7 @@ public interface CommissionService {
      *
      * @param commission The commission being saved.
      */
-    void saveCommission(Commission commission) throws IOException;
+    Commission saveCommission(Commission commission) throws IOException;
 
     /**
      * Updates the given commission, if there is a commission with this id saved in the database.

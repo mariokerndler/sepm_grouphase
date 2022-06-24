@@ -24,7 +24,6 @@ public abstract class ChatMapper {
 
     @AfterMapping
     public Chat jpaPls(ChatDto chatDto, @MappingTarget Chat.ChatBuilder chatBuilder) {
-        Chat c = chatBuilder.build();
         log.info("maaaaaaping");
         log.info(chatDto.getUserId().toString());
         ApplicationUser user = userService.findUserById(chatDto.getUserId());
@@ -32,6 +31,7 @@ public abstract class ChatMapper {
         log.info(chatDto.getChatPartnerId().toString());
         ApplicationUser user2 = userService.findUserById(chatDto.getChatPartnerId());
         log.info(user2.getUserName());
+        Chat c = chatBuilder.build();
         c.setUser(user);
         c.setChatPartner(user2);
         return c;

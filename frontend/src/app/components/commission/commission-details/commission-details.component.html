@@ -75,10 +75,7 @@
       <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
       <strong class="p-section"> {{commission.feedbackRounds}}</strong>
     </div>
-        <br><br>
-      <strong>Status:</strong>
-      <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
-      <br><br>
+      <br>
       <strong>Price: </strong>
       <strong class="p-section">${{commission.price}}</strong>
       <br><br>

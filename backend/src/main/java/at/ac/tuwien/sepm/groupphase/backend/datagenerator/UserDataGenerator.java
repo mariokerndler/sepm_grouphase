@@ -644,7 +644,7 @@ public class UserDataGenerator {
                     desc = desc.substring(0, 49);
                 }
                 a.setDescription(desc);
-                a.setImageUrl("data\\com\\42payableSampleCommission\\payableArtwork");
+                a.setImageUrl("data\\com\\42Payable Sample Commission\\payableArtwork");
                 a.setFileType(FileType.JPG);
                 a.setCommission(commission);
             } else {
@@ -652,7 +652,7 @@ public class UserDataGenerator {
                 k.setFileType(FileType.JPG);
                 k.setArtwork(a);
                 k.setDescription("Sketch " + i);
-                k.setImageUrl("data\\com\\42payableSampleCommission\\payableSketch" + i);
+                k.setImageUrl("data\\com\\42Payable Sample Commission\\payableSketch" + i);
                 sketches.add(k);
 
             }

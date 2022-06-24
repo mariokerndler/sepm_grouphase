@@ -101,7 +101,7 @@
               <img (click)="setSelectedArtwork(i, false) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
               <br>
-              <span *ngIf="reference.customerFeedback!==undefined">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
+              <span *ngIf="reference.customerFeedback.length>0">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
               <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>

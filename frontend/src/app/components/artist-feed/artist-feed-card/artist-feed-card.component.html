@@ -22,7 +22,8 @@
           [alt]="artwork.name"
           [src]="globals.assetsPath + artwork.imageUrl"
           class="artist-feed-card-image-preview"
-          loading="lazy">
+          loading="lazy"
+          appHideMissing>
         <div class="artist-feed-card-image-description-layer">
           <p class="artist-feed-card-image-description">
             {{globalFunctions.artworkNameParser(artwork.name)}}

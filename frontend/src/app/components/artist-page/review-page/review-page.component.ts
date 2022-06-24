@@ -41,7 +41,9 @@ export class ReviewPageComponent implements OnInit {
     this.commissionService.filterDetailedCommissions(searchCom).subscribe(
       (commissions) => {
         commissions.forEach(commission => {
-          this.reviews.push(commission.reviewDto);
+          if(commission.reviewDto) {
+            this.reviews.push(commission.reviewDto);
+          }
         });
         this.hasReviews = this.reviews.length > 0;
       }

@@ -204,6 +204,20 @@ export class NotificationService {
   }
 
   /**
+   * Delete a given message
+   *
+   * @param notification - The message that will be deleted.
+   */
+  deleteNotification(notification: NotificationDto): Observable<void> {
+    const deleteOptions = {headers: this.headers, body: notification};
+    return this.http.delete<void>(this.notificationBaseUri, deleteOptions)
+      .pipe(
+        catchError((err) =>
+          this.notifyUserAboutFailedOperation<void>('Could not delete notification with id="' + notification.id + '"')(err))
+      );
+  }
+
+  /**
    * Displays a given message and title.
    *
    * @param message - The message to display.

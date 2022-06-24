@@ -159,6 +159,22 @@ public class NotificationEndpoint {
         }
     }
 
+    @PermitAll
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping
+    @Operation(summary = "Delete a notification")
+    @Transactional
+    public void deleteNotification(@RequestBody NotificationDto notificationDto) {
+        log.info("A user is trying to delete a notification.");
+        try {
+            notificationService
+                .deleteNotification(notificationMapper.notificationDtoToNotification(notificationDto));
+        } catch (Exception e) {
+            log.error(e.getMessage() + notificationDto.toString(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
 
     private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationType notificationType, Integer limit) {
         var user = userService.findUserById(userId);

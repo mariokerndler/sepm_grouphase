@@ -56,8 +56,7 @@ export class CommissionDetailsComponent implements OnInit {
   sketches;
 
   public selectedArtistId;
-  //Just dummy data.
-  artistIds = [];
+
   constructor(private userService: UserService,
               private artworkService: ArtworkService,
               private commissionService: CommissionService,
@@ -121,11 +120,6 @@ export class CommissionDetailsComponent implements OnInit {
           this.endDate = new Date(commission.deadlineDate).toLocaleDateString();
           this.updatedEndDate = new Date(new Date(commission.deadlineDate).getTime() - 24 * 60 * 60 * 1000).toLocaleDateString();
           //this.commission.artistCandidatesDtos = [];
-          this.artistIds.forEach(a => {
-            this.artistService.getArtistById(a).subscribe(result => {
-              this.commission.artistCandidatesDtos.push(result);
-            });
-          });
           if (this.commission.artworkDto == null) {
             const searchPar: TagSearch = {
               artistIds: [], pageNr: 0, randomSeed: 0, searchOperations: 'id:3', tagIds: []
@@ -161,6 +155,7 @@ export class CommissionDetailsComponent implements OnInit {
       if (this.commission.sketchesShown > this.commission.feedbackSent) {
 
         this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
+        this.uploadedSketchDto.customerFeedback='';
         console.log(this.uploadedSketchDto);
       }
     }

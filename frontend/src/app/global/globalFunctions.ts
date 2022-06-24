@@ -57,6 +57,9 @@ export class GlobalFunctions {
     if (dataType === 'gif') {
       filetype = FileType.gif;
     }
+    if (dataType === 'jpg') {
+      filetype = FileType.jpg;
+    }
 
     const binary = new Uint8Array(this.base64ToBinaryArray(base64result));
     const image = Array.from(binary);

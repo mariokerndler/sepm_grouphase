@@ -66,8 +66,6 @@ public class ImageFileManager {
 
     public String writeReferenceDatagenImage(Commission c, Reference r, String url) {
         log.trace("calling writeReferenceImage() ...");
-
-
         String relPath = url  + "." + r.getFileType().toString().toLowerCase(Locale.ROOT);
         log.info(relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
@@ -99,7 +97,7 @@ public class ImageFileManager {
     public String writeCommissionArtwork(Commission c, Artwork aw) {
         log.trace("calling writeArtworkImage() ...");
         String relPath = ImageDataPaths.commissionLocation + +c.getCustomer().getId() + c.getTitle();
-        relPath += "\\" + c.getTitle()  + "." + aw .getFileType().toString().toLowerCase(Locale.ROOT);
+        relPath += "\\" + c.getTitle()  + "." + aw .getFileType().toString().toLowerCase(Locale.ENGLISH);
         if (aw.getImageData() == null) {
             log.info(ImageDataPaths.assetAbsoluteLocation + relPath);
             log.info("Creating empty image");

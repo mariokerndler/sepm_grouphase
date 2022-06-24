@@ -69,4 +69,33 @@ export class CheckoutService {
 
     request.subscribe();
   }
+
+  // TODO: Remove after testing
+  paymentWithoutCheckoutTest(commissionId: number,
+                  currency: string,
+                  cancelUrl: string,
+                  successUrl: string,
+                  errorAction?: () => void,
+                  successAction?: () => void) {
+
+    const paymentDto: CheckoutPaymentDto = {
+      commissionId,
+      currency,
+      cancelUrl,
+      successUrl
+    };
+
+    return this.http.post(this.paymentsBaseUI + '/checkoutTest', paymentDto, this.options)
+      .pipe(
+        catchError((err) => {
+
+          console.log('Failed call to backend');
+
+          return this.notificationService.notifyUserAboutFailedOperation<CheckoutPaymentDto>('Paying commission')(err);
+        }),
+        tap((data: any) => {
+
+          console.log('Successfull call to backend');
+        }));
+  }
 }

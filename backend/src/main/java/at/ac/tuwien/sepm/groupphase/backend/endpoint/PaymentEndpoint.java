@@ -137,6 +137,25 @@ public class PaymentEndpoint {
         }
     }
 
+    // TODO: Remove after finished testing
+
+    /**
+     * Payment without Stripe checkout page. Used for testing without having to go through stripe
+     * all the time
+     */
+    @PermitAll
+    @PostMapping("/checkoutTest")
+    @Operation(summary = "Payment without Stripe checkout page. Used for testing.")
+    public void paymentTestWithoutCheckoutPage(@RequestBody CheckoutPaymentDto payment) {
+
+        Commission commission = commissionService.findById(payment.getCommissionId());
+
+        // Check that commission can be paid for
+        commissionValidator.throwExceptionIfCommissionCanNotBePayed(commission);
+
+        paymentService.updateCommissionAfterPaymentTest(payment.getCommissionId());
+    }
+
     private static void init() {
         Stripe.apiKey = "sk_test_51LCfpACibvYbUKMDNFw9N3LmJ4tzWINSvnKIw6f565GMUdbxloFSHtJlBdRvsMbCXnP0wDf3653LbrohfbiztdrB00UTaNfhbg";
     }

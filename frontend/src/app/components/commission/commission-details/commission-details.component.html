@@ -67,13 +67,9 @@
           <button (click)="chooseArtist()" class="mat-primary" mat-flat-button>Choose this Artist</button>
         </div>
       </div>
-
-      <br><br>
+      <br>
       <strong>Feedback-Rounds: </strong>
       <strong class="p-section"> {{commission.feedbackRounds}}</strong> <br><br>
-      <strong>Status:</strong>
-      <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
-      <br><br>
       <strong>Price: </strong>
       <strong class="p-section">${{commission.price}}</strong>
       <br><br>
@@ -83,7 +79,12 @@
 
       <strong *ngIf="commission.status === 'COMPLETED'" class="p-section">{{startDate}}
         - {{updatedEndDate}}</strong>
-
+      <br><br>
+      <strong>Status:</strong>
+      <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
+      <br><br>
+      <mat-progress-bar class="progress-bar" mode="determinate" value="{{calculateProgress()}}"></mat-progress-bar>
+       <br>
       <div *ngIf="hasSketches">
         <strong class="referenceImages">Sketches:</strong>
         <br><br>
@@ -144,7 +145,6 @@
         <button (click)="updateCommission()" color="primary" fxLayoutAlign="center" mat-flat-button>Upload</button>
       </div>
     </div>
-
 
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch">
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">

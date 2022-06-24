@@ -305,6 +305,36 @@ export class CommissionDetailsComponent implements OnInit {
     );
   }
 
+  calculateProgress(): number{
+
+    let negValue = 33;
+    let inProgValue = 66;
+    let inProgressAdder = 20;
+
+    if(this.commission.feedbackRounds !== 0){
+      negValue = negValue / this.commission.feedbackRounds;
+      inProgValue = inProgValue / this.commission.feedbackRounds;
+      inProgressAdder = inProgressAdder / this.commission.feedbackRounds;
+    }
+
+    switch (this.commission.status){
+      case CommissionStatus.listed: return 0;
+      case CommissionStatus.negotiating: return negValue;
+      case CommissionStatus.inProgress:
+        if(this.commission.feedbackRounds !== 0) {
+          let calcValue = ((this.commission.feedbackSent + 1 ) / this.commission.feedbackRounds);
+          if(calcValue > 1){
+            calcValue = 1;
+          }
+          return 66 * calcValue;
+        } else {
+          return 66;
+        }
+      case CommissionStatus.completed: return 100;
+      default: return 0;
+    }
+  }
+
   private setProfilePicture() {
     if (!this.user.profilePictureDto) {
       this.profilePicture = this.globals.defaultProfilePicture;

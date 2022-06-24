@@ -16,6 +16,6 @@ public interface ArtworkRepository extends JpaRepository<Artwork, Long>, JpaSpec
     List<Artwork> findArtworkByArtistId(Long id);
 
 
-    @Query(nativeQuery = true, value = "SELECT *  FROM artwork ORDER BY random()")
+    @Query(nativeQuery = true, value = "SELECT *  FROM artwork where RIGHT(artwork.IMAGE_URL, 3)='jpg' or RIGHT(artwork.IMAGE_URL, 3)='png' or RIGHT(artwork.IMAGE_URL, 3)='gif' ORDER BY random()")
     Slice<Artwork> findArtworkRandom(@Param("seed") int seed, Pageable pageable);
 }

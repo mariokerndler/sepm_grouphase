@@ -1,5 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.basetest;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,24 @@ public interface TestData {
             add("ROLE_USER");
         }
     };
+
+    // Test Data User
+    String TEST_USER_USERNAME = "aUser";
+    String TEST_USER_NAME = "aName";
+    String TEST_USER_SURNAME = "aSurname";
+    String TEST_USER_EMAIL = "test@email.com";
+    String TEST_USER_ADDRESS = "Address 1";
+    String TEST_USER_PASSWORD = "PASSWORD_HASH";
+    Boolean TEST_USER_ADMIN = false;
+    UserRole TEST_USER_ROLE = UserRole.User;
+
+    // Test Data Notification
+    String TEST_NOTIFICATION_TITLE = "Test Notification";
+    LocalDateTime TEST_NOTIFICATION_CREATED_AT =
+        LocalDateTime.of(2019, 11, 13, 12, 15, 0, 0);
+    Boolean TEST_NOTIFICATION_IS_READ = false;
+    NotificationType TEST_NOTIFICATION_TYPE = NotificationType.COMMISSION_CANDIDATE_ADDED;
+    Long TEST_NOTIFICATION_REFERENCE_ID = 1L;
 
     String[] IMAGE_URLS = {
         "https://i.ibb.co/HTT7Ym3/image0.jpg",

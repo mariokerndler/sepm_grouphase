@@ -34,19 +34,24 @@ Cypress.Commands.add('registerUser', () => {
     })
 });
 
-/* Not working at the moment, because no artist in database during pipeline
+
 Cypress.Commands.add('uploadImage', () => {
     cy.fixture('settings').then(settings => {
+            cy.visit(settings.baseUrl);
+            cy.contains('button', 'Login').click();
+            cy.get('input[name="email"]').click();
+            cy.get('input[name="email"]').type('testartist@test.com');
+            cy.get('input[name="password"]').type('12345678');
+            cy.get('button[name="submit-button"]').click();
+
             const fixtureFile = 'image4.png';
-            cy.visit(settings.baseUrl+'/#/artist/5');
+            cy.contains('button', 'Profile').click()
             cy.contains('button', 'See More').click();
             cy.contains('button', 'Upload new picture').click();
             cy.get('input[name="artworkName"]').type(settings.lastName);
-            cy.get('input[name="artworkName"]').type(settings.lastName);
+            cy.get('textarea[name="description"]').type(settings.lastName);
             cy.get('input[type="file"]').attachFile(fixtureFile); 
             cy.get('button[name="upload-button"]').click();
       
     }); 
 });
-
-*/

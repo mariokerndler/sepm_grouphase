@@ -103,22 +103,14 @@ public class NotificationEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     @PatchMapping("/{id}/{hasRead}")
-    @Operation(summary = "Mark all notifications as read true/false by user id.")
-    public NotificationDto patchNotificationIsReadOfIdFromUser(
+    @Operation(summary = "Mark notification with id as read true/false.")
+    public NotificationDto patchNotificationWithIdIsRead(
         @PathVariable Long id,
-        @PathVariable Boolean hasRead,
-        @RequestParam("userId") Long userId
+        @PathVariable Boolean hasRead
     ) {
-        log.info("A user is trying patch the notifications from an user.");
-        var user = userService.findUserById(userId);
+        log.info(String.format("A user is trying patch the notification with id %s.", id.toString()));
 
-        var notification = notificationService.findByUserAndNotificationId(user, id);
-
-        if (notification == null) {
-            var exception = new NotFoundException("Notification with id '" + id + "' from user with id '" + userId + "' not found.");
-            log.error(exception.getMessage(), exception);
-            throw exception;
-        }
+        var notification = notificationService.findByNotificationId(id);
 
         notification.setRead(hasRead);
         notificationService.saveNotification(notification);

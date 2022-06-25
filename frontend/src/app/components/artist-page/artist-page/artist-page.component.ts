@@ -10,8 +10,6 @@ import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Location} from '@angular/common';
 import {Globals} from '../../../global/globals';
-import {NotificationDto, NotificationType} from '../../../dtos/notificationDto';
-import {Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-artist-page',
@@ -70,6 +68,8 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
               });
           } else if (this.user.userRole === UserRole.user) {
             this.navigateToUserPage();
+          } else if (this.user.userRole === UserRole.admin) {
+            this.navigateToAdminPage();
           }
         })
     );
@@ -132,6 +132,15 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
 
   private navigateToArtistList() {
     this.router.navigate(['/artists'])
+      .catch(
+        (error) => {
+          this.notificationService.displayErrorSnackbar(error.toString());
+        }
+      );
+  }
+
+  private navigateToAdminPage() {
+    this.router.navigate(['/admin'])
       .catch(
         (error) => {
           this.notificationService.displayErrorSnackbar(error.toString());

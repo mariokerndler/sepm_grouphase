@@ -44,6 +44,10 @@ export class AuthService {
     localStorage.setItem('userRole', userRole);
   }
 
+  private static setUserName(userName: string) {
+    localStorage.setItem('userName', userName);
+  }
+
   /**
    * Login in the user. If it was successful, a valid JWT token will be stored
    *
@@ -59,6 +63,7 @@ export class AuthService {
           AuthService.setToken(authResponse);
           AuthService.setUserId(authorizedUser.id);
           AuthService.setUserRole(authorizedUser.userRole);
+          AuthService.setUserName(authorizedUser.userName);
           this.notificationService.displaySuccessSnackbar('Successfully logged in.');
         })
       );
@@ -120,6 +125,14 @@ export class AuthService {
 
     if (id != null) {
       return Number(id);
+    }
+  }
+
+  getUserName() {
+    const userName = localStorage.getItem('userName');
+
+    if (userName != null) {
+      return userName;
     }
   }
 }

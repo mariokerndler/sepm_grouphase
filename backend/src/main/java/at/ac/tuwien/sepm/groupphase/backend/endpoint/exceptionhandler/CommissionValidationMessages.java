@@ -5,7 +5,7 @@ public final class CommissionValidationMessages {
 
     public static final String COMMISSION_STATUS_IS_NULL = "Commission status cannot be null.";
 
-    public static final String SKETCHES_SHOWN_NEGATIVE = "Shown sketches cannot be negative.";
+    public static final String SKETCHES_SHOWN_NEGATIVE = "Shown sketches cannot negative";
 
     public static final String FEEDBACK_SENT_NEGATIVE = "Feedback sent cannot be negative.";
 

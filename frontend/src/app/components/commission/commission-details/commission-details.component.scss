@@ -140,6 +140,13 @@ strong {
   border-radius: 10px;
 }
 
+.completed {
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+  bottom: 4rem;
+}
+
 .preview-image {
   max-height: 400px;
   max-width: 400px;

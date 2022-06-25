@@ -54,6 +54,7 @@ export class CommissionDetailsComponent implements OnInit {
   endDate: string;
   updatedEndDate: string;
   sketches;
+  hasApplied;
 
   public selectedArtistId;
 
@@ -266,10 +267,12 @@ export class CommissionDetailsComponent implements OnInit {
 
     this.artistService.getArtistById(Number.parseInt(this.userId, 10)).subscribe(data => {
       if (this.commission.artistCandidatesDtos.filter(a => a.id === data.id).length > 0) {
+        this.hasApplied = true;
         this.notificationService.displaySimpleDialog('', 'You have already applied for this commission');
       } else {
         this.commission.artistCandidatesDtos.push(data);
         this.commissionService.updateCommission(this.commission).subscribe(() => {
+          this.hasApplied = true;
           this.notificationService.displaySuccessSnackbar('You have applied for this commission');
         });
       }

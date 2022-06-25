@@ -8,6 +8,7 @@
 @use 'src/theme/components/menu-theme' as menu;
 @use 'src/theme/components/card-theme' as card;
 @use 'src/theme/components/stepper-theme' as stepper;
+@use 'src/theme/components/button-theme' as button;
 @import 'src/styles';
 
 @include mat.core();
@@ -113,5 +114,7 @@ $new-theme: mat.define-light-theme((
 @include menu.theme($new-theme);
 @include card.theme($new-theme);
 @include stepper.theme($new-theme);
+@include button.theme($new-theme);
 @include background-color($new-theme);
+
 

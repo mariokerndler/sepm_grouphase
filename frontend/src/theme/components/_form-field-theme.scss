@@ -9,6 +9,9 @@
   $primary-palette: map.get($color-config, 'primary');
   $accent-palette: map.get($color-config, 'accent');
 
+  .mat-form-field{
+    font-size: 1.2rem;
+  }
 
   .mat-form-field-appearance-fill {
     .mat-form-field-underline::before {

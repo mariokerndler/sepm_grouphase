@@ -1,13 +1,16 @@
 .sidenav {
   margin-left: 2rem;
   margin-right: 5rem;
-  margin-top: 4rem;
+  margin-top: 6rem;
+
 }
 
 $animate: all 0.2s ease-in-out;
 
 
 .side-nav-content {
+  position: relative;
+  z-index: 4;
     &.top {
       font-size: 2rem;
 
@@ -120,6 +123,83 @@ $animate: all 0.2s ease-in-out;
 .title:hover {
   cursor: pointer;
 }
+
+
+
+#menu_checkbox {
+  display: none;
+}
+
+label {
+  position: absolute;
+  margin: 0 0 0 2rem;
+  top: 1rem;
+  z-index: 2;
+  display: block;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+label:before {
+  content: "";
+}
+
+.test{
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+label div {
+  position: relative;
+  top: 0;
+  height: 4px;
+  background-color: #fb9fa4;
+  margin-bottom: 10px;
+  transition: 0.3s ease transform, 0.3s ease top, 0.3s ease width,
+  0.3s ease right;
+  border-radius: 2px;
+}
+
+label div:first-child {
+  transform-origin: 0;
+}
+
+label div:last-child {
+  margin-bottom: 0;
+  transform-origin: 30px;
+}
+
+label div:nth-child(2) {
+  right: 0;
+  width: 30px;
+}
+
+
+
+#menu_checkbox:checked + label div:first-child {
+  top: -1px;
+  right: 5px;
+  transform: rotateZ(45deg);
+}
+
+#menu_checkbox:checked + label div:last-child {
+  top: 1px;
+  right: 5px;
+  transform: rotateZ(45deg);
+}
+
+#menu_checkbox:checked + label div:nth-child(2) {
+  width: 45px;
+  top: 0;
+  right: 13px;
+  transform: rotateZ(-45deg);
+}
+
 
 
 

@@ -1,8 +1,8 @@
 <mat-toolbar class="toolbar" color="primary">
   <div fxFlex="auto" fxLayout="row">
-    <button (click)="sidenav.toggle()" class="menu-icon" mat-icon-button>
+   <!-- <button (click)="sidenav.toggle()" class="menu-icon" mat-icon-button>
       <mat-icon>menu</mat-icon>
-    </button>
+    </button> -->
   </div>
   <h1 class="title" fxFlex="auto" fxLayoutAlign="center" routerLink="/">{{globals.projectName}}</h1>
   <div class="navigation-items" fxFlex="auto" fxLayout="row" fxLayoutAlign="end">
@@ -13,11 +13,22 @@
   </div>
 </mat-toolbar>
 
-<mat-sidenav-container (click)="sidenav.toggle()">
+<input #checkbox type="checkbox" id="menu_checkbox">
+<label (click)="toggle(sidenav);" for="menu_checkbox">
+  <div></div>
+  <div></div>
+  <div></div>
+</label>
+
+<div *ngIf="isOpen" (click)="toggleCheckbox(sidenav,checkbox)" class="test"></div>
+
+
+
+<mat-sidenav-container (click)="toggleCheckbox(sidenav, checkbox)">
   <mat-sidenav #sidenav [fixedInViewport]="true" mode="side">
-    <button class="close-menu-icon" mat-icon-button>
+    <!--<button class="close-menu-icon" mat-icon-button>
       <mat-icon class="sidenav-top">close</mat-icon>
-    </button>
+    </button> -->
     <div class="sidenav">
     <mat-selection-list [multiple]="false"  fxLayout="column">
       <div class="side-nav-content top">

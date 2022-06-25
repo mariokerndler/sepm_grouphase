@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   userId: number;
   user: ApplicationUserDto;
-
+  isOpen = false;
   constructor(
     public authService: AuthService,
     public globals: Globals,
@@ -63,4 +63,16 @@ export class HeaderComponent implements OnInit {
   navigateToChat() {
     this.router.navigate(['/chat/' + this.userId]);
   }
+
+  toggle(sideNav){
+    this.isOpen = !this.isOpen;
+    sideNav.toggle();
+  }
+
+  toggleCheckbox(sideNav, checkbox){
+    this.isOpen = !this.isOpen;
+    checkbox.checked = !checkbox.checked;
+    sideNav.toggle();
+  }
+
 }

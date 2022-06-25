@@ -1,6 +1,84 @@
 .sidenav {
-  padding-left: 2rem;
-  padding-right: 5rem;
+  margin-left: 2rem;
+  margin-right: 5rem;
+  margin-top: 4rem;
+}
+
+$animate: all 0.2s ease-in-out;
+
+
+.side-nav-content {
+    &.top {
+      font-size: 2rem;
+
+      margin: 0 1rem 1.5rem 2rem;
+    }
+    &.bottom {
+      color: #fb9fa4 -90%;
+      font-size: 1.2rem;
+      margin: 0 1rem 0.5rem 2rem;
+    }
+
+    .hover {
+      text-align: left;
+      margin: 0 auto;
+      padding: 0;
+      transition: $animate;
+      position: relative;
+
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        margin: 5px 0 0;
+        transition: $animate;
+        transition-duration: 0.5s;
+        opacity: 0;
+        background-color: #fb9fa4;
+        left: 0;
+      }
+
+      &.upper{
+        &:before,
+        &:after {
+          bottom: -5px;
+          height: 2px;
+        }
+      }
+      &.lower{
+        &:before,
+        &:after {
+          bottom: -2px;
+          height: 1px;
+        }
+      }
+
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .hover {
+        &:before,
+        &:after {
+          width: 100%;
+          opacity: 1;
+        }
+      }
+    }
+
+
+
+  .sidenav-footer {
+    padding-left: 2rem;
+    padding-right: 5rem;
+
+    .sidenav-top {
+      font-size: 1rem;
+
+    }
+  }
 }
 
 .toolbar{

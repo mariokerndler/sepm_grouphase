@@ -40,7 +40,6 @@ export class ArtistFeedCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.shown = false;
     this.setArtistProfilePicture();
 
     this.artworkService.getArtworksByArtist(

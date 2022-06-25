@@ -33,7 +33,6 @@ export class ArtistFeedComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Test
-    this.shown = false;
     this.artistService.getAllArtists()
       .subscribe((artists) => {
         this.artists = artists;
@@ -74,7 +73,6 @@ export class ArtistFeedComponent implements OnInit, AfterViewInit {
   }
 
   blurBackground(): boolean {
-    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
     this.shown = true;
     return this.shown;
   }

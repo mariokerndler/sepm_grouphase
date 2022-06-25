@@ -153,6 +153,9 @@ export class GalleryCarouselComponent implements OnInit {
   public getImageArtistInfo(): void {
 
     const artistId = this.artworks[this.selectedArtworkId].artistId;
+    if(this.artworks[this.animArtwork].description) {
+      this.artworks[this.animArtwork].description = this.artworks[this.animArtwork].description.split('%', 1)[0];
+    }
     if (artistId) {
       this.artistService.getArtistById(artistId).subscribe(
         data => {

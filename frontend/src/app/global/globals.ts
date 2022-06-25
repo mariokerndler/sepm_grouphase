@@ -11,6 +11,7 @@ export class Globals {
   readonly maxStarRating: number = 5;
   readonly defaultStarRating: number = 3;
   readonly maxCommissionPrice: number = 10000;
+  readonly adminId: number = 1;
 
   private static findBackendUrl(): string {
     if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080

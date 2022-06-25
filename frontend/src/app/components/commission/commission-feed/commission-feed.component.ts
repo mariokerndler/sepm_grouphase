@@ -9,6 +9,7 @@ import {SearchConstraint} from '../../../global/SearchConstraint';
 import {CommissionStatus} from '../../../global/CommissionStatus';
 import {CommissionDto} from '../../../dtos/commissionDto';
 import {Globals} from '../../../global/globals';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-commission-feed',
@@ -16,14 +17,7 @@ import {Globals} from '../../../global/globals';
   styleUrls: ['./commission-feed.component.scss']
 })
 export class CommissionFeedComponent implements OnInit {
-  /*
-    commission = {
-      id: 1, artistId: null, customerId: 1, title: 'Commission Title',
-      instructions: 'This is just a random description which describes some of the information within in the commission ',
-      sketchesShown: 0, feedbackSend: 0, comArtworkId: null, feedback: [], price: 300,
-      issueDate: new Date(2022, 1, 1),
-      deadlineDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
-    } as CommissionDto; */
+
   public searchEnum = SearchConstraint;
   options: Options = {
     floor: 0,
@@ -50,6 +44,7 @@ export class CommissionFeedComponent implements OnInit {
 
   constructor(
     private commissionService: CommissionService,
+    private authService: AuthService,
     private router: Router,
     private artistService: ArtistService,
     public globals: Globals) {
@@ -57,7 +52,6 @@ export class CommissionFeedComponent implements OnInit {
 
   ngOnInit(): void {
     this.options.ceil = this.globals.maxCommissionPrice;
-
     this.fetchCommissions();
     this.loadAllArtists();
   }
@@ -70,6 +64,12 @@ export class CommissionFeedComponent implements OnInit {
 
   public isListed(status: CommissionStatus): boolean {
     return status === CommissionStatus.listed;
+  }
+
+  public isLoggedIn(): boolean{
+  if (this.authService.isLoggedIn()) {
+    return true;
+    }
   }
 
   private loadAllArtists() {

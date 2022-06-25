@@ -131,8 +131,10 @@
       </div>
     </div>
     <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId && getUserRole() === 'Artist'" fxLayout="col" fxLayoutAlign="center start">
-      <button color="primary" fxLayoutAlign="center" mat-flat-button (click)="applyArtist()">Apply</button>
+      <button *ngIf="!hasApplied" color="primary" fxLayoutAlign="center" mat-flat-button (click)="applyArtist()">Apply</button>
+      <span *ngIf="hasApplied"><strong>You applied for this commission. Wait for {{this.user.userName}} Response.</strong></span>
     </div>
+
     <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center start">
         <button *ngIf="this.userEdit" (click)="startCommission()" color="primary" mat-flat-button>Start Commission</button>
         <label *ngIf="this.artistEdit">Waiting for user to accept</label>

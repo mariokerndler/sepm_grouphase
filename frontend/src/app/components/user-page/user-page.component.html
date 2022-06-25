@@ -14,9 +14,9 @@
                    class="artist-profile-picture">
             </div>
             <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
-              <span class="accent-color artist-username">{{user.userName}}</span>
-              <span class="accent-color artist-full-name">{{user.name}} {{user.surname}}</span>
-              <span class="accent-color artist-role">User</span>
+              <span class="sidenav-top artist-username">{{user.userName}}</span>
+              <span class="sidenav-top artist-full-name">{{user.name}} {{user.surname}}</span>
+              <span class="sidenav-top artist-role">User</span>
             </div>
             <div fxFlex="fill"></div>
             <div fxLayoutAlign="end center" *ngIf="canReport()">

@@ -1,5 +1,5 @@
 <div *ngIf="!hasReadNotifications && !hasUnreadNotifications">
-  <span class="accent-color notification-header">You dont have any notifications!</span>
+  <span class="sidenav-top notification-header">You dont have any notifications!</span>
 </div>
 <mat-accordion multi>
   <mat-expansion-panel *ngIf="hasUnreadNotifications" [expanded]="hasUnreadNotifications"

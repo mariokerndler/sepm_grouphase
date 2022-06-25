@@ -296,13 +296,17 @@ export class CommissionDetailsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(
-      () => this.dialog.open(UploadComponent, {
-        data: {
-          artist: this.commission.artistDto,
-          commission: this.commission,
-          timelapse: true,
+      result => {
+        if (result.event === 'upload') {
+          this.dialog.open(UploadComponent, {
+            data: {
+              artist: this.commission.artistDto,
+              commission: this.commission,
+              timelapse: true,
+            }
+          });
         }
-      })
+      }
     );
   }
 

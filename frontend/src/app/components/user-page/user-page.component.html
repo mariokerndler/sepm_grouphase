@@ -8,7 +8,7 @@
     <div class="information-container">
       <div fxFill fxLayout="column">
         <div fxLayout="row">
-          <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
+          <div fxLayout="row" fxLayoutGap="5px" style="width: 100%">
             <div fxLayoutAlign="center center">
               <img [src]="globals.assetsPath + profilePicture" alt="{{user.userName}} profile picture"
                    class="artist-profile-picture">
@@ -17,6 +17,12 @@
               <span class="sidenav-top artist-username">{{user.userName}}</span>
               <span class="sidenav-top artist-full-name">{{user.name}} {{user.surname}}</span>
               <span class="sidenav-top artist-role">User</span>
+            </div>
+            <div fxFlex="fill"></div>
+            <div fxLayoutAlign="end center" *ngIf="canReport()">
+              <button mat-icon-button color="primary" (click)="reportProfile()">
+                <mat-icon>flag</mat-icon>
+              </button>
             </div>
           </div>
         </div>

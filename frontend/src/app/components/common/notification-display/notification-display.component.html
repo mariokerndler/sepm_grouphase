@@ -18,7 +18,7 @@
       <tr *ngFor="let notification of sortedNotifications">
         <td class="primary">{{notification.title}}</td>
         <td class="primary">{{notification.createdAt}}</td>
-        <td class="primary">{{convertNotificationTypeToString(notification.type)}}</td>
+        <td class="primary">{{globalFunctions.convertNotificationTypeToString(notification.type)}}</td>
         <td>
           <button (click)="navigateToCommission(notification.referenceId)"
                   *ngIf="notification.type.toString().includes('COMMISSION')"
@@ -56,7 +56,7 @@
       <tr *ngFor="let notification of readNotifications">
         <td class="primary">{{notification.title}}</td>
         <td class="primary">{{notification.createdAt}}</td>
-        <td class="primary">{{convertNotificationTypeToString(notification.type)}}</td>
+        <td class="primary">{{globalFunctions.convertNotificationTypeToString(notification.type)}}</td>
         <td>
           <button (click)="navigateToCommission(notification.referenceId)"
                   *ngIf="notification.type.toString().includes('COMMISSION')"

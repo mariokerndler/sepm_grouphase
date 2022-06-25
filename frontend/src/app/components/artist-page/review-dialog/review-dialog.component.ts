@@ -51,8 +51,6 @@ export class ReviewDialogComponent{
             starRating: this.rating
           };
 
-          console.log(commission);
-
           this.commissionService.updateCommission(commission).subscribe(
             (value) => {
               this.onNoClick();

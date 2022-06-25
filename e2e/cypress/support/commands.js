@@ -9,7 +9,7 @@ Cypress.Commands.add('loginAdmin', () => {
         cy.get('input[name="email"]').type(settings.adminUser);
         cy.get('input[name="password"]').click();
         cy.get('input[name="password"]').type(settings.adminPw);
-        cy.contains('button', 'Login').click();
+        cy.get('button[name="submit-button"]').click();
         
     })
 });
@@ -40,6 +40,7 @@ Cypress.Commands.add('registerUser', () => {
 
 Cypress.Commands.add('useSideNav', () => {
     cy.fixture('settings').then(settings => {
+        cy.visit(settings.baseUrl);
         cy.get('label[for="menu_checkbox"]').click();
         cy.contains('span', 'Artists').click();
         cy.get('label[for="menu_checkbox"]').click();

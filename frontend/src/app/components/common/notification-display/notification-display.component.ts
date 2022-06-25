@@ -4,7 +4,7 @@ import {NotificationDto, NotificationType} from '../../../dtos/notificationDto';
 import {Sort} from '@angular/material/sort';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Router} from '@angular/router';
-import {GlobalFunctions} from "../../../global/globalFunctions";
+import {GlobalFunctions} from '../../../global/globalFunctions';
 
 @Component({
   selector: 'app-notification-display',

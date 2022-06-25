@@ -7,7 +7,7 @@ import {NotificationService} from '../../services/notification/notification.serv
 import {AuthService} from '../../services/auth.service';
 import {UserRole} from '../../dtos/artistDto';
 import {Globals} from '../../global/globals';
-import {ReportService} from "../../services/report/report.service";
+import {ReportService} from '../../services/report/report.service';
 
 @Component({
   selector: 'app-user-page',

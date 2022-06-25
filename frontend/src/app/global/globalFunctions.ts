@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {FileType} from '../dtos/artworkDto';
-import {NotificationType} from "../dtos/notificationDto";
+import {NotificationType} from '../dtos/notificationDto';
 
 @Injectable({
   providedIn: 'root'

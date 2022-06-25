@@ -47,10 +47,12 @@
          (change)="fileSelected($event)"
          [attr.accept]="data.timelapse ? 'image/gif' : ' image/png, image/jpeg, image/gif'" style="display: none;" type="file">
   <img *ngIf="file" [src]="selectedImage" alt="" class="preview-image">
-  <button (click)="fileInput.click()" class="upload-button" mat-button>
+  <br>
+  <button (click)="fileInput.click()" class="upload-button" color="primary" mat-flat-button>
     <span *ngIf="!file">Select File</span>
     <span *ngIf="file">Change Picture</span>
   </button>
+  <br>
   <mat-form-field *ngIf="file && !this.data.commission" appearance="fill" class="form-group">
     <mat-label>Tags</mat-label>
     <input
@@ -76,11 +78,11 @@
   </mat-form-field>
 
 
-  <button *ngIf="file && !this.data.commission" (click)="onFileChanged(false)" cdkFocusInitial class="upload-button" mat-button name="upload-button">
+  <button *ngIf="file && !this.data.commission" (click)="onFileChanged(false)" cdkFocusInitial class="upload-button" mat-flat-button color="primary" name="upload-button">
     Upload
   </button>
 
-  <button *ngIf="file && this.data.commission" (click)= "onFileChanged(true)" cdkFocusInitial class="upload-button" mat-button name="upload-button">
+  <button *ngIf="file && this.data.commission" (click)= "onFileChanged(true)" cdkFocusInitial class="upload-button" mat-flat-button color="primary" name="upload-button">
     Upload
   </button>
 

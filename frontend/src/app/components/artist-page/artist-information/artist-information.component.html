@@ -1,8 +1,8 @@
 <div>
   <div fxLayout="row" fxFill>
     <div fxFlex="auto">
-      <span class="accent-color artist-about-header">About</span>
-      <p class="accent-color artist-about-description">
+      <span class="sidenav-top artist-about-header">About</span>
+      <p class="sidenav-top artist-about-description">
         {{artist.description}}
       </p>
     </div>
@@ -17,8 +17,8 @@
 </div>
 <div *ngIf="profileSettings">
   <div>
-    <span class="accent-color artist-about-header">About</span>
-    <p class="accent-color artist-about-description">
+    <span class="sidenav-top artist-about-header">About</span>
+    <p class="sidenav-top artist-about-description">
       {{artist.description}}
     </p>
   </div>
@@ -27,9 +27,9 @@
   <div *ngFor="let element of profileSettings.layout; let i = index">
     <div *ngIf="element.type.includes('Gallery')">
       <div>
-        <span class="accent-color artist-about-header">{{element.componentName}}</span>
+        <span class="sidenav-top artist-about-header">{{element.componentName}}</span>
         <div fxFlex="auto" fxLayoutAlign="end">
-          <button (click)="switchTab(1)" color="primary" mat-button>See More</button>
+          <button (click)="switchTab(1)" color="primary" style="font-size: 1rem" mat-button>See More</button>
         </div>
       </div>
       <app-artist-gallery-subsections [artist]="artist"
@@ -39,9 +39,9 @@
 
     <div *ngIf="element.componentName.substring(0,6) === 'Review'">
       <div>
-        <span class="accent-color artist-about-header">{{element.componentName}}</span>
+        <span class="sidenav-top artist-about-header">{{element.componentName}}</span>
         <div fxFlex="auto" fxLayoutAlign="end">
-          <button (click)="switchTab(2)" color="primary" mat-button>See More</button>
+          <button (click)="switchTab(2)" color="primary" mat-button style="font-size: 1rem">See More</button>
         </div>
       </div>
       <app-review-page [user]="artist"></app-review-page>

@@ -7,15 +7,13 @@
              class="primary" matInput name="searchForm" placeholder="search">
     </mat-form-field>
     <span style="margin-left: 10px"></span>
-    <button (click)="searchParams.pageNr=0; loadFeed()" color="primary" mat-stroked-button style="padding:0.1rem">Go</button>
-
+    <button (click)="searchParams.pageNr=0; loadFeed()" color="primary" mat-stroked-button style="padding:0.1rem; font-size: 1.2rem">Go</button>
     <br>
-
     <button color="primary" mat-stroked-button style="padding:0.1rem 0.5rem">
-    <mat-label [matMenuTriggerFor]="tagListMenu" class="primary">Filter by:
-      ({{searchParams.tagIds.length}} selected)</mat-label>
+    <mat-label style="font-size: 1.2rem;" [matMenuTriggerFor]="tagListMenu" class="primary">Tags
+      selected {{searchParams.tagIds.length}}</mat-label>
     <mat-menu #tagListMenu="matMenu" class="mat-checkbox">
-      <mat-checkbox #tagMenuItems
+      <mat-checkbox #tagMenuItems style="font-size: 1rem !important; margin-right: 0.5rem"
                     (change)="onTagSelect($event)"
                     (click)="$event.stopPropagation()"
                     *ngFor="let tag of tags"
@@ -33,7 +31,7 @@
     <button (click)="previousPage()" class="paginationButton" color="primary" mat-button>
       <span class="material-icons">chevron_left</span>
     </button>
-    <mat-label class="paginationText accent-color" style="width: 20px">{{searchParams.pageNr}}</mat-label>
+    <mat-label class="paginationText sidenav-top" style="width: 20px">{{searchParams.pageNr}}</mat-label>
     <button (click)="nextPage()" class="paginationButton" color="primary" mat-button>
       <span class="material-icons">chevron_right</span>
     </button>

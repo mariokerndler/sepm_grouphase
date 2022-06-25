@@ -1,4 +1,4 @@
-<form class="col-12" style="padding-left: 1%">
+<form class="col-12" style="padding-left: 2%">
   <div>
     <mat-form-field >
       <mat-label class="primary">Search</mat-label>
@@ -6,9 +6,14 @@
              [(ngModel)]=" searchInput"
              class="primary" matInput name="searchForm" placeholder="search">
     </mat-form-field>
+    <span style="margin-left: 10px"></span>
+    <button (click)="searchParams.pageNr=0; loadFeed()" color="primary" mat-stroked-button style="padding:0.1rem">Go</button>
 
-    <mat-label [matMenuTriggerFor]="tagListMenu" class="primary">Tags
-      selected {{searchParams.tagIds.length}}</mat-label>
+    <br>
+
+    <button color="primary" mat-stroked-button style="padding:0.1rem 0.5rem">
+    <mat-label [matMenuTriggerFor]="tagListMenu" class="primary">Filter by:
+      ({{searchParams.tagIds.length}} selected)</mat-label>
     <mat-menu #tagListMenu="matMenu" class="mat-checkbox">
       <mat-checkbox #tagMenuItems
                     (change)="onTagSelect($event)"
@@ -22,6 +27,7 @@
         {{tag.name}}
       </mat-checkbox>
     </mat-menu>
+    </button>
   </div>
   <div class="pagination">
     <button (click)="previousPage()" class="paginationButton" color="primary" mat-button>

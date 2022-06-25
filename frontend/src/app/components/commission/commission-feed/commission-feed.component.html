@@ -1,10 +1,9 @@
 
 
 <div fxLayout="column" fxLayoutAlign="center center" >
-  <button  [routerLink]="'/commission-creation'" class="create-button" color="primary" mat-flat-button style="float:right">
+  <button *ngIf="isLoggedIn()" [routerLink]="'/commission-creation'" class="create-button" color="primary" mat-flat-button style="float:right">
     Create Commission
   </button>
-
 </div>
 
 

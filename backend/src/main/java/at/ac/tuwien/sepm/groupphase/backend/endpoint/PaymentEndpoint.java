@@ -56,6 +56,17 @@ public class PaymentEndpoint {
         commissionValidator.throwExceptionIfCommissionCanNotBePayed(commission);
 
         // TODO: Differentiate between big and small commissions concerning price and name ?
+        boolean bigCommission = commission.getPrice() > 100;
+        long priceToBePaid;
+        if (commission.getFeedbackRounds() == 0) {
+            priceToBePaid = (long) (commission.getPrice() * 100);
+        } else {
+            if (bigCommission) {
+                priceToBePaid = (long) (commission.getPrice() * 100) / commission.getFeedbackRounds();
+            } else {
+                priceToBePaid = (long) (commission.getPrice() * 100);
+            }
+        }
 
         // We initialize stripe object with the api key
         init();
@@ -70,10 +81,10 @@ public class PaymentEndpoint {
                 SessionCreateParams.LineItem.builder().setQuantity(1L)
                     .setPriceData(
                         SessionCreateParams.LineItem.PriceData.builder()
-                            .setCurrency(payment.getCurrency()).setUnitAmount((long) commission.getPrice() * 100)
+                            .setCurrency(payment.getCurrency()).setUnitAmount(priceToBePaid)
                             .setProductData(
                                 SessionCreateParams.LineItem.PriceData.ProductData
-                                    .builder().setName(commission.getTitle()).build())
+                                    .builder().setName((bigCommission ? "Partial payment of: " : "Complete payment of: ") + commission.getTitle()).build())
                             .build())
                     .setDescription(commission.getInstructions())
                     .build())

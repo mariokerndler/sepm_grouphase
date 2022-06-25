@@ -106,6 +106,9 @@ public class CommissionServiceImpl implements CommissionService {
                 c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
                     this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
                 this.sketchRepository.save(c.getArtwork().getSketches().get(sketchCount - 1));
+                if (c.getPrice() > 100) {
+                    c.setStatus(CommissionStatus.AWAITING_PAYMENT);
+                }
             }
         } else {
             log.info("SKETCHES EMPTY");

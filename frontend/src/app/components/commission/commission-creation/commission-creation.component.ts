@@ -51,7 +51,7 @@ export class CommissionCreationComponent implements OnInit {
   commissionForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.pattern('^[a-zA-Z0-9 ]*$')]),
     description: new FormControl('', [Validators.required, Validators.maxLength(512)]),
-    price: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required, Validators.min(0), Validators.max(this.globals.maxCommissionPrice)]),
     date: new FormControl('', [Validators.required]),
     references: new FormControl(''),
     feedbackRounds: new FormControl('')
@@ -110,10 +110,6 @@ export class CommissionCreationComponent implements OnInit {
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
 
-  goToCommissions(): void {
-    this.router.navigate([`commissions`]);
-  }
-
   getUserId(): void {
     const id = localStorage.getItem('userId');
     if (id !== null) {
@@ -164,7 +160,6 @@ export class CommissionCreationComponent implements OnInit {
     }
   }
 
-
   submitCommission() {
     this.hasSubmitted = true;
     if(this.commissionForm.valid) {
@@ -182,7 +177,6 @@ export class CommissionCreationComponent implements OnInit {
           this.notificationService.displayErrorSnackbar(error.error);
         }, () => {
           this.notificationService.displaySuccessSnackbar('Commission created successfully');
-          this.goToCommissions();
         }
       );
     }

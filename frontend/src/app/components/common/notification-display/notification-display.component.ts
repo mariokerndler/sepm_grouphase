@@ -115,6 +115,15 @@ export class NotificationDisplayComponent implements OnInit {
       );
   }
 
+  deleteNotification(notification: NotificationDto) {
+    this.notificationService.deleteNotification(notification)
+      .subscribe( _ => {
+        this.notificationService.displaySuccessSnackbar('Deleted notification.');
+        this.fetchReadNotifications();
+      }
+    );
+  }
+
   private fetchNotifications() {
     this.notifications = [];
 

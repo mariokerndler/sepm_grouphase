@@ -38,6 +38,7 @@ export class CommissionTimelineComponent implements OnInit {
         (commission) => {
           console.log(commission);
           this.data = commission;
+          this.data.artworkDto.imageUrl = this.data.artworkDto.imageUrl + '.' + this.data.artworkDto.fileType.toLowerCase();
           if(commission.status !== 'COMPLETED'){
             this.router.navigate(['/commissions', id]);
             return;

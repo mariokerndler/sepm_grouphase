@@ -83,6 +83,7 @@ import { ReviewDialogComponent } from './components/artist-page/review-dialog/re
 import { ReviewPageComponent } from './components/artist-page/review-page/review-page.component';
 import { ReviewCardComponent } from './components/artist-page/review-page/review-card/review-card.component';
 import { ReviewStarComponent } from './components/artist-page/review-page/review-star/review-star.component';
+import {HideMissingDirective} from './components/common/hide-missing-directive';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { ReviewStarComponent } from './components/artist-page/review-page/review
     ReviewDialogComponent,
     ReviewPageComponent,
     ReviewCardComponent,
-    ReviewStarComponent
+    ReviewStarComponent,
+    HideMissingDirective
   ],
   imports: [
     BrowserModule,

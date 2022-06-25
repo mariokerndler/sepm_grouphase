@@ -41,8 +41,7 @@
 
     <button (click)="readAllNotifications()" color="primary" mat-flat-button>Read all</button>
   </mat-expansion-panel>
-  <mat-expansion-panel *ngIf="hasReadNotifications" [expanded]="hasReadNotifications"
-                       class="mat-elevation-z0">
+  <mat-expansion-panel *ngIf="hasReadNotifications" class="mat-elevation-z0">
     <mat-expansion-panel-header>
       <span class="primary notification-header">Read notifications</span>
     </mat-expansion-panel-header>
@@ -52,6 +51,7 @@
         <th class="primary" mat-sort-header="createdAt">Created at</th>
         <th class="primary" mat-sort-header="type">Type</th>
         <th class="primary" mat-sort-header="referenceId">Reference</th>
+        <th class="primary">Delete</th>
       </tr>
       <tr *ngFor="let notification of readNotifications">
         <td class="primary">{{notification.title}}</td>
@@ -63,6 +63,11 @@
                   color="primary"
                   mat-flat-button>
             Go to commission
+          </button>
+        </td>
+        <td>
+          <button (click)="deleteNotification(notification)" color="primary" mat-icon-button>
+            <mat-icon color="primary">clear</mat-icon>
           </button>
         </td>
       </tr>

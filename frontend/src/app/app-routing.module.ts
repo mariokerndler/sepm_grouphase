@@ -22,8 +22,6 @@ import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy
 import {ContactComponent} from './components/footer/contact/contact.component';
 import {AboutComponent} from './components/footer/about/about.component';
 import {CheckoutComponent} from './components/checkout/checkout.component';
-import {CancelComponent} from './components/cancel/cancel.component';
-import {SuccessComponent} from './components/success/success.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -46,8 +44,6 @@ const routes: Routes = [
   {path: 'contact', component: ContactComponent},
   {path: 'about', component: AboutComponent},
   {path: 'checkout', component: CheckoutComponent},
-  {path: 'cancel', component: CancelComponent},
-  {path: 'success', component: SuccessComponent},
   {path: '**', redirectTo: 'feed'},
 
 ];

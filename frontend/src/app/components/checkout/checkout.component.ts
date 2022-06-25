@@ -21,8 +21,8 @@ export class CheckoutComponent {
     return await this.checkoutService.payWithCheckout(
       this.commission.id,
       'eur',
-      'http://localhost:4200/#/cancel',
-      'http://localhost:4200/#/success');
+      'http://localhost:4200/#/commissions/' + this.commission.id,
+      'http://localhost:4200/#/commissions/' + this.commission.id);
   }
 
   //TODO: Remove after testing

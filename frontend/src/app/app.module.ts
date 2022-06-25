@@ -81,8 +81,6 @@ import { TermsOfServiceComponent } from './components/footer/terms-of-service/te
 import { PrivacyPolicyComponent } from './components/footer/privacy-policy/privacy-policy.component';
 import { ContactComponent } from './components/footer/contact/contact.component';
 import { AboutComponent } from './components/footer/about/about.component';
-import {SuccessComponent} from './components/success/success.component';
-import {CancelComponent} from './components/cancel/cancel.component';
 import {CheckoutComponent} from './components/checkout/checkout.component';
 
 @NgModule({
@@ -127,8 +125,6 @@ import {CheckoutComponent} from './components/checkout/checkout.component';
     PrivacyPolicyComponent,
     ContactComponent,
     AboutComponent,
-    CancelComponent,
-    SuccessComponent,
     CheckoutComponent
   ],
   imports: [

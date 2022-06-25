@@ -141,11 +141,23 @@ label {
   cursor: pointer;
 }
 
+label:hover{
+  div:first-child {
+    filter: brightness(92%);
+  }
+  div:nth-child(2) {
+    filter: brightness(92%);
+  }
+  div:last-child {
+    filter: brightness(92%);
+  }
+}
+
 label:before {
   content: "";
 }
 
-.test{
+.close-div{
   position: fixed;
   z-index: 1;
   top: 0;
@@ -162,7 +174,7 @@ label div {
   margin-bottom: 10px;
   transition: 0.3s ease transform, 0.3s ease top, 0.3s ease width,
   0.3s ease right;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 label div:first-child {
@@ -182,14 +194,18 @@ label div:nth-child(2) {
 
 
 #menu_checkbox:checked + label div:first-child {
+  width: 30px;
+  background-color: #fb9fa4;
   top: -1px;
   right: 5px;
   transform: rotateZ(45deg);
 }
 
 #menu_checkbox:checked + label div:last-child {
+  width: 30px;
   top: 1px;
   right: 5px;
+  background-color: #fb9fa4;
   transform: rotateZ(45deg);
 }
 
@@ -197,6 +213,7 @@ label div:nth-child(2) {
   width: 45px;
   top: 0;
   right: 13px;
+  background-color: #fb9fa4;
   transform: rotateZ(-45deg);
 }
 

@@ -51,7 +51,7 @@
       </div>
 
 
-      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0" style="max-width: 40%">
+      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0 && this.userId === commission.customerDto.id.toString()" style="max-width: 40%">
         <mat-label>Commission Candidates</mat-label>
         <mat-selection-list  [(ngModel)]="selectedArtistId" name="applicant"  [multiple]="false">
             <mat-list-option *ngFor="let a of commission.artistCandidatesDtos" [value]="a.id">
@@ -67,13 +67,15 @@
           <button (click)="chooseArtist()" class="mat-primary" mat-flat-button>Choose this Artist</button>
         </div>
       </div>
-
-      <br><br>
+      <br>
       <strong>Feedback-Rounds: </strong>
-      <strong class="p-section"> {{commission.feedbackRounds}}</strong> <br><br>
-      <strong>Status:</strong>
-      <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
-      <br><br>
+      <div *ngIf="commission.status.toString()==='In_PROGRESS' || commission.status.toString()==='COMPLETED'">
+      <strong class="p-section"> {{commission.feedbackSent}}/{{commission.feedbackRounds}}</strong>
+      </div>
+      <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
+      <strong class="p-section"> {{commission.feedbackRounds}}</strong>
+    </div>
+      <br>
       <strong>Price: </strong>
       <strong class="p-section">${{commission.price}}</strong>
       <br><br>
@@ -83,7 +85,12 @@
 
       <strong *ngIf="commission.status === 'COMPLETED'" class="p-section">{{startDate}}
         - {{updatedEndDate}}</strong>
-
+      <br><br>
+      <strong>Status:</strong>
+      <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
+      <br><br>
+      <mat-progress-bar class="progress-bar" mode="determinate" value="{{calculateProgress()}}"></mat-progress-bar>
+       <br>
       <div *ngIf="hasSketches">
         <strong class="referenceImages">Sketches:</strong>
         <br><br>
@@ -94,7 +101,7 @@
               <img (click)="setSelectedArtwork(i, false) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
               <br>
-              <span *ngIf="reference.customerFeedback">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
+              <span *ngIf="reference.customerFeedback.length>0">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
               <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>
@@ -124,8 +131,10 @@
       </div>
     </div>
     <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId && getUserRole() === 'Artist'" fxLayout="col" fxLayoutAlign="center start">
-      <button color="primary" fxLayoutAlign="center" mat-flat-button (click)="applyArtist()">Apply</button>
+      <button *ngIf="!hasApplied" color="primary" fxLayoutAlign="center" mat-flat-button (click)="applyArtist()">Apply</button>
+      <span *ngIf="hasApplied"><strong>You applied for this commission. Wait for {{this.user.userName}} Response.</strong></span>
     </div>
+
     <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center start">
         <button *ngIf="this.userEdit" (click)="startCommission()" color="primary" mat-flat-button>Start Commission</button>
         <label *ngIf="this.artistEdit">Waiting for user to accept</label>
@@ -149,23 +158,28 @@
     <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch">
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
         <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
-          <button (click)="fileInput.click()" color="accent" mat-button>
-            <input #fileInput (change)="fileSelected($event)"
-                   accept=".png,.jpg,.jpeg" style="display: none;" type="file">
-            <mat-icon color="accent">upload</mat-icon>
-            <span>Upload new Sketch</span>
+          <button (click)="openSketchDialog()" color="primary" mat-button>
+            <!--<input #fileInput (change)="fileSelected($event)"
+                   accept=".png,.jpg,.jpeg" style="display: none;" type="file"> -->
+            <mat-icon  color="primary">upload</mat-icon>
+            <span style="font-size: 1.2rem">Upload new Sketch</span>
           </button>
         </div>
-        <div *ngIf="this.uploadedSketchDto">
+        <!--<div *ngIf="this.uploadedSketchDto">
           <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
-        </div>
+        </div> -->
         <br>
-        <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary"
-                mat-button>
+        <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
           <mat-icon color="primary">upload</mat-icon>
-          <span>Upload finished image</span>
+          <span style="font-size: 1.2rem">Upload finished image</span>
         </button>
       </form>
+    </div>
+    <div *ngIf="commission.status.toString()==='COMPLETED'" class="completed">
+    <strong>This commisison is done! Here you can re-live the process with the timeline:</strong>
+      <br><br>
+    <button  color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/timeline">View Timeline</button>
+    </div>
     </div>
     <button *ngIf="commission.status.toString()==='COMPLETED'" color="primary" mat-flat-button
             routerLink="/commissions/{{commission.id}}/timeline">View Timeline

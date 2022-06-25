@@ -147,42 +147,6 @@
 
     <mat-tab *ngIf="isArtist" label="Appearance">
       <h2 class="primary">Update the profile appearance</h2>
-      <!--
-      <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
-        <form [formGroup]="appearanceForm" class="edit-page-pf-form">
-          <mat-form-field appearance="fill" class="primary full-width">
-            <mat-label class="primary">Background</mat-label>
-            <input [ngxMatColorPicker]="bgPicker" class="primary" formControlName="backgroundColor" matInput>
-            <ngx-mat-color-toggle [for]="bgPicker" class="primary" matSuffix></ngx-mat-color-toggle>
-            <ngx-mat-color-picker #bgPicker></ngx-mat-color-picker>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="primary full-width">
-            <mat-label class="primary">Primary</mat-label>
-            <input [ngxMatColorPicker]="primaryPicker" class="primary" formControlName="primaryColor" matInput>
-            <ngx-mat-color-toggle [for]="primaryPicker" class="primary" matSuffix></ngx-mat-color-toggle>
-            <ngx-mat-color-picker #primaryPicker></ngx-mat-color-picker>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="primary full-width">
-            <mat-label class="primary">Secondary</mat-label>
-            <input [ngxMatColorPicker]="secondaryPicker" class="primary" formControlName="secondaryColor" matInput>
-            <ngx-mat-color-toggle [for]="secondaryPicker" class="primary" matSuffix></ngx-mat-color-toggle>
-            <ngx-mat-color-picker #secondaryPicker></ngx-mat-color-picker>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="primary full-width">
-            <mat-label class="primary">Header</mat-label>
-            <input [ngxMatColorPicker]="headerPicker" class="primary" formControlName="headerColor" matInput>
-            <ngx-mat-color-toggle [for]="headerPicker" class="primary" matSuffix></ngx-mat-color-toggle>
-            <ngx-mat-color-picker #headerPicker></ngx-mat-color-picker>
-          </mat-form-field>
-        </form>
-      </div>
-
-      <h2 class="primary">Update the profile elements</h2>
-      -->
-
       <div cdkDropListGroup class="artist-profile-elements-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column"
            fxLayoutAlign="space-between start" fxLayoutGap="0.5rem">
         <div class="element-container" fxFlex="33%">
@@ -217,8 +181,8 @@
                  [cdkDragDisabled]="item.disabled"
                  cdkDrag
                  class="element-box">
-              {{item.componentName}},
-              Tags:{{item?.tags.length}}
+              {{item.componentName}}
+              <div *ngIf="item.type.toString().includes('Gallery')">,Tags:{{item?.tags.length}}</div>
               <button (click)="deleteComponent(item)" *ngIf="item.componentName !== 'Profile information'" mat-button>
                 <mat-icon>close</mat-icon>
               </button>
@@ -239,10 +203,10 @@
   </mat-tab-group>
 </div>
 
-<div class="home-button">
+<div class="home-button" >
   <button (click)="goBack()" color="primary" mat-button>
     <mat-icon color="primary">home</mat-icon>
-    <span class="home-text">Go back</span>
+    <span class="home-text" style="font-size: 1.1rem">Go back</span>
   </button>
 </div>
 

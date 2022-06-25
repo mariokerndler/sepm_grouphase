@@ -6,6 +6,7 @@ import {NotificationService} from '../../../services/notification/notification.s
 import {Globals} from '../../../global/globals';
 import {Router} from '@angular/router';
 import {GlobalFunctions} from '../../../global/globalFunctions';
+import {ArtistFeedComponent} from '../artist-feed.component';
 
 @Component({
   selector: 'app-artist-feed-card',
@@ -20,6 +21,7 @@ export class ArtistFeedCardComponent implements OnInit {
   artworks: ArtworkDto[] = [];
   artistPfp;
   selectedArtwork: number = null;
+  shown: boolean;
 
   constructor(
     private artworkService: ArtworkService,
@@ -27,7 +29,8 @@ export class ArtistFeedCardComponent implements OnInit {
     private router: Router,
     public globals: Globals,
     public globalFunctions: GlobalFunctions,
-    {nativeElement}: ElementRef<HTMLImageElement>
+    {nativeElement}: ElementRef<HTMLImageElement>,
+    private artistFeed: ArtistFeedComponent
   ) {
     const supports = 'loading' in HTMLImageElement.prototype;
 
@@ -56,8 +59,21 @@ export class ArtistFeedCardComponent implements OnInit {
   }
 
   setSelectedArtwork(i: number) {
-    this.selectedArtwork = i;
-    document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+    this.shown = this.artistFeed.shown;
+    if (!this.artistFeed.shown) {
+      this.selectedArtwork = i;
+      document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+      this.shown = this.artistFeed.blurBackground();
+    }
+  }
+
+  resetSelectedArtwork() {
+    this.resetShown();
+    this.selectedArtwork = null;
+  }
+
+  resetShown() {
+    this.artistFeed.resetShown();
   }
 
   private setArtistProfilePicture() {

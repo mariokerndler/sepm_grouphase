@@ -55,6 +55,16 @@ public final class NotificationFactory {
                 return createNotification(
                     NotificationMessages.COMMISSION_STATUS_NEGOTIATING);
             }
+            case COMMISSION_CANDIDATE_CHOSEN -> {
+                return createNotification(
+                    NotificationMessages.COMMISSION_CANDIDATE_CHOSEN
+                );
+            }
+            case COMMISSION_REVIEW_ADDED -> {
+                return createNotification(
+                    NotificationMessages.COMMISSION_REVIEW_UPLOADED
+                );
+            }
             case COMMISSION_PAID_FOR -> {
                 return createNotification(
                     NotificationMessages.COMMISSION_PAID_FOR);

@@ -1,8 +1,8 @@
-<mat-card *ngIf="commission && user" [routerLink]="'/commissions/' + commission.id" class="commission"
+<mat-card *ngIf="commission && user" class="commission"
           routerLinkActive="active">
-  <mat-card-title><strong>{{commission.title}}</strong></mat-card-title>
+  <mat-card-title style="font-size: 1.2rem"><strong>{{commission.title}}</strong></mat-card-title>
   <img [src]="globals.assetsPath + profilePicture" alt="" class="commission-pfp">
-  <mat-card-content>
+  <mat-card-content style="font-size: 1rem">
     <strong>{{user.userName}}</strong>
     <br><br>
     <strong>Price: €{{commission.price}}</strong>
@@ -12,6 +12,7 @@
     <p>{{commission.instructions.substring(0, 100)}}...</p>
   </mat-card-content>
   <mat-card-actions>
-    <span> <strong> See More </strong></span>
+    <button mat-button  [routerLink]="'/commissions/' + commission.id">See more</button>
+    <button mat-button *ngIf="canWriteReview()" (click)="openReviewDialog()">Write review</button>
   </mat-card-actions>
 </mat-card>

@@ -66,9 +66,7 @@ public class ImageFileManager {
 
     public String writeReferenceDatagenImage(Commission c, Reference r, String url) {
         log.trace("calling writeReferenceImage() ...");
-
-
-        String relPath = url;
+        String relPath = url  + "." + r.getFileType().toString().toLowerCase(Locale.ROOT);
         log.info(relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             outputStream.write(r.getImageData());
@@ -112,7 +110,7 @@ public class ImageFileManager {
             }
         } else {
             log.info("Writing final Artwork");
-            try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
+            try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath + "." + aw.getFileType().toString().toLowerCase(Locale.ENGLISH))) {
                 outputStream.write(aw.getImageData());
                 log.info("Wrote artwork images to disk at path='{}'", relPath);
                 return relPath;

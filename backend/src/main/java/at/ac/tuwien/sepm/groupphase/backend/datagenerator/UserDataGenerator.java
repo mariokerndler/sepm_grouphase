@@ -281,18 +281,20 @@ public class UserDataGenerator {
         List<ApplicationUser> users = userRepository.findAll();
         List<Artist> artists = artistService.getAllArtists();
         ApplicationUser user = userRepository.findApplicationUserByEmail("testuser@test.com");
+        Long artistId = userRepository.findApplicationUserByEmail("testartist@test.com").getId();
+        Artist artist = artistRepository.findById(artistId).get();
 
         Commission c = generateCommission2(artists.get(0), user);
         commissionService.saveCommission(c);
-        Commission d = generateCommission1(artists.get(1), user);
+        Commission d = generateCommission1(artists.get(1), users.get(4));
         commissionService.saveCommission(d);
         Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);
-        Commission f = generateCommission4(artists.get(0), user);
+        Commission f = generateCommission4(artist, user);
         commissionService.saveCommission(f);
         Artwork artwork = new Artwork();
         artwork.setCommission(f);
-        artwork.setArtist(artists.get(0));
+        artwork.setArtist(artist);
         artwork.setFileType(FileType.JPG);
         artwork.setDescription("Artwork description");
         artwork.setName("Artwork");
@@ -314,7 +316,7 @@ public class UserDataGenerator {
         artwork.setSketches(sketches);
         artworkRepo.save(artwork);
         f.setArtwork(artwork);
-        Commission g = generateCommission5(artists.get(0), user);
+        Commission g = generateCommission5(artists.get(0), users.get(4));
         commissionService.saveCommission(g);
 
 
@@ -331,11 +333,12 @@ public class UserDataGenerator {
         Faker faker = new Faker();
         Commission commission = new Commission();
         commission.setStatus(CommissionStatus.IN_PROGRESS);
-        commission.setArtist(artist);
+        commission.setArtist(null);
         commission.setCustomer(user);
-        commission.setTitle("Sample Commission");
-        commission.setSketchesShown((int) (Math.random() * 10));
-        commission.setFeedbackSent((int) (Math.random() * 6));
+        commission.setTitle("Sample Commission1");
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
+        commission.setFeedbackRounds(2);
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
@@ -376,7 +379,7 @@ public class UserDataGenerator {
         commission.setStatus(CommissionStatus.IN_PROGRESS);
         commission.setArtist(artist);
         commission.setCustomer(user);
-        commission.setTitle("Sample Commission");
+        commission.setTitle("Sample Commission2");
         commission.setSketchesShown(2);
         commission.setFeedbackSent(1);
         commission.setPrice((int) (Math.random() * 10000));
@@ -438,7 +441,7 @@ public class UserDataGenerator {
         Commission commission = new Commission();
         commission.setArtist(artist);
         commission.setCustomer(user);
-        commission.setTitle("Sample Commission");
+        commission.setTitle("Sample Commission3");
         commission.setSketchesShown(4);
         commission.setFeedbackSent(4);
         commission.setPrice((int) (Math.random() * 10000));
@@ -507,7 +510,7 @@ public class UserDataGenerator {
         Commission commission = new Commission();
         commission.setArtist(artist);
         commission.setCustomer(user);
-        commission.setTitle("Sample Commission");
+        commission.setTitle("Sample Commission4");
         commission.setSketchesShown(4);
         commission.setFeedbackSent(4);
         commission.setPrice((int) (Math.random() * 10000));
@@ -575,11 +578,12 @@ public class UserDataGenerator {
         Faker faker = new Faker();
         Commission commission = new Commission();
         commission.setStatus(CommissionStatus.IN_PROGRESS);
-        commission.setArtist(artist);
+        commission.setArtist(null);
         commission.setCustomer(user);
-        commission.setTitle("Sample Commission");
+        commission.setTitle("Sample Commission5");
         commission.setSketchesShown(0);
         commission.setFeedbackSent(0);
+        commission.setFeedbackRounds(5);
         commission.setPrice((int) (Math.random() * 10000));
         commission.setIssueDate(LocalDateTime.now());
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));

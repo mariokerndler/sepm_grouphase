@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -148,7 +149,7 @@ public class NotificationEndpoint {
     @PostMapping
     @Operation(summary = "Create a new notification")
     @Transactional
-    public void createNotification(@RequestBody NotificationDto notificationDto) {
+    public void createNotification(@Valid @RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to create a notifications.");
         try {
             notificationService
@@ -156,6 +157,22 @@ public class NotificationEndpoint {
         } catch (Exception e) {
             log.error(e.getMessage() + notificationDto.toString(), e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping
+    @Operation(summary = "Delete a notification")
+    @Transactional
+    public void deleteNotification(@RequestBody NotificationDto notificationDto) {
+        log.info("A user is trying to delete a notification.");
+        try {
+            notificationService
+                .deleteNotification(notificationMapper.notificationDtoToNotification(notificationDto));
+        } catch (Exception e) {
+            log.error(e.getMessage() + notificationDto.toString(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 

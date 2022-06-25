@@ -85,8 +85,9 @@ public class CommissionServiceImpl implements CommissionService {
                 r.setImageUrl(this.ifm.writeReferenceImage(c, r));
             }
         }
-        this.commissionRepo.save(c);
+        var commission = this.commissionRepo.save(c);
         log.info("Saved commission with id='{}'", c.getId());
+        return commission;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class CommissionServiceImpl implements CommissionService {
 
         if (this.commissionRepo.getById(c.getId()).getStatus() == CommissionStatus.LISTED && c.getStatus() == CommissionStatus.NEGOTIATING) {
             this.assignArtist(c);
-        } else if (c.getArtwork() != null && c.getArtwork().getSketches() != null) {
+        } else if (c.getArtwork() != null && c.getArtwork().getSketches() != null && c.getReview() == null) {
             int sketchCount = c.getArtwork().getSketches().size();
             //if sketch has been added
             if (c.getFeedbackSent() < c.getSketchesShown()) {

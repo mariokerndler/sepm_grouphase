@@ -7,6 +7,7 @@ import {NotificationService} from '../../services/notification/notification.serv
 import {AuthService} from '../../services/auth.service';
 import {UserRole} from '../../dtos/artistDto';
 import {Globals} from '../../global/globals';
+import {ReportService} from '../../services/report/report.service';
 
 @Component({
   selector: 'app-user-page',
@@ -30,7 +31,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private notificationService: NotificationService,
     private authService: AuthService,
-    public globals: Globals
+    public globals: Globals,
+    private reportService: ReportService
   ) {
   }
 
@@ -77,6 +79,18 @@ export class UserPageComponent implements OnInit, OnDestroy {
     this.notificationLength = $event;
   }
 
+  reportProfile() {
+    this.reportService.openReportDialog(this.user.id);
+  }
+
+  canReport(): boolean {
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    } else {
+      return this.authService.getUserRole() !== 'ADMIN';
+    }
+  }
+
   private navigateToArtistPage() {
     this.router.navigate(['/artist', this.user.id])
       .catch(
@@ -93,5 +107,4 @@ export class UserPageComponent implements OnInit, OnDestroy {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
     }
   }
-
 }

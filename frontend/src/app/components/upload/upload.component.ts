@@ -45,8 +45,8 @@ export class UploadComponent implements OnInit {
     private globalFunctions: GlobalFunctions,
     private commissionService: CommissionService) {
     this.uploadForm = this.formBuilder.group({
-      artworkName: ['', [Validators.required]],
-      description: [''],
+      artworkName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(255)]],
     });
     this.filteredTags = this.tagForm.valueChanges.pipe(
       startWith(null),
@@ -89,6 +89,10 @@ export class UploadComponent implements OnInit {
             extractedValues[1],
             extractedValues[0]);
         } else {
+          if(this.data.sketch){
+            this.dialogRef.close({event: 'sketchSelected', data: this.file, feedback: this.uploadForm.controls.description.value});
+            return;
+          }
           this.updateCommission(
             this.uploadForm.controls.artworkName.value,
             this.uploadForm.controls.description.value,
@@ -111,7 +115,7 @@ export class UploadComponent implements OnInit {
       () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork'))
       .subscribe(
         (x) => {
-          this.dialogRef.close();
+          this.dialogRef.close({event: 'upload'});
         }
       );
   }
@@ -138,10 +142,11 @@ export class UploadComponent implements OnInit {
       this.data.commission.artworkDto.sketchesDtos.push(sketch);
     }
     this.commissionService.updateCommission(this.data.commission).subscribe(() => {
-        this.dialogRef.close();
+        this.dialogRef.close({event: 'upload'});
       }
     );
   }
+
 
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.

@@ -8,6 +8,10 @@ export class Globals {
   readonly projectName: string = 'Artsperience';
   readonly assetsPath: string = 'assets/';
   readonly defaultProfilePicture: string = 'data/default_pfp.png';
+  readonly maxStarRating: number = 5;
+  readonly defaultStarRating: number = 3;
+  readonly maxCommissionPrice: number = 10000;
+  readonly adminId: number = 1;
   // eslint-disable-next-line max-len
   readonly stripePublicKey: string = 'pk_test_51LCfpACibvYbUKMDIsb5pccCixWRenzwqfMgtEyNv1byXCbxAAsVSMuSXEmT1K5PFqAUOXnOdYdFB0jLYrinTokR00bQLEUqUS';
 

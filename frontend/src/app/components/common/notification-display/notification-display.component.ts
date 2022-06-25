@@ -4,6 +4,7 @@ import {NotificationDto, NotificationType} from '../../../dtos/notificationDto';
 import {Sort} from '@angular/material/sort';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Router} from '@angular/router';
+import {GlobalFunctions} from '../../../global/globalFunctions';
 
 @Component({
   selector: 'app-notification-display',
@@ -25,6 +26,7 @@ export class NotificationDisplayComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private router: Router,
+    public globalFunctions: GlobalFunctions
   ) { }
 
   private static compare(a: number | string, b: number | string, isAsc: boolean) {
@@ -70,22 +72,6 @@ export class NotificationDisplayComponent implements OnInit {
     }
   }
 
-  convertNotificationTypeToString(type: NotificationType): string {
-    const convertedType = type.toString().toLowerCase();
-    let returnType = '';
-    let first = true;
-    for (const word of convertedType.split('_')) {
-      if (first) {
-        returnType += word.charAt(0).toUpperCase() + word.slice(1) + ' ';
-        first = false;
-      } else {
-        returnType += word + ' ';
-      }
-    }
-
-    return returnType.trim();
-  }
-
   readNotification(notification: NotificationDto) {
     this.notificationService.pathNotificationIsReadOfIdFromUser(notification.id, notification.userId, true)
       .subscribe((_) => {
@@ -113,6 +99,15 @@ export class NotificationDisplayComponent implements OnInit {
           this.notificationService.displayErrorSnackbar(error.toString());
         }
       );
+  }
+
+  deleteNotification(notification: NotificationDto) {
+    this.notificationService.deleteNotification(notification)
+      .subscribe( _ => {
+        this.notificationService.displaySuccessSnackbar('Deleted notification.');
+        this.fetchReadNotifications();
+      }
+    );
   }
 
   private fetchNotifications() {

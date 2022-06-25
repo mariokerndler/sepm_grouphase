@@ -5,6 +5,7 @@
 }
 
 .p-section{
+  font-size: 1.1rem;
   color: #ffd0d8;
 }
 .status{
@@ -60,6 +61,7 @@ strong {
   bottom: 13%;
   margin-left: 12.5rem;
 }
+
 
 .back-icon {
   font-size: 2.5rem;
@@ -137,6 +139,13 @@ strong {
 ::-webkit-scrollbar-thumb {
   background: #fb9fa4;
   border-radius: 10px;
+}
+
+.completed {
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+  bottom: 4rem;
 }
 
 .preview-image {

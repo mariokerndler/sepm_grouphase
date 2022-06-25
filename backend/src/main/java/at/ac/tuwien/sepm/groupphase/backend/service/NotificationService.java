@@ -64,6 +64,13 @@ public interface NotificationService {
     void saveNotification(Notification notification);
 
     /**
+     * Delete a {@link Notification notification entity} from the system.
+     *
+     * @param notification The {@link Notification} that should be deleted.
+     */
+    void deleteNotification(Notification notification);
+
+    /**
      * Creates new {@link Notification notification entities} based on the difference between two {@link Commission commissions}.
      *
      * @param oldCommission {@link Commission} old commission that will be compared.

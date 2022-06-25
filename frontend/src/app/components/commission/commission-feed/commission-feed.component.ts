@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {CommissionService} from '../../../services/commission.service';
-import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
 import {CommissionSearchDto} from '../../../dtos/commissionSearchDto';
 import {ArtistService} from '../../../services/artist.service';
 import {ArtistDto} from '../../../dtos/artistDto';
 import {LabelType, Options} from '@angular-slider/ngx-slider';
 import {SearchConstraint} from '../../../global/SearchConstraint';
 import {CommissionStatus} from '../../../global/CommissionStatus';
+import {CommissionDto} from '../../../dtos/commissionDto';
+import {Globals} from '../../../global/globals';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-commission-feed',
@@ -15,14 +17,7 @@ import {CommissionStatus} from '../../../global/CommissionStatus';
   styleUrls: ['./commission-feed.component.scss']
 })
 export class CommissionFeedComponent implements OnInit {
-  /*
-    commission = {
-      id: 1, artistId: null, customerId: 1, title: 'Commission Title',
-      instructions: 'This is just a random description which describes some of the information within in the commission ',
-      sketchesShown: 0, feedbackSend: 0, comArtworkId: null, feedback: [], price: 300,
-      issueDate: new Date(2022, 1, 1),
-      deadlineDate: new Date(2022, 3, 1), referenceImageIds: [1, 2, 3]
-    } as CommissionDto; */
+
   public searchEnum = SearchConstraint;
   options: Options = {
     floor: 0,
@@ -41,33 +36,40 @@ export class CommissionFeedComponent implements OnInit {
 
 
   searchCom: CommissionSearchDto = {
-    date: SearchConstraint.none, name: '', priceRange: [0, 5000], artistId: '', userId: '', pageNr: 0
+    date: SearchConstraint.none, name: '', priceRange: [0, 100000], artistId: '', userId: '', pageNr: 0
   };
-  commissions: SimpleCommissionDto[];
+  commissions: CommissionDto[];
   hasLoaded = false;
   artists: ArtistDto[];
 
-  constructor(private commissionService: CommissionService, private router: Router, private artistService: ArtistService) {
+  constructor(
+    private commissionService: CommissionService,
+    private authService: AuthService,
+    private router: Router,
+    private artistService: ArtistService,
+    public globals: Globals) {
   }
 
   ngOnInit(): void {
+    this.options.ceil = this.globals.maxCommissionPrice;
     this.fetchCommissions();
     this.loadAllArtists();
   }
 
   public search(): void {
-    console.log(this.searchCom);
-    this.commissionService.filterCommissions(this.searchCom).subscribe(data => {
+    this.commissionService.filterDetailedCommissions(this.searchCom).subscribe(data => {
       this.commissions = data;
     });
   }
 
-  public routeToCommissionCreation(): void {
-    this.router.navigate(['/commisson-create']);
-  }
-
   public isListed(status: CommissionStatus): boolean {
     return status === CommissionStatus.listed;
+  }
+
+  public isLoggedIn(): boolean{
+  if (this.authService.isLoggedIn()) {
+    return true;
+    }
   }
 
   private loadAllArtists() {
@@ -77,7 +79,9 @@ export class CommissionFeedComponent implements OnInit {
   }
 
   private fetchCommissions() {
-    this.commissionService.getAllCommissions().subscribe({
+    this.searchCom.priceRange = [0, this.globals.maxCommissionPrice];
+
+    this.commissionService.filterDetailedCommissions(this.searchCom).subscribe({
       next: (loadedCommissions) => {
         this.commissions = loadedCommissions;
         this.hasLoaded = true;

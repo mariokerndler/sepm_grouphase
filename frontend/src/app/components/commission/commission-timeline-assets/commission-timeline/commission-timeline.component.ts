@@ -3,7 +3,6 @@ import {CommissionService} from '../../../../services/commission.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommissionDto} from '../../../../dtos/commissionDto';
 import {SketchDto} from '../../../../dtos/sketchDto';
-import {ArtworkDto} from '../../../../dtos/artworkDto';
 
 
 
@@ -39,6 +38,7 @@ export class CommissionTimelineComponent implements OnInit {
         (commission) => {
           console.log(commission);
           this.data = commission;
+          this.data.artworkDto.imageUrl = this.data.artworkDto.imageUrl + '.' + this.data.artworkDto.fileType.toLowerCase();
           if(commission.status !== 'COMPLETED'){
             this.router.navigate(['/commissions', id]);
             return;

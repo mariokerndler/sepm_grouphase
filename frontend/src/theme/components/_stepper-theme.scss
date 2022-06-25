@@ -24,6 +24,7 @@
 
 
   .mat-step-text-label {
+    font-size: 1.2rem;
     color: lightgray !important;
   }
 
@@ -34,12 +35,24 @@
  }
 
   .mat-horizontal-stepper-content{
-    color: mat.get-color-from-palette($primary-palette, 100) !important;
+    color: mat.get-color-from-palette($primary-palette, 100);
+
+    .mat-form-field{
+      color: mat.get-color-from-palette($primary-palette, 200) !important;
+    }
   }
 
+  .mat-step-icon-state-error {
+    background-color: transparent !important;
+    color: #F44336 !important;
+  }
 
-
-
+  .mat-step-label.mat-step-label-error {
+    color: #F44336 !important;
+    .mat-step-text-label {
+      color: #F44336 !important;
+    }
+  }
 
 }
 

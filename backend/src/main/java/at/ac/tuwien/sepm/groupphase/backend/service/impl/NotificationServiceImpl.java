@@ -87,8 +87,37 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public void deleteNotification(Notification notification) {
+        log.trace("calling deleteNotification() ...");
+        this.notificationRepository.delete(notification);
+        log.info("Deleted notification with id='{}'", notification.getId());
+    }
+
+    @Override
     public void createNotificationByCommission(Commission oldCommission, Commission newCommission) {
         List<Notification> notifications = new ArrayList<>();
+
+        // Artist chosen
+        if (oldCommission.getArtist() == null && newCommission.getArtist() != null) {
+            notifications.add(
+                NotificationFactory.createNotification(
+                    NotificationType.COMMISSION_CANDIDATE_CHOSEN,
+                    newCommission.getId(),
+                    newCommission.getArtist()
+                )
+            );
+        }
+
+        // Review uploaded
+        if (oldCommission.getReview() == null && newCommission.getReview() != null) {
+            notifications.add(
+                NotificationFactory.createNotification(
+                    NotificationType.COMMISSION_REVIEW_ADDED,
+                    newCommission.getId(),
+                    newCommission.getArtist()
+                )
+            );
+        }
 
         // Candidate added/removed
         if (oldCommission.getArtistCandidates() != null && newCommission.getArtistCandidates() != null) {

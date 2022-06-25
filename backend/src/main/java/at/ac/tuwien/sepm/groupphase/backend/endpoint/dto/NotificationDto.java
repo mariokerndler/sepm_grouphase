@@ -26,7 +26,6 @@ public class NotificationDto {
 
     @ValidAlphaNumericWithSpaces
     @Size(max = 100)
-    @NotNull
     @NotBlank
     private String title;
 

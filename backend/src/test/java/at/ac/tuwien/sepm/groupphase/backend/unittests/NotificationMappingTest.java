@@ -30,7 +30,7 @@ public class NotificationMappingTest {
     @Autowired
     private NotificationMapper notificationMapper;
 
-    public ApplicationUser getApplicationUser() {
+    public ApplicationUser getTestApplicationUser() {
         return ApplicationUser.builder()
             .userName(TestData.TEST_USER_NAME)
             .name(TestData.TEST_USER_NAME)
@@ -70,7 +70,7 @@ public class NotificationMappingTest {
     @Test
     @Transactional
     public void givenUser_whenMapNotificationDtoToEntity_thenEntityHasAllProperties() {
-        ApplicationUser user = getApplicationUser();
+        ApplicationUser user = getTestApplicationUser();
         userRepository.save(user);
 
         NotificationDto notificationDto = getTestNotificationDto(user.getId());
@@ -90,7 +90,7 @@ public class NotificationMappingTest {
     @Test
     @Transactional
     public void givenNothing_whenMapNotificationToDto_thenDtoHasAllProperties() {
-        ApplicationUser user = getApplicationUser();
+        ApplicationUser user = getTestApplicationUser();
         userRepository.save(user);
 
         Notification notification = getTestNotification(user);

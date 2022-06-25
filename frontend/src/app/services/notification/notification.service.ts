@@ -218,6 +218,24 @@ export class NotificationService {
   }
 
   /**
+   * "Create a notification and return an observable of void."
+   *
+   * The function takes a NotificationDto as a parameter. The NotificationDto is a class that contains the data that will
+   * be sent to the server
+   *
+   * @param notification - NotificationDto - the notification to be created
+   * @returns Observable<void>
+   */
+  createNotification(notification: NotificationDto): Observable<NotificationDto> {
+    const createOptions = {headers: this.headers, body: notification};
+    return this.http.post<NotificationDto>(this.notificationBaseUri, createOptions)
+      .pipe(
+        catchError((err) =>
+          this.notifyUserAboutFailedOperation<NotificationDto>('Could not create notification.')(err))
+      );
+  }
+
+  /**
    * Displays a given message and title.
    *
    * @param message - The message to display.

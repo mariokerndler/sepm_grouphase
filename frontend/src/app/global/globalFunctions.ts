@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {FileType} from '../dtos/artworkDto';
+import {NotificationType} from "../dtos/notificationDto";
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +80,21 @@ export class GlobalFunctions {
     }
 
     return array;
+  }
+
+  public convertNotificationTypeToString(type: NotificationType): string {
+    const convertedType = type.toString().toLowerCase();
+    let returnType = '';
+    let first = true;
+    for (const word of convertedType.split('_')) {
+      if (first) {
+        returnType += word.charAt(0).toUpperCase() + word.slice(1) + ' ';
+        first = false;
+      } else {
+        returnType += word + ' ';
+      }
+    }
+
+    return returnType.trim();
   }
 }

@@ -35,9 +35,9 @@ public class AdminDataGenerator {
                     null,
                     "Max",
                     "Mustermann",
-                    "admin@email.com",
+                    "admin@test.com",
                     "Musterstraße 1",
-                    passwordEncoder.encode("password"),
+                    passwordEncoder.encode("12345678"),
                     true,
                     UserRole.Admin));
         }

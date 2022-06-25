@@ -1,0 +1,21 @@
+<h1>Write a report</h1>
+<div fxLayout="column" fxLayoutGap="10px">
+  <mat-form-field appearance="fill">
+    <mat-label>Category</mat-label>
+    <mat-select [(value)]="chosenReportCategory">
+      <mat-option *ngFor="let category of reportCategories" [value]="category">
+        {{globalFunctions.convertNotificationTypeToString(category)}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="full-width" appearance="fill">
+    <mat-label>Report reason</mat-label>
+    <textarea matInput rows="5" required [(ngModel)]="reportText"></textarea>
+    <mat-error *ngIf="!isValidReportText()">
+      Review text is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <button [disabled]="!isValidReportText()" mat-flat-button color="primary" (click)="submitReport()">Submit review</button>
+</div>

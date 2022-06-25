@@ -87,6 +87,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public void deleteNotification(Notification notification) {
+        log.trace("calling deleteNotification() ...");
+        this.notificationRepository.delete(notification);
+        log.info("Deleted notification with id='{}'", notification.getId());
+    }
+
+    @Override
     public void createNotificationByCommission(Commission oldCommission, Commission newCommission) {
         List<Notification> notifications = new ArrayList<>();
 

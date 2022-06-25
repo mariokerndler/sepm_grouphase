@@ -71,6 +71,8 @@
                  required step="any" type="number">
           <mat-error *ngIf="commissionForm.controls.price.errors">
             <span *ngIf="commissionForm.controls.price.errors.required">The price is required! </span>
+            <span *ngIf="commissionForm.controls.price.errors.min">The price cannot be negative! </span>
+            <span *ngIf="commissionForm.controls.price.errors.max">The maximum price is {{globals.maxCommissionPrice}}€</span>
           </mat-error>
         </mat-form-field>
 

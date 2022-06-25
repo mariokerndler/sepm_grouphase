@@ -140,11 +140,11 @@
 
       </div>
     </div>
-    <div
-      *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId && getUserRole() === 'Artist'"
-      fxLayout="col" fxLayoutAlign="center start">
-      <button (click)="applyArtist()" color="primary" fxLayoutAlign="center" mat-flat-button>Apply</button>
+    <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId && getUserRole() === 'Artist'" fxLayout="col" fxLayoutAlign="center start">
+      <button *ngIf="!hasApplied" color="primary" fxLayoutAlign="center" mat-flat-button (click)="applyArtist()">Apply</button>
+      <span *ngIf="hasApplied"><strong>You applied for this commission. Wait for {{this.user.userName}} Response.</strong></span>
     </div>
+
     <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center start">
       <button (click)="startCommission()" *ngIf="this.userEdit" color="primary" mat-flat-button>Start Commission
       </button>
@@ -187,8 +187,10 @@
         </button>
       </form>
     </div>
-    <button *ngIf="commission.status.toString()==='COMPLETED'" color="primary" mat-flat-button
-            routerLink="/commissions/{{commission.id}}/timeline">View Timeline
-    </button>
-  </div>
+    <div *ngIf="commission.status.toString()==='COMPLETED'" class="completed">
+    <strong>This commission is done! Here you can re-live the process with the timeline:</strong>
+      <br><br>
+    <button  color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/timeline">View Timeline</button>
+    </div>
+    </div>
 </div>

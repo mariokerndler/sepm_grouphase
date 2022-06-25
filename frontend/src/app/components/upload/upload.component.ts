@@ -142,7 +142,7 @@ export class UploadComponent implements OnInit {
       this.data.commission.artworkDto.sketchesDtos.push(sketch);
     }
     this.commissionService.updateCommission(this.data.commission).subscribe(() => {
-        this.dialogRef.close();
+        this.dialogRef.close({event: 'upload'});
       }
     );
   }

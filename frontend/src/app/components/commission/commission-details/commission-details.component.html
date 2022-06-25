@@ -161,8 +161,8 @@
           <button (click)="openSketchDialog()" color="primary" mat-button>
             <!--<input #fileInput (change)="fileSelected($event)"
                    accept=".png,.jpg,.jpeg" style="display: none;" type="file"> -->
-            <mat-icon color="primary">upload</mat-icon>
-            <span>Upload new Sketch</span>
+            <mat-icon  color="primary">upload</mat-icon>
+            <span style="font-size: 1.2rem">Upload new Sketch</span>
           </button>
         </div>
         <!--<div *ngIf="this.uploadedSketchDto">
@@ -171,7 +171,7 @@
         <br>
         <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
           <mat-icon color="primary">upload</mat-icon>
-          <span>Upload finished image</span>
+          <span style="font-size: 1.2rem">Upload finished image</span>
         </button>
       </form>
     </div>

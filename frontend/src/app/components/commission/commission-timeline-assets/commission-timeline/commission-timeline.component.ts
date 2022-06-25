@@ -3,7 +3,6 @@ import {CommissionService} from '../../../../services/commission.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommissionDto} from '../../../../dtos/commissionDto';
 import {SketchDto} from '../../../../dtos/sketchDto';
-import {ArtworkDto} from '../../../../dtos/artworkDto';
 
 
 
@@ -23,7 +22,6 @@ export class CommissionTimelineComponent implements OnInit {
   timelapseGif: SketchDto;
   dia: SketchDto;
   artworks;
-  artworkUrl: string;
 
   constructor(private commissionService: CommissionService, private route: ActivatedRoute, private router: Router) {
   }
@@ -56,8 +54,6 @@ export class CommissionTimelineComponent implements OnInit {
               this.timelapseGif = sketch;
             }
           }
-          this.artworkUrl = this.data.artworkDto.imageUrl;
-          console.log(this.artworkUrl);
           this.artworks.push(this.data.artworkDto);
           console.log(this.artworks);
           this.isReady = true;

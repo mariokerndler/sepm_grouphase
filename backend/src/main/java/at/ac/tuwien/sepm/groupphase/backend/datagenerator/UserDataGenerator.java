@@ -321,9 +321,9 @@ public class UserDataGenerator {
 
 
         user = userRepository.findApplicationUserByEmail("testuser@test.com");
-        Artist artist = artistRepository.findApplicationUserByEmail("testartist@test.com");
+        Artist artistTest = artistRepository.findApplicationUserByEmail("testartist@test.com");
 
-        e = generateCommissionPaymentTest(user, artist);
+        e = generateCommissionPaymentTest(user, artistTest);
         commissionService.saveCommission(e);
 
     }

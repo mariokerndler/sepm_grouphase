@@ -74,7 +74,7 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Override
-    public void saveCommission(Commission c) {
+    public Commission saveCommission(Commission c) {
         log.trace("calling saveCommission() ...");
         commissionValidator.throwExceptionIfCommissionAlreadyExists(c);
 
@@ -91,7 +91,7 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Override
-    public void updateCommission(Commission c) {
+    public Commission updateCommission(Commission c) {
         log.trace("calling updateCommission() ...");
 
         notificationService.createNotificationByCommission(findById(c.getId()), c);
@@ -121,6 +121,7 @@ public class CommissionServiceImpl implements CommissionService {
 
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());
+        return c;
     }
 
     @Override

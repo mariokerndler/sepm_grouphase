@@ -115,7 +115,7 @@ export class UploadComponent implements OnInit {
       () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork'))
       .subscribe(
         (x) => {
-          this.dialogRef.close();
+          this.dialogRef.close({event: 'upload'});
         }
       );
   }

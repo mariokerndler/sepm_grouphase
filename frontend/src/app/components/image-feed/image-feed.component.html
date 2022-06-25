@@ -7,10 +7,10 @@
              class="primary" matInput name="searchForm" placeholder="search">
     </mat-form-field>
 
-    <mat-label [matMenuTriggerFor]="tagListMenu" class="primary">Tags
+    <mat-label style="font-size: 1.2rem" [matMenuTriggerFor]="tagListMenu" class="primary">Tags
       selected {{searchParams.tagIds.length}}</mat-label>
     <mat-menu #tagListMenu="matMenu" class="mat-checkbox">
-      <mat-checkbox #tagMenuItems
+      <mat-checkbox #tagMenuItems style="font-size: 1rem !important; margin-right: 0.5rem"
                     (change)="onTagSelect($event)"
                     (click)="$event.stopPropagation()"
                     *ngFor="let tag of tags"
@@ -19,7 +19,7 @@
                     class="mat-primary"
                     name="tagCheckbox"
                     color="primary">
-        {{tag.name}}
+         {{tag.name}}
       </mat-checkbox>
     </mat-menu>
   </div>

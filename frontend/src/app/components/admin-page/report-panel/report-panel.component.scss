@@ -1,0 +1,34 @@
+.report-card-container {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.report-card-text {
+  color: #cfdbf4;
+  font-size: 1.4rem;
+}
+
+.report-card-heading {
+  color: #fb9fa4;
+  font-weight: bold;
+  width: 150px;
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.report-card-category {
+  color: #cfdbf4;
+  font-size: 1.1rem;
+}
+
+.report-card-from-link {
+  text-decoration: underline;
+  color: #cfdbf4;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+
+.report-card-wrapper {
+  margin-bottom: 5px;
+}

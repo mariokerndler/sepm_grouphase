@@ -19,15 +19,16 @@
               <span class="accent-color artist-role">User</span>
             </div>
             <div fxFlex="fill"></div>
-            <div fxLayoutAlign="end center" *ngIf="canReport()">
-              <button mat-icon-button color="primary" (click)="reportProfile()">
+            <div *ngIf="canReport()" fxLayoutAlign="end center">
+              <button (click)="reportProfile()" color="primary" mat-icon-button matTooltip="Report this user"
+                      matTooltipPosition="above">
                 <mat-icon>flag</mat-icon>
               </button>
             </div>
           </div>
         </div>
         <div class="artist-middle-menu">
-          <mat-tab-group backgroundColor="primary" dynamicHeight *ngIf="canEdit">
+          <mat-tab-group *ngIf="canEdit" backgroundColor="primary" dynamicHeight>
             <mat-tab label="My Commissions">
               <app-commission-page [user]="user"></app-commission-page>
             </mat-tab>
@@ -41,9 +42,9 @@
               </ng-template>
               <br>
               <app-notification-display
-                [user]="user"
+                (notificationLengthEvent)="setNotificationLength($event)"
                 (unreadEvent)="setUnreadNotifications($event)"
-                (notificationLengthEvent)="setNotificationLength($event)">
+                [user]="user">
               </app-notification-display>
             </mat-tab>
           </mat-tab-group>

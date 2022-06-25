@@ -103,11 +103,10 @@ public class ArtworkEndpoint {
         return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
     }
 
-
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    @Operation(summary = "getAllArtworksByArtist")
+    @Operation(summary = "Get all artworks by artist.")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
         log.info("A user is fetching all artworks by artist with id '{}'", id);
         try {
@@ -123,11 +122,39 @@ public class ArtworkEndpoint {
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
-    @Operation(summary = "Delete artwork")
+    @Operation(summary = "Delete artwork.")
     public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         log.info("A user is trying to delete an artwork.");
         try {
             artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete artwork by id.")
+    public void deleteArtworkById(@PathVariable Long id) {
+        log.info("A user is trying to delete an artwork.");
+        try {
+            artworkService.deleteArtwork(artworkService.findById(id));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/artwork/{id}")
+    @Operation(summary = "Get artwork by id.")
+    public ArtworkDto getArtworkById(@PathVariable Long id) {
+        log.info("A user is trying to delete an artwork.");
+        try {
+            return artworkMapper.artworkToArtworkDto(artworkService.findById(id));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

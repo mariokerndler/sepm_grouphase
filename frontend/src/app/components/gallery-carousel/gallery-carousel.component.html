@@ -30,10 +30,13 @@
             tabindex="3">
       <mat-icon>close</mat-icon>
     </button>
+    <button (click)="reportArtwork()" *ngIf="canReport()" class="carousel-report" color="primary"
+            mat-icon-button matTooltip="Report this artwork" matTooltipPosition="above">
+      <mat-icon>flag</mat-icon>
+    </button>
     <mat-card-subtitle class="subtitle">
       {{artworks[animArtwork].description}}
     </mat-card-subtitle>
-
   </mat-card>
   <br>
   <mat-card-subtitle *ngIf="artworks[animArtwork].name" class="tag-view"

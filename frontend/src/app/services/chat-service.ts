@@ -24,10 +24,8 @@ export class ChatService {
 
   constructor(private http: HttpClient,
               private globals: Globals,
-              private notificationService: NotificationService, public  userService: UserService,) {
+              private notificationService: NotificationService, public userService: UserService,) {
   }
-
-
 
 
   chatListWrapper(id: string, errorAction?: () => void): Observable<ParticipantResponse[]> {

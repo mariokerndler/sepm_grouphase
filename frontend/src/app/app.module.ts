@@ -74,17 +74,19 @@ import {
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 // @ts-ignore
 import {ChatComponent} from './chat/chat.component';
-import { NotificationDisplayComponent } from './components/common/notification-display/notification-display.component';
-import { TermsOfServiceComponent } from './components/footer/terms-of-service/terms-of-service.component';
-import { PrivacyPolicyComponent } from './components/footer/privacy-policy/privacy-policy.component';
-import { ContactComponent } from './components/footer/contact/contact.component';
-import { AboutComponent } from './components/footer/about/about.component';
-import { ReviewDialogComponent } from './components/artist-page/review-dialog/review-dialog.component';
-import { ReviewPageComponent } from './components/artist-page/review-page/review-page.component';
-import { ReviewCardComponent } from './components/artist-page/review-page/review-card/review-card.component';
-import { ReviewStarComponent } from './components/artist-page/review-page/review-star/review-star.component';
+import {NotificationDisplayComponent} from './components/common/notification-display/notification-display.component';
+import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
+import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy-policy.component';
+import {ContactComponent} from './components/footer/contact/contact.component';
+import {AboutComponent} from './components/footer/about/about.component';
+import {ReviewDialogComponent} from './components/artist-page/review-dialog/review-dialog.component';
+import {ReviewPageComponent} from './components/artist-page/review-page/review-page.component';
+import {ReviewCardComponent} from './components/artist-page/review-page/review-card/review-card.component';
+import {ReviewStarComponent} from './components/artist-page/review-page/review-star/review-star.component';
 import {HideMissingDirective} from './components/common/hide-missing-directive';
-import { ReportDialogComponent } from './services/report/report-dialog/report-dialog.component';
+import {ReportDialogComponent} from './services/report/report-dialog/report-dialog.component';
+import {AdminPageComponent} from './components/admin-page/admin-page.component';
+import {ReportPanelComponent} from './components/admin-page/report-panel/report-panel.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +135,9 @@ import { ReportDialogComponent } from './services/report/report-dialog/report-di
     ReviewCardComponent,
     ReviewStarComponent,
     HideMissingDirective,
-    ReportDialogComponent
+    ReportDialogComponent,
+    AdminPageComponent,
+    ReportPanelComponent
   ],
   imports: [
     BrowserModule,

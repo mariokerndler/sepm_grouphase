@@ -353,7 +353,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   validLayoutComponentName(): boolean {
-    if(this.selectedComponent) {
+    if (this.selectedComponent) {
       return this.selectedComponent.componentName.trim().length <= 0;
     } else {
       return false;

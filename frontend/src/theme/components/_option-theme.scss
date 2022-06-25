@@ -13,13 +13,9 @@
   }
 
 
-
-
-
   .mat-select-panel {
     background: mat.get-color-from-palette($primary-palette, 200);
   }
-
 
 
   .mat-select-value {
@@ -47,8 +43,6 @@
     color: darkgray;
   }
 }
-
-
 
 
 @mixin theme($theme) {

@@ -7,10 +7,10 @@
 <h1 *ngIf="data.commission && data.timelapse" mat-dialog-title>Upload timelapse</h1>
 
 <div [formGroup]="uploadForm" fxLayout="column">
-  <p class="info" *ngIf="data.commission && data.timelapse" mat-dialog-title>
+  <p *ngIf="data.commission && data.timelapse" class="info" mat-dialog-title>
     Here you can upload a timelapse of your art-creation as a GIF.
   </p>
-  <p class="info" *ngIf="data.commission && data.timelapse" mat-dialog-title>
+  <p *ngIf="data.commission && data.timelapse" class="info" mat-dialog-title>
     This step is entirely optional, but may improve
     the experience of your customer.
   </p>
@@ -39,13 +39,15 @@
     ></textarea>
     <mat-error *ngIf="uploadForm.controls.description.errors">
       <span *ngIf="uploadForm.controls.description.errors.required">An artwork description is required! </span>
-      <span *ngIf="uploadForm.controls.description.errors.pattern">The artwork description contains invalid symbols! </span>
+      <span
+        *ngIf="uploadForm.controls.description.errors.pattern">The artwork description contains invalid symbols! </span>
       <span *ngIf="uploadForm.controls.description.errors.maxlength">The description you entered is too long, only 250 Characters are allowed! </span>
     </mat-error>
   </mat-form-field>
   <input #fileInput
          (change)="fileSelected($event)"
-         [attr.accept]="data.timelapse ? 'image/gif' : ' image/png, image/jpeg, image/gif'" style="display: none;" type="file">
+         [attr.accept]="data.timelapse ? 'image/gif' : ' image/png, image/jpeg, image/gif'" style="display: none;"
+         type="file">
   <img *ngIf="file" [src]="selectedImage" alt="" class="preview-image">
   <button (click)="fileInput.click()" class="upload-button" mat-button>
     <span *ngIf="!file">Select File</span>
@@ -76,11 +78,13 @@
   </mat-form-field>
 
 
-  <button *ngIf="file && !this.data.commission" (click)="onFileChanged(false)" cdkFocusInitial class="upload-button" mat-button name="upload-button">
+  <button (click)="onFileChanged(false)" *ngIf="file && !this.data.commission" cdkFocusInitial class="upload-button"
+          mat-button name="upload-button">
     Upload
   </button>
 
-  <button *ngIf="file && this.data.commission" (click)= "onFileChanged(true)" cdkFocusInitial class="upload-button" mat-button name="upload-button">
+  <button (click)="onFileChanged(true)" *ngIf="file && this.data.commission" cdkFocusInitial class="upload-button"
+          mat-button name="upload-button">
     Upload
   </button>
 

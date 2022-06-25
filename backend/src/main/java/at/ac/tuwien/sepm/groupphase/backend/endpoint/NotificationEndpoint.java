@@ -149,7 +149,7 @@ public class NotificationEndpoint {
     @PostMapping
     @Operation(summary = "Create a new notification")
     @Transactional
-    public void createNotification(@Valid @RequestBody NotificationDto notificationDto) {
+    public void createNotification(@RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to create a notifications.");
         try {
             notificationService

@@ -89,8 +89,6 @@ $blue-green-palette: (
 );
 
 
-
-
 $primary-palette: mat.define-palette($light-pink-palette, 200, 50, 300);
 $accent-palette: mat.define-palette($blue-green-palette, 100, 200, 50);
 $background-palette: mat.define-palette($dark-blue-palette, 800);

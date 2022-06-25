@@ -82,15 +82,19 @@ export class UploadComponent implements OnInit {
           return;
         }
         const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
-        if(!isCommission) {
+        if (!isCommission) {
           this.uploadNewImage(
             this.uploadForm.controls.artworkName.value,
             this.uploadForm.controls.description.value,
             extractedValues[1],
             extractedValues[0]);
         } else {
-          if(this.data.sketch){
-            this.dialogRef.close({event: 'sketchSelected', data: this.file, feedback: this.uploadForm.controls.description.value});
+          if (this.data.sketch) {
+            this.dialogRef.close({
+              event: 'sketchSelected',
+              data: this.file,
+              feedback: this.uploadForm.controls.description.value
+            });
             return;
           }
           this.updateCommission(
@@ -120,15 +124,15 @@ export class UploadComponent implements OnInit {
       );
   }
 
-  updateCommission(name, description, imageData, filetype){
-    if(!this.data.timelapse){
-    this.data.commission.artworkDto.imageData = imageData;
-    this.data.commission.artworkDto.name = name;
-    this.data.commission.artworkDto.description = description;
-    this.data.commission.status = 'COMPLETED';
-    this.data.commission.deadlineDate =
-      formatDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
-    this.data.commission.artworkDto.fileType = filetype;
+  updateCommission(name, description, imageData, filetype) {
+    if (!this.data.timelapse) {
+      this.data.commission.artworkDto.imageData = imageData;
+      this.data.commission.artworkDto.name = name;
+      this.data.commission.artworkDto.description = description;
+      this.data.commission.status = 'COMPLETED';
+      this.data.commission.deadlineDate =
+        formatDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-MM-dd', 'en_US') + ' 01:01:01';
+      this.data.commission.artworkDto.fileType = filetype;
     } else {
       const sketch = {
         name,

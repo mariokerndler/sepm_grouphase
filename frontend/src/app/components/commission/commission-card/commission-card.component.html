@@ -12,7 +12,7 @@
     <p>{{commission.instructions.substring(0, 100)}}...</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button  [routerLink]="'/commissions/' + commission.id">See more</button>
-    <button mat-button *ngIf="canWriteReview()" (click)="openReviewDialog()">Write review</button>
+    <button [routerLink]="'/commissions/' + commission.id" mat-button>See more</button>
+    <button (click)="openReviewDialog()" *ngIf="canWriteReview()" mat-button>Write review</button>
   </mat-card-actions>
 </mat-card>

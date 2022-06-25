@@ -195,9 +195,9 @@
       </div>
 
       <button (click)="updateAppearance()"
+              [disabled]="validLayoutComponentName()"
               class="artist-profile-elements-button update-user-button"
-              color="primary"
-              mat-flat-button [disabled]="validLayoutComponentName()">Update appearance
+              color="primary" mat-flat-button>Update appearance
       </button>
     </mat-tab>
   </mat-tab-group>
@@ -223,7 +223,7 @@
   <div class="gallery-settings" fxLayout="column">
     <mat-form-field appearance="fill" class="gallery-settings-tags">
       <mat-label class="primary">Name</mat-label>
-      <input type="text" matInput name="text" [(ngModel)]="selectedComponent.componentName" required>
+      <input [(ngModel)]="selectedComponent.componentName" matInput name="text" required type="text">
       <mat-error *ngIf="validLayoutComponentName()">
         Name is <strong>required</strong>
       </mat-error>

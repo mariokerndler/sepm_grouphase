@@ -7,12 +7,12 @@
 
 <ng-template #Interact>
   <button
-    mat-icon-button
-    color="primary"
+    (click)="onClick(i + 1)"
     *ngFor="let ratingId of ratingArr; index as i"
     [id]="'star_' + i"
-    (click)="onClick(i + 1)"
     [matTooltip]="ratingId + 1"
+    color="primary"
+    mat-icon-button
     matTooltipPosition="above">
     <mat-icon>
       {{showIcon(i)}}
@@ -21,7 +21,7 @@
 </ng-template>
 
 <ng-template #NonInteract>
-  <mat-icon color="primary" *ngFor="let ratingId of ratingArr; index as i">
+  <mat-icon *ngFor="let ratingId of ratingArr; index as i" color="primary">
     {{showIcon(i)}}
   </mat-icon>
 </ng-template>

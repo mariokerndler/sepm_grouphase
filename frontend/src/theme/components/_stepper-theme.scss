@@ -7,10 +7,9 @@
 
   $primary-palette: map.get($color-config, primary);
 
-  .mat-stepper-horizontal
-   {
-      background-color: #2f3a51 !important;
-   }
+  .mat-stepper-horizontal {
+    background-color: #2f3a51 !important;
+  }
 
   .mat-step-icon {
     background-color: darkgray !important;
@@ -27,16 +26,16 @@
     color: lightgray !important;
   }
 
- .mat-step-header[aria-selected="true"]{
-   .mat-step-text-label {
-     color: mat.get-color-from-palette($primary-palette, 200) !important;
-   }
- }
+  .mat-step-header[aria-selected="true"] {
+    .mat-step-text-label {
+      color: mat.get-color-from-palette($primary-palette, 200) !important;
+    }
+  }
 
-  .mat-horizontal-stepper-content{
+  .mat-horizontal-stepper-content {
     color: mat.get-color-from-palette($primary-palette, 100);
 
-    .mat-form-field{
+    .mat-form-field {
       color: mat.get-color-from-palette($primary-palette, 200) !important;
     }
   }
@@ -48,13 +47,13 @@
 
   .mat-step-label.mat-step-label-error {
     color: #F44336 !important;
+
     .mat-step-text-label {
       color: #F44336 !important;
     }
   }
 
 }
-
 
 
 @mixin theme($theme) {

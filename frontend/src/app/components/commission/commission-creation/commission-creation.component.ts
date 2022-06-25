@@ -162,7 +162,7 @@ export class CommissionCreationComponent implements OnInit {
 
   submitCommission() {
     this.hasSubmitted = true;
-    if(this.commissionForm.valid) {
+    if (this.commissionForm.valid) {
       this.commission.title = this.commissionForm.value.title;
       this.commission.instructions = this.commissionForm.value.description;
       this.commission.price = this.commissionForm.value.price;

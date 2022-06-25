@@ -170,4 +170,22 @@ export class UserService {
         })
       );
   }
+
+  deleteUserById(id: number): Observable<any> {
+    const params = new HttpParams()
+      .set('id', id);
+
+    const options = {
+      header: this.headers,
+      params
+    };
+
+    return this.http.delete(`${this.userBaseUI}/${id}`, options)
+      .pipe(
+        catchError((error) => this.notificationService.notifyUserAboutFailedOperation('Deleting user')(error)),
+        tap(_ => {
+          this.notificationService.displaySuccessSnackbar('Successfully deleted user.');
+        })
+      );
+  }
 }

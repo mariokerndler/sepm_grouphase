@@ -1,13 +1,12 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NotificationService} from '../../notification/notification.service';
-import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {NotificationDto, NotificationType} from '../../../dtos/notificationDto';
 import {DatePipe} from '@angular/common';
-import {ReportDialogData} from '../report.service';
+import {ReportDialogData, ReportType} from '../report.service';
 import {GlobalFunctions} from '../../../global/globalFunctions';
-import {Globals} from "../../../global/globals";
-import {AuthService} from "../../auth.service";
+import {Globals} from '../../../global/globals';
+import {AuthService} from '../../auth.service';
 
 @Component({
   selector: 'app-report-dialog',
@@ -19,8 +18,9 @@ export class ReportDialogComponent {
 
   reportText = '';
   reportCategories: NotificationType[] = [];
-  chosenReportCategory: NotificationType;
-  private referenceId: number;
+  chosenReportCategory: NotificationType = NotificationType.reportIllegalArt;
+  private readonly referenceId: number;
+  private readonly reportType: ReportType;
 
   constructor(
     public dialogRef: MatDialogRef<ReportDialogComponent>,
@@ -32,6 +32,7 @@ export class ReportDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: ReportDialogData
   ) {
     this.referenceId = data.referenceId;
+    this.reportType = data.reportType;
     this.filterNotificationTypes();
   }
 
@@ -41,8 +42,12 @@ export class ReportDialogComponent {
 
   submitReport() {
     const dto = this.createNotificationDto();
-    console.log(dto);
-    this.notificationService.createNotification(dto).subscribe();
+    this.notificationService.createNotification(dto).subscribe(
+      (_) => {
+        this.notificationService.displaySuccessSnackbar('Successfully submitted report.');
+        this.dialogRef.close();
+      }
+    );
   }
 
   private createNotificationDto(): NotificationDto {
@@ -57,7 +62,10 @@ export class ReportDialogComponent {
   }
 
   private createReportText(): string {
-    return 'From: "' + this.authService.getUserName() + '": \n' + this.reportText;
+    return this.authService.getUserId() +
+      '$$' + this.authService.getUserName() +
+      '$$' + this.reportText.trim() +
+      '$$' + this.reportType.toString();
   }
 
   private filterNotificationTypes() {

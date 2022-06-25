@@ -22,7 +22,8 @@ export class ReviewPageComponent implements OnInit {
     private notificationService: NotificationService,
     private commissionService: CommissionService,
     private globals: Globals
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.fetchReviews();
@@ -41,7 +42,7 @@ export class ReviewPageComponent implements OnInit {
     this.commissionService.filterDetailedCommissions(searchCom).subscribe(
       (commissions) => {
         commissions.forEach(commission => {
-          if(commission.reviewDto) {
+          if (commission.reviewDto) {
             this.reviews.push(commission.reviewDto);
           }
         });

@@ -24,6 +24,7 @@ import {AboutComponent} from './components/footer/about/about.component';
 import {CreateGuard} from './guards/create.guard';
 import {AdminPageComponent} from './components/admin-page/admin-page.component';
 import {CommissionEditComponent} from './components/commission/commission-edit/commission-edit.component';
+import {CheckoutComponent} from './components/checkout/checkout.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -47,6 +48,7 @@ const routes: Routes = [
   {path: 'contact', component: ContactComponent},
   {path: 'about', component: AboutComponent},
   {path: 'admin', component: AdminPageComponent},
+  {path: 'checkout', component: CheckoutComponent},
   {path: '**', redirectTo: 'feed'},
 
 ];

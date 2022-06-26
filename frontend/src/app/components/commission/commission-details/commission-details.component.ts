@@ -39,6 +39,7 @@ export class CommissionDetailsComponent implements OnInit {
   hasSketches = false;
   allowFeedback = false;
   allowSketch = false;
+  allowPayment = false;
   artistEdit = false;
   userEdit = false;
   sketchForm = new FormGroup({
@@ -175,6 +176,9 @@ export class CommissionDetailsComponent implements OnInit {
     } else {
       this.allowSketch = true;
     }
+    if (commission.status === CommissionStatus.awaitingPayment) {
+      this.allowPayment = true;
+    }
     this.hasLoaded = true;
   }
 
@@ -246,6 +250,11 @@ export class CommissionDetailsComponent implements OnInit {
       .catch((_) => this.notificationService.displayErrorSnackbar(`Could not navigate to the artist with username ${a.userName}.`));
   }
 
+  navigateToUser(a) {
+    this.router.navigate(['/user', a.id])
+      .catch((_) => this.notificationService.displayErrorSnackbar(`Could not navigate to the user with username ${a.userName}.`));
+  }
+
   chooseArtist() {
     if (this.selectedArtistId != null) {
       this.commission.status = CommissionStatus.negotiating;
@@ -281,19 +290,11 @@ export class CommissionDetailsComponent implements OnInit {
     });
   }
 
-  //triggered by User
-  editCommission() {
-    this.router.navigate(['/commissions/' + this.commission.id + '/edit'])
-      .catch((_) =>
-        this.notificationService.displayErrorSnackbar(`Could not navigate to edit screen for commission ${this.commission.id}.`)
-      );
-  }
-
-  //triggered by User
-  startCommission() {
-    this.commission.status = CommissionStatus.inProgress;
+  //triggered by Artist
+  agreeAndStart() {
+    this.commission.status = CommissionStatus.awaitingPayment;
     this.commissionService.updateCommission(this.commission).subscribe(success => {
-      this.notificationService.displaySuccessSnackbar('Commission is now in progress');
+      this.notificationService.displaySuccessSnackbar('Commission is now awaiting payment');
     });
   }
 

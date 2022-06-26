@@ -36,7 +36,8 @@
     "nouislider": "^15.6.0",
     "rxjs": "7.5.5",
     "tslib": "2.3.1",
-    "zone.js": "0.11.5"
+    "zone.js": "0.11.5",
+    "@stripe/stripe-js": "^1.32.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "13.3.1",

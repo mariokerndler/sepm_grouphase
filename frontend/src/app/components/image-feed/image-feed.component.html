@@ -1,5 +1,5 @@
-<span fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem; margin-bottom: 1rem" class="timeline-title">Browse Artworks</span>
-<form class="col-12" style="padding-left: 2%">
+<span *ngIf="!isInProfile" fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem; margin-bottom: 1rem" class="timeline-title">Browse Artworks</span>
+<form *ngIf="!isInProfile" class="col-12" style="padding-left: 2%">
   <div>
     <mat-form-field >
       <mat-label class="primary">Search</mat-label>

@@ -24,6 +24,7 @@ export class ImageFeedComponent implements OnInit {
 
   @Input() artworks: ArtworkDto[];
   @Input() isUser = false;
+  @Input() isInProfile;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   tagsLoaded = false;

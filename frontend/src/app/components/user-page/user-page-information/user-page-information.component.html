@@ -6,12 +6,6 @@
           <span class="sidenav-top artist-full-name">{{user.name}} {{user.surname}}</span>
           <span class="sidenav-top artist-role">User</span>
         </div>
-        <div *ngIf="this.loggedInUserId!==this.user.id" fxLayoutAlign="end center" fxFlex="auto">
-          <button (click)="messageUser()" color="primary" mat-button style="height: 40px">
-            <mat-icon color="primary">message</mat-icon>
-            <span class="edit-text" style="padding-left: 10px">Message User</span>
-          </button>
-        </div>
       </div>
     </div>
   </div>

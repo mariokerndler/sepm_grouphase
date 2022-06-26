@@ -48,6 +48,7 @@ public class NotificationEndpoint {
         @RequestParam(value = "notificationType", required = false) NotificationType notificationType,
         @RequestParam(value = "limit", required = false, defaultValue = "") Integer limit) {
         log.info("A user is trying fetch all notifications from an user.");
+
         var notifications = getNotificationsByUserAndTriggerAction(userId, notificationType, limit);
 
         return notifications
@@ -124,6 +125,7 @@ public class NotificationEndpoint {
     @Transactional
     public void createNotification(@Valid @RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to create a notifications.");
+
         notificationService
             .saveNotification(notificationMapper.notificationDtoToNotification(notificationDto));
     }

@@ -50,6 +50,7 @@ import {AuthService} from '../../services/auth.service';
   ]
 })
 export class GalleryCarouselComponent implements OnInit {
+  @Input() isReferenceImage: boolean;
   @Input() artworks: ArtworkDto[];
   @Input() selectedArtworkId: number;
   @Output() closeCarousel = new EventEmitter<void>();
@@ -191,7 +192,7 @@ export class GalleryCarouselComponent implements OnInit {
     if (!this.authService.isLoggedIn()) {
       return false;
     } else {
-      return this.authService.getUserRole() !== 'ADMIN';
+      return this.authService.getUserRole() !== 'ADMIN' && !this.isReferenceImage;
     }
   }
 

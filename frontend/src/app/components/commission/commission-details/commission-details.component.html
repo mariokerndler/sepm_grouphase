@@ -34,7 +34,7 @@
       <div *ngIf="this.commission.artistDto" class="description-section">
         <strong>Assigned Artist:</strong> <br><br>
         <a (click)="navigateToArtist(this.commission.artistDto)"
-           style="cursor: pointer;">{{commission.artistDto.userName}}</a>
+           style="cursor: pointer;" class="p-section" matTooltip="Go to profile">{{commission.artistDto.userName}}</a>
       </div>
       <br>
       <div *ngIf="hasReferences">
@@ -53,7 +53,8 @@
           (closeCarousel)="selectedReference=null"
           *ngIf="selectedReference!== null"
           [artworks]="commission.referencesDtos"
-          [selectedArtworkId]="selectedReference">
+          [selectedArtworkId]="selectedReference"
+        isReferenceImage="true">
         </app-gallery-carousel>
       </div>
 
@@ -156,13 +157,17 @@
       <span *ngIf="hasApplied"><strong>You applied for this commission. Wait for {{this.user.userName}} Response.</strong></span>
     </div>
 
-    <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center space-around">
+
+
+    <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center center">
       <div *ngIf="this.artistEdit">
         <button  (click)="agreeAndStart()" color="primary" mat-flat-button>Agree</button>
         <br>
         <span><strong>If you would like deadline date, price or description altered, contact <button mat-stroked-button (click)="navigateToUser(this.user)">{{this.user.userName}}</button></strong></span>
       </div>
-        <label *ngIf="this.userEdit"><strong>Waiting for artist to accept</strong></label>
+        <span *ngIf="this.userEdit && this.hasStarted"><strong>Waiting for artist to accept</strong></span>
+      <button *ngIf="this.userEdit && !this.hasStarted" style="margin-right: 1rem" color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/edit">Edit Commission</button>
+      <button *ngIf="this.userEdit && !this.hasStarted" (click)="hasStarted = true" style="margin-right: 1rem" color="primary" mat-flat-button>Start Commission</button>
     </div>
 
     <div *ngIf="commission.status.toString()==='AWAITING_PAYMENT' && this.commission.customerDto.id.toString() === this.userId" fxLayout="col" fxLayoutAlign="center start">

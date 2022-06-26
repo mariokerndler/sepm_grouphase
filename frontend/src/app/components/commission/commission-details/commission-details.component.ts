@@ -57,6 +57,7 @@ export class CommissionDetailsComponent implements OnInit {
   updatedEndDate: string;
   sketches;
   hasApplied;
+  hasStarted;
 
   public selectedArtistId;
 

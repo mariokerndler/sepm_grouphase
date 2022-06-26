@@ -8,6 +8,8 @@ import {AuthService} from '../../services/auth.service';
 import {UserRole} from '../../dtos/artistDto';
 import {Globals} from '../../global/globals';
 import {ReportService, ReportType} from '../../services/report/report.service';
+import {ChatDto} from '../../dtos/chatDto';
+import {ChatService} from '../../services/chat-service';
 
 @Component({
   selector: 'app-user-page',
@@ -22,6 +24,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
   profilePicture;
   hasUnreadNotifications: boolean;
   notificationLength: number;
+  loggedInUserId;
 
   private routeSubscription: Subscription;
 
@@ -32,7 +35,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private authService: AuthService,
     public globals: Globals,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private chatService: ChatService
   ) {
   }
 
@@ -41,6 +45,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loggedInUserId= Number.parseInt(localStorage.getItem('userId'), 10);
     this.routeSubscription = this.route.params.subscribe(
       (params) => this.userService.getUserById(params.id, () => UserPageComponent.navigateToUserList())
         .subscribe((user) => {
@@ -89,6 +94,17 @@ export class UserPageComponent implements OnInit, OnDestroy {
     } else {
       return this.authService.getUserRole() !== 'ADMIN';
     }
+  }
+
+  messageUser() {
+    const chat: ChatDto = {
+      chatPartnerId: this.user.id, userId: this.loggedInUserId
+    };
+    this.chatService.postChat(chat).subscribe(success => {
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
+    }, error => {
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
+    });
   }
 
   private navigateToArtistPage() {

@@ -42,6 +42,7 @@ export class CommissionEditComponent implements OnInit {
   hasSubmitted = false;
 
 
+
   commissionForm = new FormGroup({
     description: new FormControl('', [Validators.required, Validators.maxLength(512)]),
     price: new FormControl('', [Validators.required, Validators.min(0), Validators.max(this.globals.maxCommissionPrice)]),
@@ -153,6 +154,13 @@ export class CommissionEditComponent implements OnInit {
         this.commissionForm.value.price = this.commission.price;
         this.commissionForm.value.deadlineDate = this.commission.deadlineDate;
       });
+  }
+
+  parseDate(dateString: string): Date {
+    if (dateString) {
+      return new Date(dateString);
+    }
+    return null;
   }
 
   private navigateToCommissionDetails(id: number) {

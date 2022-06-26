@@ -33,6 +33,7 @@ public class TagEndpoint {
     @Operation(summary = "Load all Tags")
     public List<TagDto> loadAllTags() {
         log.info("A user is fetching all tags.");
+
         return tagService.loadAllTags().stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
     }
 
@@ -42,6 +43,7 @@ public class TagEndpoint {
     @Operation(summary = "Load Tags for Image")
     public List<TagDto> findTagsForImage(@PathVariable Long id) {
         log.info("A user is fetching the tags for image with id '{}'", id);
+
         return tagService.loadTagsOfArtwork(id).stream().map(tagMapper::tagToTagDto).collect(Collectors.toList());
     }
 

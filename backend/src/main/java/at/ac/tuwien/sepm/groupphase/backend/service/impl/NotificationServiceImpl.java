@@ -177,6 +177,16 @@ public class NotificationServiceImpl implements NotificationService {
         notifications.forEach(this::saveNotification);
     }
 
+    @Override
+    public void createNotificationByCommissionAfterPayment(Commission commission) {
+        Notification notification = NotificationFactory.createNotification(
+            NotificationType.COMMISSION_PAID_FOR,
+            commission.getId(),
+            commission.getArtist());
+
+        saveNotification(notification);
+    }
+
     private List<Notification> addNewNotificationsIfCandidateAddedRemoved(
         List<Artist> oldCandidates,
         List<Artist> newCandidates,
@@ -271,6 +281,13 @@ public class NotificationServiceImpl implements NotificationService {
                             commissionId,
                             artist));
                 }
+                case AWAITING_PAYMENT -> notifications.add(
+                    NotificationFactory.createNotification(
+                        NotificationType.COMMISSION_STATUS_AWAITING_PAYMENT,
+                        commissionId,
+                        user
+                    )
+                );
                 case IN_PROGRESS -> notifications.add(
                     NotificationFactory.createNotification(
                         NotificationType.COMMISSION_STATUS_IN_PROGRESS,

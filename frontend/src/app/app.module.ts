@@ -15,6 +15,8 @@ import {
   NGX_MAT_COLOR_FORMATS,
   NgxMatColorPickerModule
 } from '@angular-material-components/color-picker';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 
 // Routing
 import {AppRoutingModule} from './app-routing.module';
@@ -87,6 +89,7 @@ import {ReportDialogComponent} from './services/report/report-dialog/report-dial
 import {CommissionEditComponent} from './components/commission/commission-edit/commission-edit.component';
 import {AdminPageComponent} from './components/admin-page/admin-page.component';
 import {ReportPanelComponent} from './components/admin-page/report-panel/report-panel.component';
+import {CheckoutComponent} from './components/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -137,7 +140,8 @@ import {ReportPanelComponent} from './components/admin-page/report-panel/report-
     CommissionEditComponent,
     ReportDialogComponent,
     AdminPageComponent,
-    ReportPanelComponent
+    ReportPanelComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
@@ -154,7 +158,9 @@ import {ReportPanelComponent} from './components/admin-page/report-panel/report-
     DragDropModule,
     MatSliderModule,
     NgxSliderModule,
-    NgChatModule
+    NgChatModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   providers: [
     {

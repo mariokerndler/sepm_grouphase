@@ -4,5 +4,5 @@ export enum CommissionStatus {
   completed = 'COMPLETED',
   listed = 'LISTED',
   negotiating = 'NEGOTIATING',
-  awaitingPayment='AWAITING_PAYMENT'
+  awaitingPayment = 'AWAITING_PAYMENT'
 }

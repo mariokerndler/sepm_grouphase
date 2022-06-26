@@ -90,7 +90,7 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Override
-    public void updateCommission(Commission c) {
+    public Commission updateCommission(Commission c) {
         log.trace("calling updateCommission() ...");
 
         notificationService.createNotificationByCommission(findById(c.getId()), c);
@@ -106,6 +106,9 @@ public class CommissionServiceImpl implements CommissionService {
                 c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
                     this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
                 this.sketchRepository.save(c.getArtwork().getSketches().get(sketchCount - 1));
+                if (c.getPrice() > 100 && c.getFeedbackRounds() > c.getSketchesShown()) {
+                    c.setStatus(CommissionStatus.AWAITING_PAYMENT);
+                }
             }
         } else {
             log.info("SKETCHES EMPTY");
@@ -117,6 +120,7 @@ public class CommissionServiceImpl implements CommissionService {
 
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());
+        return c;
     }
 
     @Override

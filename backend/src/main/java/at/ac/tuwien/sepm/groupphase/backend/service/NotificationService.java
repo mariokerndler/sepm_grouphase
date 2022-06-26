@@ -76,4 +76,11 @@ public interface NotificationService {
      * @param newCommission {@link Commission} new commission that will be compared.
      */
     void createNotificationByCommission(Commission oldCommission, Commission newCommission);
+
+    /**
+     * Creates new {@link Notification notification entitiy} if a {@link Commission commission} has been paid for.
+     *
+     * @param commission {@link Commission} commission that was paid for
+     */
+    void createNotificationByCommissionAfterPayment(Commission commission);
 }

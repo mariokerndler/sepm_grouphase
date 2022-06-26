@@ -63,7 +63,11 @@ public class UserDataGenerator {
                              PasswordEncoder passwordEncoder,
                              ArtworkRepository artworkRepo,
                              TagRepository tagRepository,
-                             ChatRepository chatRepository, ChatMessageRepository chatMessageRepository, CommissionRepository commissionRepository, CommissionService commissionService) {
+                             ChatRepository chatRepository,
+                             ChatMessageRepository chatMessageRepository,
+                             CommissionRepository commissionRepository,
+                             CommissionService commissionService,
+                             ImageFileManager imageFileManager) {
         this.artistService = artistService;
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
@@ -296,7 +300,6 @@ public class UserDataGenerator {
         List<Artist> artists = artistService.getAllArtists();
         ApplicationUser user = userRepository.findApplicationUserByEmail("testuser@test.com");
         Long artistId = userRepository.findApplicationUserByEmail("testartist@test.com").getId();
-
         Commission c = generateCommission2(artists.get(0), user);
         commissionService.saveCommission(c);
         Commission d = generateCommission1(artists.get(1), users.get(4));
@@ -349,6 +352,12 @@ public class UserDataGenerator {
 
         Commission h = generateCommissionTestNegotiating(artist, user);
         commissionService.saveCommission(h);
+
+        user = userRepository.findApplicationUserByEmail("testuser@test.com");
+        Artist artistTest = artistRepository.findApplicationUserByEmail("testartist@test.com");
+
+        e = generateCommissionPaymentTest(user, artistTest);
+        commissionService.saveCommission(e);
 
     }
 
@@ -640,6 +649,27 @@ public class UserDataGenerator {
         }
         a.setSketches(sketches);
         commission.setArtwork(a);
+        return commission;
+    }
+
+    private Commission generateCommissionPaymentTest(ApplicationUser user, Artist artist) {
+        Faker faker = new Faker();
+        Commission commission = new Commission();
+        commission.setStatus(CommissionStatus.AWAITING_PAYMENT);
+        commission.setArtist(artist);
+        commission.setCustomer(user);
+        commission.setTitle("Payable Sample Commission");
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
+        commission.setPrice((int) (Math.random() * 10000));
+        commission.setFeedbackRounds(3);
+        commission.setIssueDate(LocalDateTime.now());
+        commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 10)));
+        String desc = faker.shakespeare().hamletQuote();
+        if (desc.length() > 50) {
+            desc = desc.substring(0, 49);
+        }
+        commission.setInstructions(desc);
         return commission;
     }
 

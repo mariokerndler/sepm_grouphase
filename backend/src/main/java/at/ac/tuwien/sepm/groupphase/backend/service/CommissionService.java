@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.CommissionSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface CommissionService {
@@ -38,7 +37,7 @@ public interface CommissionService {
      *
      * @param commission The commission being saved.
      */
-    Commission saveCommission(Commission commission) throws IOException;
+    Commission saveCommission(Commission commission);
 
     /**
      * Updates the given commission, if there is a commission with this id saved in the database.

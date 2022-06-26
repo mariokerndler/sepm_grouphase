@@ -218,7 +218,7 @@ public class NotificationEndpointTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson2))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(jsonPath("$.title", is("field should not be empty and only contain alphanumeric character(s) or spaces.")))
+            .andExpect(jsonPath("$.title", is("must not be blank")))
             .andExpect(jsonPath("$.type", is("must not be null")))
             .andReturn();
     }

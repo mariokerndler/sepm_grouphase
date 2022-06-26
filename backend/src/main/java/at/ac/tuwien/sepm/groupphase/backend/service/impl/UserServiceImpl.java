@@ -7,7 +7,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
-import com.sun.jdi.connect.VMStartException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,12 +27,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @PersistenceContext
-    EntityManager entityManager;
-
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final ImageFileManager ifm;
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -171,7 +169,7 @@ public class UserServiceImpl implements UserService {
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             log.info(user.get().getUserName());
-            // TODO: Ifm delete files of artist
+            /** : Ifm delete files of artist */
             ifm.deleteUserProfileImage(user.get());
             userRepo.deleteById(id);
             log.info("Deleted application user with id='{}'", id);

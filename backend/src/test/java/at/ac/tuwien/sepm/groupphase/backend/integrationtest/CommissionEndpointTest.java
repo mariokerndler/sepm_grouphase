@@ -108,7 +108,6 @@ public class CommissionEndpointTest {
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
-        Long artistId = artists.get(0).getId();
 
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow1 = objectMapper.writer().withDefaultPrettyPrinter();
@@ -120,13 +119,10 @@ public class CommissionEndpointTest {
 
         List<ApplicationUserDto> users = allUsers();
         assertEquals(2, users.size());
-        Long userId = users.get(1).getId();
 
         Artist artist1 = artistMapper.artistDtoToArtist(artists.get(0));
-            //Artist.builder().id(artistId).userName("momo45").name("Millie").surname("Bobbington").email("mil.b@aol.de").address("Mispelstreet").password("passwordhash").admin(false).userRole(UserRole.Artist).description("Description of new artist").profileSettings("settings string").build();
 
         ApplicationUser user1 = userMapper.userDtoToUser(users.get(0));
-            //ApplicationUser.builder().id(userId).userName("sunscreen98").name("Mike").surname("Regen").email("mikey98@gmail.com").address("Greatstreet").password("passwordhash2").admin(false).userRole(UserRole.User).build();
 
         Commission commission = Commission.builder().artist(artist1).customer(user1).sketchesShown(0).feedbackSent(0).price(300).issueDate(LocalDateTime.now()).deadlineDate(LocalDateTime.now().plusDays(20)).title("its yours").instructions("do the thing").status(CommissionStatus.LISTED).feedbackRounds(2).build();
 

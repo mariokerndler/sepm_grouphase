@@ -16,14 +16,6 @@
   <br>
 </div>
 <div *ngIf="profileSettings">
-  <div>
-    <span class="sidenav-top artist-about-header">About</span>
-    <p class="sidenav-top artist-about-description">
-      {{artist.description}}
-    </p>
-  </div>
-
-  <br>
   <div *ngFor="let element of profileSettings.layout; let i = index">
     <div *ngIf="element.type.includes('Gallery')">
       <div>

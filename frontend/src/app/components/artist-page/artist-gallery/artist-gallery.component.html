@@ -9,6 +9,7 @@
     <span style="font-size: 1.1rem">Upload new picture</span>
   </button>
 </div>
+<br><br>
 <div class="content">
-  <app-image-feed *ngIf="isReady" [artworks]="artworks" [isUser]="isSameUser()"></app-image-feed>
+  <app-image-feed *ngIf="isReady" [artworks]="artworks" [isUser]="isSameUser()" [isInProfile]="true"></app-image-feed>
 </div>

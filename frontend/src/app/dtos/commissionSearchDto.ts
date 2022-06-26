@@ -1,6 +1,8 @@
+import {SearchConstraint} from '../global/SearchConstraint';
+
 export class CommissionSearchDto {
   priceRange: number[];
-  date: string;
+  dateOrder: SearchConstraint;
   name: string;
   artistId: string;
   userId: string;

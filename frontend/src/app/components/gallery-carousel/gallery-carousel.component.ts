@@ -139,13 +139,9 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public loadImageTags() {
-    //console.log('id '+ this.selectedArtworkId);
     this.tagService.getImageTags(this.artworks[this.selectedArtworkId].id).subscribe(
       data => {
-        //console.log(data);
         this.imageTags = data;
-      }, error => {
-        console.log('no error handling exists so im just here to say hi');
       }
     );
   }

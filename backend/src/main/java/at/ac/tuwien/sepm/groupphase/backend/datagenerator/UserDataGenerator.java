@@ -332,7 +332,7 @@ public class UserDataGenerator {
         commission.setFeedbackSent(0);
         commission.setFeedbackRounds(2);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setIssueDate(LocalDateTime.now());
+        commission.setIssueDate(LocalDateTime.now().minusDays(2));
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote();
@@ -577,7 +577,7 @@ public class UserDataGenerator {
         commission.setFeedbackSent(0);
         commission.setFeedbackRounds(5);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setIssueDate(LocalDateTime.now());
+        commission.setIssueDate(LocalDateTime.now().minusDays(1));
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote();

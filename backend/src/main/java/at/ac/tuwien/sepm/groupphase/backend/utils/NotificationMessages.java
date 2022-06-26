@@ -32,7 +32,7 @@ public final class NotificationMessages {
     public static final String COMMISSION_STATUS_IN_PROGRESS_TITLE = "The commission is now in progress.";
     public static final String COMMISSION_STATUS_NEGOTIATING = "The commission information has been edited.";
 
-    // Candidate has been chose
+    // Candidate has been chosen
     public static final String COMMISSION_CANDIDATE_CHOSEN = "You have been chosen for the commission.";
 
     // Review has been uploaded

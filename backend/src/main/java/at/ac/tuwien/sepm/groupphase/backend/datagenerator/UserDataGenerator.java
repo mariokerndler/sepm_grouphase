@@ -629,8 +629,8 @@ public class UserDataGenerator {
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Payable Sample Commission");
-        commission.setSketchesShown(3);
-        commission.setFeedbackSent(3);
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
         commission.setPrice((int) (Math.random() * 10000));
         commission.setFeedbackRounds(3);
         commission.setIssueDate(LocalDateTime.now());
@@ -640,32 +640,6 @@ public class UserDataGenerator {
             desc = desc.substring(0, 49);
         }
         commission.setInstructions(desc);
-        Artwork a = new Artwork();
-        List<Sketch> sketches = new LinkedList<Sketch>();
-        for (int i = 1; i < 5; i++) {
-            if (i == 4) {
-                a.setArtist(artist);
-                a.setName("Payable Sample Commission Art");
-                desc = faker.shakespeare().hamletQuote();
-                if (desc.length() > 50) {
-                    desc = desc.substring(0, 49);
-                }
-                a.setDescription(desc);
-                a.setImageUrl("data\\com\\42Payable Sample Commission\\payableArtwork");
-                a.setFileType(FileType.JPG);
-                a.setCommission(commission);
-            } else {
-                Sketch k = new Sketch();
-                k.setFileType(FileType.JPG);
-                k.setArtwork(a);
-                k.setDescription("Sketch " + i);
-                k.setImageUrl("data\\com\\42Payable Sample Commission\\payableSketch" + i);
-                sketches.add(k);
-
-            }
-        }
-        a.setSketches(sketches);
-        commission.setArtwork(a);
         return commission;
     }
 

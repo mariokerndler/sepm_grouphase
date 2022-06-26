@@ -68,11 +68,13 @@
         </div>
       </div>
       <br>
-      <strong>Feedback-Rounds: </strong>
-      <div *ngIf="commission.status.toString()==='In_PROGRESS' || commission.status.toString()==='COMPLETED'">
+
+      <div *ngIf="commission.status.toString()==='IN_PROGRESS' || commission.status.toString()==='COMPLETED' || commission.status.toString()==='AWAITING_PAYMENT'">
+        <strong>Feedback-Rounds: </strong>
         <strong class="p-section"> {{commission.feedbackSent}}/{{commission.feedbackRounds}}</strong>
       </div>
       <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
+        <strong>Feedback-Rounds: </strong>
       <strong class="p-section"> {{commission.feedbackRounds}}</strong>
     </div>
       <div *ngIf="(commission.status.toString()==='LISTED' && (userEdit || artistEdit ))||(commission.status.toString()==='In_PROGRESS' && userEdit)||

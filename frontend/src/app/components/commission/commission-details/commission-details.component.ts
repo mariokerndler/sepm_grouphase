@@ -173,8 +173,7 @@ export class CommissionDetailsComponent implements OnInit {
     } else {
       this.allowSketch = true;
     }
-    // TODO: Implement better check for this. We need to wait until artist uploads artwork
-    if (commission.feedbackRounds === commission.feedbackSent) {
+    if (commission.status === CommissionStatus.awaitingPayment) {
       this.allowPayment = true;
     }
     this.hasLoaded = true;

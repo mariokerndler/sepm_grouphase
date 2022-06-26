@@ -22,13 +22,13 @@ export class CommissionFeedComponent implements OnInit {
   searchDate: SearchConstraint;
   options: Options = {
     floor: 0,
-    ceil: this.globals.maxCommissionPrice,
+    ceil: this.globals.maxCommissionPrice + 1,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
           return '<b>Min price:</b> $' + value;
         case LabelType.High:
-          return '<b>Max price:</b> $' + value;
+          return '<b>Max price:</b> $' + (value - 1);
         default:
           return '$' + value;
       }
@@ -39,7 +39,7 @@ export class CommissionFeedComponent implements OnInit {
   searchCom: CommissionSearchDto = {
     dateOrder: SearchConstraint.none,
     name: '',
-    priceRange: [0, this.globals.maxCommissionPrice],
+    priceRange: [0, this.globals.maxCommissionPrice + 1],
     artistId: '',
     userId: '',
     pageNr: 0
@@ -57,7 +57,7 @@ export class CommissionFeedComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.options.ceil = this.globals.maxCommissionPrice;
+    this.options.ceil = this.globals.maxCommissionPrice + 1;
     this.fetchCommissions();
     this.loadAllArtists();
   }

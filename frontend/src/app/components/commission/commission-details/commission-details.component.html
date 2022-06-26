@@ -34,7 +34,7 @@
       <div *ngIf="this.commission.artistDto" class="description-section">
         <strong>Assigned Artist:</strong> <br><br>
         <a (click)="navigateToArtist(this.commission.artistDto)"
-           style="cursor: pointer;" class="p-section" matTooltip="Go to profile">{{commission.artistDto.userName}}</a>
+           style="cursor: pointer; text-decoration: underline" class="p-section" matTooltip="Go to profile">{{commission.artistDto.userName}}</a>
       </div>
       <br>
       <div *ngIf="hasReferences">
@@ -90,7 +90,7 @@
 
       <br>
       <strong>Price: </strong>
-      <strong class="p-section">${{commission.price}}</strong>
+      <strong class="p-section">{{commission.price}}€</strong>
       <br><br>
       <strong>Date: </strong>
       <strong *ngIf="commission.status !== 'COMPLETED'" class="p-section">{{startDate}}
@@ -160,14 +160,12 @@
 
 
     <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center center">
-      <div *ngIf="this.artistEdit">
+      <div *ngIf="this.artistEdit"  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
         <button  (click)="agreeAndStart()" color="primary" mat-flat-button>Agree</button>
-        <br>
-        <span><strong>If you would like deadline date, price or description altered, contact <button mat-stroked-button (click)="navigateToUser(this.user)">{{this.user.userName}}</button></strong></span>
+        <span><strong>If you would like deadline date, price or description altered, contact <a style="text-decoration: underline; cursor: pointer; font-size: 1.1rem; color: #fb9fa4;" (click)="navigateToUser(this.user)">{{this.user.userName}}</a></strong></span>
       </div>
-        <span *ngIf="this.userEdit && this.hasStarted"><strong>Waiting for artist to accept</strong></span>
-      <button *ngIf="this.userEdit && !this.hasStarted" style="margin-right: 1rem" color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/edit">Edit Commission</button>
-      <button *ngIf="this.userEdit && !this.hasStarted" (click)="hasStarted = true" style="margin-right: 1rem" color="primary" mat-flat-button>Start Commission</button>
+        <span *ngIf="this.userEdit"><strong>Waiting for artist to accept</strong></span>
+      <button *ngIf="this.userEdit" style="margin-left: 1rem" color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/edit">Edit Commission</button>
     </div>
 
     <div *ngIf="commission.status.toString()==='AWAITING_PAYMENT' && this.commission.customerDto.id.toString() === this.userId" fxLayout="col" fxLayoutAlign="center start">

@@ -45,7 +45,7 @@
               label="Organisation">
       <form [formGroup]="commissionForm">
         <p class="creation-p">On this page you can fill in some information for the organization of the project. All of
-          these values, can still be altered at a later stage of the commission.</p>
+          these values, except feedback rounds, can still be altered at a later stage of the commission.</p>
 
         <p class="creation-p">At first fill in the date which may be the deadline of the commission.</p>
 
@@ -67,7 +67,7 @@
           <mat-label>Your offer (in Euro)</mat-label>
 
           <input [max]="globals.maxCommissionPrice" formControlName="price" matInput
-                 min="0"
+                 min="1"
                  required step="any" type="number">
           <mat-error *ngIf="commissionForm.controls.price.errors">
             <span *ngIf="commissionForm.controls.price.errors.required">The price is required! </span>

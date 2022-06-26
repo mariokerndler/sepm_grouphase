@@ -27,6 +27,7 @@ export class UploadComponent implements OnInit {
   uploadForm: FormGroup;
   file: any;
   selectedImage;
+  isUploading = false;
 
   selectedTags: TagDto[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -116,6 +117,7 @@ export class UploadComponent implements OnInit {
   }
 
   uploadNewImage(name, description, imageData, filetype) {
+    this.isUploading = true;
     const artwork = {
       name, description, imageData,
       imageUrl: '',
@@ -128,6 +130,7 @@ export class UploadComponent implements OnInit {
       .subscribe(
         (x) => {
           this.dialogRef.close({event: 'upload'});
+          this.isUploading = false;
         }
       );
   }

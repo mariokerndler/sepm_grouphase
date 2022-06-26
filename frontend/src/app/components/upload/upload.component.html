@@ -57,6 +57,10 @@
     <span *ngIf="!file">Select File</span>
     <span *ngIf="file">Change Picture</span>
   </button>
+  <div style="width: 100%; padding-top: 10px" fxLayoutAlign="center center" *ngIf="isUploading">
+    <br>
+    <mat-spinner></mat-spinner>
+  </div>
   <br>
   <mat-form-field *ngIf="file && !this.data.commission" appearance="fill" class="form-group">
     <mat-label>Tags</mat-label>

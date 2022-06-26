@@ -16,15 +16,20 @@ import {NotificationService} from '../../services/notification/notification.serv
 })
 export class HeaderComponent implements OnInit {
 
+
+
   userId: number;
   user: ApplicationUserDto;
   isOpen = false;
+
+  private styleTag: HTMLStyleElement;
   constructor(
     public authService: AuthService,
     public globals: Globals,
     public dialog: MatDialog,
     private notificationService: NotificationService,
     private router: Router) {
+    this.styleTag = this.buildStyleElement();
   }
 
   ngOnInit() {
@@ -66,13 +71,51 @@ export class HeaderComponent implements OnInit {
 
   toggle(sideNav){
     this.isOpen = !this.isOpen;
+    if(this.isOpen){
+      this.disable();
+    } else {
+      this.enable();
+    }
     sideNav.toggle();
   }
 
   toggleCheckbox(sideNav, checkbox){
     this.isOpen = !this.isOpen;
+    if(this.isOpen){
+      this.disable();
+    } else {
+      this.enable();
+    }
     checkbox.checked = !checkbox.checked;
     sideNav.toggle();
+  }
+
+  disable(): void {
+
+    document.body.appendChild( this.styleTag );
+
+  }
+
+  enable(): void {
+
+    document.body.removeChild( this.styleTag );
+
+  }
+
+  private buildStyleElement(): HTMLStyleElement {
+
+    const style = document.createElement( 'style' );
+
+    style.type = 'text/css';
+    style.setAttribute( 'data-debug', 'Injected by WindowScrolling service.' );
+    style.textContent = `
+			body {
+				overflow: hidden !important ;
+			}
+		`;
+
+    return( style );
+
   }
 
 }

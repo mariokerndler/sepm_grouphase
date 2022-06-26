@@ -70,8 +70,8 @@
           <span>Rewind the whole process</span>
           <br>
           </div>
-          <span *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
-          <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="accent" mat-icon-button>
+          <span class="description-final" *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
+          <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="primary" mat-icon-button>
             <mat-icon *ngIf="!isPlaying && timelapseGif">play_arrows</mat-icon>
             <mat-icon *ngIf="isPlaying && timelapseGif">stop</mat-icon>
           </button>

@@ -1,7 +1,7 @@
 <div *ngIf="hasLoaded">
   <div class="primary title">
     <div fxFlex fxLayout>
-      <button class="back-arrow" mat-icon-button routerLink="/commissions">
+      <button class="back-arrow" mat-icon-button (click)="back()">
         <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
       </button>
     </div>
@@ -150,7 +150,7 @@
       <button (click)="toggleFeedbackField()" color="primary" fxLayoutAlign="center"
               mat-flat-button>{{feedbackButtonStates[feedbackButtonIndex]}}</button>
       <div *ngIf="feedbackButtonIndex===1">
-        <button (click)="updateCommission()" color="primary" fxLayoutAlign="center" mat-flat-button>Upload</button>
+        <button (click)="updateCommission(true);" color="primary" fxLayoutAlign="center" mat-flat-button>Upload</button>
       </div>
     </div>
 
@@ -159,15 +159,10 @@
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
         <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
           <button (click)="openSketchDialog()" color="primary" mat-button>
-            <!--<input #fileInput (change)="fileSelected($event)"
-                   accept=".png,.jpg,.jpeg" style="display: none;" type="file"> -->
             <mat-icon  color="primary">upload</mat-icon>
             <span style="font-size: 1.2rem">Upload new Sketch</span>
           </button>
         </div>
-        <!--<div *ngIf="this.uploadedSketchDto">
-          <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
-        </div> -->
         <br>
         <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
           <mat-icon color="primary">upload</mat-icon>

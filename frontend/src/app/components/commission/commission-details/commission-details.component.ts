@@ -19,6 +19,7 @@ import {Globals} from '../../../global/globals';
 import {Location} from '@angular/common';
 
 
+
 @Component({
   selector: 'app-commission-details',
   templateUrl: './commission-details.component.html',
@@ -196,11 +197,11 @@ export class CommissionDetailsComponent implements OnInit {
       sketch.imageUrl = 'default';
       sketch.artworkId = this.commission.artworkDto.id;
       this.uploadedSketchDto = sketch;
-      this.updateCommission();
+      this.updateCommission(false);
     };
   }
 
-  updateCommission() {
+  updateCommission(isFeedback: boolean) {
     //artist added sketch
     if (this.uploadedSketchDto !== null && this.artistEdit) {
       if (this.commission.artworkDto.sketchesDtos == null) {
@@ -225,8 +226,14 @@ export class CommissionDetailsComponent implements OnInit {
     c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].customerFeedback
       += '%' + new Date().toLocaleDateString();
     this.commissionService.updateCommission(c).subscribe((commission) => console.log(commission));
-
     this.checkCommissionState(this.commission);
+
+    if(isFeedback){
+      this.allowFeedback = false;
+    } else {
+      window.location.reload();
+    }
+
   }
 
 
@@ -326,6 +333,10 @@ export class CommissionDetailsComponent implements OnInit {
     });
   }
 
+  back() {
+    this.location.back();
+  }
+
   calculateProgress(): number{
 
     let negValue = 33;
@@ -359,4 +370,6 @@ export class CommissionDetailsComponent implements OnInit {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
     }
   }
+
+
 }

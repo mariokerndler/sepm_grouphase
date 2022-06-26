@@ -14,7 +14,7 @@
     This step is entirely optional, but may improve
     the experience of your customer.
   </p>
-  <mat-form-field appearance="fill" class="form-group">
+  <mat-form-field *ngIf="!data.sketch && !data.timelapse" appearance="fill" class="form-group">
     <mat-label>Name</mat-label>
     <input aria-describedby="artworkNameHelp" class="form-control" formControlName="artworkName" id="inputArtworkName"
            matInput
@@ -27,8 +27,9 @@
     </mat-error>
   </mat-form-field>
   <br>
-  <mat-form-field appearance="fill" class="form-group">
-    <mat-label>Description</mat-label>
+  <mat-form-field *ngIf="!data.timelapse" appearance="fill" class="form-group">
+    <mat-label *ngIf="!data.sketch">Description</mat-label>
+    <mat-label *ngIf="data.sketch">Comment</mat-label>
     <textarea #autosize="cdkTextareaAutosize"
               name="description"
               cdkAutosizeMaxRows="5"

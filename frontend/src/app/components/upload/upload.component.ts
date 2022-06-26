@@ -55,6 +55,14 @@ export class UploadComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.data.sketch){
+      this.uploadForm.controls.artworkName.clearValidators();
+    }
+
+    if(this.data.timelapse){
+      this.uploadForm.controls.artworkName.clearValidators();
+      this.uploadForm.controls.description.clearValidators();
+    }
     this.tagService.getAllTags().subscribe(
       (tags) => {
         this.allTags = tags;

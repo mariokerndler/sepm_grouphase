@@ -35,7 +35,7 @@
         <p class="creation-p">Update the date for the deadline of the commission.</p>
         <mat-form-field appearance="fill" class="input-field">
           <mat-label>Delivery Date</mat-label>
-          <input [matDatepicker]="picker" [min]="startDate" formControlName="date" matInput required>
+          <input [matDatepicker]="$any(picker)" [min]="startDate" formControlName="date" matInput required>
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>

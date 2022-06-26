@@ -25,7 +25,6 @@ import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
-import {MessageComponent} from './components/message/message.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistInformationComponent} from './components/artist-page/artist-information/artist-information.component';
 import {
@@ -94,7 +93,6 @@ import {CommissionEditComponent} from './components/commission/commission-edit/c
     FooterComponent,
     HomeComponent,
     LoginComponent,
-    MessageComponent,
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,

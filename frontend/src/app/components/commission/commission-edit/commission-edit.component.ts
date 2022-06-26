@@ -109,11 +109,9 @@ export class CommissionEditComponent implements OnInit {
   updateCommission() {
     this.hasSubmitted = true;
     if (this.commissionForm.valid) {
-      console.log(this.commissionForm);
       this.commission.instructions = this.commissionForm.value.description;
       this.commission.price = this.commissionForm.value.price;
       this.commission.deadlineDate = this.formatDate() + ' 01:01:01';
-      console.log(this.commission);
       this.commissionService.updateCommission(this.commission).subscribe(
         ret => {
           this.navigateToCommissionDetails(this.commission.id);
@@ -151,7 +149,6 @@ export class CommissionEditComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe((commission) => {
         this.commission = commission;
-        console.log(commission);
         this.commissionForm.value.description = this.commission.instructions;
         this.commissionForm.value.price = this.commission.price;
         this.commissionForm.value.deadlineDate = this.commission.deadlineDate;

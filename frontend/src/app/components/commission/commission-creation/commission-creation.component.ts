@@ -132,7 +132,6 @@ export class CommissionCreationComponent implements OnInit {
   fileSelected() {
 
     this.selectedReferences = this.commissionForm.value.references;
-    console.log((this.selectedReferences.length));
     if (this.selectedReferences != null) {
       if (this.selectedReferences.length > 0) {
         this.previewImages = [];
@@ -151,7 +150,6 @@ export class CommissionCreationComponent implements OnInit {
             r.imageUrl = event.target.result;
             r.name = ref.name;
             r.fileType = extractedValues[0];
-            console.log(r);
             this.commission.referencesDtos.push(r);
           };
         });

@@ -34,7 +34,7 @@
       <div *ngIf="this.commission.artistDto" class="description-section">
         <strong>Assigned Artist:</strong> <br><br>
         <a (click)="navigateToArtist(this.commission.artistDto)"
-           style="cursor: pointer;">{{commission.artistDto.userName}}</a>
+           style="cursor: pointer;" class="p-section" matTooltip="Go to profile">{{commission.artistDto.userName}}</a>
       </div>
       <br>
       <div *ngIf="hasReferences">
@@ -53,7 +53,8 @@
           (closeCarousel)="selectedReference=null"
           *ngIf="selectedReference!== null"
           [artworks]="commission.referencesDtos"
-          [selectedArtworkId]="selectedReference">
+          [selectedArtworkId]="selectedReference"
+        isReferenceImage="true">
         </app-gallery-carousel>
       </div>
 

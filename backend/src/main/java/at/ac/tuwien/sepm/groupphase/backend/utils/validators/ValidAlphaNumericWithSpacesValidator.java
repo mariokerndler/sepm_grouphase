@@ -1,5 +1,6 @@
-package at.ac.tuwien.sepm.groupphase.backend.utils.constraints;
+package at.ac.tuwien.sepm.groupphase.backend.utils.validators;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumericWithSpaces;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;

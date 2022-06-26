@@ -277,7 +277,6 @@ export class NotificationService {
    */
   public notifyUserAboutFailedOperation<T>(operation = 'operation') {
     return (error: HttpErrorResponse): Observable<T> => {
-      console.log(error);
       const message = error.error.message || JSON.stringify(error.error).replace(/[{}]/g, '');
 
       this.openDialog(`${operation} failed`, message);

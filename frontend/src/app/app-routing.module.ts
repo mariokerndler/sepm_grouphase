@@ -23,6 +23,7 @@ import {ContactComponent} from './components/footer/contact/contact.component';
 import {AboutComponent} from './components/footer/about/about.component';
 import {CreateGuard} from './guards/create.guard';
 import {AdminPageComponent} from './components/admin-page/admin-page.component';
+import {CommissionEditComponent} from './components/commission/commission-edit/commission-edit.component';
 import {CheckoutComponent} from './components/checkout/checkout.component';
 
 const routes: Routes = [
@@ -38,6 +39,7 @@ const routes: Routes = [
   {path: 'artists', component: ArtistFeedComponent},
   {path: 'commissions', component: CommissionFeedComponent},
   {path: 'commissions/:id', component: CommissionDetailsComponent},
+  {path: 'commissions/:id/edit', component: CommissionEditComponent},
   {path: 'commissions/:id/timeline', component: CommissionTimelineComponent},
   {path: 'commission-creation', canActivate: [CreateGuard], component: CommissionCreationComponent},
   {path: 'chat/:id', component: ChatComponent},

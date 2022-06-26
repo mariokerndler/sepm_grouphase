@@ -83,7 +83,6 @@ export class CommissionDetailsComponent implements OnInit {
     const id = localStorage.getItem('userId');
     if (id !== null) {
       this.userId = id;
-      console.log(id);
     }
   }
 
@@ -158,7 +157,6 @@ export class CommissionDetailsComponent implements OnInit {
 
         this.uploadedSketchDto = this.commission.artworkDto.sketchesDtos[(this.commission.artworkDto.sketchesDtos.length - 1)];
         this.uploadedSketchDto.customerFeedback = '';
-        console.log(this.uploadedSketchDto);
       }
     }
     if (this.userId === this.commission.customerDto.id.toString()) {
@@ -180,16 +178,11 @@ export class CommissionDetailsComponent implements OnInit {
       this.allowPayment = true;
     }
     this.hasLoaded = true;
-    console.log(this.commission);
-    console.log(this.artistEdit);
-    console.log(this.userEdit);
-    console.log(this.allowSketch);
   }
 
 
   fileSelected(fileInput: any, description: string) {
     this.uploadedSketch = fileInput.target.files[0];
-    console.log(this.uploadedSketch);
     const sketch = new SketchDto();
     const reader = new FileReader();
     reader.readAsDataURL(this.uploadedSketch);
@@ -223,14 +216,12 @@ export class CommissionDetailsComponent implements OnInit {
       this.commission.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1] = this.uploadedSketchDto;
       this.toggleFeedbackField();
     }
-    console.log(this.commission);
     const c = this.commission;
     c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].description
       += '%' + new Date().toLocaleDateString();
     c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].customerFeedback
       += '%' + new Date().toLocaleDateString();
     this.commissionService.updateCommission(c).subscribe((commission) => {
-      console.log(commission);
       if(!isFeedback){
         window.location.reload();
       }
@@ -267,7 +258,6 @@ export class CommissionDetailsComponent implements OnInit {
       this.commission.status = CommissionStatus.negotiating;
       this.artistService.getArtistById(this.selectedArtistId).subscribe(artist => {
         this.commission.artistDto = artist;
-        console.log(this.selectedArtistId);
         this.commissionService.updateCommission(this.commission).subscribe(ok => {
           this.notificationService.displaySuccessSnackbar('Artist selected successfully');
         });

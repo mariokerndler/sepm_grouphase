@@ -45,7 +45,6 @@ export class ArtworkService {
       .set('searchOperations', searchOperations)
       .set('pageNr', tagSearch.pageNr == null ? '0' : tagSearch.pageNr)
       .set('randomSeed', tagSearch.randomSeed);
-    // console.log(params.toString());
     const searchOptions = {
       headers: this.headers,
       params

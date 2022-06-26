@@ -155,14 +155,14 @@ public class CommissionServiceImpl implements CommissionService {
     public List<Commission> searchCommissions(CommissionSearchDto cs) {
         log.trace("calling searchCommissions() ...");
         List<Commission> foundCommissions;
-        switch (cs.getSearchConstraint()) {
-            case ASC -> foundCommissions = this.commissionRepo.searchCommissionsDateAsc(
+        switch (cs.getDateOrder()) {
+            case Ascending -> foundCommissions = this.commissionRepo.searchCommissionsDateAsc(
                 cs.getName(),
                 cs.getPriceRangeLower(),
                 cs.getPriceRangeUpper(),
                 cs.getArtistId(),
                 cs.getUserId());
-            case DESC -> foundCommissions = this.commissionRepo.searchCommissionsDateDesc(
+            case Descending -> foundCommissions = this.commissionRepo.searchCommissionsDateDesc(
                 cs.getName(),
                 cs.getPriceRangeLower(),
                 cs.getPriceRangeUpper(),

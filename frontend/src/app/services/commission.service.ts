@@ -31,7 +31,7 @@ export class CommissionService {
     return new HttpParams()
       .set('priceRangeUpper', searchCom.priceRange[1])
       .set('priceRangeLower', searchCom.priceRange[0])
-      .set('dateSearch', searchCom.date.toString())
+      .set('dateOrder', searchCom.dateOrder.toString())
       .set('name', searchCom.name)
       .set('pageNr', searchCom.pageNr == null ? '0' : searchCom.pageNr)
       .set('artistId', searchCom.artistId)

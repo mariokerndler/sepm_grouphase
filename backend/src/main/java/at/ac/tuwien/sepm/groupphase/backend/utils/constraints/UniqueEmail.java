@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.utils.constraints;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.validators.ValidAlphaNumericWithSpacesValidator;
+import at.ac.tuwien.sepm.groupphase.backend.utils.validators.UniqueEmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,10 +11,10 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {ValidAlphaNumericWithSpacesValidator.class})
-public @interface ValidAlphaNumericWithSpaces {
+@Constraint(validatedBy = {UniqueEmailValidator.class})
+public @interface UniqueEmail {
 
-    String message() default "field should not be empty and only contain alphanumeric character(s) or spaces.";
+    String message() default "Email already in use, please choose a different one!";
 
     Class<?>[] groups() default {};
 

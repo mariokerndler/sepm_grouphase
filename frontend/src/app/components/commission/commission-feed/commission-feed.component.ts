@@ -19,6 +19,7 @@ import {AuthService} from '../../../services/auth.service';
 export class CommissionFeedComponent implements OnInit {
 
   public searchEnum = SearchConstraint;
+  searchDate: SearchConstraint;
   options: Options = {
     floor: 0,
     ceil: 10000,
@@ -36,7 +37,7 @@ export class CommissionFeedComponent implements OnInit {
 
 
   searchCom: CommissionSearchDto = {
-    date: SearchConstraint.none, name: '', priceRange: [0, 100000], artistId: '', userId: '', pageNr: 0
+    dateOrder: SearchConstraint.none, name: '', priceRange: [0, 100000], artistId: '', userId: '', pageNr: 0
   };
   commissions: CommissionDto[];
   hasLoaded = false;
@@ -54,6 +55,17 @@ export class CommissionFeedComponent implements OnInit {
     this.options.ceil = this.globals.maxCommissionPrice;
     this.fetchCommissions();
     this.loadAllArtists();
+  }
+
+  fetchCommissions() {
+    this.searchCom.priceRange = [0, this.globals.maxCommissionPrice];
+
+    this.commissionService.filterDetailedCommissions(this.searchCom).subscribe({
+      next: (loadedCommissions) => {
+        this.commissions = loadedCommissions;
+        this.hasLoaded = true;
+      }
+    });
   }
 
   public search(): void {
@@ -75,17 +87,6 @@ export class CommissionFeedComponent implements OnInit {
   private loadAllArtists() {
     this.artistService.getAllArtists().subscribe(data => {
       this.artists = data;
-    });
-  }
-
-  private fetchCommissions() {
-    this.searchCom.priceRange = [0, this.globals.maxCommissionPrice];
-
-    this.commissionService.filterDetailedCommissions(this.searchCom).subscribe({
-      next: (loadedCommissions) => {
-        this.commissions = loadedCommissions;
-        this.hasLoaded = true;
-      }
     });
   }
 }

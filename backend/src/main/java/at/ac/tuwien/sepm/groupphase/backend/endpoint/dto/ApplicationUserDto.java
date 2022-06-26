@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.exceptionhandler.ApplicationUserValidationMessages;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.UniqueEmail;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumeric;
 import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumericWithSpaces;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
@@ -50,6 +51,7 @@ public class ApplicationUserDto {
 
     @NotNull(message = ApplicationUserValidationMessages.EMAIL_NOT_NULL)
     @Email(message = ApplicationUserValidationMessages.EMAIL_NOT_VALID)
+    @UniqueEmail(message = ApplicationUserValidationMessages.EMAIL_ALREADY_IN_USE)
     @Size(max = NAME_SIZE, message = ApplicationUserValidationMessages.EMAIL_SIZE_TOO_BIG)
     private String email;
 

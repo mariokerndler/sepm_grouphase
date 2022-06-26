@@ -104,7 +104,8 @@ public class UserDataGenerator {
             generateUsers(NUMBER_OF_USERS_TO_GENERATE);
         }
 
-        if (commissionRepository.findAll().size() < 3) {
+        // TODO: Adjust number of generated commissions after fixing comm. number
+        if (commissionRepository.findAll().size() < 2) {
             generateTestCommissions();
         }
         generateChats();
@@ -319,6 +320,8 @@ public class UserDataGenerator {
         Commission g = generateCommission5(artists.get(0), users.get(4));
         commissionService.saveCommission(g);
 
+        Commission h = generateCommissionTestNegotiating(artist, user);
+        commissionService.saveCommission(h);
 
         user = userRepository.findApplicationUserByEmail("testuser@test.com");
         Artist artistTest = artistRepository.findApplicationUserByEmail("testartist@test.com");
@@ -340,7 +343,7 @@ public class UserDataGenerator {
         commission.setFeedbackSent(0);
         commission.setFeedbackRounds(2);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setIssueDate(LocalDateTime.now());
+        commission.setIssueDate(LocalDateTime.now().minusDays(2));
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote();
@@ -585,7 +588,7 @@ public class UserDataGenerator {
         commission.setFeedbackSent(0);
         commission.setFeedbackRounds(5);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setIssueDate(LocalDateTime.now());
+        commission.setIssueDate(LocalDateTime.now().minusDays(1));
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote();
@@ -662,6 +665,76 @@ public class UserDataGenerator {
             }
         }
         a.setSketches(sketches);
+        commission.setArtwork(a);
+        return commission;
+    }
+
+    private Commission generateCommissionTestNegotiating(Artist artist, ApplicationUser user) throws IOException {
+
+        Faker faker = new Faker();
+        Commission commission = new Commission();
+        commission.setArtist(artist);
+        commission.setCustomer(user);
+        commission.setTitle("Commission where price is still being negotiated");
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
+        commission.setPrice((int) (Math.random() * 10000));
+        commission.setFeedbackRounds(3);
+        commission.setIssueDate(LocalDateTime.now());
+        commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setStatus(CommissionStatus.NEGOTIATING);
+        String desc = faker.shakespeare().hamletQuote();
+        if (desc.length() > 50) {
+            desc = desc.substring(0, 49);
+        }
+        commission.setInstructions(desc);
+
+        Artwork a = new Artwork();
+        List<Sketch> sketches = new LinkedList<>();
+        ImageFileManager ifm = new ImageFileManager();
+        String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
+        ifm.createFolderIfNotExists(assetAbsoluteLocation + "data\\com\\Sample Commission Test Negotiating\\");
+        for (int i = 5; i > 1; i--) {
+            if (i == 4) {
+                a.setArtist(artist);
+                a.setName("Sample Test Commission Art");
+                desc = faker.shakespeare().hamletQuote();
+                if (desc.length() > 50) {
+                    desc = desc.substring(0, 49);
+                }
+                a.setDescription(desc);
+                a.setImageUrl("data\\com\\Sample Commission Test Negotiating\\b" + i);
+                a.setFileType(FileType.JPG);
+            } else {
+                Sketch k = new Sketch();
+                k.setFileType(FileType.JPG);
+                k.setArtwork(a);
+                k.setImageData(getImageBytes(urls[i + 3]));
+                k.setDescription("Sketch " + i);
+                k.setImageUrl("data\\com\\Sample Commission Test Negotiating\\b" + i);
+                k.setCustomerFeedback("looks good " + i);
+                sketches.add(k);
+
+            }
+        }
+        Sketch k = new Sketch();
+        k.setFileType(FileType.GIF);
+        k.setArtwork(a);
+        k.setImageData(getImageBytes(urls[8]));
+        k.setDescription("Sketch GIF");
+        k.setImageUrl("data\\com\\Sample Commission Test Negotiating\\bGIF");
+        sketches.add(k);
+        Reference reference = new Reference();
+        reference.setImageUrl("data\\com\\Sample Commission Test Negotiating\\bReference");
+        reference.setImageData(getImageBytes(urls[1]));
+        reference.setCommission(commission);
+        reference.setFileType(FileType.JPG);
+        List<Reference> references = new LinkedList<>();
+        references.add(reference);
+        ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\Sample Commission Test Negotiating\\bReference");
+        a.setSketches(sketches);
+        commission.setArtistCandidates(null);
+        commission.setReferences(references);
         commission.setArtwork(a);
         return commission;
     }

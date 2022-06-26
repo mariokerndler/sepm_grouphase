@@ -25,14 +25,13 @@ import java.util.Optional;
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
-    @PersistenceContext
-    EntityManager em;
-
     private final ArtistRepository artistRepo;
     private final ImageFileManager ifm;
     private final CommissionService commissionService;
     private final ArtworkService artworkService;
     private final UserService userService;
+    @PersistenceContext
+    EntityManager em;
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -113,7 +112,6 @@ public class ArtistServiceImpl implements ArtistService {
                 }
             }
             ifm.deleteUserProfileImage(artist.get());
-            // TODO: Ifm delete files of artist
             artistRepo.delete(artist.get());
             log.info("Deleted artist with id='{}'", id);
         } else {

@@ -17,8 +17,6 @@ public interface UserService extends UserDetailsService {
      */
     List<ApplicationUser> getAllUsers();
 
-    //TODO: Exception for Josef
-
     /**
      * Find a user in the context of Spring Security based on the email address.
      * <br>

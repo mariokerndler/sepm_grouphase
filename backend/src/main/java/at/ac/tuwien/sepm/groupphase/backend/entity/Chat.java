@@ -74,15 +74,15 @@ public class Chat {
         return user;
     }
 
-    public ApplicationUser getChatPartner() {
-        return chatPartner;
-    }
-
     public void setUser(ApplicationUser user) {
         log.info("Setting user" + user.getUserName());
         this.user = user;
 
 
+    }
+
+    public ApplicationUser getChatPartner() {
+        return chatPartner;
     }
 
     public void setChatPartner(ApplicationUser chatPartner) {

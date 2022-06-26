@@ -144,7 +144,7 @@ public class ChatEndpointTest {
     @Test
     @Transactional
     @WithMockUser
-    public void addChat() throws Exception {
+    public void chatCreatedSuccessfully() throws Exception {
         List<ApplicationUserDto> users = allUsers();
         Long id = users.get(0).getId();
 
@@ -162,6 +162,9 @@ public class ChatEndpointTest {
         List<ApplicationUser> chats = allChatsForUser(id);
         assertEquals(1, chats.size());
         assertTrue(chats.get(0).getId()==users.get(1).getId());
+        mockMvc.perform(post("/api/v1//chats/chat").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+            .andExpect(status().isUnprocessableEntity()).andReturn();
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {

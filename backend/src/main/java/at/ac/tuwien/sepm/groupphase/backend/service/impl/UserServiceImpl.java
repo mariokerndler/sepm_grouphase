@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             log.info(user.get().getUserName());
-            /** : Ifm delete files of artist */
+            /* : Ifm delete files of artist */
             ifm.deleteUserProfileImage(user.get());
             userRepo.deleteById(id);
             log.info("Deleted application user with id='{}'", id);

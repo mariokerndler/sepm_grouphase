@@ -21,11 +21,10 @@
         <mat-icon class="accent icon">start</mat-icon>
       </div>
       <!-- Midsection -->
-        <div  *cdkVirtualFor="let sketch of data.artworkDto.sketchesDtos; let i = index" class="example-item">
-          <app-commission-timeslots (selectArtworkEvent)="setSelectedArtwork(i)"
-            [sketch]="data.artworkDto.sketchesDtos[i]" [index]="i"></app-commission-timeslots>
-        </div>
-
+      <div *cdkVirtualFor="let sketch of data.artworkDto.sketchesDtos; let i = index" class="example-item">
+        <app-commission-timeslots (selectArtworkEvent)="setSelectedArtwork(i)"
+                                  [index]="i" [sketch]="data.artworkDto.sketchesDtos[i]"></app-commission-timeslots>
+      </div>
 
 
       <!-- End Node -->
@@ -50,12 +49,14 @@
         <h1>Your final image</h1>
         <div class="final-image-subsection">
           <h2>{{data.artworkDto.name}}</h2>
-          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="!isPlaying" alt="{{data.artworkDto.name}}" class="final-image" src="/assets/{{data.artworkDto.imageUrl}}">
-          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="isPlaying" alt="{{data.artworkDto.name}}" class="final-image" src="/assets/{{timelapseGif.imageUrl}}">
+          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="!isPlaying" alt="{{data.artworkDto.name}}"
+               class="final-image" src="/assets/{{data.artworkDto.imageUrl}}">
+          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="isPlaying" alt="{{data.artworkDto.name}}"
+               class="final-image" src="/assets/{{timelapseGif.imageUrl}}">
           <br><br>
           <div *ngIf="timelapseGif">
-          <span>Rewind the whole process</span>
-          <br>
+            <span>Rewind the whole process</span>
+            <br>
           </div>
           <span *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
           <br>

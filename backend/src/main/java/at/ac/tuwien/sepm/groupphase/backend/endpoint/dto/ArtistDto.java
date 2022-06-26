@@ -78,7 +78,7 @@ public class ArtistDto {
 
     private List<Long> reviewsIds;
 
-    @Size(max = 255, message = ArtistValidationMessages.PROFILE_SETTINGS_TOO_BIG)
+    @Size(max = 510, message = ArtistValidationMessages.PROFILE_SETTINGS_TOO_BIG)
     private String profileSettings;
 
     public ArtistDto(String userName,

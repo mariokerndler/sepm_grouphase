@@ -21,28 +21,38 @@ export class CommissionTimeslotsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.sketch.fileType !== FileType.gif) {
+    if (this.sketch.fileType !== FileType.gif) {
       this.date = this.sketch.description.split('%')[1];
       this.feedbackDate = this.sketch.customerFeedback.split('%')[1];
     }
   }
 
-  transformIndex(index){
-    switch (index){
-      case 0: return 'first';
-      case 1: return 'second';
-      case 2: return 'third';
-      case 3: return 'fourth';
-      case 4: return 'fifth';
-      case 5: return 'sixth';
-      case 6: return 'seventh';
-      case 7: return 'eighth';
-      case 8: return 'ninth';
-      default: return 'tenth';
+  transformIndex(index) {
+    switch (index) {
+      case 0:
+        return 'first';
+      case 1:
+        return 'second';
+      case 2:
+        return 'third';
+      case 3:
+        return 'fourth';
+      case 4:
+        return 'fifth';
+      case 5:
+        return 'sixth';
+      case 6:
+        return 'seventh';
+      case 7:
+        return 'eighth';
+      case 8:
+        return 'ninth';
+      default:
+        return 'tenth';
     }
   }
 
-  selectArtwork(){
+  selectArtwork() {
     this.selectArtworkEvent.emit();
   }
 

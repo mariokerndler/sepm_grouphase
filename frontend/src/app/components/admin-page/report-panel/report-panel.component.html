@@ -1,0 +1,41 @@
+<mat-card class="report-card-container" fxLayout="column">
+  <!-- From -->
+  <div class="report-card-wrapper">
+    <span class="report-card-heading">From: </span>
+    <a class="report-card-from-link" routerLink="/artist/{{fromId}}">{{fromUserName}}</a>
+  </div>
+
+  <!-- Category -->
+  <div class="report-card-wrapper">
+    <span class="report-card-heading">Category: </span>
+    <span class="report-card-category">{{globalFunctions.convertNotificationTypeToString(report.type)}}</span>
+  </div>
+
+  <!-- Reference -->
+  <div class="report-card-wrapper">
+    <span class="report-card-heading">Reference: </span>
+    <a (click)="getReferenceAction()" *ngIf="!isArtworkType()" class="report-card-from-link">{{getReferenceText()}}</a>
+
+    <a (click)="selectedArtwork=0" *ngIf="isArtworkType()" class="report-card-from-link">{{getReferenceText()}}</a>
+    <div *ngIf="isArtworkType && selectedArtwork !== null &&hasArtworks">
+      <app-gallery-carousel
+        (closeCarousel)="selectedArtwork=null"
+        *ngIf="selectedArtwork !== null"
+        [artworks]="artworks"
+        [selectedArtworkId]="selectedArtwork">
+      </app-gallery-carousel>
+    </div>
+  </div>
+
+  <!-- Text -->
+  <div class="report-card-wrapper">
+    <span class="report-card-heading">Text: </span>
+    <p class="report-card-text">{{reportText}}</p>
+  </div>
+  <mat-card-actions align="end">
+    <button (click)="performAction()" [disabled]="finished" color="primary" mat-flat-button>
+      {{getActionText()}}
+    </button>
+  </mat-card-actions>
+
+</mat-card>

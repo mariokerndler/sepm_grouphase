@@ -1,14 +1,16 @@
 <span *ngIf="!isInProfile" fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem; margin-bottom: 1rem" class="timeline-title">Browse Artworks</span>
 <form *ngIf="!isInProfile" class="col-12" style="padding-left: 2%">
   <div>
-    <mat-form-field >
+    <mat-form-field>
       <mat-label class="primary">Search</mat-label>
       <input (click)="this.searchInput=''" (keydown.enter)="searchParams.pageNr=0; loadFeed()"
              [(ngModel)]=" searchInput"
              class="primary" matInput name="searchForm" placeholder="search">
     </mat-form-field>
     <span style="margin-left: 10px"></span>
-    <button (click)="searchParams.pageNr=0; loadFeed()" color="primary" mat-stroked-button style="padding:0.1rem; font-size: 1.2rem">Search</button>
+    <button (click)="searchParams.pageNr=0; loadFeed()" color="primary" mat-button style="padding:0.1rem; font-size: 1.2rem">
+      <mat-icon>search</mat-icon>
+    </button>
     <br>
     <button color="primary" mat-stroked-button style="padding:0.1rem 0.5rem">
     <mat-label style="font-size: 1.2rem;" [matMenuTriggerFor]="tagListMenu" class="primary">Tags
@@ -21,8 +23,8 @@
                     [(ngModel)]="tag.selected"
                     [value]="tag.name"
                     class="mat-primary"
-                    name="tagCheckbox"
-                    color="primary">
+                    color="primary"
+                    name="tagCheckbox">
         {{tag.name}}
       </mat-checkbox>
     </mat-menu>

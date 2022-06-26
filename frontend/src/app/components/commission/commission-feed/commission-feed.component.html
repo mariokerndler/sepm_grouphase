@@ -7,17 +7,17 @@
 </div>
 
 
-<div class="search-form"  fxLayout="row" >
+<div class="search-form" fxLayout="row">
   <mat-form-field appearance="fill" class="search-field">
     <mat-label class="primary">Search Commissions</mat-label>
-    <input matInput placeholder="search" [(ngModel)]="searchCom.name">
+    <input [(ngModel)]="searchCom.name" matInput placeholder="search">
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
 
-  <mat-form-field class="search-field" appearance="fill">
-    <mat-label >Filter by Artist</mat-label>
-    <mat-select [(ngModel)]="searchCom.artistId" >
+  <mat-form-field appearance="fill" class="search-field">
+    <mat-label>Filter by Artist</mat-label>
+    <mat-select [(ngModel)]="searchCom.artistId">
       <mat-option [value]="''"> All</mat-option>
       <div *ngFor="let artist of artists">
         <mat-option [value]="artist.id">{{artist.userName}}</mat-option>
@@ -25,13 +25,14 @@
     </mat-select>
   </mat-form-field>
   <div class="slider" fxLayout="row" fxLayoutAlign="stretch">
-    <ngx-slider  style="width: 20rem " [(value)]="searchCom.priceRange[0]"  [(highValue)]="searchCom.priceRange[1]" [options]="options"></ngx-slider>
+    <ngx-slider [(highValue)]="searchCom.priceRange[1]" [(value)]="searchCom.priceRange[0]" [options]="options"
+                style="width: 20rem "></ngx-slider>
   </div>
-  <mat-form-field class="search-field" appearance="fill">
-    <mat-label class="primary">Time</mat-label>
-    <mat-select [(ngModel)]="searchCom.dateOrder"  >
+  <mat-form-field appearance="fill" class="search-field">
+    <mat-label class="primary">Date</mat-label>
+    <mat-select [(ngModel)]="searchCom.dateOrder">
       <div *ngFor="let enum of searchEnum | keyvalue">
-        <mat-option  [value]="enum.value">{{enum.value}}</mat-option>
+        <mat-option [value]="enum.value">{{enum.value}}</mat-option>
 
       </div>
 
@@ -40,7 +41,8 @@
   <div fxLayout="column" fxLayoutAlign="center center" >
     <button fxLayout="column" fxLayoutAlign="center"  (click)="fetchCommissions()" class="primary" color="primary" mat-flat-button style="float:right">
       Search
-    </button></div>
+    </button>
+  </div>
 </div>
 
 

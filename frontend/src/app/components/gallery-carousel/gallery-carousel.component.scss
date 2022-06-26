@@ -1,8 +1,6 @@
-.image-Card{
+.image-Card {
   background: radial-gradient(#536281, #2f3a51);
 }
-
-
 
 
 .card-title {
@@ -103,7 +101,7 @@
   }
 
 
-  .image-title{
+  .image-title {
     text-align: left;
     color: #fb9fa4;
     padding-top: 10px;
@@ -160,6 +158,22 @@
     }
   }
 
+  .carousel-report {
+    font-size: large;
+    color: #dedae0;
+    position: absolute;
+    top: 1%;
+    right: 5%;
+
+    &:focus, &:hover {
+      border: none;
+      outline: none;
+      color: gray;
+      transform: scale(1.1);
+      transition-duration: 0.3s;
+    }
+  }
+
   .carousel-close-com {
     font-size: large;
     color: #dedae0;
@@ -176,7 +190,7 @@
     }
   }
 
-  .subtitle{
+  .subtitle {
     padding-top: 1rem;
     text-align: center;
     font-size: x-large;

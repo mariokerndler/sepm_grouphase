@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class ValidAlphaNumericWithSpacesValidator implements ConstraintValidator<ValidAlphaNumericWithSpaces, String> {
 
-    private static final Pattern alphaNumericWithSpacesPattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
+    private static final Pattern alphaNumericWithSpacesPattern = Pattern.compile("^['a-zA-Z0-9 ]*$");
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

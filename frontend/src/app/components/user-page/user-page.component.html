@@ -19,18 +19,12 @@
               <span class="sidenav-top artist-role">User</span>
             </div>
             <div fxFlex="fill"></div>
-            <!--
-            <div fxLayoutAlign="end center" *ngIf="canReport()">
-              <button mat-icon-button color="primary" (click)="reportProfile()">
-                <mat-icon>flag</mat-icon>
-              </button>
-            </div>
-            -->
           </div>
         </div>
         <div class="artist-middle-menu">
-          <mat-tab-group backgroundColor="primary" dynamicHeight *ngIf="canEdit">
+          <mat-tab-group *ngIf="canEdit" backgroundColor="primary" dynamicHeight>
             <mat-tab label="My Commissions">
+              <br>
               <app-commission-page [user]="user"></app-commission-page>
             </mat-tab>
             <mat-tab>
@@ -43,9 +37,9 @@
               </ng-template>
               <br>
               <app-notification-display
-                [user]="user"
+                (notificationLengthEvent)="setNotificationLength($event)"
                 (unreadEvent)="setUnreadNotifications($event)"
-                (notificationLengthEvent)="setNotificationLength($event)">
+                [user]="user">
               </app-notification-display>
             </mat-tab>
           </mat-tab-group>

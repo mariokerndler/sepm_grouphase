@@ -9,7 +9,7 @@
   $primary-palette: map.get($color-config, 'primary');
   $accent-palette: map.get($color-config, 'accent');
 
-  .mat-dialog-container{
+  .mat-dialog-container {
     background-color: #2f3a51;
     color: mat.get-color-from-palette($primary-palette, 200) !important;
     font-size: 1.2rem;

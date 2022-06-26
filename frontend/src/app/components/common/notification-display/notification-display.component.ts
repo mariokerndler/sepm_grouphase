@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NotificationService} from '../../../services/notification/notification.service';
-import {NotificationDto, NotificationType} from '../../../dtos/notificationDto';
+import {NotificationDto} from '../../../dtos/notificationDto';
 import {Sort} from '@angular/material/sort';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Router} from '@angular/router';
@@ -27,7 +27,8 @@ export class NotificationDisplayComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     public globalFunctions: GlobalFunctions
-  ) { }
+  ) {
+  }
 
   private static compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
@@ -73,7 +74,7 @@ export class NotificationDisplayComponent implements OnInit {
   }
 
   readNotification(notification: NotificationDto) {
-    this.notificationService.pathNotificationIsReadOfIdFromUser(notification.id, notification.userId, true)
+    this.notificationService.patchNotificationIsReadOfIdFromUser(notification.id, notification.userId, true)
       .subscribe((_) => {
           this.fetchNotifications();
           this.fetchReadNotifications();
@@ -103,11 +104,11 @@ export class NotificationDisplayComponent implements OnInit {
 
   deleteNotification(notification: NotificationDto) {
     this.notificationService.deleteNotification(notification)
-      .subscribe( _ => {
-        this.notificationService.displaySuccessSnackbar('Deleted notification.');
-        this.fetchReadNotifications();
-      }
-    );
+      .subscribe(_ => {
+          this.notificationService.displaySuccessSnackbar('Deleted notification.');
+          this.fetchReadNotifications();
+        }
+      );
   }
 
   private fetchNotifications() {

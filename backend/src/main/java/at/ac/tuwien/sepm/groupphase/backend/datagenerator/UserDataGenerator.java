@@ -45,7 +45,6 @@ public class UserDataGenerator {
     private final ChatMessageRepository chatMessageRepository;
     private final CommissionRepository commissionRepository;
     private final CommissionService commissionService;
-    private final ImageFileManager imageFileManager;
     private String[] urls = new String[]{
         "https://i.ibb.co/HTT7Ym3/image0.jpg",
         "https://i.ibb.co/7yHp276/image1.jpg",
@@ -79,7 +78,6 @@ public class UserDataGenerator {
         this.chatMessageRepository = chatMessageRepository;
         this.commissionRepository = commissionRepository;
         this.commissionService = commissionService;
-        this.imageFileManager = imageFileManager;
     }
 
     public static byte[] getImageBytes(String imageUrl) throws IOException {
@@ -302,14 +300,27 @@ public class UserDataGenerator {
         List<Artist> artists = artistService.getAllArtists();
         ApplicationUser user = userRepository.findApplicationUserByEmail("testuser@test.com");
         Long artistId = userRepository.findApplicationUserByEmail("testartist@test.com").getId();
-        Artist artist = artistRepository.findById(artistId).get();
-
         Commission c = generateCommission2(artists.get(0), user);
         commissionService.saveCommission(c);
         Commission d = generateCommission1(artists.get(1), users.get(4));
         commissionService.saveCommission(d);
+
         Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);
+        Artist artist = artistRepository.findById(artistId).get();
+        Artwork artwork0 = new Artwork();
+        artwork0.setCommission(e);
+        artwork0.setArtist(artist);
+        artwork0.setFileType(FileType.JPG);
+        artwork0.setDescription("Artwork description");
+        artwork0.setName("Artwork");
+        artwork0.setImageData(getImageBytes(urls[2]));
+        ImageFileManager ifm = new ImageFileManager();
+        String st = ifm.writeCommissionArtwork(e, artwork0);
+        artwork0.setImageUrl(st);
+        artworkRepo.save(artwork0);
+        e.setArtwork(artwork0);
+
         Commission f = generateCommission4(artist, user);
         commissionService.saveCommission(f);
         Artwork artwork = new Artwork();
@@ -319,7 +330,7 @@ public class UserDataGenerator {
         artwork.setDescription("Artwork description");
         artwork.setName("Artwork");
         artwork.setImageData(getImageBytes(urls[7]));
-        String s = imageFileManager.writeCommissionArtwork(f, artwork);
+        String s = ifm.writeCommissionArtwork(f, artwork);
         artwork.setImageUrl(s);
         List<Sketch> sketches = new LinkedList<>();
         for (int i = 4; i < 8; i++) {
@@ -329,7 +340,7 @@ public class UserDataGenerator {
             k.setImageData(getImageBytes(urls[i]));
             k.setArtwork(artwork);
             k.setCustomerFeedback("looks good, carry on :)");
-            String string = imageFileManager.writeSketchImage(f, k);
+            String string = ifm.writeSketchImage(f, k);
             k.setImageUrl(string);
             sketches.add(k);
         }
@@ -464,10 +475,10 @@ public class UserDataGenerator {
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission3");
-        commission.setSketchesShown(4);
-        commission.setFeedbackSent(4);
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setFeedbackRounds(4);
+        commission.setFeedbackRounds(0);
         commission.setIssueDate(LocalDateTime.now().minusDays((int) (Math.random() * 100)));
         commission.setDeadlineDate(LocalDateTime.now());
         commission.setStatus(CommissionStatus.COMPLETED);
@@ -583,7 +594,7 @@ public class UserDataGenerator {
         sketches.add(k);
         Reference reference = new Reference();
         reference.setImageUrl("data\\com\\adminSample Commission4\\bReference");
-        reference.setImageData(getImageBytes(urls[1]));
+        reference.setImageData(getImageBytes(urls[5]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
         List<Reference> references = new LinkedList<>();

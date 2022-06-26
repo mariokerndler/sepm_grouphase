@@ -6,6 +6,10 @@ import {UserService} from '../../services/user.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {AuthService} from '../../services/auth.service';
 import {UserRole} from '../../dtos/artistDto';
+import {Globals} from '../../global/globals';
+import {ReportService, ReportType} from '../../services/report/report.service';
+import {ChatDto} from '../../dtos/chatDto';
+import {ChatService} from '../../services/chat-service';
 
 @Component({
   selector: 'app-user-page',
@@ -17,6 +21,11 @@ export class UserPageComponent implements OnInit, OnDestroy {
   user: ApplicationUserDto;
   isReady = false;
   canEdit = false;
+  profilePicture;
+  hasUnreadNotifications: boolean;
+  notificationLength: number;
+  loggedInUserId;
+
   private routeSubscription: Subscription;
 
   constructor(
@@ -24,20 +33,25 @@ export class UserPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    public globals: Globals,
+    private reportService: ReportService,
+    private chatService: ChatService
   ) {
   }
 
   private static navigateToUserList() {
-    // TODO: Implement a user list
 
   }
 
   ngOnInit(): void {
+    this.loggedInUserId= Number.parseInt(localStorage.getItem('userId'), 10);
     this.routeSubscription = this.route.params.subscribe(
       (params) => this.userService.getUserById(params.id, () => UserPageComponent.navigateToUserList())
         .subscribe((user) => {
           this.user = user;
+
+          this.setProfilePicture();
 
           if (this.user.userRole === UserRole.artist) {
             this.navigateToArtistPage();
@@ -62,6 +76,37 @@ export class UserPageComponent implements OnInit, OnDestroy {
       );
   }
 
+  setUnreadNotifications($event: boolean) {
+    this.hasUnreadNotifications = $event;
+  }
+
+  setNotificationLength($event: number) {
+    this.notificationLength = $event;
+  }
+
+  reportProfile() {
+    this.reportService.openReportDialog(this.user.id, ReportType.user);
+  }
+
+  canReport(): boolean {
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    } else {
+      return this.authService.getUserRole() !== 'ADMIN';
+    }
+  }
+
+  messageUser() {
+    const chat: ChatDto = {
+      chatPartnerId: this.user.id, userId: this.loggedInUserId
+    };
+    this.chatService.postChat(chat).subscribe(success => {
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
+    }, error => {
+      this.router.navigate(['/chat/' + this.loggedInUserId]);
+    });
+  }
+
   private navigateToArtistPage() {
     this.router.navigate(['/artist', this.user.id])
       .catch(
@@ -71,5 +116,11 @@ export class UserPageComponent implements OnInit, OnDestroy {
       );
   }
 
-
+  private setProfilePicture() {
+    if (!this.user.profilePictureDto) {
+      this.profilePicture = this.globals.defaultProfilePicture;
+    } else {
+      this.profilePicture = this.user.profilePictureDto.imageUrl;
+    }
+  }
 }

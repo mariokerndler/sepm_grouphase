@@ -1,8 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.CommissionSearchDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Commission;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface CommissionService {
@@ -37,12 +37,10 @@ public interface CommissionService {
      *
      * @param commission The commission being saved.
      */
-    void saveCommission(Commission commission) throws IOException;
+    Commission saveCommission(Commission commission);
 
     /**
      * Updates the given commission, if there is a commission with this id saved in the database.
-     *
-     * @param commission The commission being updated.
      */
     void updateCommission(Commission commission);
 
@@ -54,4 +52,20 @@ public interface CommissionService {
      */
     void deleteCommission(Commission commission);
 
+    /**
+     * updates the given commission from the database to assign an artist
+     * Artist and customer entities saved in the database.
+     *
+     * @param commission The commission to be deleted.
+     */
+    void assignArtist(Commission commission);
+
+    /**
+     * Returns all commissions by the given parameters (lower Price range, upper Price Range, date order, name, artist),
+     * if there are commissions saved in the database.
+     *
+     * @param cs CommissionSearchDto (lower Price range, upper Price Range, date order, name, artist).
+     * @return A list of all commissions by the artist with the specified id.
+     */
+    List<Commission> searchCommissions(CommissionSearchDto cs);
 }

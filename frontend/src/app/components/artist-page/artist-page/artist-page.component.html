@@ -8,14 +8,25 @@
     <div class="information-container">
       <div fxFill fxLayout="column">
         <div fxLayout="row">
-          <div fxFlex="70" fxLayout="row" fxLayoutGap="5px">
+          <div fxLayout="row" fxLayoutGap="5px" style="width: 100%">
             <div fxLayoutAlign="center center">
-              <img [src]="artistUrl" alt="{{artist.userName}} profile picture" class="artist-profile-picture">
+              <img [src]="globals.assetsPath + profilePicture" alt="{{artist.userName}} profile picture"
+                   class="artist-profile-picture">
             </div>
             <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
-              <span class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
-              <span class="accent-color artist-role">Artist</span>
+              <span class="sidenav-top artist-username">{{artist.userName}}</span>
+              <span class="sidenav-top artist-full-name">{{artist.name}} {{artist.surname}}</span>
+              <span class="sidenav-top artist-role">Artist</span>
             </div>
+            <div fxFlex="fill"></div>
+            <!--
+            <div *ngIf="canReport()" fxLayoutAlign="end center">
+              <button (click)="reportProfile()" color="primary" mat-icon-button matTooltip="Report this artist"
+                      matTooltipPosition="above">
+                <mat-icon>flag</mat-icon>
+              </button>
+            </div>
+            -->
           </div>
         </div>
         <div class="artist-middle-menu">
@@ -29,8 +40,34 @@
               <app-artist-gallery [artist]="artist"></app-artist-gallery>
             </mat-tab>
             <mat-tab label="Reviews">
+              <br>
+              <div>
+                <span style="font-weight: bold;font-size: 1.3rem;">Reviews</span>
+              </div>
+              <br>
+              <app-review-page [user]="artist"></app-review-page>
             </mat-tab>
-            <mat-tab label="Contact">
+            <mat-tab *ngIf="canEdit" label="My Commissions">
+              <br>
+              <app-commission-page [user]="artist"></app-commission-page>
+            </mat-tab>
+            <mat-tab *ngIf="canEdit">
+              <br>
+              <ng-template mat-tab-label>
+                <span [matBadgeHidden]="!hasUnreadNotifications"
+                      [matBadge]="notificationLength > 9 ? '9+' : notificationLength"
+                      matBadgeColor="warn"
+                      matBadgeOverlap="false">Notifications
+                </span>
+              </ng-template>
+              <div>
+                <span style="font-weight: bold;font-size: 1.3rem;">Notifications</span>
+              </div>
+              <app-notification-display
+                (notificationLengthEvent)="setNotificationLength($event)"
+                (unreadEvent)="setUnreadNotifications($event)"
+                [user]="user">
+              </app-notification-display>
             </mat-tab>
           </mat-tab-group>
         </div>
@@ -39,17 +76,18 @@
   </div>
 
   <div *ngIf="canEdit" class="edit-button">
-    <button (click)="navigateToEdit()" color="accent" mat-button>
-      <mat-icon color="accent">edit</mat-icon>
-      <span class="edit-text">Edit your page</span>
+    <button (click)="navigateToEdit()" color="primary" mat-button>
+      <mat-icon color="primary" >edit</mat-icon>
+      <span class="edit-text" style="font-size: 1.1rem">Edit your page</span>
     </button>
   </div>
   <div *ngIf="!canEdit" class="edit-button">
-    <button (click)="goBack()" color="accent" mat-button>
-      <mat-icon color="accent">arrow_back</mat-icon>
+    <button (click)="goBack()" color="primary" mat-button>
+      <mat-icon color="primary">arrow_back</mat-icon>
       <span class="edit-text">Go Back</span>
     </button>
   </div>
+
 
 </div>
 

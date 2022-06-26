@@ -1,0 +1,12 @@
+<div class="dashboard-container">
+  <h1>Admin Dashboard</h1>
+  <div class="dashboard-reports">
+    <h2>Reports</h2>
+    <h3 *ngIf="!hasNotifications">No reports available</h3>
+    <div *ngIf="hasNotifications" fxLayout="row grid" fxLayoutGap="15px">
+      <div *ngFor="let report of notifications" class="dashboard-card" fxFlex="45">
+        <app-report-panel (deleteEmitter)="fetchNotifications()" [report]="report"></app-report-panel>
+      </div>
+    </div>
+  </div>
+</div>

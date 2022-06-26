@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {ArtistService} from '../../../services/artist.service';
@@ -9,6 +9,8 @@ import {AuthService} from '../../../services/auth.service';
 import {UserService} from '../../../services/user.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {Location} from '@angular/common';
+import {Globals} from '../../../global/globals';
+import {ReportService, ReportType} from '../../../services/report/report.service';
 
 @Component({
   selector: 'app-artist-page',
@@ -16,7 +18,6 @@ import {Location} from '@angular/common';
   styleUrls: ['./artist-page.component.scss']
 })
 export class ArtistPageComponent implements OnInit, OnDestroy {
-
   artist: ArtistDto;
   user: ApplicationUserDto;
   profileSettings: ArtistProfileSettings;
@@ -24,8 +25,11 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
   isArtist = false;
   canEdit = false;
   tabIndex = 0;
-  // TODO: Fill in the real profile picture
-  artistUrl = 'https://picsum.photos/150/150';
+  profilePicture;
+
+  hasUnreadNotifications: boolean;
+  notificationLength: number;
+
   private routeSubscription: Subscription;
 
   constructor(
@@ -35,15 +39,20 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     private artistService: ArtistService,
     private userService: UserService,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    public globals: Globals,
+    private reportService: ReportService
   ) {
   }
 
   ngOnInit(): void {
+    this.refreshOnBackButtonClick();
     this.routeSubscription = this.route.params.subscribe(
       (params) => this.userService.getUserById(params.id, () => this.navigateToArtistList())
         .subscribe((user) => {
           this.user = user;
+
+          this.setProfilePicture();
 
           if (this.user.userRole === UserRole.artist) {
             this.isArtist = true;
@@ -61,13 +70,32 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
               });
           } else if (this.user.userRole === UserRole.user) {
             this.navigateToUserPage();
+          } else if (this.user.userRole === UserRole.admin) {
+            this.navigateToAdminPage();
           }
         })
     );
+
+    window.onload = () => {
+      const reloading = sessionStorage.getItem('reloading');
+      if (reloading) {
+        sessionStorage.removeItem('reloading');
+        this.changeIndex(1);
+        this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork');
+      }
+    };
   }
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
+  }
+
+  refreshOnBackButtonClick(): void {
+    this.router.events.subscribe((event: NavigationStart) => {
+      if (event.navigationTrigger === 'popstate') {
+        window.location.reload();
+      }
+    });
   }
 
   navigateToEdit() {
@@ -96,6 +124,25 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
     this.tabIndex = $event;
   }
 
+  setUnreadNotifications($event: boolean) {
+    this.hasUnreadNotifications = $event;
+  }
+
+  setNotificationLength($event: number) {
+    this.notificationLength = $event;
+  }
+
+  canReport() {
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    } else {
+      return this.authService.getUserRole() !== 'ADMIN';
+    }
+  }
+
+  reportProfile() {
+    this.reportService.openReportDialog(this.artist.id, ReportType.artist);
+  }
 
   private navigateToArtistList() {
     this.router.navigate(['/artists'])
@@ -105,4 +152,23 @@ export class ArtistPageComponent implements OnInit, OnDestroy {
         }
       );
   }
+
+  private navigateToAdminPage() {
+    this.router.navigate(['/admin'])
+      .catch(
+        (error) => {
+          this.notificationService.displayErrorSnackbar(error.toString());
+        }
+      );
+  }
+
+  private setProfilePicture() {
+    if (!this.user.profilePictureDto) {
+      this.profilePicture = this.globals.defaultProfilePicture;
+    } else {
+      this.profilePicture = this.user.profilePictureDto.imageUrl;
+    }
+  }
+
+
 }

@@ -1,25 +1,40 @@
 <div *ngIf="hasLoaded">
   <div class="primary title">
     <div fxFlex fxLayout>
-      <button class="back-arrow" mat-icon-button routerLink="/commissions">
+      <button class="back-arrow" mat-icon-button (click)="back()">
         <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
       </button>
     </div>
-    <h2>{{commission.title}}</h2>
+    <h2>Commission: {{commission.title}}</h2>
     <div class="navigation-items" fxFlex fxLayout fxLayoutAlign="end"></div>
   </div>
-  <div class="primary total" fxLayout="row">
+  <div class="primary total">
     <div class="profile" fxLayout="column">
-      <img [src]="userProfilePicture" alt="" class="commission-pfp">
+      <img [src]="globals.assetsPath + profilePicture" alt="" class="commission-pfp">
       <br>
       <strong class="userName">{{user.userName}}</strong>
+      <div *ngIf="canReport()" style="padding-left: 55px">
+        <button (click)="reportProfile()" color="primary" mat-icon-button matTooltip="Report this commission"
+                matTooltipPosition="above">
+          <mat-icon>flag</mat-icon>
+        </button>
+      </div>
     </div>
-
     <div class="description">
       <strong>Description:</strong>
       <br><br>
       <div class="description-section">
-        <p>{{commission.instructions}}</p>
+        <p class="p-section">{{commission.instructions}}</p>
+      </div>
+      <br>
+      <div class="description-section">
+        <strong>Commissioned by:</strong> <br><br>
+        <p class="p-section">{{commission.customerDto.userName}}</p>
+      </div>
+      <div *ngIf="this.commission.artistDto" class="description-section">
+        <strong>Assigned Artist:</strong> <br><br>
+        <a (click)="navigateToArtist(this.commission.artistDto)"
+           style="cursor: pointer;" class="p-section" matTooltip="Go to profile">{{commission.artistDto.userName}}</a>
       </div>
       <br>
       <div *ngIf="hasReferences">
@@ -29,24 +44,178 @@
           <cdk-virtual-scroll-viewport class="viewport" itemSize="{{commission.referencesDtos.length}}"
                                        orientation="horizontal">
             <div *ngFor="let reference of commission.referencesDtos; let i = index" class="image-container">
-              <img (click)="setSelectedArtwork(i) " [src]="'/assets/' + reference.imageUrl" alt=""
+              <img (click)="setSelectedArtwork(i, true) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </div>
+        <app-gallery-carousel
+          (closeCarousel)="selectedReference=null"
+          *ngIf="selectedReference!== null"
+          [artworks]="commission.referencesDtos"
+          [selectedArtworkId]="selectedReference"
+        isReferenceImage="true">
+        </app-gallery-carousel>
+      </div>
+
+
+      <div
+        *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0 && this.userId === commission.customerDto.id.toString()"
+        style="max-width: 40%">
+        <mat-label>Commission Candidates</mat-label>
+        <mat-selection-list [(ngModel)]="selectedArtistId" [multiple]="false" name="applicant">
+          <mat-list-option *ngFor="let a of commission.artistCandidatesDtos" [value]="a.id">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon style="margin-right: 10px">person</mat-icon>
+              <span fxFlex="auto">{{a.userName}}</span>
+              <button (click)="navigateToArtist(a)" class="mat-primary" mat-flat-button>View Profile</button>
+            </div>
+          </mat-list-option>
+
+        </mat-selection-list>
+        <div style="margin-top: 10px">
+          <button (click)="chooseArtist()" class="mat-primary" mat-flat-button>Choose this Artist</button>
+        </div>
+      </div>
+      <br>
+
+      <div *ngIf="commission.status.toString()==='IN_PROGRESS' || commission.status.toString()==='COMPLETED' || commission.status.toString()==='AWAITING_PAYMENT'">
+        <strong>Feedback-Rounds: </strong>
+        <strong class="p-section"> {{commission.feedbackSent}}/{{commission.feedbackRounds}}</strong>
+      </div>
+      <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
+        <strong>Feedback-Rounds: </strong>
+      <strong class="p-section"> {{commission.feedbackRounds}}</strong>
+    </div>
+
+      <br>
+      <strong>Price: </strong>
+      <strong class="p-section">${{commission.price}}</strong>
+      <br><br>
+      <strong>Date: </strong>
+      <strong *ngIf="commission.status !== 'COMPLETED'" class="p-section">{{startDate}}
+        - {{endDate}}</strong>
+
+      <strong *ngIf="commission.status === 'COMPLETED'" class="p-section">{{startDate}}
+        - {{updatedEndDate}}</strong>
+      <br><br>
+      <strong>Status:</strong>
+      <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
+      <br><br>
+      <mat-progress-bar class="progress-bar" mode="determinate" value="{{calculateProgress()}}"></mat-progress-bar>
+      <br>
+      <div *ngIf="hasSketches">
+        <strong class="referenceImages">Sketches:</strong>
+        <br><br>
+        <div class="scrolling-container">
+          <cdk-virtual-scroll-viewport [ngStyle]="(commission.artworkDto.sketchesDtos[0].customerFeedback.length > 0) ? {'height': '300px'}: {'height': '240px'}" class="viewport" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
+                                       orientation="horizontal">
+            <div *ngFor="let reference of sketches; let i = index" class="image-container">
+              <img (click)="setSelectedArtwork(i, false) " [src]="'/assets/' + reference.imageUrl" alt=""
+                   class="gallery-pictures">
+              <br>
+              <div *ngIf="reference.customerFeedback.length>0">
+                <b>Customer Feedback:</b>
+                <p class="customer-feedback" >{{reference.customerFeedback.split("%")[0]}}</p>
+              </div>
+                <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
+              </div>
             </div>
           </cdk-virtual-scroll-viewport>
         </div>
         <app-gallery-carousel
           (closeCarousel)="selectedArtwork=null"
           *ngIf="selectedArtwork!== null"
-          [artworks]="commission.referencesDtos"
+          [artworks]="sketches"
           [selectedArtworkId]="selectedArtwork">
         </app-gallery-carousel>
       </div>
-      <br><br>
-      <strong class="referenceImages">Price: ${{commission.price}}</strong>
-      <br><br>
-      <strong class="referenceImages">Date: {{commission.issueDate.substring(0, 11)}}
-        - {{commission.deadlineDate.substring(0, 11)}}</strong>
+
+
+      <div *ngIf="this.uploadedSketchDto&&allowSketch && artistEdit" fxLayoutAlign="center center">
+        <div>
+          <mat-label>Sketch</mat-label>
+        </div>
+        <div><img [src]="this.uploadedSketchDto.imageData" alt="" class="preview-image"></div>
+        <div>
+          <mat-form-field style="width: 60%; padding-top: 1em">
+            <textarea [(ngModel)]="this.uploadedSketchDto.description" class="feedbackBox" color="secondary" matInput
+                      placeholder="Describe your sketch"></textarea>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div *ngIf="(commission.status.toString()==='LISTED' && (userEdit || artistEdit ))||(this.commission.status.toString()==='IN_PROGRESS' && userEdit)||
+       (commission.status.toString()==='NEGOTIATING' &&(userEdit || artistEdit ))||
+       (this.commission.feedbackSent===this.commission.sketchesShown && commission.status.toString()==='AWAITING_PAYMENT' && artistEdit) ||
+        (this.commission.feedbackSent===this.commission.sketchesShown-1 && commission.status.toString()==='IN_PROGRESS' && artistEdit)">
+        <button (click)="cancelCommission()" class="mat-primary" mat-flat-button>Cancel Commission</button>
+      </div>
     </div>
-    <button class="accept" color="primary" fxLayoutAlign="center" mat-flat-button>Request</button>
+    <div *ngIf="commission.status.toString()==='LISTED' && this.commission.customerDto.id.toString() !== this.userId && getUserRole() === 'Artist'" fxLayout="col" fxLayoutAlign="center start">
+      <button *ngIf="!hasApplied" color="primary" fxLayoutAlign="center" mat-flat-button (click)="applyArtist()">Apply</button>
+      <span *ngIf="hasApplied"><strong>You applied for this commission. Wait for {{this.user.userName}} Response.</strong></span>
+    </div>
+
+
+
+    <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center center">
+      <div *ngIf="this.artistEdit">
+        <button  (click)="agreeAndStart()" color="primary" mat-flat-button>Agree</button>
+        <br>
+        <span><strong>If you would like deadline date, price or description altered, contact <button mat-stroked-button (click)="navigateToUser(this.user)">{{this.user.userName}}</button></strong></span>
+      </div>
+        <span *ngIf="this.userEdit && this.hasStarted"><strong>Waiting for artist to accept</strong></span>
+      <button *ngIf="this.userEdit && !this.hasStarted" style="margin-right: 1rem" color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/edit">Edit Commission</button>
+      <button *ngIf="this.userEdit && !this.hasStarted" (click)="hasStarted = true" style="margin-right: 1rem" color="primary" mat-flat-button>Start Commission</button>
+    </div>
+
+    <div *ngIf="commission.status.toString()==='AWAITING_PAYMENT' && this.commission.customerDto.id.toString() === this.userId" fxLayout="col" fxLayoutAlign="center start">
+      <div>
+        <app-checkout [commission]="commission"></app-checkout>
+      </div>
+    </div>
+
+    <div *ngIf="commission.status.toString()==='AWAITING_PAYMENT' && artistEdit" fxLayout="col" fxLayoutAlign="center start">
+      <label><strong>Wait for {{this.user.userName}} to pay.</strong></label>
+    </div>
+
+    <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start">
+      <mat-form-field style="width: 60%; padding-top: 1em">
+        <textarea [(ngModel)]="this.uploadedSketchDto.customerFeedback" class="feedbackBox" color="secondary" matInput [maxLength]="230"
+                  placeholder="Leave a comment"></textarea>
+      </mat-form-field>
+    </div>
+    <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& userEdit && allowFeedback" fxLayoutAlign="center">
+      <button (click)="toggleFeedbackField()" color="primary" fxLayoutAlign="center"
+              mat-flat-button>{{feedbackButtonStates[feedbackButtonIndex]}}</button>
+      <div *ngIf="feedbackButtonIndex===1">
+        <button (click)="updateCommission(true);" color="primary" fxLayoutAlign="center" mat-flat-button>Upload</button>
+      </div>
+    </div>
+
+
+    <div *ngIf="commission.status.toString()==='IN_PROGRESS'&& artistEdit && allowSketch">
+      <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
+        <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
+          <button (click)="openSketchDialog()" color="primary" mat-button>
+            <mat-icon  color="primary">upload</mat-icon>
+            <span style="font-size: 1.2rem">Upload new Sketch</span>
+          </button>
+        </div>
+        <br>
+        <button (click)="openDialog()" *ngIf="commission.feedbackSent === commission.feedbackRounds" color="primary"
+                mat-button>
+          <mat-icon color="primary">upload</mat-icon>
+          <span style="font-size: 1.2rem">Upload finished image</span>
+        </button>
+      </form>
+    </div>
+    <div *ngIf="commission.status.toString()==='COMPLETED'" class="completed">
+    <strong>This commission is done! Here you can re-live the process with the timeline:</strong>
+      <br><br>
+    <button  color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/timeline">View Timeline</button>
+    </div>
+
   </div>
 </div>

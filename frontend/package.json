@@ -12,6 +12,7 @@
   "dependencies": {
     "@angular-material-components/color-picker": "^7.0.1",
     "@angular-material-components/file-input": "^7.0.1",
+    "@angular-slider/ngx-slider": "^2.0.4",
     "@angular/animations": "13.3.1",
     "@angular/cdk": "^13.3.6",
     "@angular/common": "13.3.1",
@@ -30,9 +31,13 @@
     "jquery": "3.6.0",
     "jwt-decode": "3.1.2",
     "lodash": "4.17.21",
+    "ng-chat": "^3.1.0",
+    "ng2-nouislider": "^1.8.3",
+    "nouislider": "^15.6.0",
     "rxjs": "7.5.5",
     "tslib": "2.3.1",
-    "zone.js": "0.11.5"
+    "zone.js": "0.11.5",
+    "@stripe/stripe-js": "^1.32.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "13.3.1",

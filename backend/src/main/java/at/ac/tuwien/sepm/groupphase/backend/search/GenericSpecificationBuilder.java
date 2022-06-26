@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.search;
 
 import at.ac.tuwien.sepm.groupphase.backend.search.criteria.SearchCriteria;
-import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 

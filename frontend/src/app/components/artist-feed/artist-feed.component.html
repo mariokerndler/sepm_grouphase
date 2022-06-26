@@ -1,6 +1,8 @@
+<span fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem;" class="timeline-title">Browse Artists</span>
 <div *ngIf="isReady" class="artist-feed-container">
   <div class="artist-feed-search">
     <form class="artist-feed-form">
+      <br>
       <mat-form-field>
         <mat-label class="primary">Search artist</mat-label>
         <input [formControl]="searchFormControl"
@@ -36,7 +38,7 @@
   </mat-table>
 </div>
 
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+<mat-paginator style="font-size: 1.2rem" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 
 <div *ngIf="!isReady" class="artist-feed-container">
   <mat-spinner></mat-spinner>

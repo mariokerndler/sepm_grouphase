@@ -1,30 +1,57 @@
+.sidenav-top{
+  color: #fb9fa4;
+}
+
+
 .mat-stepper-horizontal {
   margin-top: 8px;
 }
 
-.mat-form-field {
+.input-field {
   margin-top: 16px;
+  min-width: 70rem;
 }
+
+
+mat-slider {
+  width: 20%;
+}
+
 
 .com-display {
 
 
-  align-content: center;
+  min-width: 70rem;
+
+
+  justify-content: center;
 }
 
 .comm_stepper {
 
+  margin: auto;
+  //background-color: #2f3a51;
+  width: 80%;
 
-  background-color: #2f3a51;
 }
+
+.max-width {
+
+  max-width: 1750px;
+}
+
+.stepper_button {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  //color: #fb9fa4;
+}
+
 
 .mat-stepper-horizontal {
   width: 80rem
 }
 
-.mat-label {
-
-}
 
 .feed {
   scrollbar-gutter: stable;
@@ -72,7 +99,7 @@
       font-size: 3rem;
       justify-content: center;
       align-items: center;
-      color: blue;
+      color: white;
       pointer-events: none;
     }
 

@@ -1,0 +1,34 @@
+<div *ngIf="sketch.fileType !== 'GIF'" class="slot" fxFlex="auto" fxLayoutAlign="row">
+  <div class="time-component">
+    <mat-icon class="accent icon">brush</mat-icon>
+    <div class="lower-component">
+      <div [ngStyle]="{'bottom': '20px'}" class="main-line"></div>
+      <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
+      <div [ngStyle]="{'bottom': '40px'}" class="text-container">
+        <span><b>{{date}}</b></span>
+        <br>
+        <span><b>Your {{transformIndex(index)}} sketch arrived</b></span>
+        <br><br>
+        <img (click)="selectArtwork()" alt="" class="image" src="/assets/{{sketch.imageUrl}}">
+      </div>
+    </div>
+  </div>
+  <div class="time-component-up">
+    <div class="upper-component">
+      <div [ngStyle]="{'top': '40px'}" class="feedback-text-container">
+        <span><b>{{feedbackDate}}</b></span>
+        <br>
+        <span class=><b>You composed your {{transformIndex(index)}} feedback</b></span>
+        <br><br>
+        <p class="review-text">
+          {{sketch.customerFeedback.split("%")[0]}}
+        </p>
+      </div>
+      <div [ngStyle]="{'top': '2px'}" class="line"></div>
+      <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
+    </div>
+    <mat-icon class="accent icon">grade</mat-icon>
+  </div>
+</div>
+
+

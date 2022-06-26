@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NotificationService} from './notification/notification.service';
 import {catchError, Observable, tap} from 'rxjs';
 import {ArtistDto} from '../dtos/artistDto';
@@ -30,10 +30,7 @@ export class ArtistService {
    * @return observable list of found artists.
    */
   getAllArtists(): Observable<ArtistDto[]> {
-    return this.http.get<ArtistDto[]>(this.artistBaseUri, this.options)
-      .pipe(
-        catchError(this.notificationService.notifyUserAboutFailedOperation<ArtistDto[]>('Fetching all artists'))
-      );
+    return this.http.get<ArtistDto[]>(this.artistBaseUri, this.options);
   }
 
   /**
@@ -87,6 +84,24 @@ export class ArtistService {
         catchError(this.notificationService.notifyUserAboutFailedOperation<ArtistDto>('Creating new artist')),
         tap((successArtist) => {
           this.notificationService.displaySuccessSnackbar(`Successfully created "${successArtist.userName}"!`);
+        })
+      );
+  }
+
+  deleteArtistrById(id: number): Observable<any> {
+    const params = new HttpParams()
+      .set('id', id);
+
+    const options = {
+      header: this.headers,
+      params
+    };
+
+    return this.http.delete(`${this.artistBaseUri}/${id}`, options)
+      .pipe(
+        catchError((error) => this.notificationService.notifyUserAboutFailedOperation('Deleting artist')(error)),
+        tap(_ => {
+          this.notificationService.displaySuccessSnackbar('Successfully deleted artist.');
         })
       );
   }

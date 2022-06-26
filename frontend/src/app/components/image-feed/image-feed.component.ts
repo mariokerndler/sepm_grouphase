@@ -12,6 +12,8 @@ import {GlobalFunctions} from '../../global/globalFunctions';
 import {Globals} from '../../global/globals';
 import {NotificationService} from '../../services/notification/notification.service';
 import {MatPaginator} from '@angular/material/paginator';
+import {DeleteArtworkComponent} from '../delete-artwork/delete-artwork.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-image-feed',
@@ -21,6 +23,8 @@ import {MatPaginator} from '@angular/material/paginator';
 export class ImageFeedComponent implements OnInit {
 
   @Input() artworks: ArtworkDto[];
+  @Input() isUser = false;
+  @Input() isInProfile;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   tagsLoaded = false;
@@ -51,6 +55,7 @@ export class ImageFeedComponent implements OnInit {
   public selectedArtwork: number = null;
 
   constructor(
+    public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private artworkService: ArtworkService,
     private artistService: ArtistService,
@@ -153,7 +158,6 @@ export class ImageFeedComponent implements OnInit {
       .filter(menuitem => menuitem.selected)
       .map(menuitem => menuitem.id.toString());
     this.searchParams.pageNr = 0;
-    console.log(this.searchParams.tagIds);
     this.loadFeed();
   }
 
@@ -161,5 +165,30 @@ export class ImageFeedComponent implements OnInit {
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+  }
+
+  removeMissing(artwork: ArtworkDto) {
+    const updatedArtworks = [];
+    for (const i of this.images) {
+      if(i !== artwork){
+        updatedArtworks.push(i);
+      }
+    }
+    this.images = updatedArtworks;
+  }
+
+  deleteImage(artwork: ArtworkDto) {
+    const dialogRef = this.dialog.open(DeleteArtworkComponent, {
+      data: {
+        artwork,
+      }
+    });
+    dialogRef.afterClosed().subscribe(
+      data => {
+        this.artworks = this.artworks.filter(d => d !== data);
+        this.loadFeed();
+      }
+    );
+
   }
 }

@@ -3,6 +3,7 @@ import {ArtworkService} from '../../../services/artwork.service';
 import {UploadComponent} from '../../upload/upload.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ArtworkDto} from '../../../dtos/artworkDto';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-artist-gallery',
@@ -14,17 +15,17 @@ export class ArtistGalleryComponent implements OnInit {
   @Input() artist;
   artworks: ArtworkDto[] = [];
   isReady = false;
-  artistProfilePicture: string;
+
+  private authId: number;
 
   constructor(
     private artworkService: ArtworkService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
-    this.artistProfilePicture = 'https://picsum.photos/100/100';
-
     this.artworkService.getArtworksByArtist(this.artist.id)
       .subscribe(
         (artworks) => {
@@ -32,15 +33,31 @@ export class ArtistGalleryComponent implements OnInit {
           this.isReady = true;
         }
       );
+
+    this.authId = this.authService.getUserId();
   }
 
   openDialog() {
-    this.dialog.open(UploadComponent, {
+    const dialogRef = this.dialog.open(UploadComponent, {
       data: {
         artist: this.artist,
       }
     });
+    dialogRef.afterClosed().subscribe(
+       result => {
+         if(result.event === 'upload') {
+           this.switchTab();
+         }
+       }
+    );
   }
 
+  isSameUser(): boolean {
+    return this.authId === this.artist.id;
+  }
 
+  switchTab() {
+    sessionStorage.setItem('reloading', 'true');
+    document.location.reload();
+  }
 }

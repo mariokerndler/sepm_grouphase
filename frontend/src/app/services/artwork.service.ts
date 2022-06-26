@@ -15,7 +15,9 @@ export class ArtworkService {
   private headers = new HttpHeaders({
     auth: 'frontend'
   });
-  private options = {headers: this.headers};
+  private options = {
+    headers: this.headers,
+  };
   private artworkBaseUri: string = this.globals.backendUri + '/artworks';
 
   constructor(private http: HttpClient,
@@ -43,7 +45,6 @@ export class ArtworkService {
       .set('searchOperations', searchOperations)
       .set('pageNr', tagSearch.pageNr == null ? '0' : tagSearch.pageNr)
       .set('randomSeed', tagSearch.randomSeed);
-    // console.log(params.toString());
     const searchOptions = {
       headers: this.headers,
       params
@@ -82,14 +83,33 @@ export class ArtworkService {
   /**
    * Deletes the {@link ArtworkDto artwork} with the given {@link ArtworkDto#id id} from the system.
    *
-   * @param id The {@link ArtworkDto#id id} of the {@link ArtworkDto artwork} that will be deleted.
    * @param artwork the {@link ArtworkDto artwork} that will be deleted.
    *
    * @return Observable containing the fetched list of {@link ArtworkDto}.
    */
-  deleteArtwork(id: number, artwork: ArtworkDto): Observable<void> {
+  deleteArtwork(artwork: ArtworkDto, successAction?: () => void): Observable<void> {
     const deleteOptions = {headers: this.headers, body: artwork};
-    return this.http.delete<void>(`${this.artworkBaseUri}/${id}`, deleteOptions);
+    return this.http.delete<void>(`${this.artworkBaseUri}`, deleteOptions).pipe(
+      tap(_ => {
+        if (successAction != null) {
+          successAction();
+        }
+      }));
+  }
+
+  deleteArtworkById(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.artworkBaseUri}/${id}`, this.options)
+      .pipe(
+        tap(_ => this.notificationService.displaySuccessSnackbar('Successfully deleted artwork')),
+        catchError((err) => this.notificationService.notifyUserAboutFailedOperation<void>('Delete artworks by id')(err))
+      );
+  }
+
+  findArtworkById(id: number): Observable<ArtworkDto> {
+    return this.http.get<ArtworkDto>(`${this.artworkBaseUri}/artwork/${id}`, this.options)
+      .pipe(
+        catchError((err) => this.notificationService.notifyUserAboutFailedOperation<ArtworkDto>('Delete artworks by id')(err))
+      );
   }
 
   /**
@@ -107,7 +127,6 @@ export class ArtworkService {
           if (errorAction != null) {
             errorAction();
           }
-
           return this.notificationService.notifyUserAboutFailedOperation<ArtworkDto>('Creating Artwork')(err);
         }),
         tap(_ => {

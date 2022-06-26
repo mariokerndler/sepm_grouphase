@@ -1,0 +1,100 @@
+<div *ngIf="commission" style="font-size: 1.05rem">
+  <mat-horizontal-stepper #stepper (selectionChange)="setIndex($event)" class="comm_stepper"
+                          fxLayout="column"
+                          fxLayoutAlign="center stretch">
+    <mat-step [stepControl]="commissionForm" fxLayout="column"
+              [hasError]="(commissionForm.controls.description.errors) && hasSubmitted"
+              errorMessage="An error occurred on this page">
+      <form [formGroup]="commissionForm">
+        <ng-template matStepLabel>Commission Details</ng-template>
+
+        <span class="accent-color"><b>Edit your commission details:</b></span> <br> <br>
+        <p class="creation-p">Change the description of your artwork. Try to portray your wishes as
+          accurate and precise as possible, so that the artists can understand and visualize your thoughts.</p>
+        <mat-form-field appearance="fill" class="input-field">
+          <mat-label>Description</mat-label>
+          <textarea formControlName="description" matInput required rows="8" [(ngModel)]="commission.instructions">
+        </textarea>
+          <mat-error *ngIf="commissionForm.controls.description.errors">
+            <span *ngIf="commissionForm.controls.description.errors.required">The description is required! </span>
+            <span *ngIf="commissionForm.controls.description.errors.maxlength">The description you entered is too long, only 500 Characters are allowed! </span>
+          </mat-error>
+        </mat-form-field>
+        <div class="stepper_button">
+          <button mat-button matStepperNext>
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="commissionForm" fxFlex="100" fxLayout="column" label="Organisation"
+              [hasError]="(commissionForm.controls.date.errors || commissionForm.controls.price.errors) && hasSubmitted"
+              errorMessage="An error occurred on this page">
+      <form [formGroup]="commissionForm">
+        <p class="creation-p">On this page you can fill in some information for the organization of the project.</p>
+        <p class="creation-p">Update the date for the deadline of the commission.</p>
+        <mat-form-field appearance="fill" class="input-field" >
+          <mat-label>Delivery Date</mat-label>
+          <input [matDatepicker]="$any(picker)" [min]="startDate" formControlName="date" [ngModel]="commission.deadlineDate | date:'yyyy-MM-dd'" (ngModelChange)="commission.deadlineDate = $event" matInput required>
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="commissionForm.controls.date.errors">
+            <span> This date is invalid! </span>
+          </mat-error>
+        </mat-form-field>
+        <br><br>
+
+        <p class="creation-p">Update the amount of money, that you can offer the artist for their service. (in
+          Euro)</p>
+        <mat-form-field appearance="fill" class="input-field">
+          <mat-label>Your offer (in Euro)</mat-label>
+
+          <input formControlName="price" matInput min="0"
+                 [max]="globals.maxCommissionPrice"
+                 required step="any" type="number" [(ngModel)]="commission.price">
+          <mat-error *ngIf="commissionForm.controls.price.errors">
+            <span *ngIf="commissionForm.controls.price.errors.required">The price is required! </span>
+            <span *ngIf="commissionForm.controls.price.errors.min">The price cannot be negative! </span>
+            <span *ngIf="commissionForm.controls.price.errors.max">The maximum price is {{globals.maxCommissionPrice}}
+              €</span>
+          </mat-error>
+        </mat-form-field>
+        <div class="stepper_button">
+          <button mat-button matStepperPrevious>
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </button>
+          <button mat-button matStepperNext>
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <div class="com-display">
+        <ng-template matStepLabel>Done</ng-template>
+        <p class="accent-color"><b>Confirm your changes</b></p>
+        <mat-label class="accent-color">Title</mat-label>
+        <p class="creation-p">{{commission.title}} </p>
+        <mat-label class="accent-color">Description</mat-label>
+        <p class="creation-p">{{commissionForm.value.description}} </p>
+        <mat-label class="accent-color">Price in Euro</mat-label>
+        <br>
+        <p *ngIf="commissionForm.value.description" class="creation-p"
+           style="display: inline">{{commissionForm.value.price}} </p>
+        <br>
+        <mat-label class="accent-color">Delivery Date</mat-label>
+        <p class="creation-p">{{formatEndDate(commissionForm.value.date)}} </p>
+        <div class="stepper_button">
+          <button mat-button matStepperPrevious>
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </button>
+          <button (click)="updateCommission()" class="primary" color="primary" mat-flat-button matStepperNext> Update
+            Commission
+          </button>
+
+        </div>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

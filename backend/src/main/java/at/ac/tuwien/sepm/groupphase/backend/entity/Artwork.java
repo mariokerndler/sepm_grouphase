@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
 import at.ac.tuwien.sepm.groupphase.backend.utils.HasId;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class Artwork extends Image implements HasId {
     @JoinColumn(name = "artist_id", nullable = false)
     private Artist artist;
 
-    @OneToMany(mappedBy = "artwork")
+    @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
     private List<Sketch> sketches;
 
     @OneToOne

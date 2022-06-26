@@ -1,0 +1,87 @@
+<span fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem; margin-bottom: 1rem">Timeline of  {{data.artworkDto.name.substring(0,1).toUpperCase() + data.artworkDto.name.substring(1)}}</span>
+<div *ngIf="isReady" class="primary">
+  <div class="cdk-virtual-scroll-data-source-example">
+    <cdk-virtual-scroll-viewport style="font-size: 1.1rem"  class="example-viewport" itemSize="{{data.artworkDto.sketchesDtos.length + 2}}"
+                                 orientation="horizontal">
+
+      <!-- Start Node -->
+      <div class="start-section">
+        <div [ngStyle]="{'top': '40px'}" class="start-text-container">
+          <span><b>{{startDate}}</b></span>
+          <br>
+          <span><b>Start of your commission</b></span>
+          <br><br>
+          <p class="timeline-p">
+            On this day the artist {{data.artistDto.userName}} and you
+            decided to create something great
+          </p>
+        </div>
+        <div [ngStyle]="{'top': '2px'}" class="line"></div>
+        <div [ngStyle]="{'top': '20px'}" class="main-line"></div>
+        <mat-icon class="accent icon">start</mat-icon>
+      </div>
+      <!-- Midsection -->
+      <div *cdkVirtualFor="let sketch of data.artworkDto.sketchesDtos; let i = index" class="example-item">
+        <app-commission-timeslots (selectArtworkEvent)="setSelectedArtwork(i)"
+                                  [index]="i" [sketch]="data.artworkDto.sketchesDtos[i]"></app-commission-timeslots>
+      </div>
+
+
+      <!-- End Node -->
+      <div class="end-section">
+        <mat-icon class="accent icon">check</mat-icon>
+        <div [ngStyle]="{'visibility': ((data.artworkDto.sketchesDtos.length*2)%2 === 0) ? 'visible' : 'hidden'}"
+             class="lower-component">
+          <div [ngStyle]="{'bottom': '2px'}" class="line"></div>
+          <div [ngStyle]="{'bottom': '40px'}" class="text-container">
+            <span><b>{{endDate}}</b></span>
+            <br>
+            <span><b>End of your commission</b></span>
+            <br><br>
+            <p class="timeline-p">
+              On this day your commission has come to an end.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="final-image-section">
+        <h1>Your final image</h1>
+        <div class="final-image-subsection">
+          <h2>{{data.artworkDto.name}}</h2>
+          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="!isPlaying" alt="{{data.artworkDto.name}}"
+               class="final-image" src="/assets/{{data.artworkDto.imageUrl}}">
+          <img (click)="setSelectedArtwork(this.artworks.length-1)" *ngIf="isPlaying" alt="{{data.artworkDto.name}}"
+               class="final-image" src="/assets/{{timelapseGif.imageUrl}}">
+          <br><br>
+          <div *ngIf="timelapseGif">
+            <span>Rewind the whole process</span>
+            <br>
+          </div>
+          <span *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
+          <br>
+          <button (click)="ida.click()" class="primary" color="primary" mat-flat-button style="margin-top: 1em; margin-bottom: 1em">
+            Download
+            <mat-icon>download</mat-icon>
+            <a  #ida download="custom-filename.jpg" href="/assets/{{data.artworkDto.imageUrl}}" title="ImageName">
+
+          </a></button>
+          <br>
+          <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="primary" mat-icon-button>
+
+            <mat-icon *ngIf="!isPlaying && timelapseGif">play_arrows</mat-icon>
+            <mat-icon *ngIf="isPlaying && timelapseGif">stop</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <app-gallery-carousel
+    (closeCarousel)="selectedArtwork=null"
+    *ngIf="selectedArtwork!== null"
+    [artworks]="this.artworks"
+    [selectedArtworkId]="selectedArtwork">
+  </app-gallery-carousel>
+</div>
+

@@ -1,16 +1,21 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Slf4j
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"user_id", "chat_partner_id"})
+})
 public class Chat {
 
     @Id
@@ -19,22 +24,28 @@ public class Chat {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Artist artist;
+    private ApplicationUser user;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private ApplicationUser customer;
+    private ApplicationUser chatPartner;
 
     @OneToMany(mappedBy = "chat")
     private List<ChatMessage> messages;
+
+
+    public Chat(ApplicationUser user, ApplicationUser chatPartner) {
+        this.user = user;
+        this.chatPartner = chatPartner;
+    }
 
     @Override
     public String toString() {
         return "Chat{"
             + "id=" + id
-            + ", artist=" + artist.getId()
-            + ", customer=" + customer.getId()
-            + '}';
+            + ", user=" + user
+            + ", chatPartner=" + chatPartner
+            + ", messages=" + messages + '}';
     }
 
     @Override
@@ -59,4 +70,23 @@ public class Chat {
         return id != null && id.equals(other.getId());
     }
 
+    public ApplicationUser getUser() {
+        return user;
+    }
+
+    public void setUser(ApplicationUser user) {
+        log.info("Setting user" + user.getUserName());
+        this.user = user;
+
+
+    }
+
+    public ApplicationUser getChatPartner() {
+        return chatPartner;
+    }
+
+    public void setChatPartner(ApplicationUser chatPartner) {
+        log.info("Setting ChatPartner" + chatPartner.getUserName());
+        this.chatPartner = chatPartner;
+    }
 }

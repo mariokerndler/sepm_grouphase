@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
-import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,11 +25,21 @@ public class AdminDataGenerator {
 
     @PostConstruct
     private void generateUser() {
-
+        log.trace("calling generateUser() ...");
         if (userRepository.findApplicationUserByEmail("admin@email.com") != null) {
             log.debug("Admin already generated");
         } else {
-            userRepository.save(new ApplicationUser("admin", "Max", "Mustermann", "admin@email.com", "Musterstraße 1", passwordEncoder.encode("password"), true, UserRole.Admin));
+            userRepository.save(
+                new ApplicationUser(
+                    "admin",
+                    null,
+                    "Max",
+                    "Mustermann",
+                    "admin@test.com",
+                    "Musterstraße 1",
+                    passwordEncoder.encode("12345678"),
+                    true,
+                    UserRole.Admin));
         }
     }
 

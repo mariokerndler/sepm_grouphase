@@ -9,11 +9,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class, ReferenceMapper.class, ReceiptMapper.class, ReviewMapper.class, ArtworkMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ArtistMapper.class, ReferenceMapper.class, ReceiptMapper.class, ReviewMapper.class, ArtworkMapper.class, HasIdMapper.class})
 public abstract class CommissionMapper {
 
     @Mapping(source = "artist.id", target = "artistId")
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "artwork.id", target = "artworkId")
     public abstract SimpleCommissionDto commissionToSimpleCommissionDto(Commission commission);
 
     @Mapping(source = "artistId", target = "artist", qualifiedByName = "idToArtist")
@@ -21,6 +22,7 @@ public abstract class CommissionMapper {
     public abstract Commission simpleCommissionDtoToCommission(SimpleCommissionDto simpleCommissionDto);
 
     @Mapping(source = "artist", target = "artistDto")
+    @Mapping(source = "artistCandidates", target = "artistCandidatesDtos")
     @Mapping(source = "customer", target = "customerDto")
     @Mapping(source = "references", target = "referencesDtos")
     @Mapping(source = "receipts", target = "receiptsDtos")
@@ -29,6 +31,7 @@ public abstract class CommissionMapper {
     public abstract DetailedCommissionDto commissionToDetailedCommissionDto(Commission commission);
 
     @Mapping(source = "artistDto", target = "artist")
+    @Mapping(source = "artistCandidatesDtos", target = "artistCandidates")
     @Mapping(source = "customerDto", target = "customer")
     @Mapping(source = "referencesDtos", target = "references", qualifiedByName = "ReferenceWithoutCommissionId")
     @Mapping(source = "receiptsDtos", target = "receipts")

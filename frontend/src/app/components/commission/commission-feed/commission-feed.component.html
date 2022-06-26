@@ -1,21 +1,57 @@
-<div fxFlex fxLayout="column">
-  <form class="search-form" fxLayoutAlign="center">
-    <mat-form-field appearance="fill" class="primary search-field">
-      <mat-label class="primary">Search Commissions</mat-label>
-      <input matInput placeholder="search">
-      <mat-icon matSuffix>search</mat-icon>
+<span fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem; margin-bottom: 1rem" class="timeline-title">Browse Commissions</span>
 
-    </mat-form-field>
-    <button [routerLink]="'/commission-creation'" class="primary" color="primary" mat-flat-button style="float:right">
-      Create Commission
-    </button>
-  </form>
+<div fxLayout="column" fxLayoutAlign="center center" >
+  <button *ngIf="isLoggedIn()" [routerLink]="'/commission-creation'" class="create-button" color="primary" mat-flat-button style="float:right">
+    Create Commission
+  </button>
+</div>
 
-  <div class="content">
-    <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="8px grid">
-      <div *ngFor="let commission of commissions">
-        <app-commission-card [commission]="commission"></app-commission-card>
+
+<div class="search-form" fxLayout="row">
+  <mat-form-field appearance="fill" class="search-field">
+    <mat-label class="primary">Search Commissions</mat-label>
+    <input [(ngModel)]="searchCom.name" matInput placeholder="search">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill" class="search-field">
+    <mat-label>Filter by Artist</mat-label>
+    <mat-select [(ngModel)]="searchCom.artistId">
+      <mat-option [value]="''"> All</mat-option>
+      <div *ngFor="let artist of artists">
+        <mat-option [value]="artist.id">{{artist.userName}}</mat-option>
       </div>
+    </mat-select>
+  </mat-form-field>
+  <div class="slider" fxLayout="row" fxLayoutAlign="stretch">
+    <ngx-slider [(highValue)]="searchCom.priceRange[1]" [(value)]="searchCom.priceRange[0]" [options]="options"
+                style="width: 20rem "></ngx-slider>
+  </div>
+  <mat-form-field appearance="fill" class="search-field">
+    <mat-label class="primary">Date</mat-label>
+    <mat-select [(ngModel)]="searchCom.dateOrder">
+      <div *ngFor="let enum of searchEnum | keyvalue">
+        <mat-option [value]="enum.value">{{enum.value}}</mat-option>
+
+      </div>
+
+    </mat-select>
+  </mat-form-field>
+  <div fxLayout="column" fxLayoutAlign="center center" >
+    <button fxLayout="column" fxLayoutAlign="center"  (click)="fetchCommissions()" class="primary" color="primary" mat-flat-button style="float:right">
+      Search
+    </button>
+  </div>
+</div>
+
+
+
+
+<div class="content">
+  <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="8px grid">
+    <div *ngFor="let commission of commissions">
+      <app-commission-card *ngIf="isListed(commission.status)" [commission]="commission"></app-commission-card>
     </div>
   </div>
 </div>

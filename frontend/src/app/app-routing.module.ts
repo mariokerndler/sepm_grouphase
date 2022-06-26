@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
 import {AuthGuard} from './guards/auth.guard';
-import {MessageComponent} from './components/message/message.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
 import {LogoutComponent} from './components/logout/logout.component';
@@ -13,21 +12,43 @@ import {ArtistFeedComponent} from './components/artist-feed/artist-feed.componen
 import {CommissionFeedComponent} from './components/commission/commission-feed/commission-feed.component';
 import {CommissionDetailsComponent} from './components/commission/commission-details/commission-details.component';
 import {CommissionCreationComponent} from './components/commission/commission-creation/commission-creation.component';
+import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
+import {
+  CommissionTimelineComponent
+} from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import {ChatComponent} from './chat/chat.component';
+import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
+import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy-policy.component';
+import {ContactComponent} from './components/footer/contact/contact.component';
+import {AboutComponent} from './components/footer/about/about.component';
+import {CreateGuard} from './guards/create.guard';
+import {AdminPageComponent} from './components/admin-page/admin-page.component';
+import {CommissionEditComponent} from './components/commission/commission-edit/commission-edit.component';
+import {CheckoutComponent} from './components/checkout/checkout.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
-  {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
   {path: 'artist/:id', component: ArtistPageComponent},
-  {path: 'artist/:id/edit', component: ArtistPageEditComponent},
+  {path: 'artist/:id/edit', canActivate: [AuthGuard], component: ArtistPageEditComponent},
+  {path: 'user/:id/commissions', component: CommissionPageComponent},
   {path: 'user/:id', component: UserPageComponent},
-  {path: 'user/:id/edit', component: UserPageEditComponent},
+  {path: 'user/:id/edit', canActivate: [AuthGuard], component: UserPageEditComponent},
   {path: 'feed', component: ImageFeedComponent},
   {path: 'artists', component: ArtistFeedComponent},
   {path: 'commissions', component: CommissionFeedComponent},
   {path: 'commissions/:id', component: CommissionDetailsComponent},
-  {path: 'commission-creation', component: CommissionCreationComponent},
+  {path: 'commissions/:id/edit', component: CommissionEditComponent},
+  {path: 'commissions/:id/timeline', component: CommissionTimelineComponent},
+  {path: 'commission-creation', canActivate: [CreateGuard], component: CommissionCreationComponent},
+  {path: 'chat/:id', component: ChatComponent},
+  {path: 'terms', component: TermsOfServiceComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
+  {path: 'contact', component: ContactComponent},
+  {path: 'about', component: AboutComponent},
+  {path: 'admin', component: AdminPageComponent},
+  {path: 'checkout', component: CheckoutComponent},
   {path: '**', redirectTo: 'feed'},
 
 ];

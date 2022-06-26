@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +11,11 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "ApplicationUser")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "Usertype")
 @Entity
 public class ApplicationUser {
@@ -24,6 +26,9 @@ public class ApplicationUser {
 
     @Column(nullable = false, length = 50, unique = true)
     private String userName;
+
+    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ProfilePicture profilePicture;
 
     @Column(nullable = false, length = 35)
     private String name;
@@ -46,22 +51,10 @@ public class ApplicationUser {
     @Column(nullable = false)
     private UserRole userRole;
 
-    public ApplicationUser(String userName, String name, String surname, String email, String address,
+    public ApplicationUser(String userName, ProfilePicture profilePicture, String name, String surname, String email, String address,
                            String password, Boolean admin, UserRole userRole) {
         this.userName = userName;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.address = address;
-        this.password = password;
-        this.admin = admin;
-        this.userRole = userRole;
-    }
-
-    public ApplicationUser(Long id, String userName, String name, String surname, String email, String address,
-                           String password, Boolean admin, UserRole userRole) {
-        this.id = id;
-        this.userName = userName;
+        this.profilePicture = profilePicture;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -76,6 +69,7 @@ public class ApplicationUser {
         return "ApplicationUser{"
             + "id=" + id
             + ", userName='" + userName + '\''
+            + ", profilePicture=" + (profilePicture == null ? null : profilePicture.getId()) + '\''
             + ", name='" + name + '\''
             + ", surname='" + surname + '\''
             + ", email='" + email + '\''

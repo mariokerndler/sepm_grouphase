@@ -1,41 +1,97 @@
 <button class="close-button" mat-dialog-close mat-icon-button>
   <mat-icon>close</mat-icon>
 </button>
-<h1 mat-dialog-title>Upload</h1>
+<h1 *ngIf="!data.commission" mat-dialog-title>Upload new image</h1>
+<h1 *ngIf="data.commission && !data.timelapse && !data.sketch" mat-dialog-title>Upload final image</h1>
+<h1 *ngIf="data.commission && data.sketch" mat-dialog-title>Upload Sketch</h1>
+<h1 *ngIf="data.commission && data.timelapse" mat-dialog-title>Upload timelapse</h1>
+
 <div [formGroup]="uploadForm" fxLayout="column">
-  <mat-form-field appearance="fill" class="form-group">
+  <p *ngIf="data.commission && data.timelapse" class="info" mat-dialog-title>
+    Here you can upload a timelapse of your art-creation as a GIF.
+  </p>
+  <p *ngIf="data.commission && data.timelapse" class="info" mat-dialog-title>
+    This step is entirely optional, but may improve
+    the experience of your customer.
+  </p>
+  <mat-form-field *ngIf="!data.sketch && !data.timelapse" appearance="fill" class="form-group">
     <mat-label>Name</mat-label>
     <input aria-describedby="artworkNameHelp" class="form-control" formControlName="artworkName" id="inputArtworkName"
            matInput
            name="artworkName"
            type="text">
     <mat-error *ngIf="uploadForm.controls.artworkName.errors">
-      <small *ngIf="uploadForm.controls.artworkName.errors.required">An artwork name is required! </small>
+      <span *ngIf="uploadForm.controls.artworkName.errors.required">An artwork name is required! </span>
+      <span *ngIf="uploadForm.controls.artworkName.errors.pattern">The artwork name contains invalid symbols! </span>
+      <span *ngIf="uploadForm.controls.artworkName.errors.maxlength">The name you entered is too long, only 50 Characters are allowed! </span>
     </mat-error>
   </mat-form-field>
   <br>
-  <mat-form-field appearance="fill" class="form-group">
-    <mat-label>Description</mat-label>
+  <mat-form-field *ngIf="!data.timelapse" appearance="fill" class="form-group">
+    <mat-label *ngIf="!data.sketch">Description</mat-label>
+    <mat-label *ngIf="data.sketch">Comment</mat-label>
     <textarea #autosize="cdkTextareaAutosize"
+              name="description"
               cdkAutosizeMaxRows="5"
-              cdkAutosizeMinRows="1"
+              cdkAutosizeMinRows="3"
               cdkTextareaAutosize
               class="form-control"
               formControlName="description"
               matInput
     ></textarea>
+    <mat-error *ngIf="uploadForm.controls.description.errors">
+      <span *ngIf="uploadForm.controls.description.errors.required">An artwork description is required! </span>
+      <span *ngIf="uploadForm.controls.description.errors.pattern">The artwork description contains invalid symbols! </span>
+      <span *ngIf="uploadForm.controls.description.errors.maxlength">The description you entered is too long, only 230 Characters are allowed! </span>
+    </mat-error>
   </mat-form-field>
+  <div *ngIf="uploadForm.controls.description.errors">
+    <br *ngIf="uploadForm.controls.description.errors.maxlength">
+  </div>
   <input #fileInput
          (change)="fileSelected($event)"
-         accept="image/png, image/jpeg, image/gif" style="display: none;" type="file">
+         [attr.accept]="data.timelapse ? 'image/gif' : ' image/png, image/jpeg, image/gif'" style="display: none;" type="file">
   <img *ngIf="file" [src]="selectedImage" alt="" class="preview-image">
-  <button (click)="fileInput.click()" class="upload-button" mat-button>
+  <br>
+  <button (click)="fileInput.click()" class="upload-button" color="primary" mat-flat-button>
     <span *ngIf="!file">Select File</span>
     <span *ngIf="file">Change Picture</span>
   </button>
+  <div style="width: 100%; padding-top: 10px" fxLayoutAlign="center center" *ngIf="isUploading">
+    <br>
+    <mat-spinner></mat-spinner>
+  </div>
+  <br>
+  <mat-form-field *ngIf="file && !this.data.commission" appearance="fill" class="form-group">
+    <mat-label>Tags</mat-label>
+    <input
+      #tagInput
+      (matChipInputTokenEnd)="addTag($event)"
+      [formControl]="tagForm"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="tagList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+      <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+        {{tag.name}}
+      </mat-option>
+    </mat-autocomplete>
+    <mat-chip-list #tagList aria-label="Tag selection" class="mat-chip-list-stacked">
+      <mat-chip (removed)="removeTag(tag)" *ngFor="let tag of selectedTags">
+        {{tag.name}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+    </mat-chip-list>
+  </mat-form-field>
 
 
-  <button (click)="onFileChanged()" *ngIf="file" cdkFocusInitial class="upload-button" mat-button name="upload-button">
+  <button *ngIf="file && !this.data.commission" (click)="onFileChanged(false)" cdkFocusInitial class="upload-button" mat-flat-button color="primary" name="upload-button">
+    Upload
+  </button>
+
+  <button *ngIf="file && this.data.commission" (click)= "onFileChanged(true)" cdkFocusInitial class="upload-button" mat-flat-button color="primary" name="upload-button">
     Upload
   </button>
 

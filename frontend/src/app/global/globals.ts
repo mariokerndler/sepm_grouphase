@@ -7,6 +7,13 @@ export class Globals {
   readonly backendUri: string = Globals.findBackendUrl();
   readonly projectName: string = 'Artsperience';
   readonly assetsPath: string = 'assets/';
+  readonly defaultProfilePicture: string = 'data/default_pfp.png';
+  readonly maxStarRating: number = 5;
+  readonly defaultStarRating: number = 3;
+  readonly maxCommissionPrice: number = 10000;
+  readonly adminId: number = 1;
+  // eslint-disable-next-line max-len
+  readonly stripePublicKey: string = 'pk_test_51LCfpACibvYbUKMDIsb5pccCixWRenzwqfMgtEyNv1byXCbxAAsVSMuSXEmT1K5PFqAUOXnOdYdFB0jLYrinTokR00bQLEUqUS';
 
   private static findBackendUrl(): string {
     if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080

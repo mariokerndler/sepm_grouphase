@@ -6,6 +6,9 @@ import {ArtistDto} from '../../dtos/artistDto';
 import {Router} from '@angular/router';
 import {TagService} from '../../services/tag.service';
 import {GlobalFunctions} from '../../global/globalFunctions';
+import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
+import {ReportService, ReportType} from '../../services/report/report.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -47,11 +50,13 @@ import {GlobalFunctions} from '../../global/globalFunctions';
   ]
 })
 export class GalleryCarouselComponent implements OnInit {
+  @Input() isReferenceImage: boolean;
   @Input() artworks: ArtworkDto[];
   @Input() selectedArtworkId: number;
   @Output() closeCarousel = new EventEmitter<void>();
   public animState = 'middle';
   public artist: ArtistDto = {
+    id: -1,
     address: '',
     admin: false,
     artworkIds: [],
@@ -64,8 +69,12 @@ export class GalleryCarouselComponent implements OnInit {
     reviews: [],
     surname: '',
     userName: '',
-    userRole: undefined
-
+    userRole: undefined,
+    profilePictureDto: null,
+    displayName: '',
+    avatar: null,
+    participantType: ChatParticipantType.User,
+    status: ChatParticipantStatus.Online
   };
   public animArtwork: number;
   url = 'assets/';
@@ -73,8 +82,13 @@ export class GalleryCarouselComponent implements OnInit {
   private artistService: ArtistService;
   private router: Router;
 
-  constructor(artistService: ArtistService, router: Router, public tagService: TagService,
-              public globalFunctions: GlobalFunctions) {
+  constructor(
+    artistService: ArtistService,
+    router: Router,
+    public tagService: TagService,
+    public globalFunctions: GlobalFunctions,
+    private authService: AuthService,
+    private reportService: ReportService) {
     this.globalFunctions = globalFunctions;
     this.tagService = tagService;
     this.router = router;
@@ -87,7 +101,10 @@ export class GalleryCarouselComponent implements OnInit {
 
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
-    //console.log(this.selectedArtworkId);
+
+    if (this.artworks[this.animArtwork].description) {
+      this.artworks[this.animArtwork].description = this.artworks[this.animArtwork].description.split('%', 1)[0];
+    }
     if (this.artworks[this.selectedArtworkId].artistId) {
       this.getImageArtistInfo();
     }
@@ -103,23 +120,23 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public previous(): void {
-    this.getImageArtistInfo();
+
     this.animState = 'left';
     this.selectedArtworkId = this.selectedArtworkId > 0 ? this.selectedArtworkId - 1 : this.artworks.length - 1;
-
     this.blur();
   }
 
   public next(): void {
-    this.getImageArtistInfo();
+
     this.animState = 'right';
     this.selectedArtworkId = this.selectedArtworkId > this.artworks.length - 2 ? 0 : this.selectedArtworkId + 1;
-
   }
 
   public animDone(): void {
     this.animArtwork = this.selectedArtworkId;
     this.animState = 'middle';
+    this.getImageArtistInfo();
+
   }
 
   public blur(): void {
@@ -130,23 +147,23 @@ export class GalleryCarouselComponent implements OnInit {
   }
 
   public loadImageTags() {
-    //console.log('id '+ this.selectedArtworkId);
     this.tagService.getImageTags(this.artworks[this.selectedArtworkId].id).subscribe(
       data => {
-        //console.log(data);
         this.imageTags = data;
-      }, error => {
-        console.log('no error handling exists so im just here to say hi');
       }
     );
   }
 
   public getImageArtistInfo(): void {
-    this.loadImageTags();
+
     const artistId = this.artworks[this.selectedArtworkId].artistId;
+    if(this.artworks[this.animArtwork].description) {
+      this.artworks[this.animArtwork].description = this.artworks[this.animArtwork].description.split('%', 1)[0];
+    }
     if (artistId) {
       this.artistService.getArtistById(artistId).subscribe(
         data => {
+          this.loadImageTags();
           this.artist = data;
         }
       );
@@ -169,5 +186,17 @@ export class GalleryCarouselComponent implements OnInit {
       }
     );
     return result.substring(0, result.length - 1);
+  }
+
+  public canReport() {
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    } else {
+      return this.authService.getUserRole() !== 'ADMIN' && !this.isReferenceImage;
+    }
+  }
+
+  public reportArtwork() {
+    this.reportService.openReportDialog(this.artworks[this.selectedArtworkId].id, ReportType.artwork);
   }
 }

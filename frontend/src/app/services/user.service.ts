@@ -51,6 +51,8 @@ export class UserService {
           if (successAction != null) {
             successAction();
           }
+
+          this.notificationService.displaySuccessSnackbar('Successfully registered.');
         }));
   }
 
@@ -149,6 +151,42 @@ export class UserService {
         catchError((error) => this.notificationService.notifyUserAboutFailedOperation('Updating user password')(error)),
         tap(_ => {
           this.notificationService.displaySuccessSnackbar('Successfully updated user password.');
+        })
+      );
+  }
+
+  upgradeUser(id: number): Observable<any> {
+    const params = new HttpParams()
+      .set('id', id);
+
+    const options = {
+      header: this.headers,
+      params
+    };
+
+    return this.http.put(`${this.userBaseUI}/${id}/upgrade`, null, options)
+      .pipe(
+        catchError((error) => this.notificationService.notifyUserAboutFailedOperation('Upgrading user to artist')(error)),
+        tap(_ => {
+          this.notificationService.displaySuccessSnackbar('Successfully upgraded user to artist.');
+        })
+      );
+  }
+
+  deleteUserById(id: number): Observable<any> {
+    const params = new HttpParams()
+      .set('id', id);
+
+    const options = {
+      header: this.headers,
+      params
+    };
+
+    return this.http.delete(`${this.userBaseUI}/${id}`, options)
+      .pipe(
+        catchError((error) => this.notificationService.notifyUserAboutFailedOperation('Deleting user')(error)),
+        tap(_ => {
+          this.notificationService.displaySuccessSnackbar('Successfully deleted user.');
         })
       );
   }

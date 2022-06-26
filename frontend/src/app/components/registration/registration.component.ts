@@ -32,13 +32,13 @@ export class RegistrationComponent implements OnInit {
     private router: Router,
     private globalFunctions: GlobalFunctions) {
     this.registerForm = this.formBuilder.group({
-      firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
-      lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*')]],
-      email: ['', [Validators.required, Validators.email]],
-      address: ['', [Validators.required]],
-      username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirm: ['', [Validators.required, Validators.minLength(8)]],
+      firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*'), Validators.maxLength(50)]],
+      lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z-äöüßÄÖÜ]*'), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      address: ['', [Validators.required, Validators.maxLength(100)]],
+      username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*'), Validators.maxLength(50)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
+      confirm: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
     }, {
       validator: globalFunctions.mustMatch('password', 'confirm')
     });
@@ -60,40 +60,9 @@ export class RegistrationComponent implements OnInit {
       this.userService.createUser(firstname, lastname, username, email, address, password).subscribe();
       this.onNoClick();
       // this.authenticateUser(authRequest);
-    } else {
-      console.log('Invalid input');
     }
   }
 
-
-  /**
-   * Send authentication data to the authService. If the authentication was successfully, the user will be forwarded to the message page
-   *
-   * @param authRequest authentication data from the user login form
-   */
-
-  /*
-authenticateUser(authRequest: AuthRequest) {
-  console.log('Try to authenticate user: ' + authRequest.email);
-  this.authService.loginUser(authRequest).subscribe({
-    next: () => {
-      console.log('Successfully logged in user: ' + authRequest.email);
-      this.onNoClick();
-      this.router.navigate(['/message']);
-    },
-    error: error => {
-      console.log('Could not log in due to:');
-      console.log(error);
-      this.error = true;
-      if (typeof error.error === 'object') {
-        this.errorMessage = error.error.error;
-      } else {
-        this.errorMessage = error.error;
-      }
-    }
-  });
-}
-*/
   /**
    * Error flag will be deactivated, which clears the error message
    */

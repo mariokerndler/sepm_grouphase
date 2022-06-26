@@ -40,6 +40,14 @@ export class AuthService {
     localStorage.setItem('userId', String(id));
   }
 
+  private static setUserRole(userRole: string) {
+    localStorage.setItem('userRole', userRole);
+  }
+
+  private static setUserName(userName: string) {
+    localStorage.setItem('userName', userName);
+  }
+
   /**
    * Login in the user. If it was successful, a valid JWT token will be stored
    *
@@ -51,9 +59,11 @@ export class AuthService {
       .pipe(
         catchError(this.notificationService.notifyUserAboutFailedOperation('Login')),
         tap((authResponse: string) => {
-          console.log(authResponse);
           AuthService.setToken(authResponse);
           AuthService.setUserId(authorizedUser.id);
+          AuthService.setUserRole(authorizedUser.userRole);
+          AuthService.setUserName(authorizedUser.userName);
+          this.notificationService.displaySuccessSnackbar('Successfully logged in.');
         })
       );
   }
@@ -101,11 +111,27 @@ export class AuthService {
     }
   }
 
+  getApplicationUserRole() {
+    const role = localStorage.getItem('userRole');
+
+    if (role != null) {
+      return String(role);
+    }
+  }
+
   getUserId() {
     const id = localStorage.getItem('userId');
 
     if (id != null) {
       return Number(id);
+    }
+  }
+
+  getUserName() {
+    const userName = localStorage.getItem('userName');
+
+    if (userName != null) {
+      return userName;
     }
   }
 }

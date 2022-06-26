@@ -8,7 +8,7 @@ import at.ac.tuwien.sepm.groupphase.backend.search.ArtistSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.search.GenericSpecificationBuilder;
 import at.ac.tuwien.sepm.groupphase.backend.search.TagSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
-import at.ac.tuwien.sepm.groupphase.backend.utils.SearchOperation;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Slf4j
+@Validated
 @RestController
 @RequestMapping(value = "api/v1/artworks")
 public class ArtworkEndpoint {
@@ -41,7 +43,6 @@ public class ArtworkEndpoint {
         this.artworkMapper = artworkMapper;
     }
 
-    //TODO: implementation arguably belongs to service class
     //see https://www.baeldung.com/rest-api-query-search-language-more-operations
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
@@ -54,9 +55,8 @@ public class ArtworkEndpoint {
                                    @RequestParam(name = "artistIds", required = false) List<String> artistIds,
                                    @RequestParam(name = "pageNr", defaultValue = "0") int pageNr,
                                    @RequestParam(name = "searchOperations", defaultValue = "") String searchOperations) {
-        ;
+        log.info("A user is searching for an artwork.");
         TagSearchDto tagSearchDto = new TagSearchDto(tagIds, artistIds, searchOperations.toLowerCase(), pageNr, randomSeed);
-        log.info(tagSearchDto.toString());
         String search = tagSearchDto.getSearchOperations();
 
         GenericSpecificationBuilder builder = new GenericSpecificationBuilder();
@@ -71,15 +71,9 @@ public class ArtworkEndpoint {
                 matcher.group(4),
                 matcher.group(3),
                 matcher.group(5));
-            log.info(matcher.group(1));
-            log.info(matcher.group(2));
-            log.info(matcher.group(3));
-            log.info(matcher.group(4));
-            log.info(matcher.group(5));
         }
 
         Specification<Artwork> spec = builder.build();
-
 
         if (tagSearchDto.getTagIds() != null) {
             if (tagSearchDto.getTagIds().size() > 0) {
@@ -88,9 +82,7 @@ public class ArtworkEndpoint {
                 }
                 for (String tag : tagSearchDto.getTagIds()) {
                     spec = spec.and(TagSpecification.filterByTags(tag).and(spec));
-                    log.info("filtering by:" + tag);
                 }
-
             }
         }
 
@@ -101,64 +93,64 @@ public class ArtworkEndpoint {
                 }
                 for (String artist : tagSearchDto.getArtistIds()) {
                     spec = spec.and(ArtistSpecification.filterBy(artist).and(spec));
-                    log.info("filtering by:" + artist);
                 }
-
             }
         }
 
         Pageable page = PageRequest.of(tagSearchDto.getPageNr(), 50);
-        return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        return artworkService.searchArtworks(spec, page, tagSearchDto.getRandomSeed()).stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
     }
-
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    @Operation(summary = "getAllArtworksByArtist")
+    @Operation(summary = "Get all artworks by artist.")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
-        log.info("Get /Artist");
-        try {
-            List<Artwork> artworks = artworkService.findArtworksByArtist(id);
+        log.info("A user is fetching all artworks by artist with id '{}'", id);
 
-            List<ArtworkDto> artworksDto = artworks.stream().map(a -> artworkMapper.artworkToArtworkDto(a)).collect(Collectors.toList());
+        List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
-
-            return artworksDto;
-        } catch (Exception n) {
-            log.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
     }
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping()
-    @Operation(summary = "Delete artwork")
-    public void deleteArtwork(@RequestBody ArtworkDto artworkDto) {
-        log.info("Delete Artwork " + artworkDto.getName());
-        try {
+    @Operation(summary = "Delete artwork.")
+    public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
+        log.info("A user is trying to delete an artwork.");
 
-            artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+        artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
+    }
 
-        } catch (Exception n) {
-            log.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete artwork by id.")
+    public void deleteArtworkById(@PathVariable Long id) {
+        log.info("A user is trying to delete an artwork.");
+
+        artworkService.deleteArtwork(artworkService.findById(id));
+    }
+
+    @PermitAll
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/artwork/{id}")
+    @Operation(summary = "Get artwork by id.")
+    public ArtworkDto getArtworkById(@PathVariable Long id) {
+        log.info("A user is trying to delete an artwork.");
+
+        return artworkMapper.artworkToArtworkDto(artworkService.findById(id));
     }
 
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Post artwork")
-    public void postArtwork(@RequestBody ArtworkDto artworkDto) {
-        log.debug("Post /Artwork/{}", artworkDto.toString());
-        try {
-            artworkService.saveArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-        } catch (Exception v) {
-            log.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
+    public void postArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
+        log.debug("A user is trying to create a new artwork.");
 
+        Artwork artwork = artworkMapper.artworkDtoToArtwork(artworkDto);
+        artworkService.saveArtwork(artwork);
     }
 }

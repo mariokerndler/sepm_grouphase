@@ -1,0 +1,11 @@
+<div>
+  <span style="font-weight: bold;font-size: 1.3rem;">My commission</span>
+</div>
+<br>
+<div class="content">
+  <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="8px grid">
+    <div *ngFor="let commission of commissions">
+      <app-commission-card [commission]="commission"></app-commission-card>
+    </div>
+  </div>
+</div>

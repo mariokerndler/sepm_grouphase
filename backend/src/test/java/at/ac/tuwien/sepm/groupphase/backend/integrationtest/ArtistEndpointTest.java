@@ -1,13 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleMessageDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
-import at.ac.tuwien.sepm.groupphase.backend.security.JwtTokenizer;
-import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,7 +27,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,53 +53,42 @@ public class ArtistEndpointTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private ArtistMapper artistMapper;
-
-    @Autowired
-    private JwtTokenizer jwtTokenizer;
-
-    @Autowired
-    private SecurityProperties securityProperties;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Artist artist;
-
     public Artist getTestArtist1() {
-        return artist = new Artist("testArtist", "bob", "test", "test@test.com", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestDescription", null, 1.0, null, null, null, null, null);
+        return Artist.builder()
+            .userName("testArtist")
+            .name("bob")
+            .surname("test")
+            .email("test@test.com")
+            .address("test")
+            .password(passwordEncoder.encode("test"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(1.0)
+            .build();
     }
 
     public Artist getTestArtist2() {
-        return artist = new Artist("testArtist2", "bobby", "tester", "test2@test.com", "testStraße 2", passwordEncoder.encode("tester2")
-            , false, UserRole.Artist, null, "TestDescription", null, 2.0, null, null, null, null, null);
+        return Artist.builder()
+            .userName("testArtist2")
+            .name("bobby")
+            .surname("tester")
+            .email("test2@test.com")
+            .address("testStraße 2")
+            .password(passwordEncoder.encode("tester2"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestDescription")
+            .reviewScore(2.0)
+            .build();
     }
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws Exception {
         artistRepository.deleteAll();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
-    }
-
-    @Test
-    @WithMockUser
-    public void isDataBaseEmptyBeforeTests() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/api/v1/artists")).andDo(print()).andReturn();
-        MockHttpServletResponse response = mvcResult.getResponse();
-
-        assertEquals(HttpStatus.OK.value(), response.getStatus());
-        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.getContentType());
-
-        List<SimpleMessageDto> simpleArtistDtos = Arrays.asList(objectMapper.readValue(response.getContentAsString(),
-            SimpleMessageDto[].class));
-
-        assertEquals(0, simpleArtistDtos.size());
-    }
-
-    @Test
-    @WithMockUser()
-    public void addArtists() throws Exception {
         Artist anObject = getTestArtist1();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
@@ -116,31 +100,72 @@ public class ArtistEndpointTest {
 
         List<ArtistDto> artists = allArtists();
         assertEquals(1, artists.size());
+    }
 
-        Artist anotherObject = getTestArtist2();
+    @Test
+    @WithMockUser
+    public void hasDataBaseOneArtistBeforeTests() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/artists")).andDo(print()).andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.getContentType());
+
+        List<ArtistDto> artists = allArtists();
+        assertEquals(1, artists.size());
+
+        assertTrue(artists.toString().contains("bob"));
+        assertTrue(artists.toString().contains("testArtist"));
+        assertTrue(artists.toString().contains("test"));
+        assertTrue(artists.toString().contains("test@test.com"));
+        assertTrue(artists.toString().contains("test"));
+        assertTrue(artists.toString().contains("Artist"));
+        assertTrue(artists.toString().contains("1.0"));
+    }
+
+    @Test
+    @WithMockUser()
+    public void addOneArtist() throws Exception {
+        Artist anObject = getTestArtist2();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJson2 = ow2.writeValueAsString(anotherObject);
+        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(anObject);
 
         mockMvc.perform(post("/api/v1/artists").contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson2))
+                .content(requestJson))
             .andExpect(status().isCreated()).andReturn();
 
-        List<ArtistDto> artists2 = allArtists();
-        assertEquals(2, artists2.size());
+        List<ArtistDto> artists = allArtists();
+        assertEquals(2, artists.size());
 
-        assertTrue(artists2.toString().contains("bob"));
-        assertTrue(artists2.toString().contains("bobby"));
-        assertTrue(artists2.toString().contains("test2@test.com"));
-        assertTrue(artists2.toString().contains("testStraße 2"));
-        assertTrue(artists2.toString().contains("testArtist2"));
-        assertTrue(artists2.toString().contains("Artist"));
-        assertTrue(artists2.toString().contains("2.0"));
+        assertTrue(artists.toString().contains("bob"));
+        assertTrue(artists.toString().contains("bobby"));
+        assertTrue(artists.toString().contains("test2@test.com"));
+        assertTrue(artists.toString().contains("testStraße 2"));
+        assertTrue(artists.toString().contains("testArtist2"));
+        assertTrue(artists.toString().contains("Artist"));
+        assertTrue(artists.toString().contains("2.0"));
+    }
 
-        Long artistId = artists2.get(0).getId();
+    @Test
+    @WithMockUser()
+    public void modifyArtist() throws Exception {
+        List<ArtistDto> artist = allArtists();
+        Long id = artist.get(0).getId();
 
-        Artist modifiedObject = new Artist(artistId, "testArtist", "bobMod", "test", "testMod@test.com", "test", passwordEncoder.encode("test")
-            , false, UserRole.Artist, null, "TestModDescription", null, 1.0, null, null, null, null, null);
+        Artist modifiedObject = Artist.builder()
+            .id(id)
+            .userName("testArtist")
+            .name("bobMod")
+            .surname("test")
+            .email("testMod@test.com")
+            .address("testStraße 1")
+            .password(passwordEncoder.encode("test"))
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("TestModDescription")
+            .reviewScore(1.0)
+            .build();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow3 = objectMapper.writer().withDefaultPrettyPrinter();
         String requestJson3 = ow3.writeValueAsString(modifiedObject);
@@ -149,22 +174,38 @@ public class ArtistEndpointTest {
                 .content(requestJson3))
             .andExpect(status().isOk()).andReturn();
 
-        List<ArtistDto> artists3 = allArtists();
-        assertEquals(2, artists3.size());
+        List<ArtistDto> artists = allArtists();
+        assertEquals(1, artists.size());
 
-        Long id = artists3.get(0).getId();
+        assertTrue(artists.toString().contains("bobMod"));
+        assertTrue(artists.toString().contains("testArtist"));
+        assertTrue(artists.toString().contains("test"));
+        assertTrue(artists.toString().contains("testMod@test.com"));
+        assertTrue(artists.toString().contains("testStraße 1"));
+        assertTrue(artists.toString().contains("Artist"));
+        assertTrue(artists.toString().contains("1.0"));
 
-        assertTrue(artists3.toString().contains("bobMod"));
-        assertTrue(artists3.toString().contains("bobby"));
-        assertTrue(artists3.toString().contains("test2@test.com"));
-        assertTrue(artists3.toString().contains("testMod@test.com"));
-        assertFalse(artists3.toString().contains("test@test.com"));
+    }
+
+    @Test
+    @WithMockUser()
+    public void deleteArtist() throws Exception {
+        List<ArtistDto> artist = allArtists();
+        Long id = artist.get(0).getId();
 
         mockMvc.perform(delete("/api/v1/artists/" + id))
             .andExpect(status().isOk()).andReturn();
 
-        List<ArtistDto> artists4 = allArtists();
-        assertEquals(1, artists4.size());
+        List<ArtistDto> artists = allArtists();
+        assertEquals(0, artists.size());
+
+        assertFalse(artists.toString().contains("bob"));
+        assertFalse(artists.toString().contains("testArtist"));
+        assertFalse(artists.toString().contains("test"));
+        assertFalse(artists.toString().contains("test@test.com"));
+        assertFalse(artists.toString().contains("test"));
+        assertFalse(artists.toString().contains("Artist"));
+        assertFalse(artists.toString().contains("1.0"));
     }
 
     public List<ArtistDto> allArtists() throws Exception {

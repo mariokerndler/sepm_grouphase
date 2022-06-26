@@ -1,0 +1,12 @@
+<div fxLayout="column">
+  <h1 mat-dialog-title>Delete Artwork {{this.data.artwork.name}}</h1>
+  <div mat-dialog-content>
+    Are you sure, that you want to delete the artwork <strong>{{this.data.artwork.name}}</strong>?
+  </div>
+  <br>
+  <img [src]="'assets/' + this.data.artwork.imageUrl" alt="" class="preview-image" fxFlexAlign="center">
+  <div fxFlexAlign="center" mat-dialog-actions>
+    <button mat-flat-button color="primary" mat-dialog-close>No</button>
+    <button (click)="deleteArtwork()" cdkFocusInitial mat-flat-button color="primary" button mat-dialog-close>Ok</button>
+  </div>
+</div>

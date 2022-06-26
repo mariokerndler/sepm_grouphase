@@ -17,8 +17,6 @@ public interface UserService extends UserDetailsService {
      */
     List<ApplicationUser> getAllUsers();
 
-    //TODO: Exception for Josef
-
     /**
      * Find a user in the context of Spring Security based on the email address.
      * <br>
@@ -75,7 +73,7 @@ public interface UserService extends UserDetailsService {
     /**
      * Returns true/false if the old password is equal to the user's password.
      *
-     * @param user The user, which password will be checked.
+     * @param user        The user, which password will be checked.
      * @param oldPassword The old password which will be compared to.
      * @return true if the password matches, false if not.
      */
@@ -89,11 +87,29 @@ public interface UserService extends UserDetailsService {
      */
     void changeUserPassword(ApplicationUser user, String password);
 
+
+    /**
+     * Saves the given user as an artist entity, preserving the original id.
+     *
+     * @param id The id of user to upgrade.
+     */
+    void upgradeUserToArtist(Long id);
+
     /**
      * Deletes the user with the specified id, if there is a user with this id saved in the database.
      *
      * @param id The id of the user to be deleted.
      */
     void deleteUserById(Long id);
+
+    /**
+     * Updates the saved profile picture in image files. If there is no picture saved ,
+     * the file manager will create the folder and save it. If newUser has no profile picture,
+     * the old one will be deleted (if there is one)
+     *
+     * @param oldUser state of user before update
+     * @param newUser state of user after update
+     */
+    void updateProfilePictureFiles(ApplicationUser oldUser, ApplicationUser newUser);
 
 }

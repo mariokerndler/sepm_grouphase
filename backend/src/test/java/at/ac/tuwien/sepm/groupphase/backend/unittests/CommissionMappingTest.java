@@ -4,8 +4,9 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.CommissionMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.*;
-import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
-import at.ac.tuwien.sepm.groupphase.backend.utils.UserRole;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,9 +18,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -27,27 +28,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CommissionMappingTest {
 
     @Autowired
-    private CommissionMapper commissionMapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     CommissionRepository commissionRepository;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     ArtistRepository artistRepository;
-
     @Autowired
     ArtworkRepository artworkRepository;
-
     @Autowired
     ReviewRepository reviewRepository;
-
+    @Autowired
+    private CommissionMapper commissionMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private Artist artist;
+    private Artist artistCandidate;
     private ApplicationUser user;
     private Artwork artwork;
     private Commission commission;
@@ -55,6 +50,7 @@ public class CommissionMappingTest {
 
     @BeforeEach
     public void beforeEach() {
+        reviewRepository.deleteAll();
         artworkRepository.deleteAll();
         commissionRepository.deleteAll();
         artistRepository.deleteAll();
@@ -84,14 +80,30 @@ public class CommissionMappingTest {
             .profileSettings("profSettings: colour blue, no bad reviews shown")
             .build();
 
+        this.artistCandidate = Artist.builder()
+            .userName("artistCandidate55")
+            .name("Justus")
+            .surname("Grabner")
+            .email("grabi@gmx.at")
+            .address("Autobahn A1")
+            .password("secure passworthash")
+            .admin(false)
+            .userRole(UserRole.Artist)
+            .description("Just an artist wanting to take a commission.")
+            .profileSettings("artist does not care about profile settings")
+            .build();
+
 
         userRepository.save(user);
         artistRepository.save(artist);
+        artistRepository.save(artistCandidate);
 
 
         this.commission = Commission.builder()
             .artist(artist)
+            .artistCandidates(List.of(artist, artistCandidate))
             .customer(user)
+            .status(CommissionStatus.LISTED)
             .title("Cowboy Snail")
             .sketchesShown(3)
             .feedbackSent(0)
@@ -113,7 +125,7 @@ public class CommissionMappingTest {
             .build();
 
         artworkRepository.save(artwork);
-
+        commission.setArtwork(artwork);
 
         this.review = Review.builder()
             .artist(artist)
@@ -124,8 +136,7 @@ public class CommissionMappingTest {
             .build();
 
         reviewRepository.save(review);
-
-
+        commission.setReview(review);
     }
 
 
@@ -152,6 +163,7 @@ public class CommissionMappingTest {
             passwordEncoder.encode("passuwurdXC%&(5"),
             false,
             UserRole.Artist,
+            "Description of new artist",
             3.4,
             null,
             null,
@@ -161,12 +173,32 @@ public class CommissionMappingTest {
 
         artistDto.setId(artist.getId());
 
+        ArtistDto artistCandidateDto = new ArtistDto("artistCandidate55",
+            "Justus",
+            "Grabner",
+            "grabi@gmx.at",
+            "Autobahn A1",
+            passwordEncoder.encode("secure passworthash"),
+            false,
+            UserRole.Artist,
+            "Just an artist wanting to take a commission.",
+            2.5,
+            null,
+            null,
+            null,
+            null,
+            "artist does not care about profile settings");
+
+        artistCandidateDto.setId(artistCandidate.getId());
+
         ReviewDto reviewDto = new ReviewDto(artistDto, userDto, "I really enjoyed working with Carl. He drew me a nice smol snail:)", null, 5);
-        ArtworkDto artworkDto = new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", "just/some/url", FileType.PNG, artist.getId());
+        ArtworkDto artworkDto = new ArtworkDto("small green snail with a cowboy's hat", "this is a tiny snail wearing a funky hat", null, "just/some/url", FileType.PNG, artist.getId(), null, null, null);
 
 
         DetailedCommissionDto commissionDto = new DetailedCommissionDto(artistDto,
+            List.of(artistDto, artistCandidateDto),
             userDto,
+            CommissionStatus.LISTED,
             3,
             0,
             2000.45,
@@ -188,8 +220,12 @@ public class CommissionMappingTest {
             () -> assertEquals(commissionDto.getId(), commission.getId()),
             () -> assertEquals(artistDto.getId(), commission.getArtist().getId()),
             () -> assertEquals(artistDto.getUserName(), commission.getArtist().getUserName()),
+            () -> assertEquals(2, commission.getArtistCandidates().size()),
+            () -> assertTrue(commission.getArtistCandidates().get(0).toString().contains("justAnArtist")),
+            () -> assertTrue(commission.getArtistCandidates().get(1).toString().contains("artistCandidate55")),
             () -> assertEquals(userDto.getId(), commission.getCustomer().getId()),
             () -> assertEquals(userDto.getUserName(), commission.getCustomer().getUserName()),
+            () -> assertEquals(commissionDto.getStatus(), commission.getStatus()),
             () -> assertEquals(commissionDto.getSketchesShown(), commission.getSketchesShown()),
             () -> assertEquals(commissionDto.getFeedbackSent(), commission.getFeedbackSent()),
             () -> assertEquals(commissionDto.getPrice(), commission.getPrice()),
@@ -213,8 +249,12 @@ public class CommissionMappingTest {
             () -> assertEquals(commission.getId(), commissionDto.getId()),
             () -> assertEquals(artist.getId(), commissionDto.getArtistDto().getId()),
             () -> assertEquals(artist.getUserName(), commissionDto.getArtistDto().getUserName()),
+            () -> assertEquals(2, commissionDto.getArtistCandidatesDtos().size()),
+            () -> assertTrue(commissionDto.getArtistCandidatesDtos().get(0).toString().contains("justAnArtist")),
+            () -> assertTrue(commissionDto.getArtistCandidatesDtos().get(1).toString().contains("artistCandidate55")),
             () -> assertEquals(user.getId(), commissionDto.getCustomerDto().getId()),
             () -> assertEquals(user.getUserName(), commissionDto.getCustomerDto().getUserName()),
+            () -> assertEquals(commission.getStatus(), commissionDto.getStatus()),
             () -> assertEquals(commission.getSketchesShown(), commissionDto.getSketchesShown()),
             () -> assertEquals(commission.getFeedbackSent(), commissionDto.getFeedbackSent()),
             () -> assertEquals(commission.getPrice(), commissionDto.getPrice()),
@@ -225,6 +265,27 @@ public class CommissionMappingTest {
             () -> assertEquals((commission.getReceipts() == null ? null : commission.getReceipts().size()), (commissionDto.getReceiptsDtos() == null ? null : commissionDto.getReceiptsDtos().size())),
             () -> assertEquals((commission.getReview() == null ? null : commission.getReview().getId()), (commissionDto.getReviewDto() == null ? null : commissionDto.getReviewDto().getId())),
             () -> assertEquals((commission.getArtwork() == null ? null : commission.getArtwork().getId()), (commissionDto.getArtworkDto() == null ? null : commissionDto.getArtworkDto().getId()))
+        );
+    }
+
+    @Test
+    @Transactional
+    public void whenMapEntityToSimpleCommissionDto_thenSimpleCommissionDtoHasAllProperties() {
+
+        SimpleCommissionDto commissionDto = commissionMapper.commissionToSimpleCommissionDto(this.commission);
+        assertAll(
+            () -> assertEquals(commission.getId(), commissionDto.getId()),
+            () -> assertEquals(artist.getId(), commissionDto.getArtistId()),
+            () -> assertEquals(user.getId(), commissionDto.getCustomerId()),
+            () -> assertEquals(commission.getStatus(), commissionDto.getStatus()),
+            () -> assertEquals(commission.getSketchesShown(), commissionDto.getSketchesShown()),
+            () -> assertEquals(commission.getFeedbackSent(), commissionDto.getFeedbackSent()),
+            () -> assertEquals(commission.getPrice(), commissionDto.getPrice()),
+            () -> assertEquals(commission.getIssueDate(), commissionDto.getIssueDate()),
+            () -> assertEquals(commission.getDeadlineDate(), commissionDto.getDeadlineDate()),
+            () -> assertEquals(commission.getInstructions(), commissionDto.getInstructions()),
+            () -> assertEquals((commission.getReferences() == null ? null : commission.getReferences().size()), (commissionDto.getReferencesIds() == null ? null : commissionDto.getReferencesIds().size())),
+            () -> assertEquals((commission.getArtwork() == null ? null : commission.getArtwork().getId()), commissionDto.getArtworkId())
         );
     }
 }

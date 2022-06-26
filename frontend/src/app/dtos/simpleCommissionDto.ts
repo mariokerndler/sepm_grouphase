@@ -1,3 +1,5 @@
+import {CommissionStatus} from '../global/CommissionStatus';
+
 export class SimpleCommissionDto {
   id: number;
   artistId: number;
@@ -9,6 +11,7 @@ export class SimpleCommissionDto {
   price: number;
   issueDate: string;
   deadlineDate: string;
+  status: CommissionStatus;
   feedbackRounds: number;
   referenceImageIds: number[];
 }

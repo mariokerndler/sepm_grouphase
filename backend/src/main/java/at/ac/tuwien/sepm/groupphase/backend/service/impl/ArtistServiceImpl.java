@@ -8,12 +8,16 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtworkService;
 import at.ac.tuwien.sepm.groupphase.backend.service.CommissionService;
+import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,58 +29,72 @@ public class ArtistServiceImpl implements ArtistService {
     private final ImageFileManager ifm;
     private final CommissionService commissionService;
     private final ArtworkService artworkService;
+    private final UserService userService;
+    @PersistenceContext
+    EntityManager em;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService) {
+    public ArtistServiceImpl(ArtistRepository artistRepo, ImageFileManager ifm, CommissionService commissionService, ArtworkService artworkService, UserService userService, JdbcTemplate jdbcTemplate) {
         this.ifm = ifm;
         this.artistRepo = artistRepo;
         this.commissionService = commissionService;
         this.artworkService = artworkService;
+        this.userService = userService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<Artist> getAllArtists() {
-        return artistRepo.findAll();
+        log.trace("calling getAllArtists() ...");
+        var artists = artistRepo.findAll();
+        log.info("Retrieved all artists ({})", artists.size());
+        return artists;
     }
 
     @Override
     public Artist findArtistById(Long id) {
+        log.trace("calling findArtistById() ...");
         Optional<Artist> artist = artistRepo.findById(id);
         if (artist.isPresent()) {
-            log.info(artist.toString());
+            log.info("Retrieved artist with id='{}'", artist.get().getId());
             return artist.get();
         }
         throw new NotFoundException(String.format("Could not find Artist with id %s", id));
     }
 
-    // Todo: Also save profile picture as image with file manager
     @Override
     public Artist saveArtist(Artist artist) {
-        return artistRepo.save(artist);
+        log.trace("calling saveArtist() ...");
+        ifm.createFolderIfNotExists(ImageDataPaths.assetAbsoluteLocation + ImageDataPaths.artistProfileLocation + artist.getUserName());
+
+        this.userService.updateProfilePictureFiles(null, artist);
+
+        var savedArtist = artistRepo.save(artist);
+        log.info("Saved artist with id='{}'", artist.getId());
+        return savedArtist;
     }
 
     @Override
-    public void updateArtist(Artist artist) throws IOException {
+    public void updateArtist(Artist artist) {
+        log.trace("calling updateArtist() ...");
         Artist oldArtist = findArtistById(artist.getId());
 
         if (!oldArtist.getUserName().equals(artist.getUserName())) {
-            ifm.renameArtistFolder(artist, oldArtist.getUserName());
+            ifm.renameArtistFolders(artist, oldArtist.getUserName());
         }
 
-        if (oldArtist.getProfilePicture() != null && artist.getProfilePicture() != null) {
-            if (oldArtist.getProfilePicture().getId() != artist.getProfilePicture().getId()) {
-                ifm.writeAndReplaceArtistProfileImage(artist);
-            }
-        }
+        this.userService.updateProfilePictureFiles(oldArtist, artist);
 
         artistRepo.save(artist);
+        log.info("Updated artist with id='{}'", artist.getId());
     }
 
     @Override
     public void deleteArtistById(Long id) {
+        log.trace("calling deleteArtistById() ...");
         Optional<Artist> artist = artistRepo.findById(id);
         if (artist.isPresent()) {
-            log.info(artist.toString());
             if (!artist.get().getCommissions().isEmpty()) {
                 List<Commission> commissions = commissionService.findCommissionsByArtist(artist.get().getId());
                 if (commissions != null) {
@@ -93,10 +111,11 @@ public class ArtistServiceImpl implements ArtistService {
                     }
                 }
             }
+            ifm.deleteUserProfileImage(artist.get());
             artistRepo.delete(artist.get());
+            log.info("Deleted artist with id='{}'", id);
         } else {
             throw new NotFoundException(String.format("Could not find Artist with id %s", id));
         }
     }
-
 }

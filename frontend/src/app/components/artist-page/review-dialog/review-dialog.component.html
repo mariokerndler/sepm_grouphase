@@ -1,0 +1,19 @@
+<h1>Write your review</h1>
+<div fxLayout="column" fxLayoutGap="10px">
+  <app-review-star (ratingUpdated)="updateRating($event)" [disableInteraction]=false></app-review-star>
+
+  <div>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Review text</mat-label>
+      <textarea [(ngModel)]="reviewText" matInput required rows="5"></textarea>
+      <mat-error *ngIf="!isValidReviewText()">
+        Review text is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <button (click)="submitReview()" [disabled]="!isValidReviewText()" color="primary" mat-flat-button>Submit review
+  </button>
+</div>
+
+

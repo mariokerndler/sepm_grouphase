@@ -5,7 +5,7 @@ import {ArtistDto, UserRole} from '../../../dtos/artistDto';
 import {map, Observable, startWith, Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {LayoutComponent} from './layoutComponent';
+import {LayoutComponent, LayoutComponentType} from './layoutComponent';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {TagDto} from '../../../dtos/tagDto';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
@@ -15,10 +15,14 @@ import {TagService} from '../../../services/tag.service';
 import {Location} from '@angular/common';
 import {Color} from '@angular-material-components/color-picker';
 import {GlobalFunctions} from '../../../global/globalFunctions';
-import {AuthService} from '../../../services/auth.service';
 import {ApplicationUserDto} from '../../../dtos/applicationUserDto';
 import {UserService} from '../../../services/user.service';
 import {MatChipInputEvent} from '@angular/material/chips';
+import {FileType} from '../../../dtos/artworkDto';
+import {ProfilePictureDto} from '../../../dtos/profilePictureDto';
+import {Globals} from '../../../global/globals';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-artist-page-edit',
@@ -41,26 +45,35 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
 
   appearanceForm: FormGroup;
 
-  artistProfilePicture;
+  profilePicture;
 
   isReady = false;
 
   availableComponents: LayoutComponent[] = [
-    {componentName: 'Gallery', disabled: false, tags: []},
-    {componentName: 'Reviews', disabled: false, tags: []}
+    {componentName: 'Gallery', type: LayoutComponentType.gallery, disabled: false, tags: []},
+    {componentName: 'Reviews', type: LayoutComponentType.reviews, disabled: false, tags: []}
   ];
 
-  profileInfoComponent: LayoutComponent = {componentName: 'Profile information', disabled: true, tags: []};
-  chosenComponents: LayoutComponent[] = [];
+  profileInfoComponent: LayoutComponent = {
+    componentName: 'Profile information',
+    type: LayoutComponentType.information,
+    disabled: true,
+    tags: []
+  };
 
+  chosenComponents: LayoutComponent[] = [];
   selectedComponent: LayoutComponent;
+
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagForm = new FormControl();
   allTags: TagDto[] = [];
   filteredTags: Observable<TagDto[]>;
 
   private routeSubscription: Subscription;
-  private tempArtistUrl = 'https://picsum.photos/150/150';
+
+  private oldProfilePicture;
+  private pfpFileType: FileType;
+  private pfpArray: number[];
 
   constructor(
     private route: ActivatedRoute,
@@ -72,7 +85,8 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
     private globalFunctions: GlobalFunctions,
-    private authService: AuthService
+    public globals: Globals,
+    private dialog: MatDialog
   ) {
     this.fillFormValidators();
 
@@ -82,82 +96,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  private static updateArtist(
-    oldArtist: ArtistDto,
-    username?: string,
-    name?: string,
-    surname?: string,
-    email?: string,
-    address?: string,
-    profileSettings?: string,
-    description?: string
-  ): ArtistDto {
-    const updatedArtist: ArtistDto = oldArtist;
-
-    if (username) {
-      updatedArtist.userName = username.valueOf();
-    }
-
-    if (name) {
-      updatedArtist.name = name.valueOf();
-    }
-
-    if (surname) {
-      updatedArtist.surname = surname.valueOf();
-    }
-
-    if (email) {
-      updatedArtist.email = email.valueOf();
-    }
-
-    if (address) {
-      updatedArtist.address = address.valueOf();
-    }
-
-    if (profileSettings) {
-      updatedArtist.profileSettings = profileSettings.valueOf().replace(/"/g, '\'');
-    }
-
-    if (description) {
-      updatedArtist.description = description;
-    }
-
-    return updatedArtist;
-  }
-
-  private static updateUser(
-    oldUser: ApplicationUserDto,
-    username?: string,
-    name?: string,
-    surname?: string,
-    email?: string,
-    address?: string,
-  ): ApplicationUserDto {
-    const updatedUser: ApplicationUserDto = oldUser;
-
-    if (username) {
-      updatedUser.userName = username.valueOf();
-    }
-
-    if (name) {
-      updatedUser.name = name.valueOf();
-    }
-
-    if (surname) {
-      updatedUser.surname = surname.valueOf();
-    }
-
-    if (email) {
-      updatedUser.email = email.valueOf();
-    }
-
-    if (address) {
-      updatedUser.address = address.valueOf();
-    }
-
-    return updatedUser;
-  }
-
   ngOnInit() {
     //  Fetch user and check if it's an artist
     this.routeSubscription = this.route.params.subscribe(
@@ -165,11 +103,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
         .subscribe((user) => {
           this.user = user;
 
-
-          // Check if the user can edit this page
-          if (this.user.email !== this.authService.getUserAuthEmail()) {
-            this.goBack();
-          }
+          this.setProfilePicture();
 
           // Check if it's an artist
           if (this.user.userRole === UserRole.artist) {
@@ -201,9 +135,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
         this.allTags = tags;
       }
     );
-
-    // TODO: Fetch real pfp
-    this.artistProfilePicture = this.tempArtistUrl;
   }
 
   ngOnDestroy() {
@@ -211,7 +142,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate([`artist/${this.user.id}`]);
   }
 
   updateUserInformation() {
@@ -229,7 +160,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     if (this.artist) {
       const description = this.editForm.controls.description.value;
 
-      this.artistService.updateArtist(ArtistPageEditComponent.updateArtist(
+      this.artistService.updateArtist(this.updateArtist(
           this.artist,
           username,
           name,
@@ -241,7 +172,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
         )
       ).subscribe();
     } else {
-      this.userService.updateUser(ArtistPageEditComponent.updateUser(
+      this.userService.updateUser(this.updateUser(
         this.user,
         username,
         name,
@@ -258,7 +189,6 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const newPassword = this.passwordForm.controls.password.value;
 
       const id = this.isArtist ? this.artist.id : this.user.id;
-      console.log(newPassword + ' ' + oldPassword);
 
       this.userService.updateUserPassword(id, newPassword, oldPassword).subscribe();
     }
@@ -291,7 +221,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
         artistProfileSetting.headerColor = headerColor;
       }
 
-      this.artistService.updateArtist(ArtistPageEditComponent.updateArtist(
+      this.artistService.updateArtist(this.updateArtist(
         this.artist,
         undefined,
         undefined,
@@ -314,11 +244,14 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
       const item = this.availableComponents[event.previousIndex];
       const newItem = {
         componentName: item.componentName,
+        type: item.type,
         disabled: item.disabled,
         tags: [...item.tags]
       };
 
-      newItem.componentName += this.chosenComponents.length;
+      if (newItem.type !== LayoutComponentType.reviews) {
+        newItem.componentName += this.chosenComponents.length;
+      }
       this.chosenComponents.splice(event.currentIndex, 0, newItem);
     }
   }
@@ -354,14 +287,22 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     if (file.target.files && file.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
+        const extractedValues: [FileType, number[]] = this.globalFunctions.extractImageAndFileType(reader.result.toString());
+        this.pfpFileType = extractedValues[0];
+        this.pfpArray = extractedValues[1];
+
         const image = new Image();
         image.src = e.target.result;
         image.onload = (_) => {
-          this.artistProfilePicture = e.target.result;
+          this.profilePicture = e.target.result;
         };
       };
       reader.readAsDataURL(file.target.files[0]);
     }
+  }
+
+  revertProfilePicture() {
+    this.profilePicture = this.oldProfilePicture;
   }
 
   /**
@@ -409,6 +350,34 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     event.chipInput?.clear();
 
     this.tagForm.setValue(null);
+  }
+
+  validLayoutComponentName(): boolean {
+    if (this.selectedComponent) {
+      return this.selectedComponent.componentName.trim().length <= 0;
+    } else {
+      return false;
+    }
+  }
+
+  upgradeUser() {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      width: '500px',
+      data: {
+        title: 'Upgrade to artist account',
+        message: 'Are you sure you want to be an artist?'
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.userService.upgradeUser(this.user.id).subscribe(
+          data => {
+            this.router.navigate([`/artist/${this.user.id}`]).catch((_) =>
+              this.notificationService.displayErrorSnackbar('Could not navigate to artist list.'));
+          }
+        );
+      }
+    });
   }
 
   private filterTags(value: TagDto): TagDto[] {
@@ -495,5 +464,106 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
     }
 
     this.chosenComponents = profileSettings.layout;
+  }
+
+  private updateArtist(
+    oldArtist: ArtistDto,
+    username?: string,
+    name?: string,
+    surname?: string,
+    email?: string,
+    address?: string,
+    profileSettings?: string,
+    description?: string
+  ): ArtistDto {
+    const updatedArtist: ArtistDto = oldArtist;
+
+    if (username) {
+      updatedArtist.userName = username.valueOf();
+    }
+
+    if (name) {
+      updatedArtist.name = name.valueOf();
+    }
+
+    if (surname) {
+      updatedArtist.surname = surname.valueOf();
+    }
+
+    if (email) {
+      updatedArtist.email = email.valueOf();
+    }
+
+    if (address) {
+      updatedArtist.address = address.valueOf();
+    }
+
+    if (profileSettings) {
+      updatedArtist.profileSettings = profileSettings.valueOf().replace(/"/g, '\'');
+    }
+
+    if (description) {
+      updatedArtist.description = description;
+    }
+
+    if (this.oldProfilePicture !== this.profilePicture) {
+      updatedArtist.profilePictureDto = this.createProfilePictureDto();
+    }
+
+    return updatedArtist;
+  }
+
+  private updateUser(
+    oldUser: ApplicationUserDto,
+    username?: string,
+    name?: string,
+    surname?: string,
+    email?: string,
+    address?: string,
+  ): ApplicationUserDto {
+    const updatedUser: ApplicationUserDto = oldUser;
+
+    if (username) {
+      updatedUser.userName = username.valueOf();
+    }
+
+    if (name) {
+      updatedUser.name = name.valueOf();
+    }
+
+    if (surname) {
+      updatedUser.surname = surname.valueOf();
+    }
+
+    if (email) {
+      updatedUser.email = email.valueOf();
+    }
+
+    if (address) {
+      updatedUser.address = address.valueOf();
+    }
+
+    if (this.oldProfilePicture !== this.profilePicture) {
+      updatedUser.profilePictureDto = this.createProfilePictureDto();
+    }
+
+    return updatedUser;
+  }
+
+  private setProfilePicture() {
+    if (this.user.profilePictureDto) {
+      this.oldProfilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
+      this.profilePicture = this.globals.assetsPath + this.user.profilePictureDto.imageUrl;
+    } else {
+      this.oldProfilePicture = this.globals.assetsPath + this.globals.defaultProfilePicture;
+      this.profilePicture = this.globals.assetsPath + this.globals.defaultProfilePicture;
+    }
+  }
+
+  private createProfilePictureDto(): ProfilePictureDto {
+    return {
+      fileType: this.pfpFileType,
+      imageData: this.pfpArray
+    };
   }
 }

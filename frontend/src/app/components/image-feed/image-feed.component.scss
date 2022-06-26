@@ -195,18 +195,13 @@ md-divider {
 }
 
 mat-menu.content {
-  color: gray;
+  //color: gray;
 }
 
-#tagMenuItems {
-  color: #536281;
-}
 
 .pagination {
 
   flex-direction: row;
-
-
   display: flex;
   justify-content: center;
 }
@@ -217,10 +212,13 @@ mat-menu.content {
   float: left;
   padding: 8px 16px;
 
+  .material-icons{
+    font-size: 1.7rem !important;
+  }
 }
 
 .paginationText {
-
+  font-size: 1.2rem;
   display: inline-block;
   float: left;
 
@@ -228,8 +226,8 @@ mat-menu.content {
 }
 
 .mat-menu-panel {
-  background: lightgray;
   margin-top: .3rem;
+
 
   .mat-menu-content {
     display: flex;
@@ -253,5 +251,10 @@ mat-menu.content {
 ::-webkit-scrollbar-thumb {
   background: #fb9fa4;
   border-radius: 10px;
+}
+
+.delete {
+  position: relative;
+  left: 92%;
 }
 

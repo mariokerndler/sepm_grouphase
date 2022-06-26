@@ -33,8 +33,6 @@ public interface ArtworkService {
      */
     void saveArtwork(Artwork artwork);
 
-    //TODO: update artwork
-
     /**
      * Deletes the given artwork from the database.
      *
@@ -53,8 +51,8 @@ public interface ArtworkService {
     /**
      * Returns a list of all artworks that fit the criteria given by spec.
      *
-     * @param spec The criteria to search for.
-     * @param page The page of artists (for performance reasons).
+     * @param spec       The criteria to search for.
+     * @param page       The page of artists (for performance reasons).
      * @param randomSeed A seed for randomizing the order of artworks in the list.
      * @return A list of artworks.
      */

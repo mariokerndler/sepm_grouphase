@@ -16,6 +16,8 @@ import {
   NGX_MAT_COLOR_FORMATS,
   NgxMatColorPickerModule
 } from '@angular-material-components/color-picker';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 
 // Routing
 import {AppRoutingModule} from './app-routing.module';
@@ -26,9 +28,6 @@ import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
-import {MessageComponent} from './components/message/message.component';
-import {MidsectionComponent} from './components/midsection/midsection/midsection.component';
-import {CardViewComponent} from './components/midsection/card-view/card-view.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistInformationComponent} from './components/artist-page/artist-information/artist-information.component';
 import {
@@ -37,6 +36,9 @@ import {
   SuccessSnackbarComponent
 } from './services/notification/notification.service';
 import {ArtistPageEditComponent} from './components/artist-page/artist-page-edit/artist-page-edit.component';
+import {
+  ConfirmDialogComponent,
+} from './components/artist-page/artist-page-edit/confirm-dialog/confirm-dialog.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {UserPageComponent} from './components/user-page/user-page.component';
@@ -59,6 +61,35 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {
   ArtistGallerySubsectionsComponent
 } from './components/artist-page/artist-gallery-subsections/artist-gallery-subsections.component';
+import {NgChatModule} from 'ng-chat';
+
+import {NgxSliderModule} from '@angular-slider/ngx-slider';
+import {DeleteArtworkComponent} from './components/delete-artwork/delete-artwork.component';
+import {CommissionPageComponent} from './components/artist-page/commission-page/commission-page.component';
+import {
+  CommissionTimelineComponent
+} from './components/commission/commission-timeline-assets/commission-timeline/commission-timeline.component';
+import {
+  CommissionTimeslotsComponent
+} from './components/commission/commission-timeline-assets/commission-timeslots/commission-timeslots.component';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+// @ts-ignore
+import {ChatComponent} from './chat/chat.component';
+import {NotificationDisplayComponent} from './components/common/notification-display/notification-display.component';
+import {TermsOfServiceComponent} from './components/footer/terms-of-service/terms-of-service.component';
+import {PrivacyPolicyComponent} from './components/footer/privacy-policy/privacy-policy.component';
+import {ContactComponent} from './components/footer/contact/contact.component';
+import {AboutComponent} from './components/footer/about/about.component';
+import {ReviewDialogComponent} from './components/artist-page/review-dialog/review-dialog.component';
+import {ReviewPageComponent} from './components/artist-page/review-page/review-page.component';
+import {ReviewCardComponent} from './components/artist-page/review-page/review-card/review-card.component';
+import {ReviewStarComponent} from './components/artist-page/review-page/review-star/review-star.component';
+import {HideMissingDirective} from './components/common/hide-missing-directive';
+import {ReportDialogComponent} from './services/report/report-dialog/report-dialog.component';
+import {CommissionEditComponent} from './components/commission/commission-edit/commission-edit.component';
+import {AdminPageComponent} from './components/admin-page/admin-page.component';
+import {ReportPanelComponent} from './components/admin-page/report-panel/report-panel.component';
+import {CheckoutComponent} from './components/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -67,9 +98,6 @@ import {
     FooterComponent,
     HomeComponent,
     LoginComponent,
-    MessageComponent,
-    MidsectionComponent,
-    CardViewComponent,
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,
@@ -92,7 +120,28 @@ import {
     CommissionCardComponent,
     CommissionDetailsComponent,
     CommissionCreationComponent,
-    ArtistGallerySubsectionsComponent
+    ArtistGallerySubsectionsComponent,
+    DeleteArtworkComponent,
+    CommissionPageComponent,
+    CommissionTimelineComponent,
+    CommissionTimeslotsComponent,
+    ChatComponent,
+    ConfirmDialogComponent,
+    NotificationDisplayComponent,
+    TermsOfServiceComponent,
+    PrivacyPolicyComponent,
+    ContactComponent,
+    AboutComponent,
+    ReviewDialogComponent,
+    ReviewPageComponent,
+    ReviewCardComponent,
+    ReviewStarComponent,
+    HideMissingDirective,
+    CommissionEditComponent,
+    ReportDialogComponent,
+    AdminPageComponent,
+    ReportPanelComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
@@ -107,18 +156,24 @@ import {
     FlexLayoutModule,
     NgxMatColorPickerModule,
     DragDropModule,
-    MatSliderModule
+    MatSliderModule,
+    NgxSliderModule,
+    NgChatModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false}
+
     },
     httpInterceptorProviders,
     {
       provide: MAT_COLOR_FORMATS,
       useValue: NGX_MAT_COLOR_FORMATS
-    }
+    },
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

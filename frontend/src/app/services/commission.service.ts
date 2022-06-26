@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {catchError, Observable} from 'rxjs';
 import {CommissionDto} from '../dtos/commissionDto';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NotificationService} from './notification/notification.service';
 import {Globals} from '../global/globals';
 import {tap} from 'rxjs/operators';
 import {SimpleCommissionDto} from '../dtos/simpleCommissionDto';
-
+import {CommissionSearchDto} from '../dtos/commissionSearchDto';
 
 
 @Injectable({
@@ -25,6 +25,16 @@ export class CommissionService {
               private globals: Globals) {
   }
 
+  private static generateSearchParams(searchCom: CommissionSearchDto): HttpParams {
+    return new HttpParams()
+      .set('priceRangeUpper', searchCom.priceRange[1])
+      .set('priceRangeLower', searchCom.priceRange[0])
+      .set('dateOrder', searchCom.dateOrder.toString())
+      .set('name', searchCom.name)
+      .set('pageNr', searchCom.pageNr == null ? '0' : searchCom.pageNr)
+      .set('artistId', searchCom.artistId)
+      .set('userId', searchCom.userId);
+  }
 
   /**
    * Fetches all commissions stored in the system
@@ -97,4 +107,32 @@ export class CommissionService {
   }
 
 
+  filterCommissions(searchCom: CommissionSearchDto, errorAction?: () => void): Observable<SimpleCommissionDto[]> {
+    const params = CommissionService.generateSearchParams(searchCom);
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+    return this.http.get<SimpleCommissionDto[]>(this.commissionBaseUri + '/search', searchOptions)
+      .pipe(
+        catchError((err) => {
+          if (errorAction != null) {
+            errorAction();
+          }
+          return this.notificationService.notifyUserAboutFailedOperation<SimpleCommissionDto[]>('Searching commissions')(err);
+        })
+      );
+  }
+
+  filterDetailedCommissions = (searchCom: CommissionSearchDto): Observable<CommissionDto[]> => {
+    const params = CommissionService.generateSearchParams(searchCom);
+    const searchOptions = {
+      headers: this.headers,
+      params
+    };
+    return this.http.get<CommissionDto[]>(this.commissionBaseUri + '/search/detailed', searchOptions)
+      .pipe(
+        catchError((err) => this.notificationService.notifyUserAboutFailedOperation<CommissionDto[]>('Searching detailed commissions')(err))
+      );
+  };
 }

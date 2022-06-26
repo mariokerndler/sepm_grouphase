@@ -4,6 +4,15 @@
   width: 150px;
 }
 
+.p-section{
+  font-size: 1.1rem;
+  color: #ffd0d8;
+}
+
+.status {
+  color: #ffd0d8;
+}
+
 h2 {
   font-weight: bolder;
 }
@@ -19,8 +28,6 @@ strong {
 
 .description {
   margin-left: 8rem;
-
-
 }
 
 .title {
@@ -34,8 +41,14 @@ strong {
   margin-right: 6rem;
 }
 
+
 .description-section {
   border-radius: 10px;
+}
+.description {
+  margin-left: 12rem;
+  position: relative;
+  bottom: 12rem;
 }
 
 
@@ -49,14 +62,15 @@ strong {
   margin-left: 12.5rem;
 }
 
+
 .back-icon {
   font-size: 2.5rem;
 }
 
-.accept {
+.apply {
   position: absolute;
   left: 50%;
-  top: 75%;
+  top: 80%;
   font-size: 1rem;
   border: 3px solid #fb9fa4;
   height: 2.5rem;
@@ -64,7 +78,7 @@ strong {
   padding: 0 3rem;
 }
 
-.accept:hover {
+.apply:hover {
   background-color: #fb9fa4;
   color: #2f3a51;
 }
@@ -73,17 +87,32 @@ strong {
   transform: scale(0.95);
 }
 
-
 .image-container {
-  max-width: 300px;
-  overflow: hidden;
   margin: 8px;
+}
+
+.feedbackBox {
+  color: #2f3a51;
 }
 
 .gallery-pictures {
   max-height: 200px;
   object-fit: cover;
 }
+
+.gallery-pictures:hover {
+  filter: brightness(0.9) drop-shadow(2px 4px 6px black);
+
+  img {
+    transform: scale(1.1) !important;
+    transition-duration: 3s;
+  }
+
+  span {
+    opacity: 1;
+  }
+}
+
 
 .scrolling-container .viewport {
   height: 240px;
@@ -112,16 +141,18 @@ strong {
   border-radius: 10px;
 }
 
+.completed {
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+  bottom: 7rem;
+}
 
-.gallery-pictures:hover {
-  filter: brightness(0.9) drop-shadow(2px 4px 6px black);
+.preview-image {
+  max-height: 400px;
+  max-width: 400px;
+}
 
-  img {
-    transform: scale(1.1) !important;
-    transition-duration: 3s;
-  }
-
-  span {
-    opacity: 1;
-  }
+.customer-feedback{
+  width: 240px;
 }

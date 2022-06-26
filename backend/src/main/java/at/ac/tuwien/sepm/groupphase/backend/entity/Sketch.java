@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.FileType;
+import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +25,9 @@ public class Sketch extends Image {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = true)
+    private String customerFeedback;
+
     @ManyToOne
     @JoinColumn(nullable = false, name = "artwork")
     private Artwork artwork;
@@ -40,7 +43,7 @@ public class Sketch extends Image {
         return "Sketch{"
             + "description='" + description + '\''
             + ", artwork=" + artwork.getId()
-            + '}' + super.toString();
+            + '}';
     }
 
     @Override

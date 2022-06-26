@@ -1,8 +1,8 @@
 <mat-card *ngIf="commission && user" class="commission"
           routerLinkActive="active">
-  <mat-card-title><strong>{{commission.title}}</strong></mat-card-title>
+  <mat-card-title style="font-size: 1.2rem"><strong>{{commission.title}}</strong></mat-card-title>
   <img [src]="globals.assetsPath + profilePicture" alt="" class="commission-pfp">
-  <mat-card-content>
+  <mat-card-content style="font-size: 1rem">
     <strong>{{user.userName}}</strong>
     <br><br>
     <strong>Price: €{{commission.price}}</strong>

@@ -6,8 +6,8 @@ import {NotificationDto, NotificationType} from '../../../dtos/notificationDto';
 import {DatePipe} from '@angular/common';
 import {ReportDialogData} from '../report.service';
 import {GlobalFunctions} from '../../../global/globalFunctions';
-import {Globals} from "../../../global/globals";
-import {AuthService} from "../../auth.service";
+import {Globals} from '../../../global/globals';
+import {AuthService} from '../../auth.service';
 
 @Component({
   selector: 'app-report-dialog',

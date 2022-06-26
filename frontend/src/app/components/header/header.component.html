@@ -1,10 +1,10 @@
 <mat-toolbar class="toolbar" color="primary">
   <div fxFlex="auto" fxLayout="row">
-    <button (click)="sidenav.toggle()" class="menu-icon" mat-icon-button>
+   <!-- <button (click)="sidenav.toggle()" class="menu-icon" mat-icon-button>
       <mat-icon>menu</mat-icon>
-    </button>
+    </button> -->
   </div>
-  <span class="title" fxFlex="auto" fxLayoutAlign="center" routerLink="/">{{globals.projectName}}</span>
+  <h1 class="title" fxFlex="auto" fxLayoutAlign="center" routerLink="/">{{globals.projectName}}</h1>
   <div class="navigation-items" fxFlex="auto" fxLayout="row" fxLayoutAlign="end">
     <button (click)="openDialog(true)" *ngIf="!authService.isLoggedIn()" mat-button>Login</button>
     <button (click)="openDialog(false)" *ngIf="!authService.isLoggedIn()" mat-button>Register</button>
@@ -13,28 +13,58 @@
   </div>
 </mat-toolbar>
 
-<mat-sidenav-container (click)="sidenav.toggle()">
+<input #checkbox type="checkbox" id="menu_checkbox">
+<label (click)="toggle(sidenav);" for="menu_checkbox">
+  <div></div>
+  <div></div>
+  <div></div>
+</label>
+
+<div *ngIf="isOpen" (click)="toggleCheckbox(sidenav,checkbox)" class="close-div"></div>
+
+
+
+<mat-sidenav-container (click)="toggleCheckbox(sidenav, checkbox)">
   <mat-sidenav #sidenav [fixedInViewport]="true" mode="side">
-    <button class="close-menu-icon" mat-icon-button>
-      <mat-icon class="accent-color">close</mat-icon>
-    </button>
-    <mat-selection-list [multiple]="false" class="sidenav">
-      <mat-list-option class="accent-color" routerLink="/feed" routerLinkActive="active">
-        Explore
-      </mat-list-option>
-      <mat-list-option class="accent-color" routerLink="/artists" routerLinkActive="active">
-        Artists
-      </mat-list-option>
-      <mat-list-option class="accent-color" routerLink="/commissions" routerLinkActive="active">
-        Commissions
-      </mat-list-option>
-      <mat-list-option (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()" class="accent-color">
-        Profile
-      </mat-list-option>
-      <mat-list-option (click)="navigateToChat()" *ngIf="authService.isLoggedIn()" class="accent-color">
-        Chat
-      </mat-list-option>
+    <!--<button class="close-menu-icon" mat-icon-button>
+      <mat-icon class="sidenav-top">close</mat-icon>
+    </button> -->
+    <div class="sidenav">
+    <mat-selection-list [multiple]="false"  fxLayout="column">
+      <div class="side-nav-content top">
+         <span class="hover upper" routerLink="/feed" routerLinkActive="active">Explore</span>
+      </div>
+      <div class="side-nav-content top">
+         <span class="hover upper" routerLink="/artists" routerLinkActive="active">Artists</span>
+      </div>
+      <div class="side-nav-content top">
+          <span class="hover upper" routerLink="/commissions" routerLinkActive="active">Commissions</span>
+      </div>
+      <div class="side-nav-content top">
+        <span (click)="navigateToProfile()" *ngIf="authService.isLoggedIn()" class="hover upper">Profile</span>
+      </div>
+      <div class="side-nav-content top">
+         <span (click)="navigateToChat()" *ngIf="authService.isLoggedIn()" class="hover upper">Chat</span>
+      </div>
     </mat-selection-list>
+
+    <br>
+
+    <mat-selection-list [multiple]="false"  fxLayout="column">
+      <div class="side-nav-content bottom">
+        <span class="hover lower" routerLink="/about">About</span>
+      </div>
+      <div class="side-nav-content bottom">
+        <span class="hover lower" routerLink="/terms">Terms of Service</span>
+      </div>
+      <div class="side-nav-content bottom">
+        <span class="hover lower" routerLink="/privacy-policy">Privacy Policy</span>
+      </div>
+      <div class="side-nav-content bottom">
+        <span class="hover lower" routerLink="/contact">Contact</span>
+      </div>
+    </mat-selection-list>
+    </div>
   </mat-sidenav>
 </mat-sidenav-container>
 

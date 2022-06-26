@@ -14,7 +14,6 @@ import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageFileManager;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.CommissionStatus;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.FileType;
-import at.ac.tuwien.sepm.groupphase.backend.utils.enums.SearchConstraint;
 import at.ac.tuwien.sepm.groupphase.backend.utils.validators.CommissionValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,21 +155,25 @@ public class CommissionServiceImpl implements CommissionService {
     public List<Commission> searchCommissions(CommissionSearchDto cs) {
         log.trace("calling searchCommissions() ...");
         List<Commission> foundCommissions;
-        if (cs.getSearchConstraint() == SearchConstraint.None) {
-            foundCommissions = this.commissionRepo.searchCommissions(
+        switch (cs.getSearchConstraint()) {
+            case ASC -> foundCommissions = this.commissionRepo.searchCommissionsDateAsc(
                 cs.getName(),
                 cs.getPriceRangeLower(),
                 cs.getPriceRangeUpper(),
                 cs.getArtistId(),
                 cs.getUserId());
-        } else {
-            foundCommissions = this.commissionRepo.searchCommissionsDate(
+            case DESC -> foundCommissions = this.commissionRepo.searchCommissionsDateDesc(
                 cs.getName(),
                 cs.getPriceRangeLower(),
                 cs.getPriceRangeUpper(),
                 cs.getArtistId(),
-                cs.getUserId(),
-                cs.getSearchConstraint().toString());
+                cs.getUserId());
+            default -> foundCommissions = this.commissionRepo.searchCommissions(
+                cs.getName(),
+                cs.getPriceRangeLower(),
+                cs.getPriceRangeUpper(),
+                cs.getArtistId(),
+                cs.getUserId());
         }
 
         log.info("Retrieved all commissions {} ({}).",

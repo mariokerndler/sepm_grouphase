@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div *ngIf="isReady" ng-focus="this.resetShown()">
+<div *ngIf="isReady">
   <app-gallery-carousel
     (closeCarousel)="resetSelectedArtwork()"
     *ngIf="selectedArtwork !== null"

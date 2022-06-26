@@ -109,9 +109,12 @@ $animate: all 0.2s ease-in-out;
 
 .title {
   position: relative;
+  z-index: 1;
   font-size: 2.5rem;
-  left: 4%;
+  bottom: 3rem;
 }
+
+
 
 .navigation-items{
   button {

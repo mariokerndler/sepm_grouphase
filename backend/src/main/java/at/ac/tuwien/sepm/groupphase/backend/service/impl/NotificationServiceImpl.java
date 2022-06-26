@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NotificationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NotificationService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.NotificationFactory;
@@ -49,11 +50,23 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification findByUserAndNotificationId(ApplicationUser user, Long notificationId) {
+    public Notification findByNotificationId(Long notificationId) {
         log.trace("calling findByUserAndNotificationId() ...");
-        var foundNotifications = this.notificationRepository.findByUserAndId(user, notificationId);
-        log.info("Fetched the notification with id='{}' and userId='{}'", notificationId, user.getId());
-        return foundNotifications;
+
+        if (notificationId == null) {
+            log.error("No notification with the id null found!");
+            throw new NotFoundException("No notification with the id null found!");
+        }
+
+        var foundNotification = this.notificationRepository.findById(notificationId);
+
+        if (foundNotification.isEmpty()) {
+            log.error(String.format("No notification with the id %s found!", notificationId));
+            throw new NotFoundException(String.format("No notification with the id %s found!", notificationId));
+        }
+
+        log.info("Fetched the notification with id='{}'", notificationId);
+        return foundNotification.get();
     }
 
     @Override
@@ -89,7 +102,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void deleteNotification(Notification notification) {
         log.trace("calling deleteNotification() ...");
-        this.notificationRepository.delete(notification);
+
+        Notification foundNotification = findByNotificationId(notification.getId());
+
+        this.notificationRepository.delete(foundNotification);
         log.info("Deleted notification with id='{}'", notification.getId());
     }
 

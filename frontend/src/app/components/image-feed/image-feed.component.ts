@@ -24,6 +24,7 @@ export class ImageFeedComponent implements OnInit {
 
   @Input() artworks: ArtworkDto[];
   @Input() isUser = false;
+  @Input() isInProfile;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   tagsLoaded = false;
@@ -165,6 +166,16 @@ export class ImageFeedComponent implements OnInit {
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+  }
+
+  removeMissing(artwork: ArtworkDto) {
+    const updatedArtworks = [];
+    for (const i of this.images) {
+      if(i !== artwork){
+        updatedArtworks.push(i);
+      }
+    }
+    this.images = updatedArtworks;
   }
 
   deleteImage(artwork: ArtworkDto) {

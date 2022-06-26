@@ -1,7 +1,7 @@
 <div *ngIf="hasLoaded">
   <div class="primary title">
     <div fxFlex fxLayout>
-      <button class="back-arrow" mat-icon-button routerLink="/commissions">
+      <button class="back-arrow" mat-icon-button (click)="back()">
         <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
       </button>
     </div>
@@ -75,6 +75,11 @@
       <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
       <strong class="p-section"> {{commission.feedbackRounds}}</strong>
     </div>
+      <div *ngIf="commission.status.toString()==='LISTED' ||(commission.status.toString()==='In_PROGRESS' && userEdit)|| commission.status.toString()==='NEGOTIATING' ||
+       (this.commission.feedbackSent===this.commission.sketchesShown && commission.status.toString()==='AWAITING_PAYMENT' && artistEdit) ||
+        (this.commission.feedbackSent===this.commission.sketchesShown-1 && commission.status.toString()==='In_PROGRESS' && artistEdit)">
+        <button (click)="cancelCommission()" class="mat-primary" mat-flat-button>Cancel Commission</button>
+      </div>
       <br>
       <strong>Price: </strong>
       <strong class="p-section">${{commission.price}}</strong>
@@ -95,14 +100,17 @@
         <strong class="referenceImages">Sketches:</strong>
         <br><br>
         <div class="scrolling-container">
-          <cdk-virtual-scroll-viewport class="viewport" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
+          <cdk-virtual-scroll-viewport [ngStyle]="(commission.artworkDto.sketchesDtos[0].customerFeedback.length > 0) ? {'height': '300px'}: {'height': '240px'}" class="viewport" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
                                        orientation="horizontal">
             <div *ngFor="let reference of sketches; let i = index" class="image-container">
               <img (click)="setSelectedArtwork(i, false) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
               <br>
-              <span *ngIf="reference.customerFeedback.length>0">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
-              <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
+              <div *ngIf="reference.customerFeedback.length>0">
+                <b>Customer Feedback:</b>
+                <p class="customer-feedback" >{{reference.customerFeedback.split("%")[0]}}</p>
+              </div>
+                <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>
           </cdk-virtual-scroll-viewport>
@@ -156,7 +164,7 @@
 
     <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start">
       <mat-form-field style="width: 60%; padding-top: 1em">
-        <textarea [(ngModel)]="this.uploadedSketchDto.customerFeedback" class="feedbackBox" color="secondary" matInput
+        <textarea [(ngModel)]="this.uploadedSketchDto.customerFeedback" class="feedbackBox" color="secondary" matInput [maxLength]="230"
                   placeholder="Leave a comment"></textarea>
       </mat-form-field>
     </div>
@@ -164,7 +172,7 @@
       <button (click)="toggleFeedbackField()" color="primary" fxLayoutAlign="center"
               mat-flat-button>{{feedbackButtonStates[feedbackButtonIndex]}}</button>
       <div *ngIf="feedbackButtonIndex===1">
-        <button (click)="updateCommission()" color="primary" fxLayoutAlign="center" mat-flat-button>Upload</button>
+        <button (click)="updateCommission(true);" color="primary" fxLayoutAlign="center" mat-flat-button>Upload</button>
       </div>
     </div>
 
@@ -173,15 +181,10 @@
       <form [formGroup]="sketchForm" fxLayout="row" fxLayoutAlign="center end">
         <div *ngIf="commission.feedbackSent < commission.feedbackRounds">
           <button (click)="openSketchDialog()" color="primary" mat-button>
-            <!--<input #fileInput (change)="fileSelected($event)"
-                   accept=".png,.jpg,.jpeg" style="display: none;" type="file"> -->
             <mat-icon  color="primary">upload</mat-icon>
             <span style="font-size: 1.2rem">Upload new Sketch</span>
           </button>
         </div>
-        <!--<div *ngIf="this.uploadedSketchDto">
-          <button (click)="updateCommission()" color="primary" mat-flat-button>Confirm Upload</button>
-        </div> -->
         <br>
         <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
           <mat-icon color="primary">upload</mat-icon>

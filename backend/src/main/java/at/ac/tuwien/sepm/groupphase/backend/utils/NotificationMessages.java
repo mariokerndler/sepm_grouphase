@@ -34,7 +34,7 @@ public final class NotificationMessages {
     public static final String COMMISSION_STATUS_NEGOTIATING = "The commission information has been edited.";
     public static final String COMMISSION_PAID_FOR = "The commission has been paid for. You can start on your art now.";
 
-    // Candidate has been chose
+    // Candidate has been chosen
     public static final String COMMISSION_CANDIDATE_CHOSEN = "You have been chosen for the commission.";
 
     // Review has been uploaded

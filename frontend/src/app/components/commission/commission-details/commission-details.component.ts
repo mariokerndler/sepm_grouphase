@@ -201,11 +201,11 @@ export class CommissionDetailsComponent implements OnInit {
       sketch.imageUrl = 'default';
       sketch.artworkId = this.commission.artworkDto.id;
       this.uploadedSketchDto = sketch;
-      this.updateCommission();
+      this.updateCommission(false);
     };
   }
 
-  updateCommission() {
+  updateCommission(isFeedback: boolean) {
     //artist added sketch
     if (this.uploadedSketchDto !== null && this.artistEdit) {
       if (this.commission.artworkDto.sketchesDtos == null) {
@@ -229,9 +229,18 @@ export class CommissionDetailsComponent implements OnInit {
       += '%' + new Date().toLocaleDateString();
     c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].customerFeedback
       += '%' + new Date().toLocaleDateString();
-    this.commissionService.updateCommission(c).subscribe((commission) => console.log(commission));
-
+    this.commissionService.updateCommission(c).subscribe((commission) => {
+      console.log(commission);
+      if(!isFeedback){
+        window.location.reload();
+      }
+    });
     this.checkCommissionState(this.commission);
+
+    if(isFeedback){
+      this.allowFeedback = false;
+    }
+
   }
 
 
@@ -319,7 +328,14 @@ export class CommissionDetailsComponent implements OnInit {
       }
     );
   }
-
+  cancelCommission() {
+    this.commission.status= CommissionStatus.canceled;
+    this.commissionService.updateCommission(this.commission).subscribe(succes=>{
+      this.notificationService.displaySuccessSnackbar('Commission has been canceled');
+    }, error => {
+      this.notificationService.displayErrorSnackbar('An error occurred when canceling the commission');
+    });
+  }
   openSketchDialog() {
     const dialogRef = this.dialog.open(UploadComponent, {
       data: {
@@ -334,6 +350,10 @@ export class CommissionDetailsComponent implements OnInit {
         this.fileSelected(result.data, result.feedback);
       }
     });
+  }
+
+  back() {
+    this.location.back();
   }
 
   calculateProgress(): number{
@@ -369,4 +389,5 @@ export class CommissionDetailsComponent implements OnInit {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
     }
   }
+
 }

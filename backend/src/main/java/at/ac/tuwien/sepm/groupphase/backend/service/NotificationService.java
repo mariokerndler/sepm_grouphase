@@ -29,13 +29,12 @@ public interface NotificationService {
     List<Notification> findByUser(ApplicationUser user, Integer limit);
 
     /**
-     * Retrieve an existing {@link Notification notification entity} from a given {@link ApplicationUser user} and an {@link Notification#getId()}.
+     * Retrieve an existing {@link Notification notification entity} for a given {@link Notification#getId()}.
      *
-     * @param user           The {@link ApplicationUser user} from which the notifications will be fetched.
      * @param notificationId The {@link Notification#getId()} of the notification that will be fetched.
      * @return The found {@link Notification notification entity}.
      */
-    Notification findByUserAndNotificationId(ApplicationUser user, Long notificationId);
+    Notification findByNotificationId(Long notificationId);
 
     /**
      * Retrieve all existing {@link Notification notification entities} from a given {@link ApplicationUser user}, {@link NotificationType type} and limit.

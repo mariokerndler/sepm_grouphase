@@ -1,4 +1,5 @@
-<form class="col-12" style="padding-left: 2%">
+<span *ngIf="!isInProfile" fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem; margin-bottom: 1rem" class="timeline-title">Browse Artworks</span>
+<form *ngIf="!isInProfile" class="col-12" style="padding-left: 2%">
   <div>
     <mat-form-field >
       <mat-label class="primary">Search</mat-label>
@@ -7,7 +8,7 @@
              class="primary" matInput name="searchForm" placeholder="search">
     </mat-form-field>
     <span style="margin-left: 10px"></span>
-    <button (click)="searchParams.pageNr=0; loadFeed()" color="primary" mat-stroked-button style="padding:0.1rem; font-size: 1.2rem">Go</button>
+    <button (click)="searchParams.pageNr=0; loadFeed()" color="primary" mat-stroked-button style="padding:0.1rem; font-size: 1.2rem">Search</button>
     <br>
     <button color="primary" mat-stroked-button style="padding:0.1rem 0.5rem">
     <mat-label style="font-size: 1.2rem;" [matMenuTriggerFor]="tagListMenu" class="primary">Tags
@@ -40,6 +41,8 @@
 </form>
 
 
+
+
 <mat-divider></mat-divider>
 <div class="container" id="container">
   <div class="header"><br></div>
@@ -59,7 +62,7 @@
           <button (click)="deleteImage(artwork)" *ngIf="isUser" class="delete" color="primary" mat-icon-button>
             <mat-icon>delete</mat-icon>
           </button>
-          <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" alt="" appHideMissing>
+          <img (click)="setSelectedArtwork(i) " [src]="globals.assetsPath + artwork.imageUrl" alt="" (error)="removeMissing(artwork)">
 
           <div class="card-img-description-layer">
             <p class="card-img-description">

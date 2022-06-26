@@ -39,20 +39,4 @@ public class PaymentServiceImpl implements PaymentService {
 
         commissionService.updateCommission(commission);
     }
-
-    // TODO: Remove after testing
-    @Override
-    @Transactional
-    public void updateCommissionAfterPaymentTest(Long commissionId) {
-        Commission commission = commissionService.findById(commissionId);
-
-        if (commission.getStatus() == CommissionStatus.AWAITING_PAYMENT) {
-            commission.setStatus(CommissionStatus.IN_PROGRESS);
-        }
-
-        // Create notification to notify users that commission has been paid
-        notificationService.createNotificationByCommissionAfterPayment(commission);
-
-        commissionService.updateCommission(commission);
-    }
 }

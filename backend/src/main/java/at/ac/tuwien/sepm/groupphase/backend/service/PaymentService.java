@@ -9,6 +9,4 @@ public interface PaymentService {
      */
     void updateCommissionAfterPayment(Session stripeSession);
 
-    // TODO: Remove after testing
-    void updateCommissionAfterPaymentTest(Long commissionId);
 }

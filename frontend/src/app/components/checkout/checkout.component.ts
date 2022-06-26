@@ -24,15 +24,4 @@ export class CheckoutComponent {
       'http://localhost:4200/#/commissions/' + this.commission.id,
       'http://localhost:4200/#/commissions/' + this.commission.id);
   }
-
-  //TODO: Remove after testing
-  payTest(): void {
-    this.checkoutService.paymentWithoutCheckoutTest(
-      this.commission.id,
-      'eur',
-      'http://localhost:4200/#/cancel',
-      'http://localhost:4200/#/success')
-      .subscribe();
-    window.location.reload();
-  }
 }

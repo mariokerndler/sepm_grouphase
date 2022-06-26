@@ -70,11 +70,11 @@
       <br>
       <strong>Feedback-Rounds: </strong>
       <div *ngIf="commission.status.toString()==='In_PROGRESS' || commission.status.toString()==='COMPLETED'">
-      <strong class="p-section"> {{commission.feedbackSent}}/{{commission.feedbackRounds}}</strong>
+        <strong class="p-section"> {{commission.feedbackSent}}/{{commission.feedbackRounds}}</strong>
       </div>
       <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
-      <strong class="p-section"> {{commission.feedbackRounds}}</strong>
-    </div>
+        <strong class="p-section"> {{commission.feedbackRounds}}</strong>
+      </div>
       <br>
       <strong>Price: </strong>
       <strong class="p-section">${{commission.price}}</strong>
@@ -136,8 +136,11 @@
     </div>
 
     <div *ngIf="this.commission.status.toString()==='NEGOTIATING'" fxLayout="col" fxLayoutAlign="center start">
-        <button *ngIf="this.userEdit" (click)="startCommission()" color="primary" mat-flat-button>Start Commission</button>
-        <label *ngIf="this.artistEdit">Waiting for user to accept</label>
+      <button *ngIf="this.userEdit" (click)="editCommission()" color="primary" mat-flat-button>Edit Commission Details
+      </button>
+      <button *ngIf="this.userEdit" (click)="startCommission()" color="primary" mat-flat-button>Start Commission
+      </button>
+      <label *ngIf="this.artistEdit">Waiting for user to accept</label>
     </div>
 
     <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start">

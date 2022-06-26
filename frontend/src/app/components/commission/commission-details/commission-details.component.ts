@@ -19,7 +19,6 @@ import {Globals} from '../../../global/globals';
 import {Location} from '@angular/common';
 
 
-
 @Component({
   selector: 'app-commission-details',
   templateUrl: './commission-details.component.html',
@@ -287,6 +286,14 @@ export class CommissionDetailsComponent implements OnInit {
         });
       }
     });
+  }
+
+  //triggered by User
+  editCommission() {
+    this.router.navigate(['/commissions/' + this.commission.id + '/edit'])
+      .catch((_) =>
+        this.notificationService.displayErrorSnackbar(`Could not navigate to edit screen for commission ${this.commission.id}.`)
+      );
   }
 
   //triggered by User

@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
@@ -49,17 +48,12 @@ public class NotificationEndpoint {
         @RequestParam(value = "notificationType", required = false) NotificationType notificationType,
         @RequestParam(value = "limit", required = false, defaultValue = "") Integer limit) {
         log.info("A user is trying fetch all notifications from an user.");
-        try {
-            var notifications = getNotificationsByUserAndTriggerAction(userId, notificationType, limit);
+        var notifications = getNotificationsByUserAndTriggerAction(userId, notificationType, limit);
 
-            return notifications
-                .stream()
-                .map(notificationMapper::notificationToNotificationDto)
-                .collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return notifications
+            .stream()
+            .map(notificationMapper::notificationToNotificationDto)
+            .collect(Collectors.toList());
     }
 
     @PermitAll
@@ -71,18 +65,14 @@ public class NotificationEndpoint {
         @RequestParam("userId") Long userId
     ) {
         log.info("A user is trying to fetch all unread notifications from an user.");
-        try {
-            var user = userService.findUserById(userId);
-            var notifications = notificationService.findByUserAndIsRead(user, false);
 
-            return notifications
-                .stream()
-                .map(notificationMapper::notificationToNotificationDto)
-                .collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        var user = userService.findUserById(userId);
+        var notifications = notificationService.findByUserAndIsRead(user, false);
+
+        return notifications
+            .stream()
+            .map(notificationMapper::notificationToNotificationDto)
+            .collect(Collectors.toList());
     }
 
     @PermitAll
@@ -95,53 +85,36 @@ public class NotificationEndpoint {
         @RequestParam(value = "notificationType", required = false) NotificationType notificationType,
         @PathVariable Boolean hasRead) {
         log.info("A user is trying patch all notifications from an user.");
-        try {
-            var notifications = getNotificationsByUserAndTriggerAction(userId, notificationType, null);
 
-            notifications.forEach((n) -> {
-                n.setRead(hasRead);
-                notificationService.saveNotification(n);
-            });
+        var notifications = getNotificationsByUserAndTriggerAction(userId, notificationType, null);
 
-            return notifications
-                .stream()
-                .map(notificationMapper::notificationToNotificationDto)
-                .collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+        notifications.forEach((n) -> {
+            n.setRead(hasRead);
+            notificationService.saveNotification(n);
+        });
+
+        return notifications
+            .stream()
+            .map(notificationMapper::notificationToNotificationDto)
+            .collect(Collectors.toList());
     }
 
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     @PatchMapping("/{id}/{hasRead}")
-    @Operation(summary = "Mark all notifications as read true/false by user id.")
-    public NotificationDto pathNotificationIsReadOfIdFromUser(
+    @Operation(summary = "Mark notification with id as read true/false.")
+    public NotificationDto patchNotificationWithIdIsRead(
         @PathVariable Long id,
-        @PathVariable Boolean hasRead,
-        @RequestParam("userId") Long userId
+        @PathVariable Boolean hasRead
     ) {
-        log.info("A user is trying patch the notifications from an user.");
-        var user = userService.findUserById(userId);
+        log.info(String.format("A user is trying patch the notification with id %s.", id.toString()));
 
-        var notification = notificationService.findByUserAndNotificationId(user, id);
+        var notification = notificationService.findByNotificationId(id);
 
-        if (notification == null) {
-            var exception = new NotFoundException("Notification with id '" + id + "' from user with id '" + userId + "' not found.");
-            log.error(exception.getMessage(), exception);
-            throw exception;
-        }
-
-        try {
-            notification.setRead(hasRead);
-            notificationService.saveNotification(notification);
-            return notificationMapper.notificationToNotificationDto(notification);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+        notification.setRead(hasRead);
+        notificationService.saveNotification(notification);
+        return notificationMapper.notificationToNotificationDto(notification);
     }
 
     @PermitAll
@@ -151,13 +124,8 @@ public class NotificationEndpoint {
     @Transactional
     public void createNotification(@RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to create a notifications.");
-        try {
-            notificationService
-                .saveNotification(notificationMapper.notificationDtoToNotification(notificationDto));
-        } catch (Exception e) {
-            log.error(e.getMessage() + notificationDto.toString(), e);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
-        }
+        notificationService
+            .saveNotification(notificationMapper.notificationDtoToNotification(notificationDto));
     }
 
     @PermitAll
@@ -165,19 +133,19 @@ public class NotificationEndpoint {
     @DeleteMapping
     @Operation(summary = "Delete a notification")
     @Transactional
-    public void deleteNotification(@RequestBody NotificationDto notificationDto) {
+    public void deleteNotification(@Valid @RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to delete a notification.");
-        try {
-            notificationService
-                .deleteNotification(notificationMapper.notificationDtoToNotification(notificationDto));
-        } catch (Exception e) {
-            log.error(e.getMessage() + notificationDto.toString(), e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+
+        notificationService
+            .deleteNotification(notificationMapper.notificationDtoToNotification(notificationDto));
     }
 
 
-    private List<Notification> getNotificationsByUserAndTriggerAction(Long userId, NotificationType notificationType, Integer limit) {
+    private List<Notification> getNotificationsByUserAndTriggerAction(
+        Long userId,
+        NotificationType notificationType,
+        Integer limit) {
+
         var user = userService.findUserById(userId);
 
         List<Notification> notifications;

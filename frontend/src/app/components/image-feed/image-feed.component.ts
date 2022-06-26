@@ -158,7 +158,6 @@ export class ImageFeedComponent implements OnInit {
       .filter(menuitem => menuitem.selected)
       .map(menuitem => menuitem.id.toString());
     this.searchParams.pageNr = 0;
-    console.log(this.searchParams.tagIds);
     this.loadFeed();
   }
 
@@ -166,6 +165,16 @@ export class ImageFeedComponent implements OnInit {
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
+  }
+
+  removeMissing(artwork: ArtworkDto) {
+    const updatedArtworks = [];
+    for (const i of this.images) {
+      if(i !== artwork){
+        updatedArtworks.push(i);
+      }
+    }
+    this.images = updatedArtworks;
   }
 
   deleteImage(artwork: ArtworkDto) {

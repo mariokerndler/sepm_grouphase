@@ -16,7 +16,7 @@ public class CommissionSearchDto {
     private String priceRangeLower;
     private String artistId;
     private String userId;
-    private SearchConstraint searchConstraint;
+    private SearchConstraint dateOrder;
     private String name;
     private String pageNr;
 
@@ -26,7 +26,7 @@ public class CommissionSearchDto {
             + "priceRangeUpper='" + priceRangeUpper + '\''
             + ", priceRangeLower='" + priceRangeLower + '\''
             + ", artistId='" + artistId + '\''
-            + ", searchConstraint=" + searchConstraint
+            + ", searchConstraint=" + dateOrder
             + ", name='" + name + '\''
             + ", pageNr='" + pageNr + '\'' + '}';
     }
@@ -48,7 +48,7 @@ public class CommissionSearchDto {
             && priceRangeUpper == null
             && artistId == null
             && userId == null
-            && searchConstraint == null
+            && dateOrder == null
             && name == null;
     }
 }

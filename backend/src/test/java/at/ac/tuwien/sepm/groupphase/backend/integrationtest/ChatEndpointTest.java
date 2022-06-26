@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ApplicationUserDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ChatDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.mapper.ChatMapper;
@@ -45,19 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableWebMvc
 public class ChatEndpointTest {
     @Autowired
-    private WebApplicationContext webAppContext;
-
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private ArtistRepository artistRepository;
-
-    @Autowired
-    private ArtworkRepository artworkRepository;
-    @Autowired
     UserRepository userRepository;
     @Autowired
     ChatRepository chatRepository;
@@ -67,6 +53,16 @@ public class ChatEndpointTest {
     ChatMessageMapper chatMessageMapper;
     @Autowired
     ChatMapper chatMapper;
+    @Autowired
+    private WebApplicationContext webAppContext;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private ArtistRepository artistRepository;
+    @Autowired
+    private ArtworkRepository artworkRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -144,7 +140,7 @@ public class ChatEndpointTest {
     @Test
     @Transactional
     @WithMockUser
-    public void addChat() throws Exception {
+    public void chatCreatedSuccessfully() throws Exception {
         List<ApplicationUserDto> users = allUsers();
         Long id = users.get(0).getId();
 
@@ -161,7 +157,10 @@ public class ChatEndpointTest {
 
         List<ApplicationUser> chats = allChatsForUser(id);
         assertEquals(1, chats.size());
-        assertTrue(chats.get(0).getId()==users.get(1).getId());
+        assertTrue(chats.get(0).getId() == users.get(1).getId());
+        mockMvc.perform(post("/api/v1//chats/chat").contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+            .andExpect(status().isUnprocessableEntity()).andReturn();
     }
 
     public List<ApplicationUserDto> allUsers() throws Exception {

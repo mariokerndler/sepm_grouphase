@@ -76,6 +76,26 @@ public class UserDataGenerator {
         this.commissionService = commissionService;
     }
 
+    public static byte[] getImageBytes(String imageUrl) throws IOException {
+        URL url = new URL(imageUrl);
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        try (InputStream stream = url.openStream()) {
+            byte[] buffer = new byte[4096];
+
+            while (true) {
+                int bytesRead = stream.read(buffer);
+                if (bytesRead < 0) {
+                    break;
+                }
+                output.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return output.toByteArray();
+    }
+
     @PostConstruct
     private void generateUser() throws IOException {
         if (tagRepository.findAll().size() < NUMBER_OF_TAGS_TO_GENERATE) {
@@ -282,8 +302,22 @@ public class UserDataGenerator {
         commissionService.saveCommission(c);
         Commission d = generateCommission1(artists.get(1), users.get(4));
         commissionService.saveCommission(d);
+
         Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);
+        Artwork artwork0 = new Artwork();
+        artwork0.setCommission(e);
+        artwork0.setArtist(artist);
+        artwork0.setFileType(FileType.JPG);
+        artwork0.setDescription("Artwork description");
+        artwork0.setName("Artwork");
+        artwork0.setImageData(getImageBytes(urls[2]));
+        ImageFileManager ifm = new ImageFileManager();
+        String st = ifm.writeCommissionArtwork(e, artwork0);
+        artwork0.setImageUrl(st);
+        artworkRepo.save(artwork0);
+        e.setArtwork(artwork0);
+
         Commission f = generateCommission4(artist, user);
         commissionService.saveCommission(f);
         Artwork artwork = new Artwork();
@@ -293,7 +327,6 @@ public class UserDataGenerator {
         artwork.setDescription("Artwork description");
         artwork.setName("Artwork");
         artwork.setImageData(getImageBytes(urls[7]));
-        ImageFileManager ifm = new ImageFileManager();
         String s = ifm.writeCommissionArtwork(f, artwork);
         artwork.setImageUrl(s);
         List<Sketch> sketches = new LinkedList<>();
@@ -314,6 +347,8 @@ public class UserDataGenerator {
         Commission g = generateCommission5(artists.get(0), users.get(4));
         commissionService.saveCommission(g);
 
+        Commission h = generateCommissionTestNegotiating(artist, user);
+        commissionService.saveCommission(h);
 
     }
 
@@ -329,7 +364,7 @@ public class UserDataGenerator {
         commission.setFeedbackSent(0);
         commission.setFeedbackRounds(2);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setIssueDate(LocalDateTime.now());
+        commission.setIssueDate(LocalDateTime.now().minusDays(2));
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote();
@@ -431,10 +466,10 @@ public class UserDataGenerator {
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission3");
-        commission.setSketchesShown(4);
-        commission.setFeedbackSent(4);
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setFeedbackRounds(4);
+        commission.setFeedbackRounds(0);
         commission.setIssueDate(LocalDateTime.now().minusDays((int) (Math.random() * 100)));
         commission.setDeadlineDate(LocalDateTime.now());
         commission.setStatus(CommissionStatus.COMPLETED);
@@ -550,7 +585,7 @@ public class UserDataGenerator {
         sketches.add(k);
         Reference reference = new Reference();
         reference.setImageUrl("data\\com\\adminSample Commission4\\bReference");
-        reference.setImageData(getImageBytes(urls[1]));
+        reference.setImageData(getImageBytes(urls[5]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
         List<Reference> references = new LinkedList<>();
@@ -574,7 +609,7 @@ public class UserDataGenerator {
         commission.setFeedbackSent(0);
         commission.setFeedbackRounds(5);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setIssueDate(LocalDateTime.now());
+        commission.setIssueDate(LocalDateTime.now().minusDays(1));
         commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
         commission.setStatus(CommissionStatus.LISTED);
         String desc = faker.shakespeare().hamletQuote();
@@ -608,24 +643,74 @@ public class UserDataGenerator {
         return commission;
     }
 
-    public static byte[] getImageBytes(String imageUrl) throws IOException {
-        URL url = new URL(imageUrl);
+    private Commission generateCommissionTestNegotiating(Artist artist, ApplicationUser user) throws IOException {
 
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        Faker faker = new Faker();
+        Commission commission = new Commission();
+        commission.setArtist(artist);
+        commission.setCustomer(user);
+        commission.setTitle("Commission where price is still being negotiated");
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
+        commission.setPrice((int) (Math.random() * 10000));
+        commission.setFeedbackRounds(3);
+        commission.setIssueDate(LocalDateTime.now());
+        commission.setDeadlineDate(LocalDateTime.now().plusDays((int) (Math.random() * 100)));
+        commission.setStatus(CommissionStatus.NEGOTIATING);
+        String desc = faker.shakespeare().hamletQuote();
+        if (desc.length() > 50) {
+            desc = desc.substring(0, 49);
+        }
+        commission.setInstructions(desc);
 
-        try (InputStream stream = url.openStream()) {
-            byte[] buffer = new byte[4096];
-
-            while (true) {
-                int bytesRead = stream.read(buffer);
-                if (bytesRead < 0) {
-                    break;
+        Artwork a = new Artwork();
+        List<Sketch> sketches = new LinkedList<>();
+        ImageFileManager ifm = new ImageFileManager();
+        String assetAbsoluteLocation = Path.of("").toAbsolutePath().toString().replace("\\backend", "") + "\\frontend\\src\\assets\\";
+        ifm.createFolderIfNotExists(assetAbsoluteLocation + "data\\com\\Sample Commission Test Negotiating\\");
+        for (int i = 5; i > 1; i--) {
+            if (i == 4) {
+                a.setArtist(artist);
+                a.setName("Sample Test Commission Art");
+                desc = faker.shakespeare().hamletQuote();
+                if (desc.length() > 50) {
+                    desc = desc.substring(0, 49);
                 }
-                output.write(buffer, 0, bytesRead);
+                a.setDescription(desc);
+                a.setImageUrl("data\\com\\Sample Commission Test Negotiating\\b" + i);
+                a.setFileType(FileType.JPG);
+            } else {
+                Sketch k = new Sketch();
+                k.setFileType(FileType.JPG);
+                k.setArtwork(a);
+                k.setImageData(getImageBytes(urls[i + 3]));
+                k.setDescription("Sketch " + i);
+                k.setImageUrl("data\\com\\Sample Commission Test Negotiating\\b" + i);
+                k.setCustomerFeedback("looks good " + i);
+                sketches.add(k);
+
             }
         }
-
-        return output.toByteArray();
+        Sketch k = new Sketch();
+        k.setFileType(FileType.GIF);
+        k.setArtwork(a);
+        k.setImageData(getImageBytes(urls[8]));
+        k.setDescription("Sketch GIF");
+        k.setImageUrl("data\\com\\Sample Commission Test Negotiating\\bGIF");
+        sketches.add(k);
+        Reference reference = new Reference();
+        reference.setImageUrl("data\\com\\Sample Commission Test Negotiating\\bReference");
+        reference.setImageData(getImageBytes(urls[1]));
+        reference.setCommission(commission);
+        reference.setFileType(FileType.JPG);
+        List<Reference> references = new LinkedList<>();
+        references.add(reference);
+        ifm.writeReferenceDatagenImage(commission, reference, "data\\com\\Sample Commission Test Negotiating\\bReference");
+        a.setSketches(sketches);
+        commission.setArtistCandidates(null);
+        commission.setReferences(references);
+        commission.setArtwork(a);
+        return commission;
     }
 
     //old approach not working, issues with cloudflare protection 403 error.

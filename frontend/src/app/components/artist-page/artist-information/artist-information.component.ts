@@ -35,7 +35,6 @@ export class ArtistInformationComponent implements OnInit {
   ngOnInit(): void {
     if (this.artist.profileSettings) {
       this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
-      console.log(this.profileSettings);
     }
     this.loggedInUserId = Number.parseInt(localStorage.getItem('userId'), 10);
   }
@@ -49,7 +48,6 @@ export class ArtistInformationComponent implements OnInit {
     const chat: ChatDto = {
       chatPartnerId: this.artist.id, userId: this.loggedInUserId
     };
-    console.log(chat);
     this.chatService.postChat(chat).subscribe(success => {
       this.router.navigate(['/chat/' + this.loggedInUserId]);
     }, error => {

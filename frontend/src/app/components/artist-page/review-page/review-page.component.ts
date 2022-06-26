@@ -31,7 +31,7 @@ export class ReviewPageComponent implements OnInit {
 
   private fetchReviews() {
     const searchCom: CommissionSearchDto = {
-      date: SearchConstraint.none,
+      dateOrder: SearchConstraint.none,
       name: '',
       priceRange: [0, this.globals.maxCommissionPrice],
       artistId: String(this.user.id),

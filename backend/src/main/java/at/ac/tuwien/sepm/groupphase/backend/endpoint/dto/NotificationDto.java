@@ -24,8 +24,8 @@ public class NotificationDto {
 
     private Long id;
 
+    @ValidAlphaNumericWithSpaces
     @Size(max = 255)
-    @NotNull
     @NotBlank
     private String title;
 

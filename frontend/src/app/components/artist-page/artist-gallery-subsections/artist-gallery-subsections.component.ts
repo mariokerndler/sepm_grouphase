@@ -36,13 +36,24 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 
+  removeMissing(artwork: ArtworkDto) {
+    const updatedArtworks = [];
+    for (const i of this.artworks) {
+      if(i !== artwork){
+        updatedArtworks.push(i);
+      }
+    }
+    this.artworks = updatedArtworks;
+  }
+
   private fetchArtworksFromUser(artistId: number) {
-    this.artworkService.getArtworksByArtist(artistId).subscribe({
-      next: (loadedArtworks) => {
-        this.artworks = loadedArtworks;
+    this.artworkService.getArtworksByArtist(artistId).subscribe(
+      //temporary solution until be is fixed.
+      (artworks) => {
+        this.artworks = artworks;
         this.isReady = true;
       }
-    });
+    );
   }
 
   private fetchArtworksByTags() {
@@ -65,4 +76,6 @@ export class ArtistGallerySubsectionsComponent implements OnInit {
       }
     });
   }
+
+
 }

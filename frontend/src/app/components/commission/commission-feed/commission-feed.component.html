@@ -30,7 +30,7 @@
   </div>
   <mat-form-field appearance="fill" class="search-field">
     <mat-label class="primary">Time</mat-label>
-    <mat-select [(ngModel)]="searchCom.date">
+    <mat-select [(ngModel)]="searchCom.dateOrder">
       <div *ngFor="let enum of searchEnum | keyvalue">
         <mat-option [value]="enum.value">{{enum.value}}</mat-option>
 
@@ -38,9 +38,8 @@
 
     </mat-select>
   </mat-form-field>
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <button (click)="search()" class="primary" color="primary" fxLayout="column" fxLayoutAlign="center" mat-flat-button
-            style="float:right">
+  <div fxLayout="column" fxLayoutAlign="center center" >
+    <button fxLayout="column" fxLayoutAlign="center"  (click)="fetchCommissions()" class="primary" color="primary" mat-flat-button style="float:right">
       Search
     </button>
   </div>

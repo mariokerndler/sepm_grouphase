@@ -11,7 +11,6 @@ export class Adapter extends ChatAdapter {
   }
 
   getMessageHistory(destinataryId: any): Observable<Message[]> {
-    console.log(destinataryId);
     return this.chatService.chatHistoryMapper(this.userId, destinataryId,);
   }
 

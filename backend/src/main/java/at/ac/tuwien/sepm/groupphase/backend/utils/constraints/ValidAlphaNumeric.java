@@ -1,5 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.utils.constraints;
 
+import at.ac.tuwien.sepm.groupphase.backend.utils.validators.ValidAlphaNumericValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.NotBlank;

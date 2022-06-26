@@ -21,7 +21,6 @@ export class ReviewCardComponent {
 
   navigateToUser() {
     if (this.review.customerDto.userRole === UserRole.user) {
-      console.log(this.review);
       this.router.navigate(['/user', this.review.customerDto.id])
         .catch(() => this.notificationService.displayErrorSnackbar('Could not navigate to user.'));
     } else {

@@ -58,7 +58,7 @@ public class CommissionEndpoint {
                                                        @RequestParam(defaultValue = "0", name = "priceRangeLower") String priceRangeLower,
                                                        @RequestParam(defaultValue = "", name = "artistId") String artistId,
                                                        @RequestParam(defaultValue = "", name = "userId") String userId,
-                                                       @RequestParam(defaultValue = "None", name = "date") String dateConstraint
+                                                       @RequestParam(defaultValue = "None", name = "date") SearchConstraint dateConstraint
     ) {
         log.info("A user is trying to search for a commission.");
         CommissionSearchDto cs = generateSearchDto(name, artistId, dateConstraint, priceRangeLower, priceRangeUpper, pageNr, userId);
@@ -72,12 +72,12 @@ public class CommissionEndpoint {
     @Operation(summary = "Get all detailed commissions filtered")
     @Transactional
     public List<DetailedCommissionDto> searchDetailed(@RequestParam(defaultValue = "", name = "name") String name,
-                                                       @RequestParam(defaultValue = "0", name = "pageNr") String pageNr,
-                                                       @RequestParam(defaultValue = "50000", name = "priceRangeUpper") String priceRangeUpper,
-                                                       @RequestParam(defaultValue = "0", name = "priceRangeLower") String priceRangeLower,
-                                                       @RequestParam(defaultValue = "", name = "artistId") String artistId,
-                                                       @RequestParam(defaultValue = "", name = "userId") String userId,
-                                                       @RequestParam(defaultValue = "None", name = "date") String dateConstraint
+                                                      @RequestParam(defaultValue = "0", name = "pageNr") String pageNr,
+                                                      @RequestParam(defaultValue = "50000", name = "priceRangeUpper") String priceRangeUpper,
+                                                      @RequestParam(defaultValue = "0", name = "priceRangeLower") String priceRangeLower,
+                                                      @RequestParam(defaultValue = "", name = "artistId") String artistId,
+                                                      @RequestParam(defaultValue = "", name = "userId") String userId,
+                                                      @RequestParam(defaultValue = "None", name = "dateOrder") SearchConstraint dateConstraint
     ) {
         log.info("A user is trying to search for detailed commissions.");
         CommissionSearchDto cs = generateSearchDto(name, artistId, dateConstraint, priceRangeLower, priceRangeUpper, pageNr, userId);
@@ -125,7 +125,6 @@ public class CommissionEndpoint {
         }
     }
 
-    //TODO: permit only admin
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
@@ -140,19 +139,11 @@ public class CommissionEndpoint {
         }
     }
 
-    private CommissionSearchDto generateSearchDto(String name, String artistId, String dateConstraint, String priceRangeLower, String priceRangeUpper, String pageNr, String userId) {
+    private CommissionSearchDto generateSearchDto(String name, String artistId, SearchConstraint dateConstraint, String priceRangeLower, String priceRangeUpper, String pageNr, String userId) {
         CommissionSearchDto cs = new CommissionSearchDto();
         cs.setName(name.toLowerCase());
         cs.setArtistId(artistId);
-
-        if (dateConstraint.toLowerCase().contains(SearchConstraint.ASC.toString().toLowerCase())) {
-            cs.setSearchConstraint(SearchConstraint.ASC);
-        } else if (dateConstraint.toLowerCase().contains(SearchConstraint.DESC.toString().toLowerCase())) {
-            cs.setSearchConstraint(SearchConstraint.DESC);
-        } else {
-            cs.setSearchConstraint(SearchConstraint.None);
-        }
-
+        cs.setDateOrder(dateConstraint);
         cs.setPriceRangeLower(priceRangeLower);
         cs.setPriceRangeUpper(priceRangeUpper);
         cs.setPageNr(pageNr);

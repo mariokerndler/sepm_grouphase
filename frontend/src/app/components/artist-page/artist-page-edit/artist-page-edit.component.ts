@@ -362,6 +362,7 @@ export class ArtistPageEditComponent implements OnInit, OnDestroy {
 
   upgradeUser() {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      width: '500px',
       data: {
         title: 'Upgrade to artist account',
         message: 'Are you sure you want to be an artist?'

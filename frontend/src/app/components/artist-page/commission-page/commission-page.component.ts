@@ -17,7 +17,7 @@ export class CommissionPageComponent implements OnInit {
   commissions: CommissionDto[];
   hasLoaded = false;
   searchCom: CommissionSearchDto = {
-    date: SearchConstraint.asc, name: '', priceRange: [0, 500000], userId: '', artistId: '', pageNr: 0
+    dateOrder: SearchConstraint.asc, name: '', priceRange: [0, 500000], userId: '', artistId: '', pageNr: 0
   };
 
   constructor(
@@ -39,7 +39,6 @@ export class CommissionPageComponent implements OnInit {
     this.commissionService.filterDetailedCommissions(this.searchCom).subscribe(
       (data) => {
         this.commissions = data;
-        console.log(data);
       });
   }
 }

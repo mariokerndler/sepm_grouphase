@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.utils.ImageDataPaths;
@@ -26,12 +27,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @PersistenceContext
-    EntityManager entityManager;
-
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final ImageFileManager ifm;
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -107,6 +107,10 @@ public class UserServiceImpl implements UserService {
 
         updateProfilePictureFiles(null, user);
 
+        if (userRepo.findApplicationUserByEmail(user.getEmail()) != null) {
+            throw new ValidationException("Email already in use, please choose a different one!");
+        }
+
         userRepo.save(user);
         log.info("Created an application user with id='{}'", user.getId());
     }
@@ -165,7 +169,7 @@ public class UserServiceImpl implements UserService {
         Optional<ApplicationUser> user = userRepo.findById(id);
         if (user.isPresent()) {
             log.info(user.get().getUserName());
-            // TODO: Ifm delete files of artist
+            /** : Ifm delete files of artist */
             ifm.deleteUserProfileImage(user.get());
             userRepo.deleteById(id);
             log.info("Deleted application user with id='{}'", id);

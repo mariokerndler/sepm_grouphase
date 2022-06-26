@@ -25,7 +25,6 @@ import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
-import {MessageComponent} from './components/message/message.component';
 import {ArtistPageComponent} from './components/artist-page/artist-page/artist-page.component';
 import {ArtistInformationComponent} from './components/artist-page/artist-information/artist-information.component';
 import {
@@ -85,6 +84,7 @@ import {ReviewCardComponent} from './components/artist-page/review-page/review-c
 import {ReviewStarComponent} from './components/artist-page/review-page/review-star/review-star.component';
 import {HideMissingDirective} from './components/common/hide-missing-directive';
 import {ReportDialogComponent} from './services/report/report-dialog/report-dialog.component';
+import {CommissionEditComponent} from './components/commission/commission-edit/commission-edit.component';
 import {AdminPageComponent} from './components/admin-page/admin-page.component';
 import {ReportPanelComponent} from './components/admin-page/report-panel/report-panel.component';
 
@@ -95,7 +95,6 @@ import {ReportPanelComponent} from './components/admin-page/report-panel/report-
     FooterComponent,
     HomeComponent,
     LoginComponent,
-    MessageComponent,
     ArtistPageComponent,
     ArtistInformationComponent,
     SimpleDialogComponent,
@@ -135,6 +134,7 @@ import {ReportPanelComponent} from './components/admin-page/report-panel/report-
     ReviewCardComponent,
     ReviewStarComponent,
     HideMissingDirective,
+    CommissionEditComponent,
     ReportDialogComponent,
     AdminPageComponent,
     ReportPanelComponent

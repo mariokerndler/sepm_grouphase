@@ -68,12 +68,11 @@ Cypress.Commands.add('uploadImage', () => {
     cy.fixture('settings').then(settings => {
             const fixtureFile = 'image4.png';
             cy.contains('button', 'Profile').click()
-            cy.get('#mat-tab-label-2-1 > .mat-tab-label-content').click();
+            cy.get('#mat-tab-label-2-1').click();
             cy.contains('button', 'Upload new picture').click();
             cy.get('input[name="artworkName"]').type(settings.lastName);
             cy.get('textarea[name="description"]').type(settings.lastName);
             cy.get('input[type="file"]').attachFile(fixtureFile); 
             cy.get('button[name="upload-button"]').click();
-      
     }); 
 });

@@ -66,7 +66,7 @@ public class ImageFileManager {
 
     public String writeReferenceDatagenImage(Commission c, Reference r, String url) {
         log.trace("calling writeReferenceImage() ...");
-        String relPath = url  + "." + r.getFileType().toString().toLowerCase(Locale.ROOT);
+        String relPath = url + "." + r.getFileType().toString().toLowerCase(Locale.ROOT);
         log.info(relPath);
         try (FileOutputStream outputStream = new FileOutputStream(ImageDataPaths.assetAbsoluteLocation + relPath)) {
             outputStream.write(r.getImageData());

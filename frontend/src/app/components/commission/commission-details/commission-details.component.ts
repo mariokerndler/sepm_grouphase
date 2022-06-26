@@ -225,13 +225,16 @@ export class CommissionDetailsComponent implements OnInit {
       += '%' + new Date().toLocaleDateString();
     c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].customerFeedback
       += '%' + new Date().toLocaleDateString();
-    this.commissionService.updateCommission(c).subscribe((commission) => console.log(commission));
+    this.commissionService.updateCommission(c).subscribe((commission) => {
+      console.log(commission);
+      if(!isFeedback){
+        window.location.reload();
+      }
+    });
     this.checkCommissionState(this.commission);
 
     if(isFeedback){
       this.allowFeedback = false;
-    } else {
-      window.location.reload();
     }
 
   }

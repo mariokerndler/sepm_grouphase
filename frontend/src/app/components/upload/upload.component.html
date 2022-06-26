@@ -33,7 +33,7 @@
     <textarea #autosize="cdkTextareaAutosize"
               name="description"
               cdkAutosizeMaxRows="5"
-              cdkAutosizeMinRows="1"
+              cdkAutosizeMinRows="3"
               cdkTextareaAutosize
               class="form-control"
               formControlName="description"
@@ -42,9 +42,12 @@
     <mat-error *ngIf="uploadForm.controls.description.errors">
       <span *ngIf="uploadForm.controls.description.errors.required">An artwork description is required! </span>
       <span *ngIf="uploadForm.controls.description.errors.pattern">The artwork description contains invalid symbols! </span>
-      <span *ngIf="uploadForm.controls.description.errors.maxlength">The description you entered is too long, only 250 Characters are allowed! </span>
+      <span *ngIf="uploadForm.controls.description.errors.maxlength">The description you entered is too long, only 230 Characters are allowed! </span>
     </mat-error>
   </mat-form-field>
+  <div *ngIf="uploadForm.controls.description.errors">
+    <br *ngIf="uploadForm.controls.description.errors.maxlength">
+  </div>
   <input #fileInput
          (change)="fileSelected($event)"
          [attr.accept]="data.timelapse ? 'image/gif' : ' image/png, image/jpeg, image/gif'" style="display: none;" type="file">

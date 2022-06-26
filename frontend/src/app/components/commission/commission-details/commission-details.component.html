@@ -142,7 +142,7 @@
 
     <div *ngIf="this.feedbackButtonIndex===1" fxLayout="col" fxLayoutAlign="center start">
       <mat-form-field style="width: 60%; padding-top: 1em">
-        <textarea [(ngModel)]="this.uploadedSketchDto.customerFeedback" class="feedbackBox" color="secondary" matInput
+        <textarea [(ngModel)]="this.uploadedSketchDto.customerFeedback" class="feedbackBox" color="secondary" matInput [maxLength]="230"
                   placeholder="Leave a comment"></textarea>
       </mat-form-field>
     </div>

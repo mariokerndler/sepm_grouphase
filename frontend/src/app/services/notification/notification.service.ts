@@ -171,7 +171,7 @@ export class NotificationService {
    * @param errorAction Action that triggers after a failed patch operation.
    * @param successAction Action that takes the notification name as input.
    */
-  pathNotificationIsReadOfIdFromUser(
+  patchNotificationIsReadOfIdFromUser(
     id: number,
     userId: number,
     hasRead: boolean,
@@ -227,8 +227,7 @@ export class NotificationService {
    * @returns Observable<void>
    */
   createNotification(notification: NotificationDto): Observable<NotificationDto> {
-    const createOptions = {headers: this.headers, body: notification};
-    return this.http.post<NotificationDto>(this.notificationBaseUri, createOptions)
+    return this.http.post<NotificationDto>(this.notificationBaseUri, notification, {headers: this.headers})
       .pipe(
         catchError((err) =>
           this.notifyUserAboutFailedOperation<NotificationDto>('Could not create notification.')(err))

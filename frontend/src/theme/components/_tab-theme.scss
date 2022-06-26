@@ -8,16 +8,16 @@
   // Get the primary color palette from the color-config.
   $primary-palette: map.get($color-config, 'primary');
 
-  .mat-tab-labels{
-    background-color: mat.get-color-from-palette($primary-palette, 800)!important;
+  .mat-tab-labels {
+    background-color: mat.get-color-from-palette($primary-palette, 800) !important;
   }
 
-  .mat-tab-label{
+  .mat-tab-label {
     color: mat.get-color-from-palette($primary-palette, 200) !important;
     font-size: 1.1rem !important;
   }
 
-  .mat-ink-bar{
+  .mat-ink-bar {
     background-color: mat.get-color-from-palette($primary-palette, 200) !important;
   }
 

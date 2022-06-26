@@ -25,9 +25,9 @@ export class CommissionTimelineComponent implements OnInit {
   image: any;
   constructor( private commissionService: CommissionService, private route: ActivatedRoute, private router: Router) {
   }
+
   ngOnInit(): void {
     this.getCommission();
-
   }
 
 
@@ -47,7 +47,7 @@ export class CommissionTimelineComponent implements OnInit {
           this.artworks = [];
           const sketches = this.data.artworkDto.sketchesDtos;
           for (const sketch of sketches) {
-            if(sketch.fileType !== 'GIF') {
+            if (sketch.fileType !== 'GIF') {
               this.artworks.push(sketch);
             } else {
               this.timelapseGif = sketch;
@@ -64,5 +64,4 @@ export class CommissionTimelineComponent implements OnInit {
     this.selectedArtwork = i;
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
-
 }

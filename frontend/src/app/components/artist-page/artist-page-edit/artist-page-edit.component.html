@@ -1,6 +1,7 @@
 <div *ngIf="isReady" class="edit-page" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem">
   <mat-tab-group backgroundColor="primary" dynamicHeight>
     <mat-tab label="Public profile">
+      <br>
       <h2 class="primary">Edit your profile</h2>
       <div class="edit-page-pf-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign="start"
            fxLayoutGap="0.8rem">
@@ -88,6 +89,7 @@
     </mat-tab>
 
     <mat-tab label="Password">
+      <br>
       <h2 class="primary">Change your password</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
         <form [formGroup]="passwordForm" class="edit-page-pf-form">
@@ -137,6 +139,7 @@
     </mat-tab>
 
     <mat-tab *ngIf="!isArtist" label="Upgrade to Artist">
+      <br>
       <h2 class="primary">Upgrade from user to artist</h2>
 
       <h3 class="primary">If you want to upload your art, take commissions, and participate as an artist, click this
@@ -146,6 +149,7 @@
     </mat-tab>
 
     <mat-tab *ngIf="isArtist" label="Appearance">
+      <br>
       <h2 class="primary">Update the profile appearance</h2>
       <div cdkDropListGroup class="artist-profile-elements-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column"
            fxLayoutAlign="space-between start" fxLayoutGap="0.5rem">
@@ -195,9 +199,9 @@
       </div>
 
       <button (click)="updateAppearance()"
+              [disabled]="validLayoutComponentName()"
               class="artist-profile-elements-button update-user-button"
-              color="primary"
-              mat-flat-button [disabled]="validLayoutComponentName()">Update appearance
+              color="primary" mat-flat-button>Update appearance
       </button>
     </mat-tab>
   </mat-tab-group>
@@ -223,7 +227,7 @@
   <div class="gallery-settings" fxLayout="column">
     <mat-form-field appearance="fill" class="gallery-settings-tags">
       <mat-label class="primary">Name</mat-label>
-      <input type="text" matInput name="text" [(ngModel)]="selectedComponent.componentName" required>
+      <input [(ngModel)]="selectedComponent.componentName" matInput name="text" required type="text">
       <mat-error *ngIf="validLayoutComponentName()">
         Name is <strong>required</strong>
       </mat-error>

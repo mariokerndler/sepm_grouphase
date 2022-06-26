@@ -17,7 +17,8 @@ import {UploadComponent} from '../../upload/upload.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Globals} from '../../../global/globals';
 import {Location} from '@angular/common';
-
+import {ReportService, ReportType} from '../../../services/report/report.service';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-commission-details',
@@ -68,7 +69,9 @@ export class CommissionDetailsComponent implements OnInit {
               private notificationService: NotificationService,
               private router: Router,
               private dialog: MatDialog,
-              public globals: Globals) {
+              public globals: Globals,
+              private authService: AuthService,
+              private reportService: ReportService) {
   }
 
   ngOnInit(): void {
@@ -316,6 +319,7 @@ export class CommissionDetailsComponent implements OnInit {
       }
     );
   }
+
   cancelCommission() {
     this.commission.status= CommissionStatus.canceled;
     this.commissionService.updateCommission(this.commission).subscribe(succes=>{
@@ -324,6 +328,7 @@ export class CommissionDetailsComponent implements OnInit {
       this.notificationService.displayErrorSnackbar('An error occurred when canceling the commission');
     });
   }
+
   openSketchDialog() {
     const dialogRef = this.dialog.open(UploadComponent, {
       data: {
@@ -334,7 +339,7 @@ export class CommissionDetailsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.event === 'sketchSelected'){
+      if (result.event === 'sketchSelected') {
         this.fileSelected(result.data, result.feedback);
       }
     });
@@ -344,30 +349,45 @@ export class CommissionDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  calculateProgress(): number{
-
+  calculateProgress(): number {
     let negValue = 33;
 
-    if(this.commission.feedbackRounds !== 0){
+    if (this.commission.feedbackRounds !== 0) {
       negValue = negValue / this.commission.feedbackRounds;
     }
 
-    switch (this.commission.status){
-      case CommissionStatus.listed: return 0;
-      case CommissionStatus.negotiating: return negValue;
+    switch (this.commission.status) {
+      case CommissionStatus.listed:
+        return 0;
+      case CommissionStatus.negotiating:
+        return negValue;
       case CommissionStatus.inProgress:
-        if(this.commission.feedbackRounds !== 0) {
-          let calcValue = ((this.commission.feedbackSent + 1 ) / this.commission.feedbackRounds);
-          if(calcValue > 1){
+        if (this.commission.feedbackRounds !== 0) {
+          let calcValue = ((this.commission.feedbackSent + 1) / this.commission.feedbackRounds);
+          if (calcValue > 1) {
             calcValue = 1;
           }
           return 66 * calcValue;
         } else {
           return 66;
         }
-      case CommissionStatus.completed: return 100;
-      default: return 0;
+      case CommissionStatus.completed:
+        return 100;
+      default:
+        return 0;
     }
+  }
+
+  canReport() {
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    } else {
+      return this.authService.getUserRole() !== 'ADMIN';
+    }
+  }
+
+  reportProfile() {
+    this.reportService.openReportDialog(this.commission.id, ReportType.commission);
   }
 
   private setProfilePicture() {
@@ -377,5 +397,6 @@ export class CommissionDetailsComponent implements OnInit {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
     }
   }
+
 
 }

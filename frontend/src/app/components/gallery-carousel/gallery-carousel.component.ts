@@ -7,6 +7,8 @@ import {Router} from '@angular/router';
 import {TagService} from '../../services/tag.service';
 import {GlobalFunctions} from '../../global/globalFunctions';
 import {ChatParticipantStatus, ChatParticipantType} from 'ng-chat';
+import {ReportService, ReportType} from '../../services/report/report.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -79,8 +81,13 @@ export class GalleryCarouselComponent implements OnInit {
   private artistService: ArtistService;
   private router: Router;
 
-  constructor(artistService: ArtistService, router: Router, public tagService: TagService,
-              public globalFunctions: GlobalFunctions) {
+  constructor(
+    artistService: ArtistService,
+    router: Router,
+    public tagService: TagService,
+    public globalFunctions: GlobalFunctions,
+    private authService: AuthService,
+    private reportService: ReportService) {
     this.globalFunctions = globalFunctions;
     this.tagService = tagService;
     this.router = router;
@@ -94,7 +101,7 @@ export class GalleryCarouselComponent implements OnInit {
   ngOnInit(): void {
     this.animArtwork = this.selectedArtworkId;
 
-    if(this.artworks[this.animArtwork].description) {
+    if (this.artworks[this.animArtwork].description) {
       this.artworks[this.animArtwork].description = this.artworks[this.animArtwork].description.split('%', 1)[0];
     }
     if (this.artworks[this.selectedArtworkId].artistId) {
@@ -180,4 +187,15 @@ export class GalleryCarouselComponent implements OnInit {
     return result.substring(0, result.length - 1);
   }
 
+  public canReport() {
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    } else {
+      return this.authService.getUserRole() !== 'ADMIN';
+    }
+  }
+
+  public reportArtwork() {
+    this.reportService.openReportDialog(this.artworks[this.selectedArtworkId].id, ReportType.artwork);
+  }
 }

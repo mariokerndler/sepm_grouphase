@@ -13,6 +13,12 @@
       <img [src]="globals.assetsPath + profilePicture" alt="" class="commission-pfp">
       <br>
       <strong class="userName">{{user.userName}}</strong>
+      <div *ngIf="canReport()" style="padding-left: 55px">
+        <button (click)="reportProfile()" color="primary" mat-icon-button matTooltip="Report this commission"
+                matTooltipPosition="above">
+          <mat-icon>flag</mat-icon>
+        </button>
+      </div>
     </div>
     <div class="description">
       <strong>Description:</strong>
@@ -27,7 +33,8 @@
       </div>
       <div *ngIf="this.commission.artistDto" class="description-section">
         <strong>Assigned Artist:</strong> <br><br>
-        <a (click)="navigateToArtist(this.commission.artistDto)" style="cursor: pointer;">{{commission.artistDto.userName}}</a>
+        <a (click)="navigateToArtist(this.commission.artistDto)"
+           style="cursor: pointer;">{{commission.artistDto.userName}}</a>
       </div>
       <br>
       <div *ngIf="hasReferences">
@@ -51,16 +58,18 @@
       </div>
 
 
-      <div *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0 && this.userId === commission.customerDto.id.toString()" style="max-width: 40%">
+      <div
+        *ngIf="this.commission.status.toString()=== 'LISTED' && userEdit && this.commission.artistCandidatesDtos.length !== 0 && this.userId === commission.customerDto.id.toString()"
+        style="max-width: 40%">
         <mat-label>Commission Candidates</mat-label>
-        <mat-selection-list  [(ngModel)]="selectedArtistId" name="applicant"  [multiple]="false">
-            <mat-list-option *ngFor="let a of commission.artistCandidatesDtos" [value]="a.id">
-              <div fxLayout="row" fxLayoutAlign="start center">
-                  <mat-icon style="margin-right: 10px">person</mat-icon>
-                  <span fxFlex="auto">{{a.userName}}</span>
-                  <button mat-flat-button  (click)="navigateToArtist(a)" class="mat-primary">View Profile</button>
-              </div>
-            </mat-list-option>
+        <mat-selection-list [(ngModel)]="selectedArtistId" [multiple]="false" name="applicant">
+          <mat-list-option *ngFor="let a of commission.artistCandidatesDtos" [value]="a.id">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon style="margin-right: 10px">person</mat-icon>
+              <span fxFlex="auto">{{a.userName}}</span>
+              <button (click)="navigateToArtist(a)" class="mat-primary" mat-flat-button>View Profile</button>
+            </div>
+          </mat-list-option>
 
         </mat-selection-list>
         <div style="margin-top: 10px">
@@ -91,7 +100,7 @@
       <strong class="status"> {{commission.status.replace('_', ' ')}}</strong>
       <br><br>
       <mat-progress-bar class="progress-bar" mode="determinate" value="{{calculateProgress()}}"></mat-progress-bar>
-       <br>
+      <br>
       <div *ngIf="hasSketches">
         <strong class="referenceImages">Sketches:</strong>
         <br><br>
@@ -177,14 +186,15 @@
           </button>
         </div>
         <br>
-        <button *ngIf="commission.feedbackSent === commission.feedbackRounds" (click)="openDialog()" color="primary" mat-button>
+        <button (click)="openDialog()" *ngIf="commission.feedbackSent === commission.feedbackRounds" color="primary"
+                mat-button>
           <mat-icon color="primary">upload</mat-icon>
           <span style="font-size: 1.2rem">Upload finished image</span>
         </button>
       </form>
     </div>
     <div *ngIf="commission.status.toString()==='COMPLETED'" class="completed">
-    <strong>This commisison is done! Here you can re-live the process with the timeline:</strong>
+    <strong>This commission is done! Here you can re-live the process with the timeline:</strong>
       <br><br>
     <button  color="primary" mat-flat-button routerLink="/commissions/{{commission.id}}/timeline">View Timeline</button>
     </div>

@@ -7,9 +7,6 @@ import {GlobalFunctions} from '../../../global/globalFunctions';
 import {ChatDto} from '../../../dtos/chatDto';
 import {ChatService} from '../../../services/chat-service';
 import {Router} from '@angular/router';
-import {ReviewDto} from '../../../dtos/reviewDto';
-import {CommissionSearchDto} from '../../../dtos/commissionSearchDto';
-import {SearchConstraint} from '../../../global/SearchConstraint';
 
 
 @Component({
@@ -39,7 +36,7 @@ export class ArtistInformationComponent implements OnInit {
     if (this.artist.profileSettings) {
       this.profileSettings = JSON.parse(this.artist.profileSettings.replace(/'/g, '\"'));
     }
-    this.loggedInUserId= Number.parseInt(localStorage.getItem('userId'), 10);
+    this.loggedInUserId = Number.parseInt(localStorage.getItem('userId'), 10);
   }
 
 

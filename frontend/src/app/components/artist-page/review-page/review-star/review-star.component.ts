@@ -13,7 +13,8 @@ export class ReviewStarComponent implements OnInit {
   @Output() private ratingUpdated = new EventEmitter();
   ratingArr = [];
 
-  constructor( public globals: Globals) { }
+  constructor(public globals: Globals) {
+  }
 
   ngOnInit(): void {
     for (let index = 0; index < this.globals.maxStarRating; index++) {
@@ -22,7 +23,7 @@ export class ReviewStarComponent implements OnInit {
   }
 
   onClick(rating: number) {
-    if(!this.disableInteraction) {
+    if (!this.disableInteraction) {
       this.rating = rating;
       this.ratingUpdated.emit(rating);
     }

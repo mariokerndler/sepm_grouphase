@@ -3,14 +3,13 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Globals} from '../../../global/globals';
 import {CommissionService} from '../../../services/commission.service';
 import {SimpleCommissionDto} from '../../../dtos/simpleCommissionDto';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-review-dialog',
   templateUrl: './review-dialog.component.html',
   styleUrls: ['./review-dialog.component.scss']
 })
-export class ReviewDialogComponent{
+export class ReviewDialogComponent {
 
   rating = 5;
 
@@ -57,6 +56,6 @@ export class ReviewDialogComponent{
             }
           );
         }
-    );
+      );
   }
 }

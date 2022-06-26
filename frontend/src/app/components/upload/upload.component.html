@@ -7,10 +7,10 @@
 <h1 *ngIf="data.commission && data.timelapse" mat-dialog-title>Upload timelapse</h1>
 
 <div [formGroup]="uploadForm" fxLayout="column">
-  <p class="info" *ngIf="data.commission && data.timelapse" mat-dialog-title>
+  <p *ngIf="data.commission && data.timelapse" class="info" mat-dialog-title>
     Here you can upload a timelapse of your art-creation as a GIF.
   </p>
-  <p class="info" *ngIf="data.commission && data.timelapse" mat-dialog-title>
+  <p *ngIf="data.commission && data.timelapse" class="info" mat-dialog-title>
     This step is entirely optional, but may improve
     the experience of your customer.
   </p>

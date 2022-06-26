@@ -97,6 +97,21 @@ export class ArtworkService {
       }));
   }
 
+  deleteArtworkById(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.artworkBaseUri}/${id}`, this.options)
+      .pipe(
+        tap(_ => this.notificationService.displaySuccessSnackbar('Successfully deleted artwork')),
+        catchError((err) => this.notificationService.notifyUserAboutFailedOperation<void>('Delete artworks by id')(err))
+      );
+  }
+
+  findArtworkById(id: number): Observable<ArtworkDto> {
+    return this.http.get<ArtworkDto>(`${this.artworkBaseUri}/artwork/${id}`, this.options)
+      .pipe(
+        catchError((err) => this.notificationService.notifyUserAboutFailedOperation<ArtworkDto>('Delete artworks by id')(err))
+      );
+  }
+
   /**
    * Create a new {@link ArtworkDto artwork} and store it in the system
    *

@@ -22,7 +22,7 @@ export class CommissionFeedComponent implements OnInit {
   searchDate: SearchConstraint;
   options: Options = {
     floor: 0,
-    ceil: 10000,
+    ceil: this.globals.maxCommissionPrice,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
@@ -37,7 +37,12 @@ export class CommissionFeedComponent implements OnInit {
 
 
   searchCom: CommissionSearchDto = {
-    dateOrder: SearchConstraint.none, name: '', priceRange: [0, 100000], artistId: '', userId: '', pageNr: 0
+    dateOrder: SearchConstraint.none,
+    name: '',
+    priceRange: [0, this.globals.maxCommissionPrice],
+    artistId: '',
+    userId: '',
+    pageNr: 0
   };
   commissions: CommissionDto[];
   hasLoaded = false;
@@ -58,8 +63,6 @@ export class CommissionFeedComponent implements OnInit {
   }
 
   fetchCommissions() {
-    this.searchCom.priceRange = [0, this.globals.maxCommissionPrice];
-
     this.commissionService.filterDetailedCommissions(this.searchCom).subscribe({
       next: (loadedCommissions) => {
         this.commissions = loadedCommissions;

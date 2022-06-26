@@ -7,7 +7,7 @@ import {NotificationService} from '../../services/notification/notification.serv
 import {AuthService} from '../../services/auth.service';
 import {UserRole} from '../../dtos/artistDto';
 import {Globals} from '../../global/globals';
-import {ReportService} from '../../services/report/report.service';
+import {ReportService, ReportType} from '../../services/report/report.service';
 
 @Component({
   selector: 'app-user-page',
@@ -80,7 +80,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
   }
 
   reportProfile() {
-    this.reportService.openReportDialog(this.user.id);
+    this.reportService.openReportDialog(this.user.id, ReportType.user);
   }
 
   canReport(): boolean {

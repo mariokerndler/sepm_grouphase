@@ -3,16 +3,17 @@
   <app-review-star (ratingUpdated)="updateRating($event)" [disableInteraction]=false></app-review-star>
 
   <div>
-    <mat-form-field class="full-width" appearance="fill">
+    <mat-form-field appearance="fill" class="full-width">
       <mat-label>Review text</mat-label>
-      <textarea matInput rows="5" required [(ngModel)]="reviewText"></textarea>
+      <textarea [(ngModel)]="reviewText" matInput required rows="5"></textarea>
       <mat-error *ngIf="!isValidReviewText()">
         Review text is <strong>required</strong>
       </mat-error>
     </mat-form-field>
   </div>
 
-  <button [disabled]="!isValidReviewText()" mat-flat-button color="primary" (click)="submitReview()">Submit review</button>
+  <button (click)="submitReview()" [disabled]="!isValidReviewText()" color="primary" mat-flat-button>Submit review
+  </button>
 </div>
 
 

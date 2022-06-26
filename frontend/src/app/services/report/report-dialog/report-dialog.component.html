@@ -9,13 +9,16 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="full-width" appearance="fill">
+  <mat-form-field appearance="fill" class="full-width">
     <mat-label>Report reason</mat-label>
-    <textarea matInput rows="5" required [(ngModel)]="reportText"></textarea>
+    <textarea [(ngModel)]="reportText" [maxLength]="255" matInput required rows="5"></textarea>
     <mat-error *ngIf="!isValidReportText()">
       Review text is <strong>required</strong>
     </mat-error>
+    <mat-hint align="start"><strong>Don't disclose personal info</strong></mat-hint>
+    <mat-hint align="end">{{reportText.length}} / 255</mat-hint>
   </mat-form-field>
 
-  <button [disabled]="!isValidReportText()" mat-flat-button color="primary" (click)="submitReport()">Submit review</button>
+  <button (click)="submitReport()" [disabled]="!isValidReportText()" color="primary" mat-flat-button>Submit review
+  </button>
 </div>

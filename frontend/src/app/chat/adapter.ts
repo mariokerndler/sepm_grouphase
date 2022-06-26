@@ -27,7 +27,7 @@ export class Adapter extends ChatAdapter {
       dateSent: message.dateSeen, fromId: message.fromId, message: message.message, toId: message.toId
     };
     if (message.message.length >= 995) {
-      m.message=m.message.substring(0, 995);
+      m.message = m.message.substring(0, 995);
       message.message.replace(m.message.substring(0, 995), '');
       this.chatService.userService.getUserById(message.toId).subscribe(user => {
         this.chatService.postChatMessage(m).subscribe();

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NotificationDisplayComponent } from './notification-display.component';
+import {NotificationDisplayComponent} from './notification-display.component';
 
 describe('NotificationDisplayComponent', () => {
   let component: NotificationDisplayComponent;
@@ -8,9 +8,9 @@ describe('NotificationDisplayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NotificationDisplayComponent ]
+      declarations: [NotificationDisplayComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

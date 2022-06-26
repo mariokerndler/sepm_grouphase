@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap');
 
 
-@mixin background-color($theme){
+@mixin background-color($theme) {
   body {
     background: mat.get-color-from-palette($dark-blue-palette, 800);
     color: mat.get-color-from-palette($light-pink-palette, 200);

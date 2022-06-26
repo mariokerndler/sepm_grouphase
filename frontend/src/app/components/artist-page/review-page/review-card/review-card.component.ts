@@ -16,7 +16,8 @@ export class ReviewCardComponent {
   constructor(
     private router: Router,
     private notificationService: NotificationService
-  ) { }
+  ) {
+  }
 
   navigateToUser() {
     if (this.review.customerDto.userRole === UserRole.user) {

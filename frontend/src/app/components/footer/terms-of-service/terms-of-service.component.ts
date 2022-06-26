@@ -10,12 +10,13 @@ export class TermsOfServiceComponent implements OnInit {
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
   goUp() {
-    window.scroll(0,0);
+    window.scroll(0, 0);
   }
 }

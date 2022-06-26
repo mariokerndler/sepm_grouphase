@@ -85,6 +85,8 @@ import {ReviewStarComponent} from './components/artist-page/review-page/review-s
 import {HideMissingDirective} from './components/common/hide-missing-directive';
 import {ReportDialogComponent} from './services/report/report-dialog/report-dialog.component';
 import {CommissionEditComponent} from './components/commission/commission-edit/commission-edit.component';
+import {AdminPageComponent} from './components/admin-page/admin-page.component';
+import {ReportPanelComponent} from './components/admin-page/report-panel/report-panel.component';
 
 @NgModule({
   declarations: [
@@ -132,8 +134,10 @@ import {CommissionEditComponent} from './components/commission/commission-edit/c
     ReviewCardComponent,
     ReviewStarComponent,
     HideMissingDirective,
+    CommissionEditComponent,
     ReportDialogComponent,
-    CommissionEditComponent
+    AdminPageComponent,
+    ReportPanelComponent
   ],
   imports: [
     BrowserModule,

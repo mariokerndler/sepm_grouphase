@@ -19,10 +19,10 @@
     }
   }
 
-  .mat-form-field-underline{
+  .mat-form-field-underline {
     background-color: darkgray !important;
   }
-  .mat-form-field-underline .mat-form-field-ripple{
+  .mat-form-field-underline .mat-form-field-ripple {
     background-color: mat.get-color-from-palette($primary-palette, 200) !important;
   }
 
@@ -44,21 +44,18 @@
       color: #F44336 !important;
     }
 
-    .mat-form-field-underline .mat-form-field-ripple{
+    .mat-form-field-underline .mat-form-field-ripple {
       background-color: #F44336 !important;
     }
   }
 
-  mat-datepicker-toggle{
+  mat-datepicker-toggle {
     color: mat.get-color-from-palette($primary-palette, 200) !important;
   }
 
-  .mat-hint{
+  .mat-hint {
     color: mat.get-color-from-palette($primary-palette, 100) !important;
   }
-
-
-
 
 
 }

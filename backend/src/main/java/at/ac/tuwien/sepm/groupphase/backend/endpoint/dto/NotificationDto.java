@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.ValidAlphaNumericWithSpaces;
 import at.ac.tuwien.sepm.groupphase.backend.utils.enums.NotificationType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -24,8 +23,7 @@ public class NotificationDto {
 
     private Long id;
 
-    @ValidAlphaNumericWithSpaces
-    @Size(max = 100)
+    @Size(max = 255)
     @NotBlank
     private String title;
 

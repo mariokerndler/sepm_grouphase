@@ -59,9 +59,10 @@
           </div>
           <span *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
           <br>
-          <a download="custom-filename.jpg" href="/assets/{{data.artworkDto.imageUrl}}" title="ImageName">
+          <button class="primary" color="primary" mat-flat-button style="margin-top: 1em; margin-bottom: 1em"><a download="custom-filename.jpg" href="/assets/{{data.artworkDto.imageUrl}}" title="ImageName">
         Download
-          </a>
+          </a></button>
+          <br>
           <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="primary" mat-icon-button>
 
             <mat-icon *ngIf="!isPlaying && timelapseGif">play_arrows</mat-icon>

@@ -1,7 +1,8 @@
-package at.ac.tuwien.sepm.groupphase.backend.utils.constraints;
+package at.ac.tuwien.sepm.groupphase.backend.utils.validators;
 
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.utils.constraints.UniqueEmail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

@@ -71,6 +71,7 @@ public class UserEndpoint {
     public ApplicationUserDto searchUsersByEmail(
         @RequestParam(name = "email", defaultValue = "") String email) {
         log.info("A user is trying to search an application user with email '{}'", email);
+
         return userMapper.userToUserDto(userService.findUserByEmail(email.toLowerCase()));
     }
 
@@ -114,6 +115,7 @@ public class UserEndpoint {
         log.info("A user is trying to update the password of application user with id '{}'", id);
 
         ApplicationUser applicationUser = userService.findUserById(id);
+
         if (!userService.checkIfValidOldPassword(applicationUser, oldPassword.trim())) {
             throw new InvalidOldPasswordException("Old password does not match with current password.");
         }

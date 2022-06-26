@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
@@ -108,14 +107,10 @@ public class ArtworkEndpoint {
     @Operation(summary = "Get all artworks by artist.")
     public List<ArtworkDto> getAllArtworksByArtist(@PathVariable Long id) {
         log.info("A user is fetching all artworks by artist with id '{}'", id);
-        try {
-            List<Artwork> artworks = artworkService.findArtworksByArtist(id);
 
-            return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        List<Artwork> artworks = artworkService.findArtworksByArtist(id);
+
+        return artworks.stream().map(artworkMapper::artworkToArtworkDto).collect(Collectors.toList());
     }
 
     @PermitAll
@@ -124,12 +119,8 @@ public class ArtworkEndpoint {
     @Operation(summary = "Delete artwork.")
     public void deleteArtwork(@Valid @RequestBody ArtworkDto artworkDto) {
         log.info("A user is trying to delete an artwork.");
-        try {
-            artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+
+        artworkService.deleteArtwork(artworkMapper.artworkDtoToArtwork(artworkDto));
     }
 
     @PermitAll
@@ -138,12 +129,8 @@ public class ArtworkEndpoint {
     @Operation(summary = "Delete artwork by id.")
     public void deleteArtworkById(@PathVariable Long id) {
         log.info("A user is trying to delete an artwork.");
-        try {
-            artworkService.deleteArtwork(artworkService.findById(id));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+
+        artworkService.deleteArtwork(artworkService.findById(id));
     }
 
     @PermitAll
@@ -152,12 +139,8 @@ public class ArtworkEndpoint {
     @Operation(summary = "Get artwork by id.")
     public ArtworkDto getArtworkById(@PathVariable Long id) {
         log.info("A user is trying to delete an artwork.");
-        try {
-            return artworkMapper.artworkToArtworkDto(artworkService.findById(id));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+
+        return artworkMapper.artworkToArtworkDto(artworkService.findById(id));
     }
 
     @PermitAll

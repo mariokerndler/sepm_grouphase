@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
@@ -46,14 +45,10 @@ public class ChatEndpoint {
     @Operation(summary = "getChatListForUser")
     public List<ApplicationUserDto> getChatListForUser(@PathVariable Long id) {
         log.info("getChatListForUser '{}'", id);
-        try {
-            List<ApplicationUserDto> chatsPartners = (List<ApplicationUserDto>) chatService.getChatListForUser(id).stream().map(userMapper::userToUserDto).collect(Collectors.toList());
 
-            return chatsPartners;
-        } catch (Exception n) {
-            log.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        List<ApplicationUserDto> chatsPartners = (List<ApplicationUserDto>) chatService.getChatListForUser(id).stream().map(userMapper::userToUserDto).collect(Collectors.toList());
+
+        return chatsPartners;
     }
 
     @PermitAll
@@ -65,15 +60,10 @@ public class ChatEndpoint {
         @RequestParam(defaultValue = "", name = "participantId") String chatPartnerId
     ) {
         log.info("Fetching message history for user with id '{}'", userId);
-        try {
 
-            List<ChatMessageDto> chatsPartners = chatService.getChatMessageHistory(userId, chatPartnerId).stream().map(chatMessageMapper::chatMessageToChatMessageDto).collect(Collectors.toList());
+        List<ChatMessageDto> chatsPartners = chatService.getChatMessageHistory(userId, chatPartnerId).stream().map(chatMessageMapper::chatMessageToChatMessageDto).collect(Collectors.toList());
 
-            return chatsPartners;
-        } catch (Exception n) {
-            log.error(n.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, n.getMessage());
-        }
+        return chatsPartners;
     }
 
     @PermitAll
@@ -82,16 +72,10 @@ public class ChatEndpoint {
     @Transactional
     @Operation(summary = "Post Chat")
     public void postChat(@RequestBody ChatDto chatDto) {
-        log.info(chatDto.toString());
-        log.debug("Endpoint: postChat()." + chatDto.toString());
-        try {
-            Chat c = this.chatMapper.chatDtoToChat(chatDto);
-            chatService.postChat(c);
-            log.info(c.toString());
-        } catch (Exception v) {
-            log.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
+        log.info("Posting chat dto: " + chatDto.toString());
+
+        Chat c = this.chatMapper.chatDtoToChat(chatDto);
+        chatService.postChat(c);
     }
 
 
@@ -101,12 +85,8 @@ public class ChatEndpoint {
     @Operation(summary = "Post chatMessage")
     public void postChatMessage(@RequestBody ChatMessageDto chatMessageDto) {
         log.debug("Endpoint: postChatMessage()." + chatMessageDto.toString());
-        try {
-            ChatMessage chatMessage = chatMessageMapper.chatMessageDtoToChatMessage(chatMessageDto);
-            chatService.postChatMessage(chatMessage);
-        } catch (Exception v) {
-            log.error(v.getMessage());
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, v.getMessage());
-        }
+
+        ChatMessage chatMessage = chatMessageMapper.chatMessageDtoToChatMessage(chatMessageDto);
+        chatService.postChatMessage(chatMessage);
     }
 }

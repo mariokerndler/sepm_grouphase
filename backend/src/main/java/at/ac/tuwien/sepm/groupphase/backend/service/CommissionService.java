@@ -41,10 +41,8 @@ public interface CommissionService {
 
     /**
      * Updates the given commission, if there is a commission with this id saved in the database.
-     *
-     * @param commission The commission being updated.
      */
-    Commission updateCommission(Commission commission);
+    void updateCommission(Commission commission);
 
     /**
      * Deletes the given commission from the database - including all references, receipts, review and artwork.

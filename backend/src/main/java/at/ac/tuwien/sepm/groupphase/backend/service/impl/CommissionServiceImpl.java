@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,19 +90,23 @@ public class CommissionServiceImpl implements CommissionService {
         return commission;
     }
 
+    @Transactional
     @Override
-    public Commission updateCommission(Commission c) {
+    public void updateCommission(Commission c) {
         log.trace("calling updateCommission() ...");
 
         notificationService.createNotificationByCommission(findById(c.getId()), c);
         commissionValidator.throwExceptionIfCommissionDoesNotExist(c);
 
-        if (this.commissionRepo.getById(c.getId()).getStatus() == CommissionStatus.LISTED && c.getStatus() == CommissionStatus.NEGOTIATING) {
+        Commission oldCommission = this.commissionRepo.getById(c.getId());
+
+        if (oldCommission.getStatus() == CommissionStatus.LISTED && c.getStatus() == CommissionStatus.NEGOTIATING) {
             this.assignArtist(c);
         } else if (c.getArtwork() != null && c.getArtwork().getSketches() != null && c.getReview() == null) {
             int sketchCount = c.getArtwork().getSketches().size();
+            int oldSketchCount = (oldCommission.getArtwork().getSketches() == null ? 0 : oldCommission.getArtwork().getSketches().size());
             //if sketch has been added
-            if (c.getFeedbackSent() < c.getSketchesShown()) {
+            if (sketchCount > oldSketchCount) {
                 log.info("Writing Sketch" + c.getFeedbackSent() + " " + c.getSketchesShown());
                 c.getArtwork().getSketches().get(sketchCount - 1).setImageUrl(
                     this.ifm.writeSketchImage(c, c.getArtwork().getSketches().get(sketchCount - 1)));
@@ -120,7 +125,6 @@ public class CommissionServiceImpl implements CommissionService {
 
         commissionRepo.save(c);
         log.info("Updated commission with id='{}'", c.getId());
-        return c;
     }
 
     @Override

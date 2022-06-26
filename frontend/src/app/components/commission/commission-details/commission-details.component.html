@@ -75,7 +75,8 @@
       <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
       <strong class="p-section"> {{commission.feedbackRounds}}</strong>
     </div>
-      <div *ngIf="commission.status.toString()==='LISTED' ||(commission.status.toString()==='In_PROGRESS' && userEdit)|| commission.status.toString()==='NEGOTIATING' ||
+      <div *ngIf="(commission.status.toString()==='LISTED' && (userEdit || artistEdit ))||(commission.status.toString()==='In_PROGRESS' && userEdit)||
+       (commission.status.toString()==='NEGOTIATING' &&(userEdit || artistEdit ))||
        (this.commission.feedbackSent===this.commission.sketchesShown && commission.status.toString()==='AWAITING_PAYMENT' && artistEdit) ||
         (this.commission.feedbackSent===this.commission.sketchesShown-1 && commission.status.toString()==='In_PROGRESS' && artistEdit)">
         <button (click)="cancelCommission()" class="mat-primary" mat-flat-button>Cancel Commission</button>

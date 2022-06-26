@@ -15,6 +15,7 @@ public final class ApplicationUserValidationMessages {
     public static final String EMAIL_NOT_VALID = "E-mail must be in a valid format.";
     public static final String EMAIL_SIZE_TOO_BIG = "E-mail must be shorter than " + ApplicationUserDto.NAME_SIZE + " characters.";
     public static final String EMAIL_NOT_NULL = "E-mail can't be null.";
+    public static final String EMAIL_ALREADY_IN_USE = "E-mail is already being used!.";
 
     public static final String ADDRESS_NOT_BLANK = "Address can't be blank or null.";
     public static final String ADDRESS_SIZE_TOO_BIG = "Address must be shorter than " + ApplicationUserDto.ADDRESS_PASSWORD_SIZE + " characters.";

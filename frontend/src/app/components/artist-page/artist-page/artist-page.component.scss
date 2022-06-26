@@ -6,10 +6,12 @@
 .artist-page {
   width: 60%;
   margin: auto;
+
 }
 
 .artist-page-wrapper {
   height: 100%;
+
 }
 
 @media screen and (max-width: 959px) {
@@ -37,18 +39,18 @@
 }
 
 .artist-profile-picture {
-  max-width: 100px;
+  max-width: 150px;
   height: auto;
   border-radius: 10%;
 }
 
 .artist-full-name {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: lighter;
 }
 
 .artist-username {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
 }
 
@@ -57,7 +59,7 @@
 }
 
 .artist-role {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .artist-middle-menu {

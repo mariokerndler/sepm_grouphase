@@ -44,7 +44,11 @@ export class ArtistGalleryComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(
-      () => this.switchTab()
+       result => {
+         if(result.event === 'upload') {
+           this.switchTab();
+         }
+       }
     );
   }
 

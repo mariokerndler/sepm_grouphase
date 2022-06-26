@@ -14,17 +14,19 @@
                    class="artist-profile-picture">
             </div>
             <div class="artist-full-name-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
-              <span class="accent-color artist-username">{{artist.userName}}</span>
-              <span class="accent-color artist-full-name">{{artist.name}} {{artist.surname}}</span>
-              <span class="accent-color artist-role">Artist</span>
+              <span class="sidenav-top artist-username">{{artist.userName}}</span>
+              <span class="sidenav-top artist-full-name">{{artist.name}} {{artist.surname}}</span>
+              <span class="sidenav-top artist-role">Artist</span>
             </div>
             <div fxFlex="fill"></div>
+            <!--
             <div *ngIf="canReport()" fxLayoutAlign="end center">
               <button (click)="reportProfile()" color="primary" mat-icon-button matTooltip="Report this artist"
                       matTooltipPosition="above">
                 <mat-icon>flag</mat-icon>
               </button>
             </div>
+            -->
           </div>
         </div>
         <div class="artist-middle-menu">
@@ -74,8 +76,8 @@
 
   <div *ngIf="canEdit" class="edit-button">
     <button (click)="navigateToEdit()" color="primary" mat-button>
-      <mat-icon color="primary">edit</mat-icon>
-      <span class="edit-text">Edit your page</span>
+      <mat-icon color="primary" >edit</mat-icon>
+      <span class="edit-text" style="font-size: 1.1rem">Edit your page</span>
     </button>
   </div>
   <div *ngIf="!canEdit" class="edit-button">

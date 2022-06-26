@@ -46,7 +46,7 @@ export class UploadComponent implements OnInit {
     private commissionService: CommissionService) {
     this.uploadForm = this.formBuilder.group({
       artworkName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(255)]],
+      description: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(235)]],
     });
     this.filteredTags = this.tagForm.valueChanges.pipe(
       startWith(null),
@@ -55,6 +55,14 @@ export class UploadComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.data.sketch){
+      this.uploadForm.controls.artworkName.clearValidators();
+    }
+
+    if(this.data.timelapse){
+      this.uploadForm.controls.artworkName.clearValidators();
+      this.uploadForm.controls.description.clearValidators();
+    }
     this.tagService.getAllTags().subscribe(
       (tags) => {
         this.allTags = tags;
@@ -119,7 +127,7 @@ export class UploadComponent implements OnInit {
       () => this.notificationService.displaySuccessSnackbar('You successfully uploaded a new artwork'))
       .subscribe(
         (x) => {
-          this.dialogRef.close();
+          this.dialogRef.close({event: 'upload'});
         }
       );
   }
@@ -146,7 +154,7 @@ export class UploadComponent implements OnInit {
       this.data.commission.artworkDto.sketchesDtos.push(sketch);
     }
     this.commissionService.updateCommission(this.data.commission).subscribe(() => {
-        this.dialogRef.close();
+        this.dialogRef.close({event: 'upload'});
       }
     );
   }

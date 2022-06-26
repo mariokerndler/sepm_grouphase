@@ -202,8 +202,6 @@ mat-menu.content {
 .pagination {
 
   flex-direction: row;
-
-
   display: flex;
   justify-content: center;
 }
@@ -214,10 +212,13 @@ mat-menu.content {
   float: left;
   padding: 8px 16px;
 
+  .material-icons{
+    font-size: 1.7rem !important;
+  }
 }
 
 .paginationText {
-
+  font-size: 1.2rem;
   display: inline-block;
   float: left;
 
@@ -256,5 +257,4 @@ mat-menu.content {
   position: relative;
   left: 92%;
 }
-
 

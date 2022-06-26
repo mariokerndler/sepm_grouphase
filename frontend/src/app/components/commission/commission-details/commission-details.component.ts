@@ -20,7 +20,6 @@ import {Location} from '@angular/common';
 import {ReportService, ReportType} from '../../../services/report/report.service';
 import {AuthService} from '../../../services/auth.service';
 
-
 @Component({
   selector: 'app-commission-details',
   templateUrl: './commission-details.component.html',
@@ -196,11 +195,11 @@ export class CommissionDetailsComponent implements OnInit {
       sketch.imageUrl = 'default';
       sketch.artworkId = this.commission.artworkDto.id;
       this.uploadedSketchDto = sketch;
-      this.updateCommission();
+      this.updateCommission(false);
     };
   }
 
-  updateCommission() {
+  updateCommission(isFeedback: boolean) {
     //artist added sketch
     if (this.uploadedSketchDto !== null && this.artistEdit) {
       if (this.commission.artworkDto.sketchesDtos == null) {
@@ -224,9 +223,18 @@ export class CommissionDetailsComponent implements OnInit {
       += '%' + new Date().toLocaleDateString();
     c.artworkDto.sketchesDtos[this.commission.artworkDto.sketchesDtos.length - 1].customerFeedback
       += '%' + new Date().toLocaleDateString();
-    this.commissionService.updateCommission(c).subscribe((commission) => console.log(commission));
-
+    this.commissionService.updateCommission(c).subscribe((commission) => {
+      console.log(commission);
+      if(!isFeedback){
+        window.location.reload();
+      }
+    });
     this.checkCommissionState(this.commission);
+
+    if(isFeedback){
+      this.allowFeedback = false;
+    }
+
   }
 
 
@@ -296,13 +304,17 @@ export class CommissionDetailsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(
-      () => this.dialog.open(UploadComponent, {
-        data: {
-          artist: this.commission.artistDto,
-          commission: this.commission,
-          timelapse: true,
+      result => {
+        if (result.event === 'upload') {
+          this.dialog.open(UploadComponent, {
+            data: {
+              artist: this.commission.artistDto,
+              commission: this.commission,
+              timelapse: true,
+            }
+          });
         }
-      })
+      }
     );
   }
 
@@ -322,8 +334,11 @@ export class CommissionDetailsComponent implements OnInit {
     });
   }
 
-  calculateProgress(): number {
+  back() {
+    this.location.back();
+  }
 
+  calculateProgress(): number {
     let negValue = 33;
 
     if (this.commission.feedbackRounds !== 0) {

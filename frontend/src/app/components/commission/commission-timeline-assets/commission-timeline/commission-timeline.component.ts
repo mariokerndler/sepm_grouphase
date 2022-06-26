@@ -3,7 +3,7 @@ import {CommissionService} from '../../../../services/commission.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommissionDto} from '../../../../dtos/commissionDto';
 import {SketchDto} from '../../../../dtos/sketchDto';
-
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -22,12 +22,12 @@ export class CommissionTimelineComponent implements OnInit {
   timelapseGif: SketchDto;
   dia: SketchDto;
   artworks;
-
-  constructor(private commissionService: CommissionService, private route: ActivatedRoute, private router: Router) {
+  image: any;
+  constructor( private commissionService: CommissionService, private route: ActivatedRoute, private router: Router) {
   }
-
   ngOnInit(): void {
     this.getCommission();
+
   }
 
 
@@ -67,4 +67,5 @@ export class CommissionTimelineComponent implements OnInit {
     console.log(this.selectedArtwork);
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
+
 }

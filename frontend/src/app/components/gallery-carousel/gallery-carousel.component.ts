@@ -183,4 +183,5 @@ export class GalleryCarouselComponent implements OnInit {
     );
     return result.substring(0, result.length - 1);
   }
+
 }

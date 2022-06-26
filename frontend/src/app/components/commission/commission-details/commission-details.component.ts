@@ -289,6 +289,14 @@ export class CommissionDetailsComponent implements OnInit {
   }
 
   //triggered by User
+  editCommission() {
+    this.router.navigate(['/commissions/' + this.commission.id + '/edit'])
+      .catch((_) =>
+        this.notificationService.displayErrorSnackbar(`Could not navigate to edit screen for commission ${this.commission.id}.`)
+      );
+  }
+
+  //triggered by User
   startCommission() {
     this.commission.status = CommissionStatus.inProgress;
     this.commissionService.updateCommission(this.commission).subscribe(success => {

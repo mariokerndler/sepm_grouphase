@@ -208,7 +208,7 @@ public class NotificationEndpointTest {
     public void addANotificationButFailValidation() throws Exception {
         NotificationDto notificationDto = notificationMapper.
             notificationToNotificationDto(getTestNotification(applicationUser));
-        notificationDto.setTitle("*//");
+        notificationDto.setTitle("");
         notificationDto.setType(null);
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow2 = objectMapper.writer().withDefaultPrettyPrinter();

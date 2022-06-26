@@ -122,7 +122,7 @@ public class NotificationEndpoint {
     @PostMapping
     @Operation(summary = "Create a new notification")
     @Transactional
-    public void createNotification(@RequestBody NotificationDto notificationDto) {
+    public void createNotification(@Valid @RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to create a notifications.");
         notificationService
             .saveNotification(notificationMapper.notificationDtoToNotification(notificationDto));
@@ -133,7 +133,7 @@ public class NotificationEndpoint {
     @DeleteMapping
     @Operation(summary = "Delete a notification")
     @Transactional
-    public void deleteNotification(@RequestBody NotificationDto notificationDto) {
+    public void deleteNotification(@Valid @RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to delete a notification.");
 
         notificationService

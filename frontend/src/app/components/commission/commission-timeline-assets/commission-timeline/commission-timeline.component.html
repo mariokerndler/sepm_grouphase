@@ -59,8 +59,11 @@
           </div>
           <span *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
           <br>
-          <button class="primary" color="primary" mat-flat-button style="margin-top: 1em; margin-bottom: 1em"><a download="custom-filename.jpg" href="/assets/{{data.artworkDto.imageUrl}}" title="ImageName">
-        Download
+          <button (click)="ida.click()" class="primary" color="primary" mat-flat-button style="margin-top: 1em; margin-bottom: 1em">
+            Download
+            <mat-icon>download</mat-icon>
+            <a  #ida download="custom-filename.jpg" href="/assets/{{data.artworkDto.imageUrl}}" title="ImageName">
+
           </a></button>
           <br>
           <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="primary" mat-icon-button>

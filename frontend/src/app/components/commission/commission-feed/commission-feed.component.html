@@ -29,7 +29,7 @@
                 style="width: 20rem "></ngx-slider>
   </div>
   <mat-form-field appearance="fill" class="search-field">
-    <mat-label class="primary">Time</mat-label>
+    <mat-label class="primary">Date</mat-label>
     <mat-select [(ngModel)]="searchCom.dateOrder">
       <div *ngFor="let enum of searchEnum | keyvalue">
         <mat-option [value]="enum.value">{{enum.value}}</mat-option>

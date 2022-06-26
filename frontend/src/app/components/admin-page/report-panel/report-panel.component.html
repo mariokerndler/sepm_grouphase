@@ -16,7 +16,7 @@
     <span class="report-card-heading">Reference: </span>
     <a (click)="getReferenceAction()" *ngIf="!isArtworkType()" class="report-card-from-link">{{getReferenceText()}}</a>
 
-    <a (click)="selectedArtwork=0" *ngIf="isArtworkType" class="report-card-from-link">{{getReferenceText()}}</a>
+    <a (click)="selectedArtwork=0" *ngIf="isArtworkType()" class="report-card-from-link">{{getReferenceText()}}</a>
     <div *ngIf="isArtworkType && selectedArtwork !== null &&hasArtworks">
       <app-gallery-carousel
         (closeCarousel)="selectedArtwork=null"

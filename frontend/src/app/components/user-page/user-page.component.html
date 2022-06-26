@@ -19,19 +19,12 @@
               <span class="sidenav-top artist-role">User</span>
             </div>
             <div fxFlex="fill"></div>
-            <!--
-            <div *ngIf="canReport()" fxLayoutAlign="end center">
-              <button (click)="reportProfile()" color="primary" mat-icon-button matTooltip="Report this user"
-                      matTooltipPosition="above">
-                <mat-icon>flag</mat-icon>
-              </button>
-            </div>
-            -->
           </div>
         </div>
         <div class="artist-middle-menu">
           <mat-tab-group *ngIf="canEdit" backgroundColor="primary" dynamicHeight>
             <mat-tab label="My Commissions">
+              <br>
               <app-commission-page [user]="user"></app-commission-page>
             </mat-tab>
             <mat-tab>

@@ -1,6 +1,7 @@
 <div *ngIf="isReady" class="edit-page" fxLayout="column" fxLayoutAlign="start space-evenly" fxLayoutGap="0.5rem">
   <mat-tab-group backgroundColor="primary" dynamicHeight>
     <mat-tab label="Public profile">
+      <br>
       <h2 class="primary">Edit your profile</h2>
       <div class="edit-page-pf-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign="start"
            fxLayoutGap="0.8rem">
@@ -88,6 +89,7 @@
     </mat-tab>
 
     <mat-tab label="Password">
+      <br>
       <h2 class="primary">Change your password</h2>
       <div class="edit-page-pf-wrapper" fxLayout="column" fxLayoutAlign="space-evenly start" fxLayoutGap="0.8rem">
         <form [formGroup]="passwordForm" class="edit-page-pf-form">
@@ -137,6 +139,7 @@
     </mat-tab>
 
     <mat-tab *ngIf="!isArtist" label="Upgrade to Artist">
+      <br>
       <h2 class="primary">Upgrade from user to artist</h2>
 
       <h3 class="primary">If you want to upload your art, take commissions, and participate as an artist, click this
@@ -146,6 +149,7 @@
     </mat-tab>
 
     <mat-tab *ngIf="isArtist" label="Appearance">
+      <br>
       <h2 class="primary">Update the profile appearance</h2>
       <div cdkDropListGroup class="artist-profile-elements-wrapper" fxLayout.gt-md="row" fxLayout.lt-md="column"
            fxLayoutAlign="space-between start" fxLayoutGap="0.5rem">

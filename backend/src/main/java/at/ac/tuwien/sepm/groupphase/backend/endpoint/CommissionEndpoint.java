@@ -125,7 +125,6 @@ public class CommissionEndpoint {
         }
     }
 
-    //TODO: permit only admin
     @PermitAll
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping

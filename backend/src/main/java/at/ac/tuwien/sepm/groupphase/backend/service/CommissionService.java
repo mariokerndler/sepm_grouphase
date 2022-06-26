@@ -54,9 +54,20 @@ public interface CommissionService {
      */
     void deleteCommission(Commission commission);
 
-    //TODO: javadoc
+    /**
+     * updates the given commission from the database to assign an artist
+     * Artist and customer entities saved in the database.
+     *
+     * @param commission The commission to be deleted.
+     */
     void assignArtist(Commission commission);
 
-    //TODO: javadoc
+    /**
+     * Returns all commissions by the given parameters (lower Price range, upper Price Range, date order, name, artist),
+     * if there are commissions saved in the database.
+     *
+     * @param cs CommissionSearchDto (lower Price range, upper Price Range, date order, name, artist).
+     * @return A list of all commissions by the artist with the specified id.
+     */
     List<Commission> searchCommissions(CommissionSearchDto cs);
 }

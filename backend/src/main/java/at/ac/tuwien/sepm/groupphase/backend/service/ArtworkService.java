@@ -33,8 +33,6 @@ public interface ArtworkService {
      */
     void saveArtwork(Artwork artwork);
 
-    //TODO: update artwork
-
     /**
      * Deletes the given artwork from the database.
      *

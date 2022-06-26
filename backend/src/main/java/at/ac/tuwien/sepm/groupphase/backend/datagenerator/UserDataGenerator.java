@@ -82,6 +82,26 @@ public class UserDataGenerator {
         this.imageFileManager = imageFileManager;
     }
 
+    public static byte[] getImageBytes(String imageUrl) throws IOException {
+        URL url = new URL(imageUrl);
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        try (InputStream stream = url.openStream()) {
+            byte[] buffer = new byte[4096];
+
+            while (true) {
+                int bytesRead = stream.read(buffer);
+                if (bytesRead < 0) {
+                    break;
+                }
+                output.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return output.toByteArray();
+    }
+
     @PostConstruct
     private void generateUser() throws IOException {
         if (tagRepository.findAll().size() < NUMBER_OF_TAGS_TO_GENERATE) {
@@ -104,7 +124,6 @@ public class UserDataGenerator {
             generateUsers(NUMBER_OF_USERS_TO_GENERATE);
         }
 
-        // TODO: Adjust number of generated commissions after fixing comm. number
         if (commissionRepository.findAll().size() < 2) {
             generateTestCommissions();
         }
@@ -711,26 +730,6 @@ public class UserDataGenerator {
         commission.setReferences(references);
         commission.setArtwork(a);
         return commission;
-    }
-
-    public static byte[] getImageBytes(String imageUrl) throws IOException {
-        URL url = new URL(imageUrl);
-
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-        try (InputStream stream = url.openStream()) {
-            byte[] buffer = new byte[4096];
-
-            while (true) {
-                int bytesRead = stream.read(buffer);
-                if (bytesRead < 0) {
-                    break;
-                }
-                output.write(buffer, 0, bytesRead);
-            }
-        }
-
-        return output.toByteArray();
     }
 
     //old approach not working, issues with cloudflare protection 403 error.

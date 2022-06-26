@@ -41,5 +41,4 @@ public abstract class ArtistMapper {
         return artist;
     }
 
-    // TODO: Set empty lists null ?
 }

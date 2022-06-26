@@ -34,20 +34,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ArtworkMappingTest implements TestData {
 
     @Autowired
+    SketchRepository sketchRepository;
+    @Autowired
     private ArtistService artistService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private CommissionService commissionService;
-
     @Autowired
     private ArtworkRepository artworkRepository;
-
-    @Autowired
-    SketchRepository sketchRepository;
-
     @Autowired
     private ArtworkMapper artworkMapper;
 

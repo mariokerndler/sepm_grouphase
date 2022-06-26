@@ -1,3 +1,4 @@
+<span fxLayoutAlign="center" style="font-size: 1.8rem; position: relative; bottom: 1rem; margin-bottom: 1rem">Timeline of  {{data.artworkDto.name.substring(0,1).toUpperCase() + data.artworkDto.name.substring(1)}}</span>
 <div *ngIf="isReady" class="primary">
   <div class="cdk-virtual-scroll-data-source-example">
     <cdk-virtual-scroll-viewport style="font-size: 1.1rem"  class="example-viewport" itemSize="{{data.artworkDto.sketchesDtos.length + 2}}"
@@ -29,20 +30,6 @@
 
       <!-- End Node -->
       <div class="end-section">
-        <!--
-        <div class="upper-component" [ngStyle]="{'visibility': ((data.sketches.length*2)%2 === 1) ? 'visible' : 'hidden'}">
-          <div class="text-container" [ngStyle]="{'top': '40px'}">
-            <span><b>30.05.2020</b></span>
-            <br>
-            <span><b>Start of your commission</b></span>
-            <br><br>
-            <p>
-              On this day the artist Max Mustermann and you
-              decided to create something great
-            </p>
-          </div>
-          <div class="line" [ngStyle]="{'top': '2px'}"></div>
-        </div> -->
         <mat-icon class="accent icon">check</mat-icon>
         <div [ngStyle]="{'visibility': ((data.artworkDto.sketchesDtos.length*2)%2 === 0) ? 'visible' : 'hidden'}"
              class="lower-component">
@@ -72,9 +59,13 @@
           </div>
           <span *ngIf="!timelapseGif">{{data.artworkDto.description}}</span>
           <br>
-          <a download="custom-filename.jpg" href="/assets/{{data.artworkDto.imageUrl}}" title="ImageName">
-        Download
-          </a>
+          <button (click)="ida.click()" class="primary" color="primary" mat-flat-button style="margin-top: 1em; margin-bottom: 1em">
+            Download
+            <mat-icon>download</mat-icon>
+            <a  #ida download="custom-filename.jpg" href="/assets/{{data.artworkDto.imageUrl}}" title="ImageName">
+
+          </a></button>
+          <br>
           <button (click)="isPlaying === true? isPlaying = false : isPlaying = true" color="primary" mat-icon-button>
 
             <mat-icon *ngIf="!isPlaying && timelapseGif">play_arrows</mat-icon>

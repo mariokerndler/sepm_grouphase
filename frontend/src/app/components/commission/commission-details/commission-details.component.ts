@@ -326,7 +326,14 @@ export class CommissionDetailsComponent implements OnInit {
       }
     );
   }
-
+  cancelCommission() {
+    this.commission.status= CommissionStatus.canceled;
+    this.commissionService.updateCommission(this.commission).subscribe(succes=>{
+      this.notificationService.displaySuccessSnackbar('Commission has been canceled');
+    }, error => {
+      this.notificationService.displayErrorSnackbar('An error occurred when canceling the commission');
+    });
+  }
   openSketchDialog() {
     const dialogRef = this.dialog.open(UploadComponent, {
       data: {
@@ -380,6 +387,5 @@ export class CommissionDetailsComponent implements OnInit {
       this.profilePicture = this.user.profilePictureDto.imageUrl;
     }
   }
-
 
 }

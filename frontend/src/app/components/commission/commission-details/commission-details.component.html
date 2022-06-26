@@ -73,7 +73,12 @@
         <strong class="p-section"> {{commission.feedbackSent}}/{{commission.feedbackRounds}}</strong>
       </div>
       <div *ngIf="commission.status.toString()==='LISTED' || commission.status.toString()==='NEGOTIATING'">
-        <strong class="p-section"> {{commission.feedbackRounds}}</strong>
+      <strong class="p-section"> {{commission.feedbackRounds}}</strong>
+    </div>
+      <div *ngIf="commission.status.toString()==='LISTED' ||(commission.status.toString()==='In_PROGRESS' && userEdit)|| commission.status.toString()==='NEGOTIATING' ||
+       (this.commission.feedbackSent===this.commission.sketchesShown && commission.status.toString()==='AWAITING_PAYMENT' && artistEdit) ||
+        (this.commission.feedbackSent===this.commission.sketchesShown-1 && commission.status.toString()==='In_PROGRESS' && artistEdit)">
+        <button (click)="cancelCommission()" class="mat-primary" mat-flat-button>Cancel Commission</button>
       </div>
       <br>
       <strong>Price: </strong>
@@ -95,14 +100,17 @@
         <strong class="referenceImages">Sketches:</strong>
         <br><br>
         <div class="scrolling-container">
-          <cdk-virtual-scroll-viewport class="viewport" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
+          <cdk-virtual-scroll-viewport [ngStyle]="(commission.artworkDto.sketchesDtos[0].customerFeedback.length > 0) ? {'height': '300px'}: {'height': '240px'}" class="viewport" itemSize="{{commission.artworkDto.sketchesDtos.length}}"
                                        orientation="horizontal">
             <div *ngFor="let reference of sketches; let i = index" class="image-container">
               <img (click)="setSelectedArtwork(i, false) " [src]="'/assets/' + reference.imageUrl" alt=""
                    class="gallery-pictures">
               <br>
-              <span *ngIf="reference.customerFeedback.length>0">Customer Feedback: {{reference.customerFeedback.split("%")[0]}}</span>
-              <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
+              <div *ngIf="reference.customerFeedback.length>0">
+                <b>Customer Feedback:</b>
+                <p class="customer-feedback" >{{reference.customerFeedback.split("%")[0]}}</p>
+              </div>
+                <div *ngIf="i===commission.artworkDto.sketchesDtos.length-1">
               </div>
             </div>
           </cdk-virtual-scroll-viewport>

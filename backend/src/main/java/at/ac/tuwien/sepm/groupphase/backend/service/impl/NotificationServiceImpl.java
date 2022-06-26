@@ -265,6 +265,13 @@ public class NotificationServiceImpl implements NotificationService {
                             commissionId,
                             artist));
                 }
+                case AWAITING_PAYMENT -> notifications.add(
+                    NotificationFactory.createNotification(
+                        NotificationType.COMMISSION_STATUS_AWAITING_PAYMENT,
+                        commissionId,
+                        user
+                    )
+                );
                 case IN_PROGRESS -> notifications.add(
                     NotificationFactory.createNotification(
                         NotificationType.COMMISSION_STATUS_IN_PROGRESS,

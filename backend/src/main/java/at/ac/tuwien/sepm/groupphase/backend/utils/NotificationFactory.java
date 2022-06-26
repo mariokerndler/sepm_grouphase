@@ -47,6 +47,10 @@ public final class NotificationFactory {
                 return createNotification(
                     NotificationMessages.COMMISSION_STATUS_COMPLETED_TITLE);
             }
+            case COMMISSION_STATUS_AWAITING_PAYMENT -> {
+                return createNotification(
+                    NotificationMessages.COMMISSION_STATUS_AWAITING_PAYMENT_TITLE);
+            }
             case COMMISSION_STATUS_IN_PROGRESS -> {
                 return createNotification(
                     NotificationMessages.COMMISSION_STATUS_IN_PROGRESS_TITLE);

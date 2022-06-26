@@ -29,9 +29,10 @@ public final class NotificationMessages {
     // Commission status changed
     public static final String COMMISSION_STATUS_CANCELLED_TITLE = "The commission has been cancelled.";
     public static final String COMMISSION_STATUS_COMPLETED_TITLE = "The commission has been completed.";
+    public static final String COMMISSION_STATUS_AWAITING_PAYMENT_TITLE = "The artist has agreed to the details. Pay to start the commission.";
     public static final String COMMISSION_STATUS_IN_PROGRESS_TITLE = "The commission is now in progress.";
     public static final String COMMISSION_STATUS_NEGOTIATING = "The commission information has been edited.";
-    public static final String COMMISSION_PAID_FOR = "The commission has been paid for.";
+    public static final String COMMISSION_PAID_FOR = "The commission has been paid for. You can start on your art now.";
 
     // Candidate has been chose
     public static final String COMMISSION_CANDIDATE_CHOSEN = "You have been chosen for the commission.";

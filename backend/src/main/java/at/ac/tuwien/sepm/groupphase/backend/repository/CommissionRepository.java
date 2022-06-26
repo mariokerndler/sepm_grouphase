@@ -23,15 +23,16 @@ public interface CommissionRepository extends JpaRepository<Commission, Long> {
                                        @Param("artistId") String artistId,
                                        @Param("userId") String userId);
 
-    @Query(nativeQuery = true, value = "SELECT  * FROM COMMISSION WHERE LOWER(TITLE) "
+       @Query(nativeQuery = true, value = "SELECT  * FROM COMMISSION WHERE LOWER(TITLE) "
         + "LIKE :searchName AND  (CUSTOMER_ID LIKE :userId OR (CUSTOMER_ID IS NULL AND LENGTH(:userId)<3 )) AND "
         + "(ARTIST_ID LIKE :artistId OR (ARTIST_ID IS NULL AND LENGTH(:artistId)<3 )) "
-        + "AND PRICE > :priceLower AND PRICE <:priceUpper ORDER BY :date")
+        + "AND PRICE > :priceLower AND PRICE <:priceUpper ORDER BY DEADLINE_DATE :date")
     List<Commission> searchCommissionsDate(@Param("searchName") String searchName,
                                            @Param("priceLower") String priceLower,
                                            @Param("priceUpper") String priceUpper,
                                            @Param("artistId") String artistId,
                                            @Param("userId") String userId,
                                            @Param("date") String date);
+
 
 }

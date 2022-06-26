@@ -36,7 +36,6 @@ export class CommissionTimelineComponent implements OnInit {
     this.commissionService.getCommissionById(id)
       .subscribe(
         (commission) => {
-          console.log(commission);
           this.data = commission;
           this.data.artworkDto.imageUrl = this.data.artworkDto.imageUrl + '.' + this.data.artworkDto.fileType.toLowerCase();
           if(commission.status !== 'COMPLETED'){
@@ -55,7 +54,6 @@ export class CommissionTimelineComponent implements OnInit {
             }
           }
           this.artworks.push(this.data.artworkDto);
-          console.log(this.artworks);
           this.isReady = true;
         }
       );
@@ -64,7 +62,6 @@ export class CommissionTimelineComponent implements OnInit {
 
   setSelectedArtwork(i: number) {
     this.selectedArtwork = i;
-    console.log(this.selectedArtwork);
     document.documentElement.style.setProperty(`--bgFilter`, 'blur(4px)');
   }
 

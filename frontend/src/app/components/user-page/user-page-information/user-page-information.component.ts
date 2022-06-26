@@ -28,7 +28,6 @@ export class UserPageInformationComponent implements OnInit {
     const chat: ChatDto = {
       chatPartnerId: this.user.id, userId: this.loggedInUserId
     };
-    console.log(chat);
     this.chatService.postChat(chat).subscribe(success => {
       this.router.navigate(['/chat/' + this.loggedInUserId]);
     }, error => {

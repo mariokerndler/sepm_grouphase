@@ -41,7 +41,6 @@ export class ReportDialogComponent {
 
   submitReport() {
     const dto = this.createNotificationDto();
-    console.log(dto);
     this.notificationService.createNotification(dto).subscribe();
   }
 

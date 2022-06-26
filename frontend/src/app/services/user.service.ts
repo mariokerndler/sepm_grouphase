@@ -51,6 +51,8 @@ export class UserService {
           if (successAction != null) {
             successAction();
           }
+
+          this.notificationService.displaySuccessSnackbar('Successfully registered.');
         }));
   }
 

@@ -133,7 +133,7 @@ public class NotificationEndpoint {
     @DeleteMapping
     @Operation(summary = "Delete a notification")
     @Transactional
-    public void deleteNotification(@Valid @RequestBody NotificationDto notificationDto) {
+    public void deleteNotification(@RequestBody NotificationDto notificationDto) {
         log.info("A user is trying to delete a notification.");
 
         notificationService

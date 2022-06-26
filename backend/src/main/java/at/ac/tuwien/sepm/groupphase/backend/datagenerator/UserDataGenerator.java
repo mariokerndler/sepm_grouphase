@@ -302,8 +302,22 @@ public class UserDataGenerator {
         commissionService.saveCommission(c);
         Commission d = generateCommission1(artists.get(1), users.get(4));
         commissionService.saveCommission(d);
+
         Commission e = generateCommission3(artists.get(0), user);
         commissionService.saveCommission(e);
+        Artwork artwork0 = new Artwork();
+        artwork0.setCommission(e);
+        artwork0.setArtist(artist);
+        artwork0.setFileType(FileType.JPG);
+        artwork0.setDescription("Artwork description");
+        artwork0.setName("Artwork");
+        artwork0.setImageData(getImageBytes(urls[2]));
+        ImageFileManager ifm = new ImageFileManager();
+        String st = ifm.writeCommissionArtwork(e, artwork0);
+        artwork0.setImageUrl(st);
+        artworkRepo.save(artwork0);
+        e.setArtwork(artwork0);
+
         Commission f = generateCommission4(artist, user);
         commissionService.saveCommission(f);
         Artwork artwork = new Artwork();
@@ -313,7 +327,6 @@ public class UserDataGenerator {
         artwork.setDescription("Artwork description");
         artwork.setName("Artwork");
         artwork.setImageData(getImageBytes(urls[7]));
-        ImageFileManager ifm = new ImageFileManager();
         String s = ifm.writeCommissionArtwork(f, artwork);
         artwork.setImageUrl(s);
         List<Sketch> sketches = new LinkedList<>();
@@ -453,10 +466,10 @@ public class UserDataGenerator {
         commission.setArtist(artist);
         commission.setCustomer(user);
         commission.setTitle("Sample Commission3");
-        commission.setSketchesShown(4);
-        commission.setFeedbackSent(4);
+        commission.setSketchesShown(0);
+        commission.setFeedbackSent(0);
         commission.setPrice((int) (Math.random() * 10000));
-        commission.setFeedbackRounds(4);
+        commission.setFeedbackRounds(0);
         commission.setIssueDate(LocalDateTime.now().minusDays((int) (Math.random() * 100)));
         commission.setDeadlineDate(LocalDateTime.now());
         commission.setStatus(CommissionStatus.COMPLETED);
@@ -572,7 +585,7 @@ public class UserDataGenerator {
         sketches.add(k);
         Reference reference = new Reference();
         reference.setImageUrl("data\\com\\adminSample Commission4\\bReference");
-        reference.setImageData(getImageBytes(urls[1]));
+        reference.setImageData(getImageBytes(urls[5]));
         reference.setCommission(commission);
         reference.setFileType(FileType.JPG);
         List<Reference> references = new LinkedList<>();
